@@ -1252,28 +1252,6 @@
   },
   "press": [
     {
-      "id": "ap-2025",
-      "publication": "Associated Press",
-      "title": "Olympic hopeful cross-country skier tries to put India on the winter sports map",
-      "date": "2025-12-10",
-      "byline": "Ken Maguire",
-      "context": "A profile filed during her first World Cup block, on the coffee farm upbringing and the economics of racing without a federation budget.",
-      "url": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
-      "verified": true,
-      "image": "portrait-cap"
-    },
-    {
-      "id": "kf-2025",
-      "publication": "Karnataka First",
-      "title": "Chasing gold through snow",
-      "date": "2025-10-20",
-      "byline": null,
-      "context": "Regional coverage of the Corralco bronzes and the Kodagu background.",
-      "url": "https://www.karnatakafirst.com/2025/10/20/chasing-gold-through-snow/",
-      "verified": true,
-      "image": "medals-detail"
-    },
-    {
       "id": "fis-profile",
       "publication": "FIS",
       "title": "Athlete biography · Bhavani Thekkada Nanjunda",
@@ -1285,15 +1263,34 @@
       "image": "race-orange-bib"
     },
     {
-      "id": "kiwg-official",
-      "publication": "Khelo India",
-      "title": "KIWG 2026 medal tally",
-      "date": "2026-02",
-      "byline": null,
-      "context": "Official results for the 2026 edition at Gulmarg.",
-      "url": "https://winter.kheloindia.gov.in/medal-tally",
+      "id": "ap-2025",
+      "publication": "Associated Press",
+      "title": "Olympic hopeful cross-country skier tries to put India on the winter sports map",
+      "date": "2025-12-10",
+      "byline": "Ken Maguire",
+      "context": "A profile filed during her first World Cup block, on the coffee farm upbringing and the economics of racing without a federation budget. Carried internationally, including by the South China Morning Post.",
+      "url": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
       "verified": true,
-      "image": "khelo-ice-sculpture"
+      "image": "portrait-cap"
+    },
+    {
+      "id": "pr-kashmirimages",
+      "publication": "Kashmir Images",
+      "title": "Bhavani wins two back-to-back medals for India in Cross-Country Skiing",
+      "url": "https://thekashmirimages.com/2025/09/16/bhavani-wins-two-back-to-back-medals-for-india-in-cross-country-skiing/",
+      "date": "2025-09-16",
+      "byline": "Farhat Naik",
+      "context": "Filed from Santiago two days after the Corralco races, and the earliest of the reports on them. Carries her own account of the two bronzes.",
+      "image": null,
+      "verified": true
+    },
+    {
+      "publication": "Olympics.com",
+      "title": "Bhavani Thekkada, an inspirational story",
+      "url": "https://www.olympics.com/hi/news/bhavani-thekkada-inspirational-story",
+      "date": "",
+      "context": "Her story on the Olympic movement's own site, published in Hindi.",
+      "image": "portrait-team-kit"
     },
     {
       "publication": "Femina",
@@ -1304,6 +1301,28 @@
       "image": "podium-first"
     },
     {
+      "id": "pr-indiatoday",
+      "publication": "India Today",
+      "title": "Icy ambitions: India at the 2026 Winter Olympics",
+      "url": "https://www.indiatoday.in/magazine/leisure/story/20251027-icy-ambitions-india-at-the-2026-winter-olympics-2804672-2025-10-17",
+      "date": "2025-10-17",
+      "byline": "",
+      "context": "On India's athletes going into the 2026 Winter Olympics.",
+      "image": null,
+      "verified": false
+    },
+    {
+      "id": "pr-som",
+      "publication": "Star of Mysore",
+      "title": "Chasing gold through snow",
+      "date": "",
+      "byline": "",
+      "context": "A long interview in her home district's paper, on the route out of Kodagu and what she is aiming at next. Republished by Karnataka First.",
+      "url": "https://starofmysore.com/chasing-gold-through-snow/",
+      "verified": true,
+      "image": "medals-detail"
+    },
+    {
       "publication": "The Hindu",
       "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
       "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
@@ -1312,12 +1331,26 @@
       "image": "podium-gulmarg-2022"
     },
     {
-      "publication": "Olympics.com",
-      "title": "Bhavani Thekkada, an inspirational story",
-      "url": "https://www.olympics.com/hi/news/bhavani-thekkada-inspirational-story",
-      "date": "",
-      "context": "Her story on the Olympic movement's own site, published in Hindi.",
-      "image": "portrait-team-kit"
+      "id": "pr-srinagarnews",
+      "publication": "Srinagar News",
+      "title": "Bhavani Thekkeda Nanjunda: from coffee hills to cold glory at KIWG 2026",
+      "url": "https://srinagarnews.net/25/02/2026/bhavani-thekkeda-nanjunda-from-coffee-hills-to-cold-glory-for-souths-sprint-queen-at-kiwg-2026/",
+      "date": "2026-02-25",
+      "byline": "",
+      "context": "On the sprint gold at Gulmarg. The report calls the two bronzes relays. They were the individual 10 km and 15 km.",
+      "image": null,
+      "verified": true
+    },
+    {
+      "id": "kiwg-official",
+      "publication": "Khelo India",
+      "title": "KIWG 2026 medal tally",
+      "date": "2026-02",
+      "byline": null,
+      "context": "Official results for the 2026 edition at Gulmarg.",
+      "url": "https://winter.kheloindia.gov.in/medal-tally",
+      "verified": true,
+      "image": "khelo-ice-sculpture"
     },
     {
       "publication": "The New Indian Express",
