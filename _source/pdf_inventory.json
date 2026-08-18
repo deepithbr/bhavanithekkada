@@ -1,0 +1,589 @@
+{
+  "Bhavani portfolio.pdf": {
+    "slug": "portfolioA",
+    "n_pages": 10,
+    "pages": [
+      {
+        "page": 1,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 61
+      },
+      {
+        "page": 2,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 0,
+        "chars": 226
+      },
+      {
+        "page": 3,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 7,
+        "chars": 400
+      },
+      {
+        "page": 4,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 127
+      },
+      {
+        "page": 5,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 114,
+        "chars": 1153
+      },
+      {
+        "page": 6,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 21,
+        "chars": 238
+      },
+      {
+        "page": 7,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 4,
+        "chars": 232
+      },
+      {
+        "page": 8,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 13,
+        "chars": 375
+      },
+      {
+        "page": 9,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 6,
+        "chars": 21
+      },
+      {
+        "page": 10,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 213
+      }
+    ],
+    "images": [
+      {
+        "page": 1,
+        "file": "p01_00.jpg",
+        "bytes": 2304694
+      },
+      {
+        "page": 3,
+        "file": "p03_00.jpg",
+        "bytes": 82427
+      },
+      {
+        "page": 3,
+        "file": "p03_01.jpg",
+        "bytes": 448458
+      },
+      {
+        "page": 3,
+        "file": "p03_02.jpg",
+        "bytes": 247174
+      },
+      {
+        "page": 3,
+        "file": "p03_03.jpg",
+        "bytes": 354331
+      },
+      {
+        "page": 3,
+        "file": "p03_04.jpg",
+        "bytes": 353712
+      },
+      {
+        "page": 3,
+        "file": "p03_05.jpg",
+        "bytes": 382812
+      },
+      {
+        "page": 3,
+        "file": "p03_06.jpg",
+        "bytes": 254185
+      },
+      {
+        "page": 4,
+        "file": "p04_00.jpg",
+        "bytes": 1865841
+      },
+      {
+        "page": 5,
+        "file": "p05_15.jpg",
+        "bytes": 108497
+      },
+      {
+        "page": 5,
+        "file": "p05_16.jpg",
+        "bytes": 273376
+      },
+      {
+        "page": 5,
+        "file": "p05_17.jpg",
+        "bytes": 638729
+      },
+      {
+        "page": 6,
+        "file": "p06_00.jpg",
+        "bytes": 45474
+      },
+      {
+        "page": 6,
+        "file": "p06_02.jpg",
+        "bytes": 156929
+      },
+      {
+        "page": 6,
+        "file": "p06_03.jpg",
+        "bytes": 242925
+      },
+      {
+        "page": 6,
+        "file": "p06_04.jpg",
+        "bytes": 99028
+      },
+      {
+        "page": 6,
+        "file": "p06_05.jpg",
+        "bytes": 145986
+      },
+      {
+        "page": 6,
+        "file": "p06_06.jpg",
+        "bytes": 58954
+      },
+      {
+        "page": 6,
+        "file": "p06_08.jpg",
+        "bytes": 43312
+      },
+      {
+        "page": 6,
+        "file": "p06_14.jpg",
+        "bytes": 64260
+      },
+      {
+        "page": 6,
+        "file": "p06_18.jpg",
+        "bytes": 217230
+      },
+      {
+        "page": 6,
+        "file": "p06_19.jpg",
+        "bytes": 160808
+      },
+      {
+        "page": 6,
+        "file": "p06_20.jpg",
+        "bytes": 122295
+      },
+      {
+        "page": 7,
+        "file": "p07_00.jpg",
+        "bytes": 2001192
+      },
+      {
+        "page": 7,
+        "file": "p07_01.jpg",
+        "bytes": 1854841
+      },
+      {
+        "page": 7,
+        "file": "p07_02.jpg",
+        "bytes": 3589710
+      },
+      {
+        "page": 8,
+        "file": "p08_00.jpg",
+        "bytes": 84231
+      },
+      {
+        "page": 8,
+        "file": "p08_01.jpg",
+        "bytes": 134069
+      },
+      {
+        "page": 8,
+        "file": "p08_02.jpg",
+        "bytes": 194715
+      },
+      {
+        "page": 8,
+        "file": "p08_03.jpg",
+        "bytes": 102953
+      },
+      {
+        "page": 8,
+        "file": "p08_04.jpg",
+        "bytes": 124035
+      },
+      {
+        "page": 8,
+        "file": "p08_05.jpg",
+        "bytes": 48123
+      },
+      {
+        "page": 8,
+        "file": "p08_09.jpg",
+        "bytes": 78084
+      },
+      {
+        "page": 8,
+        "file": "p08_10.jpg",
+        "bytes": 125315
+      },
+      {
+        "page": 8,
+        "file": "p08_11.jpg",
+        "bytes": 178830
+      },
+      {
+        "page": 8,
+        "file": "p08_12.jpg",
+        "bytes": 103077
+      },
+      {
+        "page": 9,
+        "file": "p09_00.jpg",
+        "bytes": 1272040
+      },
+      {
+        "page": 9,
+        "file": "p09_01.jpg",
+        "bytes": 692128
+      },
+      {
+        "page": 9,
+        "file": "p09_02.jpg",
+        "bytes": 484992
+      },
+      {
+        "page": 9,
+        "file": "p09_03.jpg",
+        "bytes": 790788
+      },
+      {
+        "page": 9,
+        "file": "p09_04.jpg",
+        "bytes": 1542405
+      },
+      {
+        "page": 9,
+        "file": "p09_05.jpg",
+        "bytes": 629420
+      },
+      {
+        "page": 10,
+        "file": "p10_00.jpg",
+        "bytes": 2660343
+      }
+    ]
+  },
+  "Bhavani portfolio .pdf": {
+    "slug": "portfolioB",
+    "n_pages": 9,
+    "pages": [
+      {
+        "page": 1,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 61
+      },
+      {
+        "page": 2,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 0,
+        "chars": 225
+      },
+      {
+        "page": 3,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 7,
+        "chars": 400
+      },
+      {
+        "page": 4,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 127
+      },
+      {
+        "page": 5,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 113,
+        "chars": 1153
+      },
+      {
+        "page": 6,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 19,
+        "chars": 238
+      },
+      {
+        "page": 7,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 4,
+        "chars": 232
+      },
+      {
+        "page": 8,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 6,
+        "chars": 21
+      },
+      {
+        "page": 9,
+        "size": [
+          842,
+          595
+        ],
+        "n_images": 1,
+        "chars": 208
+      }
+    ],
+    "images": [
+      {
+        "page": 1,
+        "file": "p01_00.jpg",
+        "bytes": 2304694
+      },
+      {
+        "page": 3,
+        "file": "p03_00.jpg",
+        "bytes": 82427
+      },
+      {
+        "page": 3,
+        "file": "p03_01.jpg",
+        "bytes": 448458
+      },
+      {
+        "page": 3,
+        "file": "p03_02.jpg",
+        "bytes": 247174
+      },
+      {
+        "page": 3,
+        "file": "p03_03.jpg",
+        "bytes": 354331
+      },
+      {
+        "page": 3,
+        "file": "p03_04.jpg",
+        "bytes": 353712
+      },
+      {
+        "page": 3,
+        "file": "p03_05.jpg",
+        "bytes": 382812
+      },
+      {
+        "page": 3,
+        "file": "p03_06.jpg",
+        "bytes": 254185
+      },
+      {
+        "page": 4,
+        "file": "p04_00.jpg",
+        "bytes": 1865841
+      },
+      {
+        "page": 5,
+        "file": "p05_14.jpg",
+        "bytes": 108497
+      },
+      {
+        "page": 5,
+        "file": "p05_15.jpg",
+        "bytes": 273376
+      },
+      {
+        "page": 5,
+        "file": "p05_16.jpg",
+        "bytes": 638729
+      },
+      {
+        "page": 6,
+        "file": "p06_00.jpg",
+        "bytes": 110690
+      },
+      {
+        "page": 6,
+        "file": "p06_02.jpg",
+        "bytes": 99028
+      },
+      {
+        "page": 6,
+        "file": "p06_03.jpg",
+        "bytes": 145986
+      },
+      {
+        "page": 6,
+        "file": "p06_04.jpg",
+        "bytes": 58954
+      },
+      {
+        "page": 6,
+        "file": "p06_06.jpg",
+        "bytes": 47120
+      },
+      {
+        "page": 6,
+        "file": "p06_14.jpg",
+        "bytes": 217230
+      },
+      {
+        "page": 6,
+        "file": "p06_15.jpg",
+        "bytes": 160808
+      },
+      {
+        "page": 6,
+        "file": "p06_16.jpg",
+        "bytes": 122295
+      },
+      {
+        "page": 6,
+        "file": "p06_17.jpg",
+        "bytes": 156929
+      },
+      {
+        "page": 6,
+        "file": "p06_18.jpg",
+        "bytes": 242925
+      },
+      {
+        "page": 7,
+        "file": "p07_00.jpg",
+        "bytes": 2001192
+      },
+      {
+        "page": 7,
+        "file": "p07_01.jpg",
+        "bytes": 1854841
+      },
+      {
+        "page": 7,
+        "file": "p07_02.jpg",
+        "bytes": 3589710
+      },
+      {
+        "page": 8,
+        "file": "p08_00.jpg",
+        "bytes": 1272040
+      },
+      {
+        "page": 8,
+        "file": "p08_01.jpg",
+        "bytes": 692128
+      },
+      {
+        "page": 8,
+        "file": "p08_02.jpg",
+        "bytes": 484992
+      },
+      {
+        "page": 8,
+        "file": "p08_03.jpg",
+        "bytes": 790788
+      },
+      {
+        "page": 8,
+        "file": "p08_04.jpg",
+        "bytes": 1542405
+      },
+      {
+        "page": 8,
+        "file": "p08_05.jpg",
+        "bytes": 629420
+      },
+      {
+        "page": 9,
+        "file": "p09_00.jpg",
+        "bytes": 2660343
+      }
+    ]
+  },
+  "bhavanithekkada 2026.pdf": {
+    "slug": "sponsorship2026",
+    "n_pages": 2,
+    "pages": [
+      {
+        "page": 1,
+        "size": [
+          595,
+          842
+        ],
+        "n_images": 0,
+        "chars": 1587
+      },
+      {
+        "page": 2,
+        "size": [
+          595,
+          842
+        ],
+        "n_images": 0,
+        "chars": 576
+      }
+    ],
+    "images": []
+  }
+}

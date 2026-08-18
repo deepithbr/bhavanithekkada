@@ -1,0 +1,612 @@
+[
+  {
+    "slot": "hero-portrait",
+    "source": "p07_02.jpg",
+    "natural": [
+      2268,
+      4032
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 853,
+        "kb": 83
+      },
+      {
+        "w": 960,
+        "h": 1707,
+        "kb": 272
+      },
+      {
+        "w": 1600,
+        "h": 2844,
+        "kb": 573
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAADwAwCdASoLABQAPu1iqU2ppaOiMAgBMB2JagCdLwAB0E0tpdawbn/AAP4x3+7yfUty8SM2HcJHeD2OTVVhxJPt4RzNnhBV9C/waXfI+0f43+2PE0U8rDPbkdClJbLymxKem3FKwBENthER+lQNBdoFzwh0jeyQAF9z+SCFkWoAAA==",
+    "ratio": 0.5625
+  },
+  {
+    "slot": "ski-city-overlook",
+    "source": "p07_00.jpg",
+    "natural": [
+      1684,
+      2245
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 640,
+        "kb": 75
+      },
+      {
+        "w": 960,
+        "h": 1280,
+        "kb": 250
+      },
+      {
+        "w": 1600,
+        "h": 2133,
+        "kb": 514
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAABwBACdASoPABQAPu1iqU2ppaOiMAgBMB2JbACdMoR3ACnDfaPPNmjzLlsj2AD+1RB3JTAy6k9cXnbOMW2sEjW8uATg8ak7a5pZ/nJyLddlUaSl6BrB4JNnkjtVnB/GKu7+zv7vzZhyM9U9xoygTffj3j4rARxQgESnvcVnGHcX8Dy6HJ7K061JKvu7x2DoAAA=",
+    "ratio": 0.7501
+  },
+  {
+    "slot": "track-texture",
+    "source": "p07_01.jpg",
+    "natural": [
+      1675,
+      2233
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 640,
+        "kb": 53
+      },
+      {
+        "w": 960,
+        "h": 1280,
+        "kb": 192
+      },
+      {
+        "w": 1600,
+        "h": 2133,
+        "kb": 456
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAABwAwCdASoPABQAPu1iqU2ppaOiMAgBMB2JZgCsACFFd7f8UEAA8DPpCHa0qAUDzBzJtqbugyDUD7OXxRIE+Y6yYuOuppk9PID3ZzW33s4rEYU/yb2BPW/gs2B4X1pYA1XaicgtgAA=",
+    "ratio": 0.7501
+  },
+  {
+    "slot": "race-planica-elbrus",
+    "source": "p04_00.jpg",
+    "natural": [
+      3315,
+      948
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 137,
+        "kb": 10
+      },
+      {
+        "w": 960,
+        "h": 275,
+        "kb": 28
+      },
+      {
+        "w": 1600,
+        "h": 458,
+        "kb": 57
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAAAQBACdASoUAAYAPu1iqU2ppaOiMAgBMB2JZACdMoRgAAbH4xVRLmvIAADgIFVH8h/lelOF8H6TfkwgBD0cBRuqP9cDcGwgiNHPx0hZmilApfZpgAA=",
+    "ratio": 3.4968
+  },
+  {
+    "slot": "ruapehu",
+    "source": "p04_00.jpg",
+    "natural": [
+      3315,
+      948
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 137,
+        "kb": 12
+      },
+      {
+        "w": 960,
+        "h": 275,
+        "kb": 40
+      },
+      {
+        "w": 1600,
+        "h": 458,
+        "kb": 88
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADQAwCdASoUAAYAPu1iqU2ppaQiMAgBMB2JagCdABbZLFTU0BWUqQAA/s18bL6uWUmQV5bnGuZvb/IA3DsLADyRDviERPeCTzrVxrC3rBydreYwA8UDUX1MpTTnPBOAAAA=",
+    "ratio": 3.4968
+  },
+  {
+    "slot": "roller-vidhana-soudha",
+    "source": "p03_04.jpg",
+    "natural": [
+      613,
+      817
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 640,
+        "kb": 67
+      },
+      {
+        "w": 613,
+        "h": 817,
+        "kb": 106
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAQBACdASoPABQAPu1iqU2ppaOiMAgBMB2JQBOmUABprQ2Uhp+8DezAAAD+3p95cNxhWNnGaEr2VbDKm+HjzFOS6jtsTrI9Hc8KwLpe29Paa368m7/6JuP7z+nD+PFeOM5j3n9skf3xMbaxAZL6c8aJ/fgsU5PrKyYOCIiWTm66zRqmbgu2N3fFgAA=",
+    "ratio": 0.7503
+  },
+  {
+    "slot": "roller-road",
+    "source": "p05_17.jpg",
+    "natural": [
+      855,
+      1140
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 640,
+        "kb": 71
+      },
+      {
+        "w": 855,
+        "h": 1140,
+        "kb": 204
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAABQBACdASoPABQAPu1iqU2ppaOiMAgBMB2JbACdMoR8eCq+A7uw6k5YoAsAAP3i6yfCL0Yv4rbhfsm3No0spx5XprEiUdviwuNzu1dX6KKEZQ7DlWp5U0huzVXLW7ZrIIhe3H5RWdftZ6Tyj4KorTlAdlnstKuRTtcIAA==",
+    "ratio": 0.75
+  },
+  {
+    "slot": "race-orange-bib",
+    "source": "p05_15.jpg",
+    "natural": [
+      693,
+      693
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 480,
+        "kb": 13
+      },
+      {
+        "w": 693,
+        "h": 693,
+        "kb": 23
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAACwAwCdASoUABQAPu1ur1IppiQiqAgBMB2JZQCxH2QBs0f1NxtDEAD+6sWvz/sLYX0AcFsvN9UAfTI+hJG4//M9PP3y93PN3ma9yoPbxoSL3w+G2y2Ie6ez45aTwse0L12J0ASfRXkvAAAA",
+    "ratio": 1.0
+  },
+  {
+    "slot": "race-forest",
+    "source": "p05_16.jpg",
+    "natural": [
+      816,
+      826
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 486,
+        "kb": 33
+      },
+      {
+        "w": 816,
+        "h": 826,
+        "kb": 74
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAACwBACdASoUABQAPu1ur1KppiQiqAgBMB2JZABV1A/4Bc/FG5U4v7znN8S8wgUAAMg2AcGUgN27E33KW4yuo/CZb2CG3q1UO6vvg7Ui1z6mCjOUmtIHOao+J0dUFlLWv/6xQ4gqk6MrR3+9YGo6YyvRUp+r5ophm6VGcZO+o+wl9WDn/ZHGSs7wgPOqogbLm5bPng178NM2LB0gnH5zqG6UAAJlQAAA",
+    "ratio": 0.9879
+  },
+  {
+    "slot": "khelo-ice-sculpture",
+    "source": "p10_00.jpg",
+    "natural": [
+      4032,
+      2960
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 352,
+        "kb": 18
+      },
+      {
+        "w": 960,
+        "h": 705,
+        "kb": 55
+      },
+      {
+        "w": 1600,
+        "h": 1175,
+        "kb": 119
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAAAwBACdASoUAA8APu1iqk2ppaQiMAgBMB2JaACdMoRwACWhaYlIOqUySwAA/t/ta/KYJ00HD4Ks/SfQDJvBb7are0TxA1HdAbFJxwlR0u3M10qKWLAYc+ARYf7Dnl2hlVFEronXxk+PfMEudN3GOTLIAAA=",
+    "ratio": 1.3622
+  },
+  {
+    "slot": "khelo-ladakh-portrait",
+    "source": "p09_02.jpg",
+    "natural": [
+      1623,
+      1080
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 319,
+        "kb": 21
+      },
+      {
+        "w": 960,
+        "h": 639,
+        "kb": 53
+      },
+      {
+        "w": 1600,
+        "h": 1065,
+        "kb": 106
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRoQAAABXRUJQVlA4IHgAAACQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JZgAASn3XVXG178noAP7t0T98IefK+9btBOj09iJbOJzL1JA/t/gmIxPeDNgihi4TEU0bRpzb/VxeMboeLK1sevADHl9xwNAJHZyKFe4wJmQWRaIdxaOmcAxYmxgAAAA=",
+    "ratio": 1.5028
+  },
+  {
+    "slot": "khelo-ladakh-skis",
+    "source": "p03_06.jpg",
+    "natural": [
+      674,
+      898
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 640,
+        "kb": 46
+      },
+      {
+        "w": 674,
+        "h": 898,
+        "kb": 80
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRpQAAABXRUJQVlA4IIgAAABQBACdASoPABQAPu1iqU2ppaOiMAgBMB2JbACdMoRwEGAAONQthmHTKTQQAMxQyyzRFhxVVAxAYjUR3suMBpdLJ7gRYgQ3/s6622zEHMuAXV/xbWUF5nGAqxd5cGX3CcVG7mDey9kC2Gt/Ii7zltVUuQUHCCUVJkOcb5qDDcRH5iwcgPvbiMAA",
+    "ratio": 0.7506
+  },
+  {
+    "slot": "podium-first",
+    "source": "p09_05.jpg",
+    "natural": [
+      1440,
+      1800
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 600,
+        "kb": 40
+      },
+      {
+        "w": 960,
+        "h": 1200,
+        "kb": 96
+      },
+      {
+        "w": 1440,
+        "h": 1800,
+        "kb": 157
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAABwBACdASoQABQAPu1iqU2ppaOiMAgBMB2JbACdMoRwAB/VbtsB7D7YF46+AAD9uwT77GOIP2g70XSC8yFJiBSx7SsIbxcSpBg1zCSpaKipKj8lQ0Ptzhi5M469SNYcyz5yKF0L8geaO59r74wXZPFxYJnitdsafXIz+FqlVIdnudkGJ1hQEjHeTiyggfwC6LycLYwBCwhEqqiQPnSdLf8fPORxuAAA",
+    "ratio": 0.8
+  },
+  {
+    "slot": "podium-gulmarg-2022",
+    "source": "p09_00.jpg",
+    "natural": [
+      1636,
+      1227
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 360,
+        "kb": 48
+      },
+      {
+        "w": 960,
+        "h": 720,
+        "kb": 162
+      },
+      {
+        "w": 1600,
+        "h": 1200,
+        "kb": 355
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRqoAAABXRUJQVlA4IJ4AAACQBACdASoUAA8APu1iqU2ppaOiMAgBMB2JZACxC8ACyLRYqbznn2OKx+oBygAA+4X4eLAtzDTrf9bAwIz3f/0JHiDLORg3HpcQsaCm0N+2DArZXLBzriwx1ySjWq81/HTv1ASZat3p4y8GIhhacLlMJ6vTdUoUTB49Z5DiEFuIC8QFlSS2OQDoo0fw51/8mxqmIGa7T4orSiCjfkqAAA==",
+    "ratio": 1.3333
+  },
+  {
+    "slot": "trophy-karnataka",
+    "source": "p09_01.jpg",
+    "natural": [
+      1440,
+      1452
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 484,
+        "kb": 36
+      },
+      {
+        "w": 960,
+        "h": 968,
+        "kb": 102
+      },
+      {
+        "w": 1440,
+        "h": 1452,
+        "kb": 192
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRvwAAABXRUJQVlA4IPAAAAAwBgCdASoUABQAPu1srFEppaQiqAqpMB2JbACxHzQ5hvr0AF2Z7zmAjxKw1wsK2dKpuOFZY7zxcm0AAPj0PRaP0QozsfoX8wuR0GZ3V12FyZQY5+uLugvBd2UsFxa5enGIb4rqgjupI3j88UQE0vpiDx62g3xlcN/YZsCyhyZzInNNn4PuChuAP59W4AEyxl6hKOtUdYR7HCMAmDOBnfLFzDdX8hU6aoilQ4akKls2ri38zKMOcG+nTcoH071f5Fphhz2B09oQbbxEcv3llb3sy7oylBgYkAQLuOeGb00JMXTSO0IqpZM9pKECOzgAAAA=",
+    "ratio": 0.9917
+  },
+  {
+    "slot": "trophy-ceremony",
+    "source": "p09_03.jpg",
+    "natural": [
+      1440,
+      1447
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 482,
+        "kb": 42
+      },
+      {
+        "w": 960,
+        "h": 965,
+        "kb": 108
+      },
+      {
+        "w": 1440,
+        "h": 1447,
+        "kb": 179
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAABQBQCdASoUABQAPu1sq1EppaOiqAqpMB2JbACxG49s4AD0Szfu2mSUSDPhO7GcrxonK7QA/u6XuMkCK5oBAzJM16PFZ659Gu+UkotdeIlZzSa2lidL6t84Qiy74uCBOz0XEIUDJl9IE420x2QlOj3pM5I+ynJaOCDt/UdWTBTMhn8IpJgklp313iPi5BiJHJo4BdOGr8NmOSsoqKg1+5haqX2K+I2Q4X9IAAAA",
+    "ratio": 0.9952
+  },
+  {
+    "slot": "medals-detail",
+    "source": "p09_04.jpg",
+    "natural": [
+      1440,
+      1440
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 480,
+        "kb": 64
+      },
+      {
+        "w": 960,
+        "h": 960,
+        "kb": 226
+      },
+      {
+        "w": 1440,
+        "h": 1440,
+        "kb": 464
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRuAAAABXRUJQVlA4INQAAAAwBQCdASoUABQAPu1urlIppiQiqAgBMB2JZgCdMzQ8l1FttEAsk9/Pj5g/QGZB6Rc3/AD+n0/EHKWddTbq7V+Lf5oh1zdOUJdzj+GN8GX0rIGmnIuXhBM2OMKq+y33d0WctOeFoKoRBY2a9z2M20hD4rC533ir+ns371GXIOewXvJcsjFAVNK4x/jMHSvOE9eX2gWrMNfw4S0VMFXP4eAdsJtaClN6wuMQzG54yxAxR4nRCG0ty6EuWaV5HVEf75tulCkfD50VAc/MhpDmjKSKAAAAAA==",
+    "ratio": 1.0
+  },
+  {
+    "slot": "portrait-cap",
+    "source": "p08_10.jpg",
+    "natural": [
+      844,
+      861
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 490,
+        "kb": 10
+      },
+      {
+        "w": 844,
+        "h": 861,
+        "kb": 25
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRpgAAABXRUJQVlA4IIwAAACwBACdASoUABQAPu1gq02ppaQiMBgMATAdiWwAsR8ziBBQuCgYNWi4pNC2Ii9wAP7wJAe4zzJiTZkCTEsJ/8Q5+LDvak33KPaoR4dTA0hOveMUeTuwLibttP+dPkywxOD9ICL42GIpewmGzMf9ewsi9QRKYMetJP/XmFDQi7UiiOrq5dNaVLTyKgAAAA==",
+    "ratio": 0.9803
+  },
+  {
+    "slot": "portrait-team-kit",
+    "source": "p08_11.jpg",
+    "natural": [
+      563,
+      1434
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 1223,
+        "kb": 32
+      },
+      {
+        "w": 563,
+        "h": 1434,
+        "kb": 42
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACwAwCdASoIABQAPu1iqU2ppaOiMAgBMB2JZgCdACHhv94rMcK1wAD+6VsVaPV1IMbbBhED5KMbeP1szAcFPmZ5x9sPzYduTToxym7oJI6CZR5NFGf+VSxEcLERwwGQkAxywC3AAAA=",
+    "ratio": 0.3926
+  },
+  {
+    "slot": "india-jacket-detail",
+    "source": "p08_02.jpg",
+    "natural": [
+      844,
+      861
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 490,
+        "kb": 24
+      },
+      {
+        "w": 844,
+        "h": 861,
+        "kb": 55
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRp4AAABXRUJQVlA4IJIAAAAQBQCdASoUABQAPu1kqk+ppSOiMBgIATAdiWYAsR+R/Kgkpl6xhPQ15RH1wt5Q8EtAAP7r68NMDOCyFjmmwn4ih9qSLioAeY4ff7orX7sFGwyvNZ7TFUufXCdidsbJlqg0x93K8vekEm/wjIP4MLPO8lmJlFKU527qsSYWgn+/Oe8I0Aq7CMIuyoOcNTkBwLAAAA==",
+    "ratio": 0.9803
+  },
+  {
+    "slot": "flag-almaty",
+    "source": "p03_02.jpg",
+    "natural": [
+      842,
+      563
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 321,
+        "kb": 29
+      },
+      {
+        "w": 842,
+        "h": 563,
+        "kb": 63
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAADQAwCdASoUAA0APu1iqU2ppaOiMAgBMB2JQBOmUABT5qpL2xeaFgAA+ozcc5v/Hhr9hJjX+mj96q6XqQyaocFjbDen9bSnuuAE5Cvqs2CW0U40RZIck/9dTLF4YIspGvaDQAM/P6iUEpa0g0x3nZrut46I/7MsaTBRnUZAkAmgAAAA",
+    "ratio": 1.4956
+  },
+  {
+    "slot": "portrait-himachali",
+    "source": "p06_19.jpg",
+    "natural": [
+      893,
+      896
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 482,
+        "kb": 14
+      },
+      {
+        "w": 893,
+        "h": 896,
+        "kb": 37
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAADQBACdASoUABQAPu1qqk8ppiOiMBgIATAdiWIAnTLLwZBmYA+AsHl7/PefLW8mEAD5sQxHU5uXAef9pGtkyfS/JfPRguQvLhxs/FMjtx+xTzmz9lEdRWANBmmAcBLzD6xxTL3EMm9zj/2uW5s4BJ5iDRjQ0hlac5y4IAAA",
+    "ratio": 0.9967
+  },
+  {
+    "slot": "lake-mountains",
+    "source": "p06_18.jpg",
+    "natural": [
+      892,
+      896
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 482,
+        "kb": 16
+      },
+      {
+        "w": 892,
+        "h": 896,
+        "kb": 41
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACQAwCdASoUABQAPu1qrVCppaQiqAqpMB2JQBdgAVgnstm6VxSAAP0cE54nwUKjIKfTTyFas2mi4ElbsLV+WZwQxDfT+qN5wPxSfinYS/tk1Pn+ZZrwFfTLjlijinxl6ZoFAAAA",
+    "ratio": 0.9955
+  },
+  {
+    "slot": "start-line-gulmarg",
+    "source": "p03_03.jpg",
+    "natural": [
+      1026,
+      577
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 270,
+        "kb": 27
+      },
+      {
+        "w": 960,
+        "h": 540,
+        "kb": 85
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRo4AAABXRUJQVlA4IIIAAAAwBACdASoUAAsAPu1iqU2ppaOiMAgBMB2JQBOmUABpux5hP+dtid85gxAA/d4VPC0NF31gXmdbDsj663Ffx5//FAPxf+6URVT9rmoqv/IhUM4wkjne4WUosWWxXtjsSUxVesO5fuMjLL4D2agfJRKqZqZdz5UHWefhbWoPkLsxAAAA",
+    "ratio": 1.7782
+  },
+  {
+    "slot": "team-with-skis",
+    "source": "p03_05.jpg",
+    "natural": [
+      969,
+      545
+    ],
+    "sizes": [
+      {
+        "w": 480,
+        "h": 270,
+        "kb": 36
+      },
+      {
+        "w": 960,
+        "h": 540,
+        "kb": 108
+      }
+    ],
+    "lqip": "data:image/webp;base64,UklGRqYAAABXRUJQVlA4IJoAAAAQBACdASoUAAsAPu1iqU2ppaOiMAgBMB2JaACsACBhitHvb3eoTn8cAAD44txh3bgsMdjO9zUwNZZyMU3SzjokhQ8oosa9wgGdnbAzBglj+GteUKDWClq6oExSjsAcmoqKD9bUZfj+w5jb1rKZMIe8sHx0Jgj4SMIS72LxGvwTyR36cr7XeDaLnxo00W6EihFbVHv8KPP90QAA",
+    "ratio": 1.778
+  }
+]

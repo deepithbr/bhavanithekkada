@@ -1,0 +1,5642 @@
+/* =========================================================================
+   Bhavani Thekkada Nanjunda — athlete site
+   Tokens derived from the photographs. See DESIGN_PLAN.md.
+   ========================================================================= */
+
+:root {
+  /* Ground, coldest to warmest. The page descends through these. */
+  --ink: #06090f;
+  --ink-warm: #14110c;
+  --ink-cool: #0a1016;
+  --ink-deep: #04070c;
+  --navy: #0e1c33;
+  --navy-2: #14294a;
+
+  /* Sampled from her kit and equipment */
+  --india: #2056de;
+  --india-lift: #6b98f7;
+  --glacier: #9dccf3;
+  --snow: #e6eff4;
+  --snow-hi: #f6fafc;
+  --race: #c6e82b;
+
+  /* Kodagu warm neutrals */
+  --stone: #8e8474;
+  --moss: #5e735b;
+  --saffron: #e4761b;
+
+  /* Per-section, reassigned down the page */
+  --ground: var(--ink);
+  --fg: var(--snow);
+  --fg-dim: #93a3b4;
+  --rule: rgba(157, 204, 243, 0.16);
+  --accent: var(--race);
+
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --text: "Newsreader", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Her name only. See the note in build.py. */
+  --wordmark: "Yuji Syuku", "Songti SC", "Hiragino Mincho ProN", Georgia, serif;
+
+  --col: min(1180px, 100% - 3rem);
+  --rail: 76px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /*
+   * One grade for every photograph on the site. The portfolio images are vivid,
+   * high-saturation blue and the page is deep ink, so ungraded they read as a
+   * different website pasted in. Applied in one place so they cannot drift.
+   */
+  --grade: saturate(0.78) contrast(1.04) brightness(0.95);
+
+  --step--1: clamp(0.75rem, 0.72rem + 0.14vw, 0.83rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.14rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.35rem + 1.2vw, 2.4rem);
+  --step-3: clamp(2.1rem, 1.6rem + 2.4vw, 3.6rem);
+  --step-4: clamp(2.8rem, 1.7rem + 5vw, 6rem);
+  /* Capped so the wordmark cannot reach the hero photograph. See .hero-inner. */
+  --step-5: clamp(3rem, 0.8rem + 9.5vw, 7.5rem);
+}
+
+/* ---------------------------------------------------------------- reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--fg);
+  font-family: var(--text);
+  font-size: var(--step-0);
+  line-height: 1.62;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+:focus-visible {
+  outline: 2px solid var(--race);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+::selection {
+  background: var(--race);
+  color: var(--ink);
+}
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--race);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  transform: translateY(-110%);
+}
+
+.skip:focus {
+  transform: none;
+}
+
+/* ------------------------------------------------------------- primitives */
+
+.wrap {
+  width: var(--col);
+  margin-inline: auto;
+}
+
+/*
+ * Section rhythm.
+ *
+ * Every section used to pay a full pad at the top and again at the bottom, so
+ * the gap between any two of them was double: 137px + 137px = 274px of nothing,
+ * which read as a layout fault after the archive and after the press list. The
+ * pad is now half the intended gap, and two adjacent sections add up to it.
+ */
+section {
+  background: var(--ground);
+  color: var(--fg);
+  position: relative;
+  padding-block: clamp(2.4rem, 4.5vw, 4.5rem);
+  transition: background-color 600ms linear;
+}
+
+/* The last section before the footer has nothing beneath it to share with. */
+main > section:last-of-type {
+  padding-bottom: clamp(4rem, 7vw, 7rem);
+}
+
+/*
+ * Sections abut as flat colour blocks, which turns the temperature descent into
+ * a row of hard steps. Carrying a short band of the previous section's ground
+ * into the top of each one makes the change read as a slope instead of a cut.
+ * `--from` is the ground of whatever sits above.
+ */
+section:not(.hero)::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: clamp(90px, 13vh, 200px);
+  background: linear-gradient(to bottom, var(--from, transparent), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+section:not(.hero) > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Temperature ladder. Warm at the origin, Arctic at the end.
+   The opening spread was never on it: those four joins had no `--from` at all,
+   so they stepped rather than sloped. The colours are close enough that nobody
+   caught it, but the ladder may as well be complete. */
+#headline {
+  --from: var(--ink);
+}
+
+#profile {
+  --from: var(--ink-deep);
+}
+
+#proof {
+  --from: var(--ink);
+}
+
+#journey {
+  --from: var(--ink);
+}
+
+#footprint {
+  --from: var(--ink-cool);
+}
+
+#beyond {
+  --from: var(--navy);
+}
+
+#record {
+  --from: var(--ink-cool);
+}
+
+#media {
+  --from: var(--ink);
+}
+
+/* New chapter, so it needs its place on the temperature ladder. Without a
+   `--from` its blend band was transparent and the press section ended in a hard
+   step. It takes the media ground; speaking then takes this one's. */
+#ambition {
+  --from: var(--ink-deep);
+}
+
+#speaking {
+  --from: var(--ink);
+}
+
+#partners {
+  --from: var(--ink);
+}
+
+#contact {
+  --from: var(--navy);
+}
+
+/*
+ * The merged section carries the temperature change inside itself: warm through
+ * the chapters, where the story is Kodagu and the Himalaya, and cool from the
+ * hinge onward, where it becomes a race record.
+ */
+#journey {
+  --ground: var(--ink-warm);
+  --rule: rgba(142, 132, 116, 0.26);
+  --fg-dim: #a89c89;
+}
+
+/*
+ * This block used to sit inside the chapter with warm ground above and below
+ * it. Now that the forward-looking half has moved out, the record is the last
+ * thing in the chapter, so the section's own `--ink-warm` was showing again
+ * underneath it: a warm brown band between the cool record and the navy map,
+ * which is the patch that kept appearing at the join.
+ *
+ * The block now runs to the bottom edge of the section and takes the section's
+ * bottom padding with it, so the cool ground meets the map directly and the
+ * warm ground ends where the record begins. `#journey` gives up its own bottom
+ * pad below, or the two would stack.
+ */
+.movement-record {
+  --ground: var(--ink-cool);
+  --rule: rgba(157, 204, 243, 0.16);
+  --fg-dim: #8fa3b4;
+  color: var(--fg);
+  margin-top: clamp(3rem, 7vw, 6rem);
+  margin-bottom: calc(clamp(2.4rem, 4.5vw, 4.5rem) * -1);
+  padding-top: clamp(3rem, 7vw, 6rem);
+  padding-bottom: clamp(2.4rem, 4.5vw, 4.5rem);
+  background: linear-gradient(
+    to bottom,
+    var(--ink-warm) 0,
+    var(--ink-cool) clamp(120px, 18vw, 260px)
+  );
+}
+
+/*
+ * The title that holds over the card run.
+ *
+ * It sits inside the pinned deck stage rather than scrolling past above it, so
+ * a reader who lands mid-run still knows what the eleven cards are. Kept off
+ * the pointer so it never intercepts a click meant for a card link.
+ */
+/*
+ * Clears the fixed header. It was at 40px on an 800px-tall laptop and the
+ * header is 60 to 72px, so the title the whole card run is named by sat behind
+ * the navigation and was never seen.
+ */
+/* Clears the header AND the section marker bar hanging under it. Offsetting by
+   the header alone put this title straight through "01 Kodagu to Davos". */
+.deck-head {
+  position: absolute;
+  top: calc(var(--top-h, 7rem) + 1rem);
+  left: clamp(1.25rem, 5vw, 3.5rem);
+  right: clamp(1.25rem, 5vw, 3.5rem);
+  z-index: 4;
+  display: grid;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+/*
+ * Clears the Track rail.
+ *
+ * From 1080px the rail occupies the left 76px with its chapter labels, so
+ * "All the records" sat underneath "Kodagu to Davos" and was unreadable for the
+ * whole card run. The header already offsets itself by `--rail`; the pinned
+ * titles never did.
+ *
+ * `max()` rather than a flat indent, so on a wide screen where the centred
+ * column already clears the rail nothing moves at all.
+ */
+@media (min-width: 1080px) {
+  .deck-head {
+    left: max(clamp(1.25rem, 5vw, 3.5rem), calc(var(--rail) + 1.25rem));
+  }
+}
+
+.deck-head h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 82%;
+  font-size: clamp(1.6rem, 4.2vw, 3.4rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 14ch;
+}
+
+.deck-head p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 40ch;
+  font-size: var(--step--1);
+}
+
+@media (max-width: 899px) {
+  .deck-head p { display: none; }
+}
+
+#footprint {
+  --ground: var(--navy);
+  --rule: rgba(157, 204, 243, 0.2);
+}
+
+#beyond {
+  --ground: var(--ink-cool);
+}
+
+#record {
+  --ground: var(--ink);
+}
+
+#media {
+  --ground: var(--ink-deep);
+}
+
+#speaking {
+  --ground: var(--ink);
+}
+
+#partners {
+  --ground: var(--navy);
+  --rule: rgba(157, 204, 243, 0.2);
+}
+
+#contact {
+  --ground: var(--ink-deep);
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin: 0;
+}
+
+.section-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 1.5rem;
+  align-items: baseline;
+  padding-top: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+/* The rule is a pseudo-element rather than a border so it can be drawn, which
+   echoes the track being cut rather than simply appearing.
+
+   It draws off `--o`, the same number the heading's travel uses to fade in, so
+   the line arrives with the words. It used to wait for `data-shown`, which the
+   heading stopped carrying when it moved to a travel path, leaving every
+   section rule stuck at zero width. Defaulting to 1 means no JavaScript gets a
+   plain full-width line rather than no line at all. */
+.section-head::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--rule);
+  transform-origin: left center;
+  transform: scaleX(var(--o, 1));
+}
+
+.section-head .idx {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.section-head h2 {
+  font-size: var(--step-3);
+  font-stretch: 88%;
+  max-width: 18ch;
+}
+
+.section-head .lede {
+  grid-column: 2;
+  margin-top: 1rem;
+  max-width: 58ch;
+  color: var(--fg-dim);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ track */
+
+.track-rail {
+  position: fixed;
+  inset-block: 0;
+  left: 0;
+  width: var(--rail);
+  z-index: 40;
+  pointer-events: none;
+  display: none;
+}
+
+.rail-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Before she reaches snow there is no cut track, only a line of travel. */
+.track-rail .approach {
+  stroke: rgba(157, 204, 243, 0.3);
+  stroke-width: 1;
+  stroke-dasharray: 1 6;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.track-rail .groove {
+  stroke: rgba(157, 204, 243, 0.2);
+  stroke-width: 1.25;
+  fill: none;
+}
+
+/* Distance markers, on the international stretch only. */
+.track-rail .ticks line {
+  stroke: rgba(157, 204, 243, 0.22);
+  stroke-width: 1;
+}
+
+.track-rail .cut {
+  stroke: var(--glacier);
+  stroke-width: 1.5;
+  fill: none;
+  opacity: 0.8;
+}
+
+/* The two skis. They trade the lead as you scroll, which is the stride. */
+.track-rail .ski {
+  stroke: var(--race);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  fill: none;
+}
+
+.rail-nodes {
+  position: absolute;
+  inset: 0;
+}
+
+.track-rail .node {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  /* Centres the dot on x=38, between the two grooves at 30 and 46. */
+  padding-left: 38px;
+  transform: translateY(-50%);
+}
+
+.track-rail .node i {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  margin-left: -3.5px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1.25px rgba(157, 204, 243, 0.45);
+  transition: background-color 240ms var(--ease), box-shadow 240ms var(--ease),
+    transform 240ms var(--ease);
+}
+
+.track-rail .node[data-passed="true"] i {
+  background: var(--glacier);
+  box-shadow: 0 0 0 1.25px var(--glacier);
+}
+
+.track-rail .node[data-current="true"] i {
+  background: var(--race);
+  box-shadow: 0 0 0 1.25px var(--race);
+  transform: scale(1.35);
+}
+
+.track-rail .rail-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  white-space: nowrap;
+  /* The label runs past the 76px rail and over the page, so it carries its own
+     ground rather than relying on whatever is behind it. */
+  text-shadow: 0 0 7px var(--ink), 0 0 3px var(--ink), 0 0 2px var(--ink);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 240ms var(--ease), transform 240ms var(--ease),
+    color 240ms var(--ease);
+}
+
+.track-rail .node[data-current="true"] .rail-label {
+  opacity: 1;
+  transform: none;
+  color: var(--race);
+}
+
+@media (min-width: 1080px) {
+  .track-rail {
+    display: block;
+  }
+
+  body {
+    padding-left: var(--rail);
+  }
+}
+
+/* -------------------------------------------------------------------- nav */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 3vw, 2rem);
+  /* Transparent over the hero. An 82%-opaque ink bar over an ink background
+     still shows a seam across the top of the page. */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: border-color 300ms var(--ease), background-color 300ms var(--ease);
+}
+
+.nav[data-stuck="true"] {
+  background: color-mix(in srgb, var(--ink) 86%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+@media (min-width: 1080px) {
+  .nav {
+    left: var(--rail);
+  }
+}
+
+.nav[data-stuck="true"] {
+  border-bottom-color: var(--rule);
+}
+
+/*
+ * Not the brush face, deliberately.
+ *
+ * A brush glyph is built from strokes that taper to nothing where the brush
+ * lifted, and at 16px in a header those tapers land below one device pixel and
+ * drop out, so the name arrives broken. The brush stays where it has the room
+ * to be itself, which is the hero. The corner mark is a wayfinding label and
+ * the condensed sans is the right tool for that job.
+ */
+.nav-mark {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: var(--step-0);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.nav-mark span {
+  display: block;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+  margin-top: 0.28rem;
+}
+
+.nav-links {
+  display: none;
+  gap: clamp(1rem, 2.4vw, 2.25rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 900px) {
+  .nav-links {
+    display: flex;
+  }
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg-dim);
+  padding-block: 0.35rem;
+  border-bottom: 1px solid transparent;
+  transition: color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.nav-links a:hover,
+.nav-links a[aria-current="true"] {
+  color: var(--fg);
+  border-bottom-color: var(--race);
+}
+
+.nav-toggle {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-right: -0.6rem;
+}
+
+@media (min-width: 900px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--fg);
+  transition: transform 240ms var(--ease), opacity 160ms var(--ease);
+}
+
+.nav-toggle span::before {
+  transform: translateY(-7px);
+}
+
+.nav-toggle span::after {
+  transform: translateY(5.5px);
+}
+
+.nav-toggle[aria-expanded="true"] span {
+  background: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] span::before {
+  transform: rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span::after {
+  transform: translateY(-1.5px) rotate(-45deg);
+}
+
+.nav-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: var(--ink);
+  display: grid;
+  align-content: center;
+  padding: 6rem 2rem 2rem;
+  gap: 0.25rem;
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition: transform 380ms var(--ease), visibility 380ms;
+}
+
+.nav-panel[data-open="true"] {
+  transform: none;
+  visibility: visible;
+}
+
+.nav-panel a {
+  font-family: var(--display);
+  font-size: var(--step-2);
+  font-stretch: 80%;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-block: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ------------------------------------------------------------------ hero */
+
+/*
+ * The block sat on `align-content: end`, which parked it against the bottom and
+ * left a screen's worth of nothing above the eyebrow. It now centres, with the
+ * bottom padding deliberately larger than the top so the optical centre lands
+ * slightly high, which is where a title card wants to sit, and so the scroll
+ * cue has its own room underneath.
+ */
+.hero {
+  --ground: var(--ink);
+  min-height: 100svh;
+  display: grid;
+  align-content: center;
+  padding-block: 4.5rem 9rem;
+  overflow: hidden;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 26%;
+}
+
+/*
+ * Hero cross-fade. Stands in for footage until there is footage.
+ *
+ * This was a shutter burst: seven frames in 910ms, which read as a fault rather
+ * than as speed and made the wordmark underneath hard to hold. Each frame now
+ * holds for about five seconds and dissolves over two, which is the pace a film
+ * loop would run at, so dropping in a <video> later is a markup swap and
+ * nothing more.
+ *
+ * The very slow, very long dissolve is also what makes the loop bearable. A
+ * hard cut every five seconds in the reader's peripheral vision is worse than
+ * no motion at all.
+ */
+.herofade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.herofade img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 26%;
+  opacity: 0;
+  transform: scale(1.06);
+  transition:
+    opacity 2000ms var(--ease),
+    transform 9000ms linear;
+}
+
+.herofade img[data-on="true"] {
+  opacity: 1;
+  /* A slow push in over the whole hold, so a still photograph reads as footage
+     rather than as a slideshow that has jammed. */
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .herofade img {
+    transition: none;
+    transform: none;
+  }
+
+  .herofade img:not([data-on="true"]) {
+    display: none;
+  }
+}
+
+.anim-off .herofade img:not([data-on="true"]) {
+  display: none;
+}
+
+/*
+ * The section marker.
+ *
+ * Tells the reader which section they are in for the whole length of it, which
+ * a heading that scrolls past the top cannot do. It is also the only wayfinding
+ * on a phone, where the rail is hidden.
+ */
+.nowbar {
+  position: fixed;
+  /* Directly under the header. JS measures it, because the header is taller on
+     a phone than on a desktop and taller again at large text sizes. */
+  top: var(--nav-h, 4.5rem);
+  left: 0;
+  z-index: 40;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  padding: 0.5rem clamp(1rem, 4vw, 1.6rem) 0.55rem;
+  background: color-mix(in srgb, var(--ink) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  max-width: min(88vw, 30rem);
+  transition: opacity 300ms var(--ease), transform 380ms var(--ease);
+}
+
+/*
+ * Clears the rail and its labels.
+ *
+ * At `left: var(--rail)` the bar started at 76px while the Track's own labels
+ * run from 46 to 91, so it sliced through them and "START" was drawn as
+ * "STAR". The rail is 76px of gutter but its text overhangs that.
+ */
+@media (min-width: 1080px) {
+  .nowbar { left: calc(var(--rail) + 2.75rem); }
+}
+
+.nowbar[data-shown="false"] {
+  opacity: 0;
+  transform: translateY(-0.6rem);
+  pointer-events: none;
+}
+
+.now-idx {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+  flex: none;
+}
+
+.now-name {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: clamp(0.82rem, 2.4vw, 1rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/*
+ * The hero hands the page over rather than sliding off it.
+ *
+ * `--out` runs 0 to 1 across the first viewport of scroll. The wordmark rises
+ * and fades, the photograph settles the other way, so leaving the hero is a
+ * move the reader makes rather than something that happens above them.
+ */
+.js .hero {
+  --out: 0;
+}
+
+.js .hero-inner {
+  transform: translate3d(
+    calc(var(--out) * -60px),
+    calc(var(--out) * -90px),
+    0
+  );
+  opacity: calc(1 - var(--out) * 1.15);
+}
+
+.js .hero-media {
+  transform: translate3d(calc(var(--out) * 46px), calc(var(--out) * 40px), 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hero-inner,
+  .js .hero-media {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/*
+ * The scroll cue.
+ *
+ * The hero fills the viewport and holds still, which is exactly the shape a
+ * reader mistakes for a whole page. The rule the reference site breaks is
+ * leaving it up forever; this one retires on the first scroll and never
+ * returns.
+ */
+.hero-cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1.25rem, 4vh, 2.5rem);
+  z-index: 2;
+  transform: translateX(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+  color: var(--fg-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: opacity 420ms var(--ease), color 180ms var(--ease);
+}
+
+.hero-cue:hover,
+.hero-cue:focus-visible {
+  color: var(--fg);
+}
+
+.hero-cue-line {
+  width: 1px;
+  height: clamp(2rem, 5vh, 3.25rem);
+  background: linear-gradient(var(--accent), transparent);
+  overflow: hidden;
+}
+
+/* A single mark running down the line, once every few seconds. Small enough to
+   read as a signal rather than an animation demanding attention. */
+.hero-cue-line::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 42%;
+  background: var(--accent);
+  animation: cue-run 2600ms var(--ease) infinite;
+}
+
+@keyframes cue-run {
+  0% { transform: translateY(-100%); }
+  60%, 100% { transform: translateY(240%); }
+}
+
+.hero-cue[data-gone="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cue-line::after { animation: none; }
+}
+
+.hero-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(6, 9, 15, 0.82) 0%, rgba(6, 9, 15, 0.35) 34%, rgba(6, 9, 15, 0.92) 82%, var(--ink) 100%),
+    linear-gradient(90deg, rgba(6, 9, 15, 0.86) 0%, rgba(6, 9, 15, 0.2) 62%, rgba(6, 9, 15, 0.5) 100%);
+}
+
+@media (min-width: 900px) {
+  .hero-media {
+    left: auto;
+    right: 0;
+    width: 44%;
+  }
+
+  .hero-media::after {
+    background:
+      linear-gradient(90deg, var(--ink) 0%, rgba(6, 9, 15, 0.55) 38%, rgba(6, 9, 15, 0.12) 100%),
+      linear-gradient(180deg, rgba(6, 9, 15, 0.5) 0%, transparent 30%, rgba(6, 9, 15, 0.75) 100%);
+  }
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * The photograph occupies the right 44% from 900px up, so the text is capped to
+ * stop short of it. Without this the wordmark runs across her body, which is
+ * the one thing the hero must not do.
+ *
+ * The cap goes on the children, not on .hero-inner. .hero-inner is a .wrap and
+ * carries margin-inline:auto, so capping it centres the whole block and breaks
+ * the left edge the rest of the page aligns to.
+ */
+@media (min-width: 900px) {
+  .hero-inner > * {
+    max-width: min(34rem, 100%);
+  }
+
+  .hero-inner > .hero-ctas {
+    max-width: min(40rem, 100%);
+  }
+}
+
+/*
+ * The name, and the only place this face appears at size.
+ *
+ * Brush-written, so the rules are its rules. Title case rather than capitals,
+ * because the strokes swing off ascenders and descenders and all-caps flattens
+ * them into a wall. Line height opened to 1.02 so the wet tails on the `y` and
+ * the swept exit of the `k` have room to fall without hitting the line below.
+ * Letter spacing slightly positive, since brush glyphs already carry their own
+ * irregular sidebearings and tightening them makes strokes collide.
+ */
+.hero h1 {
+  font-family: var(--wordmark);
+  font-size: calc(var(--step-5) * 0.86);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.02;
+  text-transform: none;
+  margin: 0.75rem 0 0;
+  /* No max-width here. Both lines are block spans so nothing wraps, and a
+     `.hero h1` rule outranks the `.hero-inner > *` cap that keeps the wordmark
+     clear of the photograph. */
+}
+
+/*
+ * The strokes are thin where the brush lifted, and those are exactly the parts
+ * that disappear against a photograph. A soft dark halo sits under the letters
+ * so the thin ends survive whatever frame is behind them, without putting a
+ * visible outline on the type.
+ */
+.hero h1 span {
+  text-shadow:
+    0 0 24px rgba(6, 9, 15, 0.85),
+    0 0 8px rgba(6, 9, 15, 0.7);
+}
+
+.hero h1 span {
+  display: block;
+}
+
+.hero h1 .l2 {
+  color: var(--glacier);
+}
+
+.hero-line {
+  font-size: var(--step-2);
+  line-height: 1.24;
+  max-width: 19ch;
+  margin: 1.25rem 0 0;
+  font-weight: 400;
+  color: var(--snow-hi);
+}
+
+/*
+ * The introduction, arriving from the bottom-right corner.
+ *
+ * It used to be a paragraph under the wordmark, where it competed with the name
+ * and lost. On its own plate, entering from the corner, it answers the reader's
+ * first scroll with movement instead of with more page.
+ *
+ * Light on dark, which is the one section that inverts. It marks the point
+ * where the title card ends and the site starts talking.
+ */
+.profile {
+  --ground: var(--ink);
+  padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 9vw, 7rem);
+}
+
+.profile-card {
+  display: grid;
+  gap: 1.5rem;
+  background: var(--snow);
+  color: #10151d;
+  padding: clamp(1.4rem, 3vw, 2.6rem);
+  margin-left: auto;
+  max-width: 58rem;
+  box-shadow: 0 40px 90px -50px rgba(0, 0, 0, 0.9);
+}
+
+@media (min-width: 760px) {
+  .profile-card {
+    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+    align-items: start;
+    gap: clamp(1.5rem, 3vw, 2.75rem);
+  }
+
+  /* The strip runs under both columns. */
+  .profile-facts {
+    grid-column: 1 / -1;
+  }
+}
+
+.profile-shot {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+/*
+ * The fact strip, running the full width under the article the way a paper
+ * runs a standfirst box. It was a two-column list tucked beside the copy; as a
+ * band with ruled divisions it reads as the record it is.
+ */
+.profile-facts {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0.6rem 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(16, 21, 29, 0.16);
+}
+
+@media (min-width: 620px) {
+  .profile-facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0 1.5rem;
+  }
+
+  /* Hairlines between the facts, not around them. */
+  .profile-facts > div + div {
+    padding-left: 1.5rem;
+    border-left: 1px solid rgba(16, 21, 29, 0.14);
+  }
+}
+
+.profile-facts dt {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6a7c8f;
+}
+
+.profile-facts dd {
+  margin: 0.18rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.35;
+  color: #22303f;
+}
+
+.profile-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-copy {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.profile-copy .eyebrow {
+  color: #4c6178;
+}
+
+/*
+ * Set like the opening of an article rather than a card heading: larger, and
+ * cut off from the body by a short accent rule the way a standfirst is.
+ */
+.profile-copy h2 {
+  font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+  font-stretch: 86%;
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  margin: 0;
+  max-width: 15ch;
+}
+
+.profile-copy h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin-top: 1.1rem;
+  background: var(--race);
+}
+
+.profile-copy p {
+  margin: 0;
+  color: #3d4b5c;
+  font-size: calc(var(--step-0) * 0.97);
+  line-height: 1.55;
+  max-width: 54ch;
+}
+
+/*
+ * The credentials, and the one place in the hero the accent colour is used.
+ *
+ * This was a single grey sentence with middots in it, at caption size, and it
+ * behaved like a caption: the eye ran name, tagline, and straight past it into
+ * the photograph. Three separate items, each on its own accent bar, in the
+ * accent colour, gives the eye somewhere to land after the name instead of
+ * something to skim over.
+ */
+.hero-cred {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.5rem;
+}
+
+.hero-cred li {
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--race);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--race);
+}
+
+/*
+ * The headline band.
+ *
+ * Everything she has done used to live on this page as small plates and as
+ * coloured dots inside a table. This is the one place the site raises its voice,
+ * and it is placed where a sponsor is still deciding whether to keep reading.
+ */
+/*
+ * The bottom padding is deliberately smaller than the top.
+ *
+ * With both at 8rem, the three figures ended and then nothing happened for the
+ * better part of a screen: 8rem of headline, 7rem of profile padding, and a
+ * card that only started fading in once its middle had climbed a third of the
+ * viewport. Three separate gaps stacked into one dead scroll.
+ */
+.headline {
+  --ground: var(--ink-deep);
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(3.5rem, 9vw, 8rem) clamp(2.5rem, 5vw, 4rem);
+  border-block: 1px solid var(--rule);
+}
+
+/*
+ * The photograph on the right of the band.
+ *
+ * Hidden below 900px. It carries nothing the text does not already say, and on
+ * a phone the claim, the line and three figures are already a full screen; this
+ * would be the fourth thing competing for it.
+ */
+.hl-shot {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .hl-shot {
+    display: block;
+    position: absolute;
+    right: max(2rem, calc((100% - var(--col)) / 2));
+    top: 50%;
+    width: min(32vw, 26rem);
+    aspect-ratio: 3 / 4;
+    transform: translateY(-50%);
+    overflow: hidden;
+    /* Under the copy, so a long claim line is never obstructed by it. */
+    z-index: 0;
+  }
+
+  .hl-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: var(--grade);
+  }
+
+  /* Fades into the page on its left edge rather than sitting in a hard frame,
+     which would read as a second hero. */
+  .hl-shot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      var(--ink-deep) 0%,
+      rgba(4, 7, 12, 0.55) 32%,
+      rgba(4, 7, 12, 0.15) 100%
+    );
+  }
+
+  .headline .wrap {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/*
+ * Overrides the dissolve primitive's 0.28 floor. Elsewhere that floor keeps
+ * text legible when it is off the reading line; here the point is that the
+ * photograph arrives and then goes, so it has to be able to reach zero.
+ */
+.js .hl-shot[data-dissolve] {
+  opacity: var(--v);
+  filter: none;
+  transform: translateY(-50%) scale(calc(1.06 - 0.06 * var(--v)));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .hl-shot[data-dissolve] {
+    opacity: 1;
+    transform: translateY(-50%);
+  }
+}
+
+.hl-claim {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(1.9rem, 5.4vw, 4.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0.85rem 0 0;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+
+/* Sits directly under the claim and in the same visual breath, because a claim
+   this strong has to carry who is making it or it is just a boast. */
+.hl-attrib {
+  margin: 0.9rem 0 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--accent);
+}
+
+.hl-line {
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 0;
+  max-width: 62ch;
+  color: var(--fg-dim);
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+.hl-figs {
+  list-style: none;
+  margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+}
+
+@media (min-width: 760px) {
+  .hl-figs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.hl-figs li {
+  display: grid;
+  gap: 0.3rem;
+  align-content: start;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule-strong);
+}
+
+.hl-n {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 68%;
+  font-size: clamp(3.2rem, 8vw, 5.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  color: var(--snow-hi);
+}
+
+.hl-unit {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-1);
+  line-height: 1.15;
+  margin-top: 0.45rem;
+}
+
+.hl-note {
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+  max-width: 32ch;
+}
+
+.hl-year {
+  margin-top: 0.35rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+/* The header's outbound link sits slightly apart from the section links, since
+   it leaves the site rather than moving within it. */
+.nav-out a {
+  color: var(--fg-dim);
+}
+
+.nav-out a:hover {
+  color: var(--fg);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.35rem;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  transition: background-color 180ms var(--ease), color 180ms var(--ease),
+    border-color 180ms var(--ease);
+}
+
+.btn:hover {
+  border-color: var(--glacier);
+}
+
+.btn-primary {
+  background: var(--race);
+  color: var(--ink);
+  border-color: var(--race);
+  font-weight: 500;
+}
+
+.btn-primary:hover {
+  background: var(--snow-hi);
+  border-color: var(--snow-hi);
+}
+
+.btn-ghost {
+  border-color: transparent;
+  padding-inline: 0;
+  color: var(--fg-dim);
+  text-decoration: underline;
+}
+
+.btn-ghost:hover {
+  color: var(--fg);
+  border-color: transparent;
+}
+
+/* ------------------------------------------------------- proof / startlist */
+
+.proof {
+  --ground: var(--ink);
+  padding-block: 0 clamp(1.5rem, 3vw, 2.75rem);
+}
+
+/*
+ * The three latitudes behind the heading's number. They also give the section
+ * head's empty right-hand side something to do, which every other section head
+ * on the page still lacks.
+ */
+.anchors {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.9rem;
+  align-self: start;
+}
+
+@media (min-width: 900px) {
+  .section-head[data-aside="true"] {
+    grid-template-columns: auto minmax(0, 1fr) minmax(220px, 0.5fr);
+  }
+
+  .section-head[data-aside="true"] .lede {
+    grid-column: 2;
+  }
+
+  .anchors {
+    grid-row: 2 / span 2;
+    grid-column: 3;
+    padding-left: clamp(1.5rem, 3vw, 3rem);
+    border-left: 1px solid var(--rule);
+  }
+}
+
+.anchors li {
+  display: grid;
+  grid-template-columns: 3.6rem 1fr;
+  gap: 0.1rem 0.9rem;
+  align-items: baseline;
+}
+
+.anch-lat {
+  font-size: 0.95rem;
+  color: var(--snow-hi);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.anch-place {
+  font-size: 0.9rem;
+  color: var(--fg);
+}
+
+.anch-place i {
+  font-style: normal;
+  color: var(--fg-dim);
+  margin-left: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.anch-note {
+  grid-column: 2;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* Press and photographs share one section now, so they need air between them
+   rather than each sitting alone at the top of its own. */
+#media .press-list {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+#media .press-list:empty,
+#media .gal:empty {
+  display: none;
+}
+
+.press-item[hidden] {
+  display: none;
+}
+
+.enquiry select {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  background: var(--ink-deep);
+  color: var(--fg);
+  border: 1px solid var(--rule);
+  font: inherit;
+  font-size: 0.92rem;
+}
+
+.enquiry select:focus-visible {
+  outline: 2px solid var(--race);
+  outline-offset: 1px;
+}
+
+/* ---- The deck -----------------------------------------------------------
+ *
+ * Eleven results dealt one at a time instead of listed down a spine. Each card
+ * arrives from the lower right, squares up in the middle of the frame, then
+ * settles back into the pile as the next one comes in. JS sets `--t` per card,
+ * running from 0 while it waits, through 1 as it lands, and upward as it is
+ * buried. Everything below is transform and opacity only.
+ */
+/*
+ * Was 58vh per card across eleven cards, which is 7.4 screens for one idea. At
+ * 40vh the deal still reads card by card and the section loses two screens.
+ *
+ * The tail was 90vh, then 45vh, then 20vh, and is now 42vh. The extra 22vh is
+ * the last card's exit ramp: at 20vh the head reached the eleventh card exactly
+ * as the runway ended, leaving no scroll for it to fly out on, so it sat at the
+ * reading position and rode the unpin away while every other card had flown
+ * past the viewer. 22vh is 0.6 of a card at the deck's own 36vh-per-card pace,
+ * which is enough for the fade at --t 1.42 to finish with the stage still
+ * pinned. Keep this in step with EXIT in initDeck.
+ */
+.deck {
+  --cards: 11;
+  position: relative;
+  height: calc(var(--cards) * 40vh + 42vh);
+}
+
+.deck-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  perspective: 1400px;
+}
+
+/* Pushed below the title rather than centred in the raw viewport, so the cards
+   and the heading stop competing for the same band of screen. The extra margin
+   is for the cards that carry a photograph: they are taller than the rest and
+   it is their top edge that reaches the title. */
+.deck-cards {
+  position: relative;
+  width: min(var(--col), 100% - 3rem);
+  height: min(52vh, 430px);
+  margin-top: calc(var(--top-h, 7rem) + 7rem);
+  transform-style: preserve-3d;
+}
+
+/*
+ * The photograph band on the cards that have one.
+ *
+ * Pulled to the card edges by negative margins matching the padding, the same
+ * treatment the qualification cards use. A letterbox rather than a tall frame,
+ * because these cards are already the full height the pinned stage allows.
+ */
+/*
+ * A narrow band, not a panel. At 16:8 the photograph added a flat 200px and
+ * pushed the tallest card to 586px inside a 476px box, so a card centred on
+ * that box reached up over the section title. 16:5 keeps it a photograph and
+ * costs 125px.
+ */
+.deck-shot {
+  position: relative;
+  overflow: hidden;
+  margin: -1.9rem -1.75rem 1.15rem;
+  aspect-ratio: 16 / 5;
+}
+
+.deck-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--grade);
+}
+
+/* Keeps the index and year readable over whatever the photograph is doing. */
+.deck-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(4, 7, 12, 0.75) 100%);
+}
+
+.deck-body {
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+}
+
+.deck-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(400px, 78vw);
+  margin: 0;
+  padding: 1.9rem 1.75rem 1.6rem;
+  /* Fully opaque. At 96% the buried stack read through the active card and the
+     whole thing looked like a printing error. */
+  background: var(--ink-deep);
+  border: 1px solid var(--rule-strong);
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.6);
+  display: grid;
+  gap: 0.5rem;
+  align-content: start;
+  /*
+   * A tunnel, not a hand of cards.
+   *
+   * `--t` is the card's position along the Z axis of the run: below 1 it is
+   * still back inside the screen and small, 1 is the reading position at full
+   * size, above 1 it has come past the viewer and is on its way out. The queue
+   * behind the current card is visible receding, so you can see what is coming.
+   *
+   * Perspective on the stage does the scaling. Setting `scale()` by hand would
+   * grow the card without moving it through space, and it reads as a zoom
+   * rather than as approach.
+   */
+  --t: 0;
+  --side: -1;
+  /* Wide enough that the two lanes clear each other at the reading position.
+     At 15vw they touched, which read as one crowded pile rather than two runs. */
+  --lane: clamp(150px, 21vw, 340px);
+  --z: calc((var(--t) - 1) * 900px);
+  /*
+   * A card behind is faint, not merely dimmer.
+   *
+   * The approach ramp used to run over 0.85 of a step, so the card one place
+   * back sat at about 65% opacity while the front one was solid. Both carry a
+   * year set at 3rem and four lines of type, and the two lanes converge toward
+   * the vanishing point, so the back card's text read straight through the
+   * front card and the pile looked like a printing fault.
+   *
+   * The reading position is `--t: 1`, where `--z` is zero, and cards are one
+   * unit apart. So the ramp has to sit inside that one unit: at `0.1` the card
+   * is invisible and it is only solid past `0.72`. My first correction started
+   * from -1.05 and still gave the card a whole step back full opacity, because
+   * I had measured the ramp from the wrong end of the axis.
+   */
+  --appear: clamp(0, calc((var(--t) - 0.1) / 0.62), 1);
+  --leave: clamp(0, calc((1.42 - var(--t)) / 0.34), 1);
+  transform:
+    translate(-50%, -50%)
+    translate3d(
+      calc(var(--side) * var(--lane)),
+      calc((var(--t) - 1) * 1.2rem),
+      var(--z)
+    );
+  opacity: min(var(--appear), var(--leave));
+  z-index: calc(200 + var(--t) * 100);
+  will-change: transform, opacity;
+}
+
+/*
+ * Two lanes, alternating. Classic skiing runs in a pair of parallel grooves, so
+ * the records come down one track and then the other rather than stacking on a
+ * single line. Perspective narrows the gap with distance, so the two lanes
+ * converge toward a vanishing point the way real tracks do.
+ */
+.deck-card:nth-child(odd) {
+  --side: -1;
+}
+
+.deck-card:nth-child(even) {
+  --side: 1;
+}
+
+.deck-index {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+}
+
+.deck-year {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(2.6rem, 6vw, 3.6rem);
+  line-height: 0.85;
+  margin: 0.3rem 0 0;
+  color: var(--race);
+}
+
+.deck-card h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-1);
+  line-height: 1.12;
+  margin: 0.5rem 0 0;
+}
+
+.deck-place {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.deck-line {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--fg-soft);
+}
+
+.deck-result {
+  margin: 0.6rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--snow-hi);
+}
+
+/* ---- Medals -------------------------------------------------------------
+ *
+ * Two of eleven races produced a podium. The whole value of marking them is
+ * that most cards carry nothing, so the disc is never decoration.
+ */
+.deck-medals {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0.9rem 0 0;
+  border-top: 1px solid var(--rule);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.deck-medals li {
+  display: grid;
+  grid-template-columns: 1rem auto 1fr;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.medal-disc {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  /* Struck, not flat. The offset highlight reads as metal at 14px where a
+     solid fill just reads as a coloured dot. */
+  background:
+    radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.9), transparent 46%),
+    var(--metal, #b9772f);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 14px var(--metal-glow, transparent);
+}
+
+.deck-medals li[data-metal="gold"] {
+  --metal: #e8bf52;
+  --metal-glow: rgba(232, 191, 82, 0.5);
+}
+
+.deck-medals li[data-metal="silver"] {
+  --metal: #c9d0d8;
+  --metal-glow: rgba(201, 208, 216, 0.35);
+}
+
+.deck-medals li[data-metal="bronze"] {
+  --metal: #bd7c42;
+  --metal-glow: rgba(189, 124, 66, 0.35);
+}
+
+.deck-medals b {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--metal);
+}
+
+.deck-medals span.mono {
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+}
+
+/* A podium card carries a warmer edge. A gold one warms further, so the two
+   strongest results are findable at a glance while scrolling past. */
+.deck-card.has-medals {
+  border-color: rgba(189, 124, 66, 0.55);
+}
+
+.deck-card.has-gold {
+  border-color: rgba(232, 191, 82, 0.7);
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(232, 191, 82, 0.25),
+    0 0 60px rgba(232, 191, 82, 0.12);
+}
+
+/* A card that never moves is just a card. Without scroll the deck becomes a
+   plain column, which is what a reader with motion turned off should get. */
+@media (prefers-reduced-motion: reduce) {
+  .deck {
+    height: auto;
+  }
+
+  .deck-stage {
+    position: static;
+    height: auto;
+    perspective: none;
+    padding-block: 2rem;
+  }
+
+  .deck-cards {
+    height: auto;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .deck-card {
+    position: static;
+    transform: none;
+    opacity: 1;
+    width: 100%;
+    max-width: 520px;
+  }
+}
+
+/* ---- Scrubbed archive ---------------------------------------------------
+ *
+ * A grid is a wall you scan. Paired over a pinned ground and advanced by
+ * scroll, the same photographs become a sequence you move through. The tall
+ * outer element is the runway; the stage inside it sticks for the whole of it.
+ * Real scroll throughout, so the scrollbar still tells the truth.
+ */
+/*
+ * Cut again, from 44vh a pair to 30vh, and the tail from 90vh to 40vh.
+ *
+ * Media was 8.1 screens and 5.3 of them were this, which made a photo archive
+ * the second-longest thing on a page whose job is a sponsorship case. The
+ * frames still change one at a time; they just do not each demand half a
+ * screen of scrolling to do it.
+ */
+.scrub {
+  --steps: 10;
+  position: relative;
+  height: calc(var(--steps) * 30vh + 40vh);
+  margin-block: clamp(2rem, 5vw, 4rem);
+}
+
+/*
+ * Title above the frames on narrow screens, beside them from 900px up. It was
+ * an overlay pinned to the corner with `mix-blend-mode: difference`, which
+ * landed on top of the photographs at every width from 375 to 1600 and was only
+ * legible by accident. Given its own track it never collides, and the frames
+ * keep the space they actually have.
+ */
+.scrub-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  align-content: center;
+  justify-items: center;
+  gap: clamp(0.9rem, 2vh, 1.6rem);
+  padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+@media (min-width: 900px) {
+  .scrub-stage {
+    grid-template-rows: none;
+    grid-template-columns: minmax(11rem, 20%) minmax(0, 1fr);
+    align-items: center;
+    justify-items: stretch;
+    gap: clamp(2rem, 4vw, 4.5rem);
+    /* The rail term keeps the title clear of the Track labels on the left at
+       viewports where the centred column alone does not. */
+    padding-inline: max(2rem, calc(var(--rail) + 1.25rem), calc((100% - var(--col)) / 2))
+      max(2rem, calc((100% - var(--col)) / 2));
+    /* Same reason as the deck: clear the header and the marker bar under it. */
+    padding-block: calc(var(--top-h, 7rem) + 1rem) 3rem;
+  }
+}
+
+/* Deliberately almost unreadable. It is atmosphere, not a photograph. */
+.scrub-ground {
+  position: absolute;
+  inset: 0;
+}
+
+.scrub-ground img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.25) brightness(0.32) blur(3px);
+}
+
+.scrub-ground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 50%, transparent, rgba(4, 7, 12, 0.86) 78%),
+    linear-gradient(var(--ground), transparent 22%, transparent 78%, var(--ground));
+}
+
+/*
+ * The scrub used to run headless, so the photographs arrived with nothing
+ * saying what they were. The title sits inside the pinned stage, which means it
+ * holds for the whole run instead of scrolling away with the section above.
+ */
+.scrub-head {
+  position: relative;
+  z-index: 3;
+  max-width: 22ch;
+  justify-self: start;
+}
+
+.scrub-head .eyebrow {
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.scrub-head h3 {
+  font-size: clamp(1.5rem, 3.6vw, 2.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.scrub-frames {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+}
+
+@media (min-width: 900px) {
+  .scrub-frames {
+    height: 76vh;
+  }
+}
+
+.scrub-frame {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 620ms var(--ease);
+  pointer-events: none;
+}
+
+.scrub-frame[data-on="true"] {
+  opacity: 1;
+}
+
+/* Two sizes, offset. A pair reads as a spread rather than a slideshow. */
+.scrub-frame .shot-a {
+  position: absolute;
+  left: 4%;
+  top: 6%;
+  width: min(46%, 460px);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: var(--grade);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+}
+
+.scrub-frame .shot-b {
+  position: absolute;
+  right: 6%;
+  bottom: 14%;
+  width: min(26%, 250px);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  filter: var(--grade);
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.5);
+}
+
+.scrub-frame figcaption {
+  position: absolute;
+  left: 4%;
+  bottom: 2%;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-shadow: 0 0 10px var(--ink);
+}
+
+.scrub-count {
+  position: absolute;
+  right: max(1.5rem, calc((100% - var(--col)) / 2));
+  top: 12vh;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-dim);
+}
+
+@media (max-width: 720px) {
+  .scrub {
+    height: calc(var(--steps) * 52vh + 100vh);
+  }
+
+  .scrub-frame .shot-a {
+    width: 62%;
+  }
+
+  .scrub-frame .shot-b {
+    width: 36%;
+  }
+}
+
+/* No scroll, no scrub. The grid below is the whole archive either way. */
+@media (prefers-reduced-motion: reduce) {
+  .scrub {
+    height: auto;
+  }
+
+  .scrub-stage {
+    position: static;
+    height: auto;
+    padding-block: 3rem;
+  }
+
+  .scrub-frames {
+    height: 60vh;
+  }
+}
+
+/* ---- Horizontal pull quote ---------------------------------------------- */
+
+/* Was 260vh. Two and a half screens of scrolling for one sentence is a lot to
+   ask of a reader who came here to decide something. 155vh still carries the
+   line right across the frame. */
+.quote {
+  position: relative;
+  height: 155vh;
+}
+
+.quote-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  align-content: center;
+}
+
+.quote-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.quote-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.3) brightness(0.4);
+}
+
+.quote-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--ground), rgba(4, 7, 12, 0.35) 30%, rgba(4, 7, 12, 0.35) 70%, var(--ground));
+}
+
+/* Pinned to the viewport, not to the grid. The quote line is `nowrap` and
+   several thousand pixels wide, so it stretches the implicit column and any
+   sibling laid out inside it drifts with the track rather than the frame. */
+.quote-kicker {
+  position: absolute;
+  top: clamp(4.5rem, 12vh, 8rem);
+  left: max(1.5rem, calc((100% - var(--col)) / 2));
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--race);
+}
+
+/* Set once, moved by transform only. Nothing here reflows on scroll. */
+.quote-line {
+  position: relative;
+  margin: 0;
+  white-space: nowrap;
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 76%;
+  font-size: clamp(3.5rem, 13vw, 11rem);
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: var(--snow-hi);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote {
+    height: auto;
+  }
+
+  .quote-stage {
+    position: static;
+    height: auto;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .quote-line {
+    white-space: normal;
+    font-size: clamp(2rem, 6vw, 4rem);
+    padding-inline: max(1.5rem, calc((100% - var(--col)) / 2));
+  }
+}
+
+/* ---- Floating CTA -------------------------------------------------------- */
+
+.float-cta {
+  position: fixed;
+  right: clamp(1rem, 2.5vw, 2rem);
+  bottom: clamp(1rem, 2.5vw, 2rem);
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.15rem;
+  background: var(--race);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 320ms var(--ease), transform 320ms var(--ease);
+}
+
+.float-cta[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.float-cta span {
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.float-cta:hover {
+  background: var(--snow-hi);
+}
+
+/* ---- Journal ------------------------------------------------------------
+ *
+ * Its own pages rather than a strip on the homepage, because entries accumulate
+ * and each one needs a URL somebody can send to somebody else.
+ */
+.subpage {
+  --ground: var(--ink);
+  background: var(--ground);
+}
+
+.subpage .nav.is-solid {
+  position: sticky;
+  background: color-mix(in srgb, var(--ink) 94%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  left: 0;
+}
+
+.subpage main {
+  padding-block: clamp(3rem, 7vw, 6rem) clamp(4rem, 8vw, 7rem);
+}
+
+.jlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+@media (min-width: 780px) {
+  .jlist {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.jcard a {
+  display: grid;
+  gap: 0.6rem;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  align-content: start;
+}
+
+.jcard-shot {
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.jcard-shot img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  filter: var(--grade);
+  transition: transform 600ms var(--ease);
+}
+
+.jcard a:hover .jcard-shot img,
+.jcard a:focus-visible .jcard-shot img {
+  transform: scale(1.035);
+}
+
+.jcard time {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.jcard h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-2);
+  line-height: 1.12;
+  margin: 0;
+}
+
+.jcard a:hover h2,
+.jcard a:focus-visible h2 {
+  color: var(--snow-hi);
+}
+
+.jcard p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 48ch;
+}
+
+.jempty {
+  color: var(--fg-dim);
+  max-width: 46ch;
+  padding-block: clamp(2rem, 5vw, 4rem);
+  border-top: 1px solid var(--rule);
+}
+
+/* ---- A single entry ---- */
+
+.post-back a {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  text-decoration: none;
+}
+
+.post-back a:hover {
+  color: var(--snow-hi);
+}
+
+.post-date {
+  display: block;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.post h1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 84%;
+  font-size: var(--step-4);
+  line-height: 1.02;
+  margin: 0.6rem 0 0;
+  max-width: 18ch;
+}
+
+.jtags {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+}
+
+.jtags li {
+  border: 1px solid var(--rule);
+  padding: 0.3rem 0.7rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.jhero {
+  margin: clamp(2rem, 4vw, 3rem) 0;
+}
+
+.jhero img {
+  width: 100%;
+  max-height: 62vh;
+  object-fit: cover;
+  filter: var(--grade);
+}
+
+/* One column of comfortable measure. A journal entry is read, not scanned. */
+.post-body {
+  max-width: 62ch;
+}
+
+.post-body > * + * {
+  margin-top: 1.15rem;
+}
+
+.post-body p {
+  font-size: 1.02rem;
+  line-height: 1.72;
+  color: var(--fg-soft);
+}
+
+.post-body h2 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 90%;
+  font-size: var(--step-2);
+  margin-top: 2.25rem;
+}
+
+.post-body a {
+  color: var(--snow-hi);
+  text-underline-offset: 0.22em;
+}
+
+.post-body ul,
+.post-body ol {
+  padding-left: 1.2rem;
+  color: var(--fg-soft);
+}
+
+.post-body li + li {
+  margin-top: 0.4rem;
+}
+
+.jnav {
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  border-block: 1px solid var(--rule);
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+@media (min-width: 700px) {
+  .jnav {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.jnav a {
+  background: var(--ground);
+  padding: 1.4rem 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+  text-decoration: none;
+  color: var(--fg);
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 90%;
+}
+
+.jnav a span {
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.jnav a:hover {
+  color: var(--snow-hi);
+}
+
+.jnav-next {
+  text-align: right;
+}
+
+/* ---- The sport, on the homepage ---------------------------------------- */
+
+.sport {
+  --ground: var(--ink);
+  --from: var(--ink);
+  padding-block: clamp(2rem, 4vw, 3.5rem);
+}
+
+.sport-head {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 62ch;
+  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+}
+
+/*
+ * A four-lane band, not a table.
+ *
+ * Each discipline sits on its own line and slides across as the section passes,
+ * odd ones left and even ones right, so they cross. The lanes are staggered so
+ * the cards never form a column, which is what made this read as a grid with
+ * the borders removed.
+ */
+.sport-pairs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(1rem, 2.4vw, 2rem);
+  overflow: hidden;
+}
+
+.sport-pairs li {
+  padding-inline: max(1.5rem, calc((100% - var(--col)) / 2));
+}
+
+.drift {
+  position: relative;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--ground) 88%, transparent);
+  padding: 1.3rem 1.35rem 1.5rem;
+}
+
+.sport-pairs .drift {
+  max-width: 34rem;
+}
+
+/* Alternating indents. Card one starts left, card two is pushed right, and so
+   on, so the crossing is visible before anything moves. */
+.sport-pairs li:nth-child(2n) .drift { margin-left: auto; }
+.sport-pairs li:nth-child(3n) .drift { max-width: 28rem; }
+
+.sport-n {
+  position: absolute;
+  top: 0.85rem;
+  right: 1.1rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.sport-pairs b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-2);
+  line-height: 1;
+}
+
+.sport-pairs p {
+  margin: 0.7rem 0 0;
+  color: var(--fg-dim);
+  font-size: 0.88rem;
+  max-width: 46ch;
+}
+
+/* How the training year actually works, which is the most surprising thing
+   about it and was nowhere on the page. */
+.sport-year {
+  margin: clamp(2rem, 4vw, 3rem) 0 0;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--rule);
+  max-width: 62ch;
+  color: var(--fg-dim);
+  font-size: calc(var(--step-0) * 0.98);
+  line-height: 1.55;
+}
+
+/*
+ * The travel primitive. This is the page's main motion.
+ *
+ * An element does not slide in and stop. It crosses. JS writes `--p`, which
+ * runs 1 when the element's middle is at the bottom of the screen, 0 as it
+ * passes the centre, and -1 as it leaves the top. The element sits at
+ * (+tx, +ty) at the start of that run and (-tx, -ty) at the end, so it sweeps
+ * through its resting position rather than arriving at it.
+ *
+ * `data-travel` names the path. `br-tl` enters from the bottom-right corner and
+ * leaves through the top-left, which is the diagonal the client asked for.
+ * `r-l` is the flat version. `--amp` scales the whole path per element, so a
+ * paragraph can move a little and a photograph a lot without two mechanisms.
+ *
+ * Opacity fades in on entry only. Fading on the way out as well would dim text
+ * a reader is still in the middle of.
+ */
+.js [data-travel] {
+  --p: 0;
+  --o: 1;
+  --tx: 0;
+  --ty: 0;
+  --amp: 1;
+  transform: translate3d(
+    calc(var(--tx) * var(--amp) * var(--scale) * var(--p) * 1px),
+    calc(var(--ty) * var(--amp) * var(--scale) * var(--p) * 1px),
+    0
+  );
+  opacity: var(--o);
+  will-change: transform, opacity;
+}
+
+/*
+ * Travel is measured in pixels, so it has to be scaled to the screen. 260px is
+ * a fifth of a desktop window and two thirds of a phone, and at phone size a
+ * path that long throws every element off the edge and back. `--scale` is set
+ * once here and multiplies every path; `--amp` stays free for per-element
+ * emphasis.
+ */
+:root { --scale: 1; }
+
+@media (max-width: 1100px) { :root { --scale: 0.66; } }
+@media (max-width: 760px) { :root { --scale: 0.4; } }
+@media (max-width: 480px) { :root { --scale: 0.28; } }
+
+/* Flat crossings. */
+.js [data-travel="r-l"] { --tx: 260; }
+.js [data-travel="l-r"] { --tx: -260; }
+
+/* Diagonals, named for where the element comes from and where it goes. */
+.js [data-travel="br-tl"] { --tx: 230; --ty: 130; }
+.js [data-travel="bl-tr"] { --tx: -230; --ty: 130; }
+.js [data-travel="tr-bl"] { --tx: 230; --ty: -130; }
+.js [data-travel="tl-br"] { --tx: -230; --ty: -130; }
+
+/* Straight down and straight up, for the few places a vertical run is the
+   honest move and a sideways one would be decoration. */
+.js [data-travel="t-b"] { --ty: -170; }
+.js [data-travel="b-t"] { --ty: 170; }
+
+/*
+ * Elements are supposed to cross the frame, which means reaching past both
+ * edges. Without containment that widens the document and puts a horizontal
+ * scrollbar on the page.
+ *
+ * It has to be on `html` as well as `body`. With `html` left at `visible` the
+ * browser propagates the body's overflow up to the viewport and computes body
+ * itself back to `visible`, so the rule silently does nothing. Measured: the
+ * document still ran 55px wide at a 1600px viewport with it on `body` alone.
+ *
+ * `clip` rather than `hidden` because `hidden` would make this a scroll
+ * container and every `position: sticky` pin on the page would stop working.
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
+/*
+ * The root needs the ground colour too, not just the body.
+ *
+ * With a background only on `body`, anything painted outside the body box takes
+ * the browser default, which is white: an over-scroll bounce, the moment before
+ * first paint, and the strip below a short document. On a page this dark that
+ * shows as a white flash at the bottom edge.
+ */
+html {
+  background: var(--ink);
+}
+
+/*
+ * The dissolve primitive.
+ *
+ * `--v` runs 0 to 1 to 0 as the element crosses the screen, so a thing comes up
+ * as it reaches the reader and softens away behind them. Used on the road to
+ * 2030, where four years sitting on screen at once read as a list of promises
+ * and one year at a time reads as a plan.
+ *
+ * It starts at 1, so with JS off or dead everything is simply legible.
+ */
+.js [data-dissolve] {
+  --v: 1;
+  opacity: calc(0.28 + 0.72 * var(--v));
+  filter: blur(calc((1 - var(--v)) * 5px));
+  transform: scale(calc(0.965 + 0.035 * var(--v)));
+  transform-origin: left center;
+  will-change: opacity, filter, transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-travel] {
+    transform: none;
+    opacity: 1;
+  }
+
+  .js [data-dissolve] {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+}
+
+/* ---- Targets, closing the journey -------------------------------------- */
+
+/*
+ * These are stated intentions, not results, and they sit directly under a
+ * timeline of things that did happen. The dashed rule, the muted colour and the
+ * note above them all exist to keep that distinction visible at a glance.
+ */
+/*
+ * The road to 2030, pinned.
+ *
+ * JS writes `--tp`, 0 to 1 across the runway. Every year is on screen the whole
+ * time and lights in turn, so the four read as one plan rather than as four
+ * cards taking it in turns to exist.
+ */
+.targets-run {
+  --steps: 4;
+  --tp: 0;
+  position: relative;
+  /*
+   * Pulled up under the deck's departing stage.
+   *
+   * Two consecutive sticky stages always leave a seam: the first has finished
+   * its content and is scrolling away while the second has not arrived.
+   *
+   * Measured twice. It is not enough to pin this stage earlier, because the
+   * heading sits inside a centred stage and only enters the viewport well after
+   * the stage's top edge does. The last card cleared at 10435 and the heading
+   * appeared at 10660, so the pull has to cover that 225px too, not just the
+   * stage boundary. The overlap costs nothing because the deck stage is empty
+   * by then, and the height below is raised to match so the runway is unchanged.
+   *
+   * Desktop only. Below 780px nothing here pins, so there is no empty stage to
+   * slide under and the pull would simply drag this section up over the cards.
+   */
+  margin-top: 0;
+}
+
+.targets {
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px dashed var(--rule-strong);
+}
+
+@media (min-width: 780px) {
+  .js .targets-run {
+    /* The extra 45vh replaces what the negative margin takes off, so the run
+       itself is unchanged. */
+    margin-top: -45vh;
+    height: calc(var(--steps) * 42vh + 105vh);
+  }
+
+  .js .targets {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: grid;
+    align-content: center;
+    /* Clears the header and the marker bar under it, so the block sits
+       optically centred rather than centred in a viewport it does not own. */
+    padding-block: calc(var(--top-h, 7rem) + 2rem) 4rem;
+  }
+}
+
+/*
+ * The section opens on a statement, not a label.
+ *
+ * A small mono line, the title set large, and the disclosure on an accent rule
+ * underneath. This was briefly a separate pinned screen between the record and
+ * the targets; as its own slide it read as disconnected from both. As the
+ * opening of the section it introduces, it does the same job and belongs.
+ */
+.targets-head {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.targets-eyebrow {
+  margin: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.targets-head h3 {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(2rem, 5.6vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -0.022em;
+}
+
+/* The disclosure. It was 0.65rem dim mono lost under the title; on the accent
+   rule it is the second thing read, which is where it belongs on a block of
+   things that have not happened. */
+.targets-note {
+  margin: 0.5rem 0 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--race);
+  font-size: 0.66rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.7;
+  color: var(--snow-hi);
+  max-width: 34ch;
+}
+
+.target-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 780px) {
+  .target-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/*
+ * `--lit` runs 0 to 1 as the reader reaches this year's share of the runway.
+ * Multiplying by `--steps` and subtracting the tile's own index gives each one
+ * its own window without a line of JavaScript per tile.
+ */
+.target {
+  --lit: 1;
+  border: 1px dashed var(--rule-strong);
+  padding: 1.1rem 1rem 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+  align-content: start;
+}
+
+.js .target {
+  --lit: clamp(0, calc((var(--tp) * var(--steps) - var(--n)) * 1.6), 1);
+  opacity: calc(0.34 + 0.66 * var(--lit));
+  border-color: color-mix(in srgb, var(--accent) calc(var(--lit) * 55%), var(--rule-strong));
+  transform: translateY(calc((1 - var(--lit)) * 14px));
+}
+
+/*
+ * The handover.
+ *
+ * `--promote` runs 0 to 1 across the last third of the runway. The four tiles
+ * shrink and dim into a strip near the top, which keeps the years on screen as
+ * context rather than leaving the section empty, and the finale card rises into
+ * the middle of the frame. The 2030 tile fades hardest, because its content is
+ * about to be restated at ten times the size directly underneath it.
+ */
+.js .targets {
+  --promote: clamp(0, calc((var(--tp) - 0.62) / 0.38), 1);
+}
+
+.js .target-list {
+  transform:
+    translateY(calc(var(--promote) * -3vh))
+    scale(calc(1 - var(--promote) * 0.12));
+  transform-origin: top center;
+  transition: none;
+}
+
+/* Hands over inside the first eighth of the promotion, so the tile is gone
+   before the card has visibly grown out of it and the two are never both on
+   screen arguing about which one is the real 2030. */
+.js .target[data-zoom="true"] {
+  opacity: calc((0.34 + 0.66 * var(--lit)) * (1 - clamp(0, calc(var(--promote) / 0.12), 1)));
+  border-color: color-mix(in srgb, var(--accent) 70%, var(--rule-strong));
+}
+
+.js .target:not([data-zoom="true"]) {
+  opacity: calc((0.34 + 0.66 * var(--lit)) * (1 - var(--promote) * 0.55));
+}
+
+/*
+ * The card the section has been building toward.
+ *
+ * It does not fade in at the centre. It starts at the exact position and size
+ * of the 2030 tile and expands out of it, so the tile appears to open rather
+ * than to be replaced. `--fx`, `--fy` and `--fs` are the measured offset and
+ * scale from tile to resting card; JS writes them on load and on resize, and
+ * the only thing that changes while scrolling is `--promote`.
+ *
+ * Falls back to a plain static card wherever the promotion does not run.
+ */
+/*
+ * On a phone it is simply the last card in the list. `display: none` here meant
+ * every mobile reader lost the host city, the dates and the qualification
+ * detail, which is the most substantial content in the section and the reason
+ * the section exists.
+ */
+.target-final {
+  display: grid;
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+@media (min-width: 780px) {
+  .js .target-final {
+    --fx: 0;
+    --fy: 0;
+    --fs: 1;
+    display: grid;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 6vh;
+    place-items: center;
+    pointer-events: none;
+    /* Solid almost at once. It is the tile at this point, and a tile you can
+       see through would give the trick away. */
+    opacity: clamp(0, calc(var(--promote) / 0.1), 1);
+    transform:
+      translate(
+        calc(var(--fx) * (1 - var(--promote)) * 1px),
+        calc(var(--fy) * (1 - var(--promote)) * 1px)
+      )
+      scale(calc(var(--fs) + (1 - var(--fs)) * var(--promote)));
+    transform-origin: center center;
+    will-change: transform, opacity;
+  }
+
+  /* Live only once it has fully arrived, so a link nobody can read is never
+     clickable and the tab order does not visit a card mid-flight. JS sets the
+     flag; without JS the card is static and clickable anyway. */
+  .js .target-final[data-live="true"] { pointer-events: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .target-final {
+    position: static;
+    opacity: 1;
+    transform: none;
+    margin-top: 2rem;
+  }
+}
+
+.tf-inner {
+  width: min(46rem, 92%);
+  background: var(--ink-deep);
+  border: 1px solid var(--race);
+  padding: clamp(1.5rem, 3vw, 2.4rem);
+  box-shadow: 0 40px 110px -40px rgba(0, 0, 0, 0.95);
+  display: grid;
+  gap: 0.55rem;
+}
+
+.tf-year {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: clamp(3.5rem, 9vw, 6.5rem);
+  line-height: 0.82;
+  letter-spacing: -0.03em;
+  margin: 0.2rem 0 0;
+  color: var(--race);
+}
+
+.tf-inner h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 86%;
+  font-size: var(--step-2);
+  line-height: 1.05;
+}
+
+.tf-where {
+  margin: 0;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.tf-line {
+  margin: 0.5rem 0 0;
+  color: var(--fg-dim);
+  font-size: calc(var(--step-0) * 0.95);
+  line-height: 1.5;
+  max-width: 54ch;
+}
+
+/* What actually decides it, so the card carries a fact rather than a mood. */
+.tf-steps {
+  display: grid;
+  gap: 0.7rem 1.75rem;
+  margin: 0.9rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 640px) {
+  .tf-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.tf-steps dt {
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--race);
+}
+
+.tf-steps dd {
+  margin: 0.25rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+.tf-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  justify-self: start;
+  margin-top: 1.1rem;
+  padding-bottom: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--fg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.tf-cta span {
+  width: 1.4rem;
+  height: 1px;
+  background: var(--race);
+  transition: width 240ms var(--ease);
+}
+
+.tf-cta:hover span { width: 2.4rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .target,
+  .js .target[data-zoom="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .targets-run { height: auto; }
+  .js .targets { position: static; min-height: 0; }
+}
+
+.target-year {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--fg-dim);
+}
+
+.target h4 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 90%;
+  font-size: 1.02rem;
+  line-height: 1.15;
+}
+
+.target p {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+}
+
+/* The last target is the one everything else is arranged around. */
+.target:last-child {
+  border-style: solid;
+  border-color: var(--race);
+}
+
+.target:last-child .target-year,
+.target:last-child h4 {
+  color: var(--race);
+}
+
+/* ---- Beyond the finish line -------------------------------------------- */
+
+.mission {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--rule);
+}
+
+.mission-head {
+  max-width: 34ch;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.mission-head h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 86%;
+  font-size: var(--step-3);
+  line-height: 1.08;
+  margin: 0.6rem 0 0;
+}
+
+.mission-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.75rem 2.5rem;
+}
+
+@media (min-width: 760px) {
+  .mission-points {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.mission-points h4 {
+  margin: 0 0 0.45rem;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 90%;
+  font-size: 1.05rem;
+}
+
+.mission-points p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 48ch;
+}
+
+/* ---- Speaking ----------------------------------------------------------- */
+
+/*
+ * Four talks, not four tiles.
+ *
+ * This was a 1px grid over a grey plate, so the cards had no space between them
+ * and the plate read as a background nobody asked for. They are separate now,
+ * each opening on its own rule with the number sitting on it, which is how the
+ * rest of the page introduces things and costs no panel at all.
+ */
+.themes {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+}
+
+@media (min-width: 820px) {
+  .themes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The right column drops half a step, so the four never line up as a block. */
+  .themes .theme:nth-child(even) {
+    margin-top: clamp(1.25rem, 3vw, 2.5rem);
+  }
+}
+
+.theme {
+  position: relative;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--rule);
+  max-width: 34rem;
+}
+
+.theme-idx {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.theme h3 {
+  margin: 0.5rem 0 0.5rem;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-1);
+  line-height: 1.15;
+}
+
+.theme p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 48ch;
+}
+
+/* What the talk is drawn from. Set on the accent so it reads as a citation
+   rather than as a third line of description. */
+.theme-from {
+  margin: 0.9rem 0 0 !important;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--race);
+  font-size: 0.6rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--snow-hi) !important;
+}
+
+/*
+ * The section ends on one statement, centred.
+ *
+ * Two columns of formats and reasons used to sit here. Both are gone: the
+ * formats claimed a speaking history nobody has established, and the reasons
+ * were the site arguing on her behalf when it states facts everywhere else.
+ * What is left is the four talks and this, which is what the section was
+ * actually for.
+ */
+/*
+ * Left aligned, like everything else.
+ *
+ * I changed the typeface on this block three times and never touched the thing
+ * that was actually wrong with it. Measured against the rest of the page, the
+ * closing statement differed on every axis at once: Archivo against Newsreader,
+ * 30px against 24, weight 600 against 400, near-white against the dim body
+ * colour, and centred when it was the only centred prose on the entire site,
+ * starting 270px in from the column edge every other paragraph begins at.
+ *
+ * Any one of those would read as emphasis. All five together read as a block
+ * imported from a different website, which is exactly what it looked like.
+ */
+.speak-end {
+  display: grid;
+  justify-items: start;
+  gap: 1.5rem;
+  margin-top: clamp(2.5rem, 6vw, 4.5rem);
+  padding-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--rule);
+}
+
+/*
+ * The lede settings, exactly. Newsreader, 400, 24px, the dim body colour, and
+ * the same 58ch measure every other passage on the page uses.
+ *
+ * It carries its weight from where it sits, last in the section and under a
+ * rule, rather than from being louder than its surroundings.
+ */
+.speak-close {
+  margin: 0;
+  max-width: 58ch;
+  font-family: var(--text);
+  font-weight: 400;
+  font-size: var(--step-1);
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+
+.speak-end .hero-ctas {
+  margin-top: 0;
+}
+
+/* The one constraint a booker genuinely needs, and the only part of the block
+   that was ever verifiable. No location claim: the reporting places her summer
+   conditioning in Mumbai, and nothing states where she is based between blocks. */
+.speak-avail {
+  margin: 0;
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.8;
+  color: var(--fg-dim);
+}
+
+/* What a supporter actually does, under its own name. Two logos and a category
+   label is a wall; this is what makes it an arrangement. */
+.partner-role {
+  margin: 0.55rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+  max-width: 42ch;
+}
+
+/* The figure a sponsor is actually deciding on, when there is one. Set on the
+   accent so it reads as the answer rather than as another line of description. */
+.area-cost {
+  margin: 0.9rem 0 0;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--race);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--snow-hi);
+}
+
+.aud-list {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.aud-list li {
+  border: 1px solid var(--rule);
+  padding: 0.42rem 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+}
+
+/* ---- Current partners --------------------------------------------------- */
+
+.current-partners {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+/* Separated, with no plate behind them. The 1px grid over a rule colour was the
+   same trick the speaking cards used and had the same result: two supporters
+   welded into one slab. */
+.partner-names {
+  list-style: none;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+@media (min-width: 700px) {
+  .partner-names {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.partner-names li {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+}
+
+.partner-names b {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 86%;
+  font-size: var(--step-2);
+  line-height: 1.1;
+}
+
+/*
+ * Two marks, one plate size, optically matched.
+ *
+ * The real problem was never transparency or cropping. Both files are already
+ * tightly cropped, and the aspect ratios are wildly different: the Reliance
+ * lockup is 601x226, near enough 2.7 to 1, and the Karnataka seal is 400x345,
+ * near enough square. Matching them on height makes the lockup enormous and the
+ * seal a stamp; matching on width does the reverse. Either way the row looks
+ * broken, which it did.
+ *
+ * Identical plates plus `object-fit: contain` is what fixes it. Each mark is
+ * scaled to fit the same box with the same padding, so two shapes that share
+ * nothing end up carrying the same visual weight. This is what every properly
+ * built sponsor row does, and the soft wash I tried instead was worse than the
+ * plate it replaced.
+ *
+ * The marks are still reproduced exactly as published, unaltered. Permission to
+ * use a trademark is not permission to redraw it.
+ */
+.partner-plate {
+  display: grid;
+  place-items: center;
+  background: #f2f6fa;
+  /* Identical box for both, so the two cells sit at the same depth. */
+  aspect-ratio: 5 / 2;
+  width: 100%;
+  max-width: 22rem;
+  padding: clamp(1rem, 2.2vw, 1.6rem) clamp(1.25rem, 3vw, 2.2rem);
+  margin-bottom: 1rem;
+}
+
+.partner-logo {
+  display: block;
+  /* Contain does the normalising. Width and height both cap at the plate, so
+     the wide lockup limits on width and the square seal limits on height, and
+     each one lands as large as it can be without touching the padding. */
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.partner-names span {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.open-to {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* ---- Season calendar, in the partnership section ---- */
+
+/*
+ * Not a scroll container on a desktop.
+ *
+ * `overflow-x: auto` makes an element a scroll container whether or not it has
+ * anything to scroll, and `overflow-y` computes to `auto` alongside it. This
+ * figure never overflows on a wide screen: measured at 1440, `scrollWidth` and
+ * `clientWidth` were both 1180. So it was capturing scroll gestures it had no
+ * use for, and `overscroll-behavior: contain` then stopped them chaining up to
+ * the page. A mouse wheel is purely vertical and mostly got through; a trackpad
+ * gesture carries a horizontal component and got swallowed, which is why the
+ * page stuck under the cursor and moved everywhere else.
+ *
+ * The bands are positioned as percentages so they fit at any width. Only the
+ * month scale gets tight, so scrolling is offered on narrow screens alone.
+ */
+.calendar {
+  margin: 0 0 clamp(2.5rem, 5vw, 4rem);
+  padding-bottom: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .calendar {
+    overflow-x: auto;
+    /* No `contain` here either. If the figure has genuinely run out of
+       horizontal travel the gesture should carry on to the page, not stop. */
+    overscroll-behavior-x: auto;
+  }
+}
+
+.cal-note {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cal-scale,
+.cal-bands {
+  min-width: 520px;
+}
+
+.cal-scale {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  padding: 0.7rem 0 0.9rem;
+}
+
+.cal-month {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  border-left: 1px solid var(--rule);
+  padding-left: 0.5rem;
+}
+
+.cal-bands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+/* Each band is placed by month index, so the bar and its label share a row and
+   the label never detaches from the span it describes. */
+.cal-band {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding-left: var(--from);
+  min-height: 2.9rem;
+}
+
+.cal-bar {
+  display: block;
+  width: var(--span);
+  height: 3px;
+  background: var(--glacier);
+}
+
+.cal-band[data-kind="train"] .cal-bar {
+  background: var(--stone);
+}
+
+.cal-band[data-kind="home"] .cal-bar {
+  background: var(--saffron);
+}
+
+.cal-band[data-kind="race"] .cal-bar {
+  background: var(--race);
+}
+
+.cal-label {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+.cal-need {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+
+/*
+ * Race bibs. Every plate carries a count and a noun in the same slot, so the
+ * eye can read down the row and compare like with like. The previous version
+ * put "3 venues" above "10 km · sprint" above "Sprint quarter-final" in one
+ * column, which compares nothing.
+ */
+.bibs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 700px) {
+  .bibs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .bibs {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.5rem;
+    align-items: start;
+  }
+
+  /* Depth. Alternate plates ride at a different rate as the band passes, so the
+     row reads as layers rather than a single flat strip. JS sets --shift. */
+  .js .bibs li {
+    transform: translate3d(0, calc(var(--shift, 0px) * var(--rate, 0)), 0);
+    will-change: transform;
+  }
+
+  .js .bibs li:nth-child(2n) {
+    --rate: 1;
+  }
+
+  .js .bibs li:nth-child(3n) {
+    --rate: 1.7;
+  }
+}
+
+/* The stacked band travels as one object. Any per-plate difference in
+   direction or rate closes the column gap, because plates sharing a grid row
+   already overlap on the vertical axis by construction. */
+.js .bibs li {
+  --amp: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .bibs li {
+    transform: none;
+  }
+}
+
+.bib {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 1rem 1.15rem;
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.014);
+  transition: border-color 220ms var(--ease), background 220ms var(--ease);
+}
+
+.bib:hover {
+  border-color: var(--rule-strong);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.bib-count {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 80%;
+  font-size: clamp(2.6rem, 5vw, 3.4rem);
+  line-height: 0.85;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--snow-hi);
+}
+
+.bib-unit {
+  margin-top: 0.5rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* The perforation line across a bib. */
+.bib-rule {
+  display: block;
+  margin: 0.85rem 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    var(--rule-strong) 0 3px,
+    transparent 3px 7px
+  );
+  background-size: 7px 1px;
+}
+
+.bib-label {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: 0.95rem;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.bib-detail {
+  margin: 0.45rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--fg-dim);
+}
+
+.bib-year {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+}
+
+/* ----------------------------------------------------------------- story */
+
+/* ---- The journey rail ------------------------------------------------------
+ *
+ * Six chapters travelling right to left across a pinned frame while the page
+ * scrolls down. The runway is a tall spacer, the stage is `position: sticky`,
+ * and JS writes one number: `--shift`, in pixels. No wheel handler, so the
+ * scrollbar, keyboard paging, find-in-page and deep links all still work.
+ *
+ * The panels are deliberately unequal. Same-sized cards moving at one speed is
+ * a conveyor belt, which is the vertical scroll's monotony turned on its side.
+ *
+ * Without JS the stage never pins and the track wraps into a readable column,
+ * which is also what reduced motion gets.
+ */
+.jrail {
+  --panels: 6;
+  position: relative;
+}
+
+.jrail-stage {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.jrail-track {
+  display: grid;
+  gap: 3rem;
+}
+
+.jpanel {
+  display: grid;
+  gap: 1.1rem;
+  align-content: center;
+}
+
+.jp-media {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.jp-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--grade);
+}
+
+.jp-media figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 0.85rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-shadow: 0 0 8px var(--ink), 0 0 3px var(--ink);
+}
+
+/* A beat with no honest photograph gets its year, large. */
+.jp-media.is-plate {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 90% at 50% 40%, rgba(157, 204, 243, 0.07), transparent 70%),
+    var(--ink-deep);
+}
+
+.plate-year {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 78%;
+  font-size: clamp(3rem, 9vw, 7rem);
+  line-height: 0.82;
+  letter-spacing: -0.02em;
+  color: rgba(215, 242, 94, 0.9);
+}
+
+.jp-copy {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.jp-year {
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding-top: 0.4rem;
+  border-top: 1px solid var(--rule);
+  justify-self: start;
+  min-width: 7rem;
+  margin: 0;
+}
+
+.jpanel h3 {
+  font-size: var(--step-2);
+  font-stretch: 90%;
+  margin: 0;
+  max-width: 18ch;
+}
+
+.jp-body {
+  color: var(--fg-dim);
+  margin: 0;
+  max-width: 46ch;
+}
+
+.jrail-foot {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .js .jrail {
+    /* Was 78vh per panel. The journey section ran to 19 screens, 44% of the
+       whole page, and the rail was the largest single contributor. At 56vh the
+       panels still cross at a readable pace and the section stops being the
+       thing a sponsor gives up inside. */
+    height: calc(var(--panels) * 56vh + 50vh);
+  }
+
+  .js .jrail-stage {
+    position: sticky;
+    top: 0;
+    display: block;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .js .jrail-track {
+    --shift: 0;
+    display: flex;
+    align-items: center;
+    gap: clamp(3rem, 6vw, 7rem);
+    height: 100%;
+    width: max-content;
+    /* Clears the header and marker bar at the top and the tick rail at the
+       bottom. Without this the panels used the full 100vh and their
+       photographs ran off both edges on a laptop. */
+    padding-block: calc(var(--top-h, 7rem) + 1rem) 7rem;
+    /*
+     * The trailing padding was 40vw, which is 576px on a laptop. The travel is
+     * `scrollWidth - innerWidth`, so whatever sits after the last panel is
+     * exactly the emptiness left on screen when the run finishes: half a
+     * screen of nothing before the next section arrived. It now matches the
+     * leading margin, so the run ends on the last chapter rather than past it.
+     */
+    padding-inline: max(2rem, calc((100vw - var(--col)) / 2));
+    transform: translate3d(calc(var(--shift) * -1px), 0, 0);
+    will-change: transform;
+    box-sizing: border-box;
+  }
+
+  .js .jpanel {
+    flex: 0 0 auto;
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-content: stretch;
+    /* Every panel fits the padded stage, so nothing is ever cropped by the
+       viewport. The media takes what the copy does not. */
+    height: 100%;
+    max-height: 100%;
+  }
+
+  /* Size carries weight. The two large frames are the chapters that changed the
+     direction of her career; the small ones are the years in between. */
+  .js .jpanel[data-size="lg"] { width: min(38vw, 560px); }
+  .js .jpanel[data-size="md"] { width: min(29vw, 430px); }
+  .js .jpanel[data-size="sm"] { width: min(22vw, 320px); }
+
+  /*
+   * Heights rather than aspect ratios, so a panel can never demand more room
+   * than the stage has. A ratio wins the argument against its container and
+   * that is how the frames ended up overflowing.
+   *
+   * No `min-height` here. I added one to stop long copy squeezing a photograph
+   * to a 91px strip, and it did the opposite kind of damage: a floor on a grid
+   * item inside a `1fr` row pushes the item past the row, so the picture grew
+   * down over the heading beneath it and the panels came out wonky. If the
+   * squeezed frames need fixing it has to be done by shortening the copy, not
+   * by forcing the box.
+   */
+  .js .jpanel .jp-media {
+    aspect-ratio: auto;
+    min-height: 0;
+    height: 100%;
+  }
+
+  .js .jpanel[data-size="sm"] { align-self: center; height: 78%; }
+  .js .jpanel[data-size="md"] { align-self: center; height: 88%; }
+
+  /* Vertical offset breaks the horizon line, so the eye travels a path rather
+     than reading along a shelf. Kept small now that the stage is padded, since
+     a big lift would push a panel back under the header. */
+  .js .jpanel[data-lift="high"] { transform: translateY(-3vh); }
+  .js .jpanel[data-lift="low"] { transform: translateY(3vh); }
+
+  .js .jrail-foot {
+    position: absolute;
+    left: max(2rem, calc((100vw - var(--col)) / 2));
+    right: max(2rem, calc((100vw - var(--col)) / 2));
+    bottom: 3.2vh;
+    display: grid;
+    gap: 0.5rem;
+    /* Fades out of the way once the run is under way, so the years stop
+       colliding with the panels travelling over them. JS writes `--fade`. */
+    opacity: var(--fade, 1);
+    transition: opacity 400ms var(--ease);
+    pointer-events: none;
+  }
+
+  .jrail-ticks {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    color: var(--fg-dim);
+  }
+
+  .jrail-bar {
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .jrail-bar span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .jrail { height: auto; }
+
+  .js .jrail-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+  }
+
+  .js .jrail-track {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    width: auto;
+    transform: none;
+    padding-inline: max(1.5rem, calc((100% - var(--col)) / 2));
+  }
+
+  .js .jpanel { width: auto !important; transform: none !important; }
+  .js .jrail-foot { display: none; }
+}
+
+/* -------------------------------------------------------- signature stat */
+
+.latstat {
+  display: grid;
+  gap: 1.5rem 3rem;
+  margin-top: clamp(3rem, 6vw, 5rem);
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 860px) {
+  .latstat {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.latstat h3 {
+  font-size: var(--step-3);
+  font-stretch: 85%;
+  max-width: 15ch;
+}
+
+.latstat p {
+  color: var(--fg-dim);
+  max-width: 48ch;
+  margin: 0;
+}
+
+.latstat .figs {
+  display: flex;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  font-family: var(--mono);
+}
+
+.latstat .figs div {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.latstat .figs b {
+  font-size: var(--step-2);
+  font-weight: 500;
+  color: var(--race);
+  letter-spacing: -0.02em;
+}
+
+.latstat .figs span {
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+/* ------------------------------------------------------------- footprint */
+
+/* ---- The atlas -------------------------------------------------------------
+ *
+ * Equirectangular, so latitude stays linear and the named parallels remain
+ * straight lines. The coastline is Natural Earth 110m, simplified to a single
+ * inline path by tools/gen_worldmap.py. No tiles, no mapping library, no
+ * network call at runtime.
+ */
+
+/*
+ * Map and detail panel sit side by side rather than the panel floating over the
+ * map. A floating card had to live inside the horizontally scrolling map box,
+ * and `overflow-x: auto` forces the vertical axis to clip too, so any card
+ * positioned above its own marker was cut off at the top edge. Docking it also
+ * gives the photographs a full-width slot instead of a 268px sliver.
+ */
+.atlas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 310px);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: start;
+}
+
+/* Same fault as the season calendar. The map is 620px at its narrowest, so it
+   only needs a scroll container on a phone, and it should chain out of it when
+   it reaches the end rather than trapping the gesture. */
+.atlas-scroll {
+  min-width: 0;
+  padding-bottom: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .atlas-scroll {
+    overflow-x: auto;
+    overscroll-behavior-x: auto;
+  }
+}
+
+.atlas-map {
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .atlas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Land sits just above the section ground: present, never competing with the
+   markers. Country borders are deliberately absent, they add political noise
+   to what is a record of races. */
+.atlas-map .land {
+  fill: rgba(157, 204, 243, 0.09);
+  stroke: rgba(157, 204, 243, 0.28);
+  stroke-width: 0.35;
+  stroke-linejoin: round;
+}
+
+.atlas-map .grat {
+  stroke: rgba(157, 204, 243, 0.08);
+  stroke-width: 0.3;
+}
+
+.atlas-map .grat-named {
+  stroke: rgba(157, 204, 243, 0.26);
+  stroke-width: 0.35;
+  stroke-dasharray: 1.6 1.6;
+}
+
+.atlas-map .grat-label {
+  font-family: var(--mono);
+  font-size: 3.1px;
+  letter-spacing: 0.09em;
+  fill: var(--fg-dim);
+  text-transform: uppercase;
+}
+
+.atlas-map .pin {
+  cursor: pointer;
+}
+
+/* Invisible, and the only reason a 5px dot is a usable target. */
+.atlas-map .halo {
+  fill: transparent;
+}
+
+.atlas-map .dot {
+  fill: var(--glacier);
+  stroke: var(--ground);
+  stroke-width: 0.7;
+  transition: fill 180ms var(--ease), r 180ms var(--ease);
+}
+
+.atlas-map .pin[data-kind="origin"] .dot {
+  fill: var(--saffron);
+}
+
+.atlas-map .pin[data-kind="podium"] .dot,
+.atlas-map .pin[data-kind="worldcup"] .dot {
+  fill: var(--race);
+}
+
+.atlas-map .pin[data-kind="domestic"] .dot {
+  fill: var(--stone);
+}
+
+.atlas-map .pin:hover .dot,
+.atlas-map .pin:focus-visible .dot,
+.atlas-map .pin[data-active="true"] .dot {
+  fill: var(--snow-hi);
+  r: 2.9;
+}
+
+.atlas-map .pin-label {
+  font-family: var(--mono);
+  font-size: 3.4px;
+  letter-spacing: 0.04em;
+  fill: var(--fg);
+  paint-order: stroke;
+  stroke: var(--ground);
+  stroke-width: 1.1px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.atlas-map .pin:focus {
+  outline: none;
+}
+
+.atlas-map .pin:focus-visible .halo {
+  fill: rgba(215, 242, 94, 0.16);
+  stroke: var(--race);
+  stroke-width: 0.5;
+}
+
+/* ---- The card that opens off a marker ---- */
+
+/* Reserves the tallest card's height so switching markers does not shunt the
+   table below up and down. */
+.atlas-panel {
+  border: 1px solid var(--rule);
+  background: rgba(255, 255, 255, 0.015);
+  position: relative;
+}
+
+/* Holds the tallest card's height. Without it the panel grows when a card
+   carries a photograph and shunts the whole results table down the page. */
+@media (min-width: 901px) {
+  .atlas-panel {
+    min-height: 432px;
+  }
+}
+
+.atlas-card[hidden] {
+  display: none;
+}
+
+.atlas-card {
+  animation: card-in 320ms var(--ease) both;
+}
+
+.atlas-card.is-resting .card-event {
+  color: var(--fg-soft);
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-card {
+    animation: none;
+  }
+}
+
+.card-shot {
+  margin: 0;
+}
+
+.card-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  filter: var(--grade);
+}
+
+/* The venue's own geography, for the ten places with no photograph. Reuses the
+   single land path through <use>, so it adds no weight to the page. */
+.card-mini svg {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--ink-deep);
+}
+
+.card-mini .land,
+.card-mini use {
+  fill: rgba(157, 204, 243, 0.17);
+  stroke: rgba(157, 204, 243, 0.5);
+  stroke-width: 0.16;
+  stroke-linejoin: round;
+}
+
+.card-mini .mini-dot {
+  fill: var(--race);
+}
+
+.card-mini .mini-ring {
+  fill: none;
+  stroke: var(--race);
+  stroke-width: 0.3;
+  opacity: 0.55;
+}
+
+.card-mini figcaption {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+  padding: 0.5rem 0.95rem 0;
+}
+
+.card-shot figcaption {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  padding: 0.4rem 0.85rem 0;
+  text-transform: uppercase;
+}
+
+.card-body {
+  padding: 0.85rem 0.95rem 0.95rem;
+}
+
+.card-place {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.card-place span {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.card-event {
+  margin: 0.55rem 0 0;
+  font-size: 0.82rem;
+  color: var(--fg-soft);
+}
+
+.card-best {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  color: var(--snow-hi);
+}
+
+.card-meta {
+  margin: 0.6rem 0 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+}
+
+.atlas .plot-legend {
+  margin-top: 1rem;
+}
+
+/*
+ * The map says it better, so the table is folded away. It cannot simply be
+ * deleted: it is the map's non-visual equivalent, and a screen reader user has
+ * no other route to the same information.
+ */
+.atlas-list {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--rule);
+}
+
+.atlas-list > summary {
+  cursor: pointer;
+  padding: 1rem 0;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  transition: color 160ms var(--ease);
+}
+
+.atlas-list > summary:hover,
+.atlas-list > summary:focus-visible {
+  color: var(--snow-hi);
+}
+
+.atlas-list[open] > summary {
+  color: var(--fg);
+}
+
+.plot-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  list-style: none;
+  padding: 0;
+}
+
+.plot-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.plot-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--glacier);
+}
+
+.plot-legend i[data-kind="origin"] {
+  background: var(--saffron);
+}
+
+.plot-legend i[data-kind="race"] {
+  background: var(--race);
+}
+
+.plot-legend i[data-kind="domestic"] {
+  background: var(--stone);
+}
+
+.plot-readout {
+  margin-top: 1.25rem;
+  min-height: 3.2rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 1rem;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--fg-dim);
+}
+
+.plot-readout b {
+  color: var(--fg);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Fallback list. Always in the DOM, hidden only when the plot is usable. */
+.plot-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  margin-top: 2rem;
+}
+
+.plot-table th,
+.plot-table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--fg-dim);
+}
+
+.plot-table th {
+  color: var(--fg);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+
+/* ------------------------------------------------------- mountain / beyond */
+
+.peaks {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: clamp(3rem, 6vw, 4.5rem);
+}
+
+@media (min-width: 760px) {
+  .peaks {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+/*
+ * Solid, not transparent.
+ *
+ * These travel across the frame, and with no background of their own the two
+ * cards' text crossed whatever was behind them and each other. A card that
+ * moves has to carry its own ground.
+ */
+.peak {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  background: var(--ink-deep);
+  border: 1px solid var(--rule);
+  padding: 1.25rem 1.25rem 1.5rem;
+  overflow: hidden;
+}
+
+.peak img {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  filter: var(--grade);
+  /* Out to the card edges, the same treatment the qualification cards use. */
+  margin: -1.25rem -1.25rem 0.25rem;
+  width: calc(100% + 2.5rem);
+  max-width: none;
+}
+
+/*
+ * The altitude reads as a measured rule, not as a block. An earlier version used
+ * a 200px filled bar, which at this column width became a large gradient slab
+ * that looked like decoration and outweighed the photograph beside it.
+ */
+.peak .scale {
+  height: 2px;
+  background: var(--rule);
+  margin-top: -0.35rem;
+}
+
+.peak .scale i {
+  display: block;
+  height: 100%;
+  background: var(--race);
+  transition: width 800ms var(--ease);
+}
+
+.peak .metres {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--step-2);
+  color: var(--race);
+  letter-spacing: -0.02em;
+}
+
+.peak h3 {
+  font-size: var(--step-1);
+  font-stretch: 92%;
+}
+
+.peak .country {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.peak p {
+  color: var(--fg-dim);
+  margin: 0;
+  max-width: 40ch;
+  font-size: calc(var(--step-0) * 0.96);
+}
+
+/*
+ * The training route, in four steps.
+ *
+ * Seven certificates in two even columns read as a CV dump and hid the only
+ * interesting thing in the data: climbing qualified her to instruct,
+ * instructing put her on skis, and skiing took her abroad.
+ */
+/*
+ * The route, one step at a time, coming toward the reader.
+ *
+ * Four columns side by side put twenty-odd lines of certificate names on screen
+ * at once and nobody read any of them. They are now stacked in the same place
+ * and advanced by scroll: the current step sits at the centre of the frame at
+ * full size, the next one waits behind it further away, and finished steps come
+ * forward past the reader and go. Sequence is the whole content here, so the
+ * motion carries the meaning rather than decorating it.
+ *
+ * Without JavaScript, and under reduced motion, the runway collapses and all
+ * four are simply stacked and readable.
+ */
+.croute-run {
+  --steps: 4;
+  --tp: 0;
+  position: relative;
+}
+
+.croute-stage {
+  padding-inline: max(1.5rem, calc((100% - var(--col)) / 2));
+  padding-block: clamp(2rem, 5vw, 3.5rem);
+}
+
+.croute-head {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.croute-head h3 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-2);
+  margin: 0;
+}
+
+.croute {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.cstep {
+  position: relative;
+  background: var(--ground);
+  border: 1px solid var(--rule);
+  padding: 1.4rem 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  /* Clips the photograph, which is pulled out to the card edges by negative
+     margins matching this padding. */
+  overflow: hidden;
+}
+
+/* The hairline printed inside the border of a certificate. Drawn as an inset
+   pseudo-element so it sits over the photograph as well as the type. */
+.cstep::before {
+  content: "";
+  position: absolute;
+  inset: 0.45rem;
+  border: 1px solid rgba(157, 204, 243, 0.14);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* The accent edge runs down the leading side, so a card arriving has a lit edge
+   before its content is readable. */
+.cstep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(var(--accent), transparent 70%);
+  z-index: 3;
+}
+
+@media (min-width: 820px) {
+  .js .croute-run {
+    height: calc(var(--steps) * 62vh + 70vh);
+  }
+
+  .js .croute-stage {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    /*
+     * `place-items: center`, with the title lifted out of the flow.
+     *
+     * It used to be two stacked grid rows: title, then the card box. The cards
+     * are absolutely positioned and centred on that box, and with a photograph
+     * on board they are taller than it, so they overflowed upward and ran
+     * straight through the title. Centring the stack and floating the title
+     * clear is the same arrangement the record deck already uses.
+     */
+    display: grid;
+    place-items: center;
+    padding-block: calc(var(--top-h, 7rem) + 1rem) 3rem;
+    perspective: 1200px;
+    overflow: hidden;
+  }
+
+  .js .croute-head {
+    position: absolute;
+    top: calc(var(--top-h, 7rem) + 1rem);
+    left: max(1.5rem, calc(var(--rail) + 1.25rem), calc((100% - var(--col)) / 2));
+    right: max(1.5rem, calc((100% - var(--col)) / 2));
+    z-index: 4;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  /* The margin pushes the centred stack down past the floated title, so the
+     tallest card at the front of the run still clears it. */
+  .js .croute {
+    position: relative;
+    width: 100%;
+    height: min(48vh, 390px);
+    margin-top: calc(var(--top-h, 7rem) + 1.5rem);
+    transform-style: preserve-3d;
+  }
+
+  /*
+   * `--t` is where this step sits relative to the reader: 1 is waiting behind,
+   * 0 is here at the front of the frame, negative is past and leaving. The
+   * arithmetic is per tile and needs no JavaScript beyond the one `--tp`.
+   */
+  .js .cstep {
+    /*
+     * The `+ 0.8` matters. Without it step one starts already at the front and
+     * step four ends past the reader and invisible, so the section opened
+     * mid-sequence and closed on nothing. Offset by most of a step, the run
+     * begins with step one arriving and ends with step four held at the front.
+     */
+    --t: calc(var(--n) + 0.8 - var(--tp) * var(--steps));
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(640px, 82%);
+    margin: 0;
+    /*
+     * The Z travel is clamped, not raw. At `--t` of -3 the card would be pushed
+     * 1260px toward a camera sitting at 1200px, which scales it to the size of
+     * a building and paints it far outside the stage even at zero opacity.
+     */
+    /*
+     * Forward travel is clamped at -0.3, not -0.45. Every 0.1 past the front
+     * plane scales the card another 2-3%, and with a photograph on board the
+     * card is tall enough that the extra magnification pushed it out of the
+     * pinned stage top and bottom.
+     */
+    transform:
+      translate(-50%, -50%)
+      translateZ(calc(clamp(-0.3, var(--t), 3.2) * -430px))
+      translateY(calc(clamp(-0.3, var(--t), 3.2) * -1.2rem));
+    /*
+     * Faded while waiting behind, solid at the front, gone once past.
+     *
+     * The ramps are tight on purpose. Steps are one unit of `--t` apart, so
+     * fading in across 0.35 and out across 0.3 means exactly one card is
+     * readable at a time, with a brief crossfade of two dim ones between. At
+     * the old widths a leaving card sat at 78% opacity, larger and nearer the
+     * camera than the card arriving behind it, so two sets of certificate names
+     * were legible through each other. That is the overlap.
+     *
+     * `min()` of two ramps rather than one ramp on `abs(--t)`, because `abs()`
+     * is too new to rely on and a step that never appears is worse than one
+     * that appears plainly.
+     */
+    opacity: min(
+      clamp(0, calc((1 - var(--t)) / 0.35), 1),
+      clamp(0, calc((var(--t) + 0.2) / 0.3), 1)
+    );
+    /* Later steps sit in front. Without this the stacking followed source order
+       and step 01 painted over step 04 as it arrived. */
+    z-index: calc(100 + var(--n));
+    box-shadow: 0 34px 80px rgba(0, 0, 0, 0.7);
+    /* Fully opaque. At anything less the card behind shows through the one
+       being read, which is the overlap itself. */
+    background: #070b11;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .croute-run { height: auto; }
+
+  .js .croute-stage {
+    position: static;
+    min-height: 0;
+    perspective: none;
+    overflow: visible;
+  }
+
+  .js .croute {
+    height: auto;
+    display: grid;
+  }
+
+  .js .cstep {
+    position: static;
+    transform: none;
+    opacity: 1;
+    width: auto;
+  }
+}
+
+/*
+ * The card is built as the thing it describes: a credential.
+ *
+ * A photograph of where the step happened, a stamped number, the issuing body
+ * in mono, the year in its own column, and a hairline inset border like the
+ * rule printed inside a certificate. Four identical dark rectangles carrying
+ * nothing but text is what made the section bland however well it moved.
+ */
+/*
+ * A letterbox, not a 16:9 panel. At card width a 16:9 photograph is 360px of
+ * the card's height on its own, which pushed the whole thing past the pinned
+ * stage once it scaled up at the front of the run.
+ */
+.cstep-shot {
+  position: relative;
+  overflow: hidden;
+  margin: -1.4rem -1.25rem 1.1rem;
+  aspect-ratio: 16 / 7;
+}
+
+.cstep-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--grade);
+}
+
+/* Keeps the caption readable whatever the photograph is doing underneath. */
+.cstep-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 9, 15, 0.1) 0%,
+    transparent 38%,
+    rgba(6, 9, 15, 0.82) 100%
+  );
+}
+
+.cstep-where {
+  position: absolute;
+  left: 1.15rem;
+  bottom: 0.8rem;
+  z-index: 1;
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+
+.cstep-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* The step number, oversized and set behind the type. It gives the card a
+   second layer of depth so it does not read as one flat plane. */
+.cstep-num {
+  position: absolute;
+  top: -1.6rem;
+  right: -0.4rem;
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 70%;
+  font-size: 7.5rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: rgba(157, 204, 243, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+.cstep-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.cstep-idx {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cstep-years {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  color: var(--fg-dim);
+}
+
+.cstep h4 {
+  margin: 0.85rem 0 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 88%;
+  font-size: var(--step-2);
+  line-height: 1.05;
+}
+
+.cstep-note {
+  margin: 0.45rem 0 1.25rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--fg-dim);
+  max-width: 44ch;
+}
+
+.cstep-items {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+/* Certificate, then the body that issued it, each row opening on a rule so the
+   card reads as a record rather than as a paragraph. */
+.cstep-items li {
+  display: grid;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--rule);
+}
+
+.cstep-items b {
+  font-size: 0.9rem;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+.cs-by {
+  margin-top: 0.28rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+  color: var(--fg-dim);
+}
+
+/* --------------------------------------------------------------- results */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.filters button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  transition: color 160ms var(--ease), border-color 160ms var(--ease),
+    background-color 160ms var(--ease);
+}
+
+.filters button:hover {
+  color: var(--fg);
+  border-color: var(--glacier);
+}
+
+.filters button[aria-pressed="true"] {
+  background: var(--snow-hi);
+  border-color: var(--snow-hi);
+  color: var(--ink);
+}
+
+.results {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: calc(var(--step-0) * 0.95);
+}
+
+.results caption {
+  text-align: left;
+  color: var(--fg-dim);
+  font-size: var(--step--1);
+  font-family: var(--mono);
+  padding-bottom: 1rem;
+  max-width: 62ch;
+  line-height: 1.6;
+}
+
+.results th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  font-weight: 400;
+  padding: 0 0.9rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.results td {
+  padding: 0.85rem 0.9rem 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: baseline;
+}
+
+.results tbody tr {
+  transition: background-color 140ms var(--ease);
+}
+
+.results tbody tr:hover {
+  background: rgba(157, 204, 243, 0.045);
+}
+
+.results .c-year,
+.results .c-mark {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--step--1);
+  white-space: nowrap;
+}
+
+.results .c-year {
+  color: var(--accent);
+  width: 4rem;
+}
+
+.results .c-event {
+  font-family: var(--display);
+  font-stretch: 92%;
+  font-weight: 600;
+}
+
+.results .c-event small {
+  display: block;
+  font-family: var(--mono);
+  font-weight: 400;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  margin-top: 0.2rem;
+}
+
+.results .c-place {
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: var(--step--1);
+}
+
+.results .c-medal {
+  width: 2.5rem;
+}
+
+.medal-dot {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--fg-dim);
+}
+
+.medal-dot[data-medal="gold"] {
+  background: #e7b74a;
+  border-color: #e7b74a;
+}
+
+.medal-dot[data-medal="silver"] {
+  background: #b9c4cc;
+  border-color: #b9c4cc;
+}
+
+.medal-dot[data-medal="bronze"] {
+  background: #b0763f;
+  border-color: #b0763f;
+}
+
+/* A marker used to trail unverified rows here. Provenance is tracked in the
+   content model, not printed beside her results. */
+
+.src-flag {
+  display: inline-block;
+  /* Short source labels like "FIS" would otherwise be a 20px-wide target. */
+  min-width: 1.5rem;
+  padding-block: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+a.src-flag:hover {
+  opacity: 1;
+  color: var(--race);
+}
+
+/* Six columns need real width. Below the layout's main 900px breakpoint the
+   table becomes one card per result instead of compressing. */
+@media (max-width: 899px) {
+  .results thead {
+    display: none;
+  }
+
+  .results,
+  .results tbody,
+  .results tr,
+  .results td {
+    display: block;
+    width: 100%;
+  }
+
+  .results tr {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+
+  .results td {
+    border: 0;
+    padding: 0 0 0.25rem;
+  }
+
+  .results .c-medal {
+    position: absolute;
+    top: 1.15rem;
+    right: 0;
+    width: auto;
+  }
+}
+
+.record-more {
+  margin-top: 1.75rem;
+}
+
+/* ----------------------------------------------------------------- media */
+
+.press-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+/*
+ * The pair is the moving unit; the rows inside it are not.
+ *
+ * `--p` is written on the pair by the travel driver and inherits down, so both
+ * rows read the same number and converge together.
+ */
+.press-pair {
+  display: block;
+}
+
+.press-item {
+  border-bottom: 1px solid var(--rule);
+}
+
+/*
+ * One-sided convergence.
+ *
+ * `clamp(0, var(--p), 1)` rather than `var(--p)` is the whole trick. Below the
+ * middle of the frame the rows are pushed out to their own sides; at the middle
+ * the offset reaches zero and stays there, so from the moment a headline is
+ * worth reading it has stopped moving sideways and simply scrolls away.
+ */
+.js .press-item {
+  --conv: 300;
+  transform: translateX(
+    calc(var(--side, 0) * var(--conv) * var(--scale) * clamp(0, var(--p, 0), 1) * 1px)
+  );
+  will-change: transform;
+}
+
+.js .press-item[data-side="-1"] { --side: -1; }
+.js .press-item[data-side="1"] { --side: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .press-item { transform: none; }
+}
+
+.press-list a {
+  display: grid;
+  gap: 0.3rem 2rem;
+  padding: 1.5rem 0;
+  text-decoration: none;
+  transition: opacity 160ms var(--ease);
+}
+
+@media (min-width: 860px) {
+  .press-list a {
+    /* Thumbnail, outlet, headline, date. */
+    grid-template-columns: 4.5rem 10.5rem minmax(0, 1fr) auto;
+    align-items: baseline;
+  }
+}
+
+.press-list a:hover {
+  opacity: 0.72;
+}
+
+/*
+ * A thumbnail per row, from her own photo library and matched to the story.
+ * Never the outlet's article image: this section states that no publisher
+ * photography is reproduced, and that has to stay true.
+ */
+.press-thumb {
+  display: block;
+  width: 4.5rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  align-self: start;
+  /* Nudged to sit against the cap height of the outlet name beside it, since
+     the row is baseline-aligned. */
+  margin-top: -0.15rem;
+}
+
+.press-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: var(--grade);
+  transition: transform 500ms var(--ease);
+}
+
+.press-list a:hover .press-thumb img {
+  transform: scale(1.06);
+}
+
+@media (max-width: 859px) {
+  .press-list a {
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: 0.3rem 1rem;
+  }
+
+  .press-thumb {
+    width: 3.25rem;
+    grid-row: span 2;
+  }
+
+  .press-pub,
+  .press-title,
+  .press-date,
+  .press-context {
+    grid-column: 2;
+  }
+}
+
+.press-pub {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.press-title {
+  font-family: var(--display);
+  font-stretch: 92%;
+  font-weight: 600;
+  font-size: var(--step-1);
+  line-height: 1.2;
+}
+
+.press-context {
+  color: var(--fg-dim);
+  font-size: calc(var(--step-0) * 0.94);
+  margin-top: 0.35rem;
+  max-width: 56ch;
+}
+
+/* Sits under the headline, in the headline's column. Declared here rather than
+   on the base rule, which was forcing a third empty track into the two-column
+   phone layout. */
+@media (min-width: 860px) {
+  .press-context { grid-column: 3; }
+}
+
+.press-date {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------- gallery */
+
+.gal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+@media (min-width: 760px) {
+  .gal {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+}
+
+.gal button {
+  position: relative;
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.gal button img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+  transition: transform 500ms var(--ease), filter 300ms var(--ease);
+  filter: var(--grade);
+}
+
+.gal button:hover img,
+.gal button:focus-visible img {
+  transform: scale(1.035);
+  filter: none;
+}
+
+.gal button[hidden] {
+  display: none;
+}
+
+.gal-cat {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--snow-hi);
+  background: rgba(6, 9, 15, 0.7);
+  padding: 0.28rem 0.5rem;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+}
+
+.gal button:hover .gal-cat,
+.gal button:focus-visible .gal-cat {
+  opacity: 1;
+}
+
+/* lightbox */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: rgba(4, 7, 12, 0.97);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 240ms var(--ease), visibility 240ms;
+}
+
+.lb[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lb-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--fg-dim);
+  letter-spacing: 0.08em;
+}
+
+.lb-stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  padding: 1rem 0;
+}
+
+.lb-stage img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.lb-foot {
+  display: grid;
+  gap: 0.4rem 2rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+@media (min-width: 760px) {
+  .lb-foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.lb-cap {
+  max-width: 68ch;
+  color: var(--fg);
+  font-size: calc(var(--step-0) * 0.95);
+  margin: 0;
+}
+
+.lb-credit {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.lb-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lb-nav button,
+.lb-close {
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  color: var(--fg);
+  transition: border-color 160ms var(--ease), background-color 160ms var(--ease);
+}
+
+.lb-nav button:hover,
+.lb-close:hover {
+  border-color: var(--glacier);
+}
+
+.lb-nav button[disabled] {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* -------------------------------------------------------------- partners */
+
+.areas {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.area {
+  display: grid;
+  gap: 0.4rem 2.5rem;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+@media (min-width: 860px) {
+  .area {
+    grid-template-columns: 4rem minmax(0, 16rem) minmax(0, 1fr);
+    align-items: baseline;
+  }
+}
+
+.area .idx {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.area h3 {
+  font-size: var(--step-1);
+  font-stretch: 92%;
+  font-weight: 600;
+}
+
+.area p {
+  margin: 0;
+  color: var(--fg-dim);
+  max-width: 54ch;
+  font-size: calc(var(--step-0) * 0.96);
+}
+
+.partner-note {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  max-width: 60ch;
+  margin-top: 2rem;
+  line-height: 1.75;
+  border-left: 1px solid var(--rule);
+  padding-left: 1.25rem;
+}
+
+/* --------------------------------------------------------------- contact */
+
+.contact-grid {
+  display: grid;
+  gap: 2.5rem 4rem;
+}
+
+@media (min-width: 860px) {
+  .contact-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.contact-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.contact-lines li {
+  border-bottom: 1px solid var(--rule);
+}
+
+.contact-lines a {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 1.15rem 0;
+  text-decoration: none;
+  transition: color 160ms var(--ease);
+}
+
+.contact-lines a:hover {
+  color: var(--race);
+}
+
+.contact-lines .k {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.contact-lines .v {
+  font-family: var(--display);
+  font-stretch: 92%;
+  font-weight: 600;
+  font-size: var(--step-1);
+  overflow-wrap: anywhere;
+}
+
+.enquiry {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.enquiry label {
+  display: grid;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+
+.enquiry input,
+.enquiry textarea {
+  font: inherit;
+  font-size: calc(var(--step-0) * 0.95);
+  color: var(--fg);
+  background: rgba(157, 204, 243, 0.05);
+  border: 1px solid var(--rule);
+  padding: 0.75rem 0.9rem;
+  width: 100%;
+}
+
+.enquiry textarea {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+.enquiry .btn {
+  justify-self: start;
+}
+
+.enquiry .note {
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  color: var(--fg-dim);
+  text-transform: none;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+.foot {
+  background: var(--ink-deep);
+  color: var(--fg-dim);
+  padding-block: 3rem;
+  border-top: 1px solid var(--rule);
+}
+
+.foot-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* The rights line, moved out of the Media lede. Set below the uppercase mono
+   row and quieter than it, so it reads as small print rather than as another
+   navigation item. */
+.foot-rights {
+  margin: 2rem auto 0;
+  max-width: 62ch;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--fg-faint, var(--fg-dim));
+  opacity: 0.75;
+}
+
+.foot a {
+  display: inline-block;
+  padding-block: 0.35rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+
+.foot a:hover {
+  color: var(--fg);
+}
+
+/* -------------------------------------------------------- motion, entrance */
+
+/*
+ * Motion.
+ *
+ * The base state of everything here is *visible*. Motion is opted into by the
+ * `js` class, which an inline script in <head> sets synchronously, and the
+ * hidden-to-visible states are keyframes rather than a class the page has to
+ * arrive at later. That ordering matters: an earlier version gated visibility
+ * on a class added inside requestAnimationFrame, which left the athlete's name
+ * and every revealed block permanently invisible in any context where rAF is
+ * starved — a background tab, a prerender, a screenshotting bot.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  /*
+   * Scroll reveals. Two moves only, and deliberately so.
+   *
+   *   up     text, rows and cards rise 16px and fade in
+   *   clip   photographs wipe up from their lower edge
+   *
+   * Rules that keep it from becoming noise: each element runs once, nothing
+   * scales or rotates or blurs, the stagger is 55ms and caps at six steps, and
+   * nothing at all animates in the hero beyond its single entrance sequence.
+   */
+  /*
+   * Everything below hides something, so all of it keys off `reveal` rather
+   * than `js`.
+   *
+   * `js` is added by an inline script in the head, which always runs. `reveal`
+   * is added from inside main.js, which is the file that puts the content back.
+   * With these on `js`, a blocked or throttled main.js left thirty elements at
+   * `opacity: 0` and the wordmark clipped to nothing, with no way back, because
+   * the `anim-off` escape hatch also lives in main.js. That is the blank page.
+   */
+  .reveal [data-anim] {
+    --i: 0;
+    transition:
+      opacity 620ms var(--ease),
+      transform 620ms var(--ease),
+      clip-path 780ms var(--ease);
+    transition-delay: calc(var(--i) * 55ms);
+    will-change: opacity, transform;
+  }
+
+  /*
+   * The plain fade-up, for the handful of blocks that are not on a travel path.
+   *
+   * Anything the reader is meant to cross the frame carries `data-travel`
+   * instead, which is scroll-linked and keeps moving. This one arrives and
+   * stops, which is right for a block that is already in its final place.
+   */
+  .reveal [data-anim="up"] {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+
+  .reveal [data-anim="clip"] {
+    opacity: 0;
+    clip-path: inset(0 0 22% 0);
+  }
+
+  .reveal [data-anim][data-shown="true"] {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 0 0);
+    will-change: auto;
+  }
+
+  .reveal .hero h1 span {
+    animation: line-up 900ms var(--ease) both;
+  }
+
+  .reveal .hero h1 .l2 {
+    animation-delay: 110ms;
+  }
+
+  .reveal .hero-media img {
+    animation: settle 1600ms var(--ease) both;
+  }
+
+  @keyframes line-up {
+    from {
+      clip-path: inset(0 0 105% 0);
+    }
+    to {
+      clip-path: inset(0 0 -10% 0);
+    }
+  }
+
+  @keyframes settle {
+    from {
+      transform: scale(1.06);
+    }
+    to {
+      transform: none;
+    }
+  }
+}
+
+/*
+ * Escape hatch for a document that is not compositing. Neither transitions nor
+ * animations advance while the page is hidden, so any state they were meant to
+ * arrive at is never reached and the content they hide stays hidden. When that
+ * is the case we drop the motion entirely and jump to the end state.
+ */
+.anim-off *,
+.anim-off *::before,
+.anim-off *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.anim-off [data-anim] {
+  opacity: 1 !important;
+  transform: none !important;
+  clip-path: none !important;
+}
+
+.anim-off .section-head::before {
+  transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,1872 @@
+{
+  "$schema": "./content.schema.json",
+  "meta": {
+    "lastReviewed": "2026-08-10",
+    "reviewedBy": "build",
+    "note": "Single source of truth for every factual claim on the site. bhavani.ts re-exports this with types. build.py renders index.html from it. Nothing factual is written directly into markup."
+  },
+  "identity": {
+    "fullName": "Bhavani Thekkada Nanjunda",
+    "wordmark": "BHAVANI THEKKADA",
+    "shortName": "Bhavani Thekkada",
+    "descriptor": "INDIA · CROSS-COUNTRY SKIING",
+    "discipline": "Cross-country skiing",
+    "nation": "India",
+    "nationCode": "IND",
+    "region": "Karnataka",
+    "birthDate": "1995-05-14",
+    "birthPlace": "Kodagu, Karnataka, India",
+    "fisCode": "260257",
+    "source": {
+      "sourceType": "public-primary",
+      "sourceName": "FIS athlete biography",
+      "sourceUrl": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10",
+      "note": "FIS lists name, nation IND, birth date 14-05-1995 and region Karnataka."
+    }
+  },
+  "hero": {
+    "eyebrow": "Cross-Country Skier · India",
+    "line": "From a coffee farm in Kodagu to a World Cup start list.",
+    "standfirst": "She grew up on a coffee farm in Karnataka and did not see snow until she was twenty. At thirty she took a World Cup start at 66°N in northern Finland.",
+    "standfirstSource": {
+      "sourceType": "public-secondary",
+      "sourceName": "Associated Press, Ken Maguire",
+      "sourceUrl": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10",
+      "note": "AP reports the coffee farm upbringing and that she did not see snow until age 20. Paraphrased, not quoted."
+    },
+    "ctaPrimary": {
+      "label": "Start at Kodagu",
+      "href": "#journey"
+    },
+    "ctaSecondary": {
+      "label": "Partner with Bhavani",
+      "href": "#partners"
+    },
+    "ctaTertiary": {
+      "label": "FIS profile",
+      "href": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result"
+    },
+    "image": "hero-portrait",
+    "burst": {
+      "note": "Plays once on load, then settles on hero.image. Replace with video when footage exists.",
+      "frameMs": 130,
+      "frames": [
+        "roller-vidhana-soudha",
+        "ski-city-overlook",
+        "race-orange-bib",
+        "roller-road",
+        "race-forest",
+        "start-line-gulmarg",
+        "khelo-ice-sculpture"
+      ]
+    },
+    "profileHeading": "It started with a film, and a race on television.",
+    "profileBody": "She grew up on her family's coffee farm in Kodagu, in the hills of southern Karnataka, where it has never snowed and where neither of her parents had ever seen snow either. In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to a job instructing in Kashmir, which is where she first put on skis.",
+    "profileBody2": "Cross-country came later, and secondhand. Watching the 2018 Pyeongchang Games she saw the Norwegian Marit Bjørgen race, and decided that was the event she wanted. She left the instructing job to train full time. Her father, who has spent his life on the farm, told her that if it made her happy she should do it.",
+    "profileFacts": [
+      {
+        "k": "Born",
+        "v": "14 May 1995, Kodagu, Karnataka"
+      },
+      {
+        "k": "First saw snow",
+        "v": "Aged 20. Racing on it at 26."
+      },
+      {
+        "k": "Mentored by",
+        "v": "Shiva Keshavan, six-time Olympian, luge"
+      },
+      {
+        "k": "Trains across",
+        "v": "Kashmir, Europe, South America, New Zealand"
+      }
+    ]
+  },
+  "proofOfLevel": [
+    {
+      "id": "fis-record",
+      "count": "5",
+      "unit": "seasons",
+      "label": "On the FIS record",
+      "detail": "Scored and published by the governing body since January 2022",
+      "year": "2022–2026",
+      "sourceRef": "fis"
+    },
+    {
+      "id": "world-cup-2025",
+      "count": "3",
+      "unit": "World Cup starts",
+      "label": "FIS Cross-Country World Cup",
+      "detail": "Ruka, Trondheim and Davos, inside sixteen days",
+      "year": "2025",
+      "sourceRef": "fis"
+    },
+    {
+      "id": "worlds",
+      "count": "2",
+      "unit": "World Championships",
+      "label": "Nordic World Ski Championships",
+      "detail": "Planica 2023 and Trondheim 2025",
+      "year": "2023 · 2025",
+      "sourceRef": "fis"
+    },
+    {
+      "id": "awg-2025",
+      "count": "1",
+      "unit": "sprint quarter-final",
+      "label": "Asian Winter Games, Harbin",
+      "detail": "Carried India's flag at the opening ceremony",
+      "year": "2025",
+      "sourceRef": "awg-wikipedia"
+    },
+    {
+      "id": "corralco-2025",
+      "count": "2",
+      "unit": "international bronzes",
+      "label": "Corralco, Chile",
+      "detail": "Sprint and 5 km, on the Chilean national championship card",
+      "year": "2025",
+      "sourceRef": "fis"
+    },
+    {
+      "id": "kiwg-2026",
+      "count": "3",
+      "unit": "national medals",
+      "label": "Khelo India Winter Games, Gulmarg",
+      "detail": "Gold in the sprint, bronze at 10 km and 15 km, for Karnataka",
+      "year": "2026",
+      "sourceRef": "kiwg-2026"
+    }
+  ],
+  "_sectionsNote": "Every section heading lives here. Nothing that a reader sees should sit in build.py.",
+  "sections": {
+    "journey": {
+      "index": "01",
+      "title": "Kodagu to Davos",
+      "lede": "It begins in a district that has never had snow and ends on a World Cup start list at Davos.",
+      "hinge": "All the records, on the record",
+      "hingeNote": "Eleven starts, every one of them scored and published by FIS."
+    },
+    "footprint": {
+      "index": "02",
+      "title": "107 degrees of latitude",
+      "lede": "Every race location across six seasons, plotted by latitude and longitude. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn, and started from a district that has never seen snow.",
+      "anchors": [
+        {
+          "lat": 66.17,
+          "place": "Ruka",
+          "country": "Finland",
+          "note": "Northernmost start"
+        },
+        {
+          "lat": 12.42,
+          "place": "Kodagu",
+          "country": "India",
+          "note": "Home"
+        },
+        {
+          "lat": -40.78,
+          "place": "Antillanca",
+          "country": "Chile",
+          "note": "Southernmost start"
+        }
+      ],
+      "mapNote": "From 41°S at Antillanca to 66°N at Ruka. Kodagu sits almost exactly halfway between the two, at 12°N, and has never had snow."
+    },
+    "beyond": {
+      "index": "03",
+      "title": "Two summits and four certificates",
+      "lede": "Elbrus in 2018, the highest point in Europe. Ruapehu in 2019, an active volcano with a ski field on it, where she took the certification that let her teach abroad."
+    },
+    "record": {
+      "index": "04",
+      "title": "Every start, 2020 to 2026"
+    },
+    "media": {
+      "index": "05",
+      "title": "Press and pictures",
+      "lede": "Press coverage, interviews and six seasons of photographs, in one place. Every headline links out to the publication that wrote it."
+    },
+    "ambition": {
+      "index": "06",
+      "title": "The road to 2030",
+      "lede": "Four seasons between here and a start list in the French Alps. Everything up to this point has already happened. Nothing in this chapter has."
+    },
+    "speaking": {
+      "index": "07",
+      "title": "Athlete, speaker, storyteller",
+      "lede": "Four talks, all of them drawn from the same decade of doing it. Each one takes a problem she actually had to solve and shows the working."
+    },
+    "partners": {
+      "index": "08",
+      "title": "Partnerships",
+      "lede": "Bhavani races a full FIS calendar largely at her own expense, and trains alongside other nations' squads because there is no Indian one in her discipline. A season has a fixed shape, and support lands at particular points inside it."
+    },
+    "contact": {
+      "index": "09",
+      "title": "Work with Bhavani"
+    }
+  },
+  "story": {
+    "beats": [
+      {
+        "id": "kodagu",
+        "year": "1995",
+        "heading": "Kodagu",
+        "body": "Born on 14 May 1995 in Kodagu, the coffee-growing hill district of southern Karnataka. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
+        "image": null,
+        "temperature": "warm",
+        "sourceRef": "fis"
+      },
+      {
+        "id": "mountains",
+        "year": "2014",
+        "heading": "The mountains came first",
+        "body": "She started mountaineering at nineteen, trained at ABVIMAS and at the Himalayan Mountaineering Institute in Darjeeling, and by 2017 was a qualified mountaineer and instructor. Everything that follows runs through that, not through a ski club.",
+        "image": "team-with-skis",
+        "temperature": "warm",
+        "sourceRef": "athlete-brief"
+      },
+      {
+        "id": "ncc",
+        "year": "2016",
+        "heading": "The Republic Day contingent",
+        "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp. The route into the mountains ran through a uniformed cadet programme.",
+        "image": null,
+        "temperature": "warm",
+        "sourceRef": "athlete-brief"
+      },
+      {
+        "id": "snow",
+        "year": "2018",
+        "heading": "Snow, and then skis",
+        "body": "Alpine skiing arrived as a tool of the instructing job. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe. She had first seen snow only three years earlier.",
+        "image": "ruapehu",
+        "temperature": "cool",
+        "sourceRef": "athlete-brief"
+      },
+      {
+        "id": "certified",
+        "year": "2019–2020",
+        "heading": "Certified abroad, then cross-country",
+        "body": "An international ski instructor certification in New Zealand, on the slopes of an active volcano, and a season pursuing skiing abroad. She moved to cross-country in 2020: the endurance end of the sport, and the one a mountaineering instructor already has most of the engine for.",
+        "image": "portrait-himachali",
+        "temperature": "cool",
+        "sourceRef": "athlete-brief"
+      },
+      {
+        "id": "international",
+        "year": "2022–",
+        "heading": "Onto the FIS circuit",
+        "body": "Her first FIS-scored races were in Akureyri, northern Iceland, in January 2022. Planica followed in 2023 and Kazakhstan in 2024, then Harbin, Trondheim, Chile, and a first World Cup start at Ruka.",
+        "image": "ski-city-overlook",
+        "temperature": "cool",
+        "sourceRef": "fis"
+      }
+    ]
+  },
+  "careerMilestones": [
+    {
+      "id": "m-2022",
+      "year": "2022",
+      "date": "2022-01-14",
+      "title": "First FIS races",
+      "location": "Akureyri, Iceland",
+      "line": "First FIS-scored starts, in sprint and 10 km interval start.",
+      "result": "Sprint qualification 7th · Interval start 6th",
+      "image": null,
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2023-akureyri",
+      "year": "2023",
+      "date": "2023-01-13",
+      "title": "Akureyri, second season",
+      "location": "Akureyri, Iceland",
+      "line": "Fourth in both the sprint and the interval start.",
+      "result": "4th · 4th",
+      "image": null,
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2023-planica",
+      "year": "2023",
+      "date": "2023-02-28",
+      "title": "Nordic World Ski Championships",
+      "location": "Planica, Slovenia",
+      "line": "First World Championships start, in the 10 km interval start.",
+      "result": "104th",
+      "image": "race-planica-elbrus",
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2024-kaz",
+      "year": "2024",
+      "date": "2024-03-23",
+      "title": "Eastern Europe Cup",
+      "location": "Schuchinsk, Kazakhstan",
+      "line": "Continental cup racing in sprint and interval start.",
+      "result": "42nd · 35th",
+      "image": null,
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2024-scandi",
+      "year": "2024",
+      "date": "2024-12",
+      "title": "First Scandinavian racing block",
+      "location": "Idre, Sweden · Seefeld, Austria · Lygna, Norway",
+      "line": "Three FIS meetings in December, the first sustained block on European snow.",
+      "result": null,
+      "image": "khelo-ladakh-skis",
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2025-harbin",
+      "year": "2025",
+      "date": "2025-02-08",
+      "title": "Asian Winter Games",
+      "location": "Harbin, China",
+      "line": "India's flag bearer at the opening ceremony. Reached the sprint quarter-finals and finished the 5 km freestyle in 18:10.4.",
+      "result": "Sprint 24th, quarter-finalist · 5 km 25th",
+      "image": "flag-almaty",
+      "phase": "international",
+      "sourceRef": "awg-wikipedia",
+      "medals": []
+    },
+    {
+      "id": "m-2025-trondheim",
+      "year": "2025",
+      "date": "2025-02-27",
+      "title": "Nordic World Ski Championships",
+      "location": "Trondheim, Norway",
+      "line": "Second World Championships, in the sprint and the 10 km interval start.",
+      "result": "Sprint 111th · 10 km 105th",
+      "image": null,
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2025-corralco",
+      "year": "2025",
+      "date": "2025-09-14",
+      "title": "International podium in Chile",
+      "location": "Corralco, Chile",
+      "line": "Third place on consecutive days at Corralco, in the interval start and the sprint. Reported in India as the first international cross-country medals won by an Indian woman.",
+      "result": null,
+      "image": null,
+      "phase": "international",
+      "sourceRef": "fis",
+      "medals": [
+        {
+          "metal": "bronze",
+          "event": "Sprint"
+        },
+        {
+          "metal": "bronze",
+          "event": "5 km"
+        }
+      ]
+    },
+    {
+      "id": "m-2025-ruka",
+      "year": "2025",
+      "date": "2025-11-28",
+      "title": "World Cup debut",
+      "location": "Ruka, Finland",
+      "line": "First FIS Cross-Country World Cup start, at 66°N in northern Finland, about forty kilometres short of the Arctic Circle.",
+      "result": "10 km 81st · Sprint 77th",
+      "image": null,
+      "phase": "worldcup",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2025-davos",
+      "year": "2025",
+      "date": "2025-12-14",
+      "title": "World Cup, Trondheim and Davos",
+      "location": "Trondheim, Norway · Davos, Switzerland",
+      "line": "Two further World Cup weekends in December, closing the 2025 calendar year.",
+      "result": "Best 76th",
+      "image": "lake-mountains",
+      "phase": "worldcup",
+      "sourceRef": "fis",
+      "medals": []
+    },
+    {
+      "id": "m-2026-kiwg",
+      "year": "2026",
+      "date": "2026-02-24",
+      "title": "Khelo India Winter Games",
+      "location": "Gulmarg, Jammu and Kashmir, India",
+      "line": "Gold in the 1.5 km sprint in 4:13.91, bronze in the 15 km and bronze in the 10 km, competing for Karnataka.",
+      "result": null,
+      "image": "khelo-ice-sculpture",
+      "phase": "worldcup",
+      "sourceRef": "kiwg-2026",
+      "medals": [
+        {
+          "metal": "gold",
+          "event": "1.5 km sprint"
+        },
+        {
+          "metal": "bronze",
+          "event": "10 km"
+        },
+        {
+          "metal": "bronze",
+          "event": "15 km"
+        }
+      ]
+    }
+  ],
+  "internationalFootprint": [
+    {
+      "id": "kodagu",
+      "place": "Kodagu",
+      "country": "India",
+      "lat": 12.42,
+      "lon": 75.74,
+      "years": [
+        "1995"
+      ],
+      "event": "Home district",
+      "kind": "origin",
+      "sourceRef": "fis",
+      "best": "Home district. 12.4°N, below the Tropic of Cancer.",
+      "image": "roller-vidhana-soudha"
+    },
+    {
+      "id": "gulmarg",
+      "place": "Gulmarg",
+      "country": "India",
+      "lat": 34.05,
+      "lon": 74.38,
+      "years": [
+        "2022",
+        "2026"
+      ],
+      "event": "National championships · Khelo India Winter Games",
+      "kind": "domestic",
+      "sourceRef": "kiwg-2026",
+      "best": "Gold, Nordic sprint, Khelo India 2026",
+      "image": "khelo-ice-sculpture"
+    },
+    {
+      "id": "akureyri",
+      "place": "Akureyri",
+      "country": "Iceland",
+      "lat": 65.68,
+      "lon": -18.09,
+      "years": [
+        "2022",
+        "2023",
+        "2024"
+      ],
+      "event": "FIS races",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "4th, sprint and interval start, 2023",
+      "image": null
+    },
+    {
+      "id": "planica",
+      "place": "Planica",
+      "country": "Slovenia",
+      "lat": 46.48,
+      "lon": 13.72,
+      "years": [
+        "2023"
+      ],
+      "event": "Nordic World Ski Championships",
+      "kind": "championship",
+      "sourceRef": "fis",
+      "best": "World Championships debut, 104th · FIS race, 31st",
+      "image": "race-planica-elbrus"
+    },
+    {
+      "id": "schuchinsk",
+      "place": "Schuchinsk",
+      "country": "Kazakhstan",
+      "lat": 52.93,
+      "lon": 70.2,
+      "years": [
+        "2024"
+      ],
+      "event": "Eastern Europe Cup",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "35th, Eastern Europe Cup, 2024",
+      "image": "flag-almaty"
+    },
+    {
+      "id": "idre",
+      "place": "Idre",
+      "country": "Sweden",
+      "lat": 61.86,
+      "lon": 12.72,
+      "years": [
+        "2024"
+      ],
+      "event": "FIS races",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "61st, sprint, 2024",
+      "image": null
+    },
+    {
+      "id": "seefeld",
+      "place": "Seefeld",
+      "country": "Austria",
+      "lat": 47.33,
+      "lon": 11.19,
+      "years": [
+        "2024"
+      ],
+      "event": "FIS races",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "111th, interval start, 2024",
+      "image": null
+    },
+    {
+      "id": "lygna",
+      "place": "Lygna",
+      "country": "Norway",
+      "lat": 60.38,
+      "lon": 10.61,
+      "years": [
+        "2024"
+      ],
+      "event": "FIS races",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "2024 Scandinavian racing block",
+      "image": null
+    },
+    {
+      "id": "harbin",
+      "place": "Harbin",
+      "country": "China",
+      "lat": 45.8,
+      "lon": 126.53,
+      "years": [
+        "2025"
+      ],
+      "event": "Asian Winter Games",
+      "kind": "championship",
+      "sourceRef": "awg-wikipedia",
+      "best": "23rd, sprint classical, quarter-finalist, 2025",
+      "image": null
+    },
+    {
+      "id": "trondheim",
+      "place": "Trondheim",
+      "country": "Norway",
+      "lat": 63.43,
+      "lon": 10.39,
+      "years": [
+        "2025"
+      ],
+      "event": "World Championships · World Cup",
+      "kind": "worldcup",
+      "sourceRef": "fis",
+      "best": "World Championships and a World Cup start, 2025",
+      "image": null
+    },
+    {
+      "id": "antillanca",
+      "place": "Antillanca",
+      "country": "Chile",
+      "lat": -40.78,
+      "lon": -72.2,
+      "years": [
+        "2025"
+      ],
+      "event": "FIS race",
+      "kind": "fis",
+      "sourceRef": "fis",
+      "best": "4th, interval start, 2025",
+      "image": null
+    },
+    {
+      "id": "corralco",
+      "place": "Corralco",
+      "country": "Chile",
+      "lat": -38.45,
+      "lon": -71.6,
+      "years": [
+        "2025"
+      ],
+      "event": "South American Cup · national championships",
+      "kind": "podium",
+      "sourceRef": "fis",
+      "best": "3rd, sprint and 5 km, 2025",
+      "image": null
+    },
+    {
+      "id": "ruka",
+      "place": "Ruka",
+      "country": "Finland",
+      "lat": 66.17,
+      "lon": 29.13,
+      "years": [
+        "2025"
+      ],
+      "event": "World Cup",
+      "kind": "worldcup",
+      "sourceRef": "fis",
+      "best": "World Cup debut, 76th in the sprint, 2025",
+      "image": null
+    },
+    {
+      "id": "davos",
+      "place": "Davos",
+      "country": "Switzerland",
+      "lat": 46.8,
+      "lon": 9.83,
+      "years": [
+        "2025"
+      ],
+      "event": "World Cup",
+      "kind": "worldcup",
+      "sourceRef": "fis",
+      "best": "76th, World Cup sprint and interval start, 2025",
+      "image": null
+    }
+  ],
+  "mountainAchievements": [
+    {
+      "id": "elbrus",
+      "peak": "Mt. Elbrus",
+      "country": "Russia",
+      "metres": 5642,
+      "note": "The highest summit in Europe.",
+      "image": "race-planica-elbrus",
+      "sourceRef": "portfolio"
+    },
+    {
+      "id": "ruapehu",
+      "peak": "Mt. Ruapehu",
+      "country": "New Zealand",
+      "metres": 2797,
+      "note": "An active volcano, and a ski field. She took her international skiing certification here in 2019.",
+      "image": "ruapehu",
+      "sourceRef": "portfolio"
+    }
+  ],
+  "certifications": [
+    {
+      "id": "amc",
+      "title": "Grade A Adventure Course",
+      "body": "ABVIMAS",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "mountain"
+    },
+    {
+      "id": "hmi-basic",
+      "title": "Special Basic Mountaineering",
+      "body": "Himalayan Mountaineering Institute, Darjeeling",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "mountain"
+    },
+    {
+      "id": "hmi-moi",
+      "title": "Method of Instruction",
+      "body": "Himalayan Mountaineering Institute, Darjeeling",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "teaching"
+    },
+    {
+      "id": "hmi-guest",
+      "title": "Guest Instructor, one year",
+      "body": "Himalayan Mountaineering Institute, Darjeeling",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "teaching"
+    },
+    {
+      "id": "jim-ski",
+      "title": "Basic and intermediate skiing",
+      "body": "Jawaharlal Institute of Mountaineering",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "snow"
+    },
+    {
+      "id": "iism-ski",
+      "title": "Advanced skiing",
+      "body": "Indian Institute of Skiing and Mountaineering, Kashmir",
+      "year": null,
+      "sourceRef": "portfolio",
+      "phase": "snow"
+    },
+    {
+      "id": "nz-ski",
+      "title": "International skiing certification",
+      "body": "Snowsports instructor certification",
+      "year": "2019",
+      "sourceRef": "portfolio",
+      "phase": "international"
+    }
+  ],
+  "results": {
+    "note": "Every scored start, by year. FIS-scored races carry their finishing position; domestic results are listed where the organiser published one.",
+    "filters": [
+      {
+        "id": "all",
+        "label": "All"
+      },
+      {
+        "id": "international",
+        "label": "International"
+      },
+      {
+        "id": "khelo-india",
+        "label": "Khelo India"
+      },
+      {
+        "id": "national",
+        "label": "National"
+      },
+      {
+        "id": "biathlon",
+        "label": "Biathlon"
+      }
+    ],
+    "rows": [
+      {
+        "id": "r01",
+        "year": "2026",
+        "event": "Khelo India Winter Games",
+        "detail": "Sprint 1.5 km",
+        "place": "Gulmarg",
+        "medal": "gold",
+        "mark": "4:13.91",
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": true,
+        "sourceRef": "kiwg-2026"
+      },
+      {
+        "id": "r02",
+        "year": "2026",
+        "event": "Khelo India Winter Games",
+        "detail": "15 km",
+        "place": "Gulmarg",
+        "medal": "bronze",
+        "mark": "53:20.44",
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": true,
+        "sourceRef": "kiwg-2026"
+      },
+      {
+        "id": "r03",
+        "year": "2026",
+        "event": "Khelo India Winter Games",
+        "detail": "10 km",
+        "place": "Gulmarg",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": true,
+        "sourceRef": "kiwg-2026"
+      },
+      {
+        "id": "r04",
+        "year": "2025",
+        "event": "FIS Cross-Country World Cup",
+        "detail": "10 km interval start",
+        "place": "Ruka, Finland",
+        "medal": null,
+        "mark": "81st",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r04b",
+        "year": "2025",
+        "event": "FIS Cross-Country World Cup",
+        "detail": "Sprint and 10 km interval start",
+        "place": "Davos, Switzerland",
+        "medal": null,
+        "mark": "76th · 76th",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r05",
+        "year": "2025",
+        "event": "Nordic World Ski Championships",
+        "detail": "10 km interval start",
+        "place": "Trondheim, Norway",
+        "medal": null,
+        "mark": "105th",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r06",
+        "year": "2025",
+        "event": "Asian Winter Games",
+        "detail": "Sprint classical, quarter-finalist",
+        "place": "Harbin, China",
+        "medal": null,
+        "mark": "24th",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "awg-wikipedia"
+      },
+      {
+        "id": "r07",
+        "year": "2025",
+        "event": "Chilean national championships (FIS)",
+        "detail": "Interval start",
+        "place": "Corralco, Chile",
+        "medal": "bronze",
+        "mark": "3rd",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r08",
+        "year": "2025",
+        "event": "Chilean national championships (FIS)",
+        "detail": "Sprint",
+        "place": "Corralco, Chile",
+        "medal": "bronze",
+        "mark": "3rd",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r09",
+        "year": "2023",
+        "event": "Nordic World Ski Championships",
+        "detail": "10 km interval start",
+        "place": "Planica, Slovenia",
+        "medal": null,
+        "mark": "104th",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r10",
+        "year": "2023",
+        "event": "FIS races",
+        "detail": "Sprint and interval start",
+        "place": "Akureyri, Iceland",
+        "medal": null,
+        "mark": "4th · 4th",
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r11",
+        "year": "2025",
+        "event": "South American Cup",
+        "detail": "Sprint and interval start",
+        "place": "Corralco, Chile",
+        "medal": null,
+        "mark": "7th",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r12",
+        "year": "2025",
+        "event": "FIS race",
+        "detail": "Interval start",
+        "place": "Antillanca, Chile",
+        "medal": null,
+        "mark": "4th",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r13",
+        "year": "2025",
+        "event": "Asian Winter Games",
+        "detail": "5 km freestyle",
+        "place": "Harbin, China",
+        "medal": null,
+        "mark": "18:10.4 · 25th",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "awg-wikipedia"
+      },
+      {
+        "id": "r14",
+        "year": "2024",
+        "event": "Eastern Europe Cup",
+        "detail": "Sprint and interval start",
+        "place": "Schuchinsk, Kazakhstan",
+        "medal": null,
+        "mark": "42nd · 35th",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r15",
+        "year": "2024",
+        "event": "FIS races",
+        "detail": "Sprint and interval start",
+        "place": "Idre, Sweden",
+        "medal": null,
+        "mark": "61st",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r16",
+        "year": "2022",
+        "event": "FIS races",
+        "detail": "Sprint and interval start",
+        "place": "Akureyri, Iceland",
+        "medal": null,
+        "mark": "7th · 6th",
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "fis"
+      },
+      {
+        "id": "r17",
+        "year": "2024",
+        "event": "Khelo India Winter Games",
+        "detail": "10 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r18",
+        "year": "2024",
+        "event": "Khelo India Winter Games",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r19",
+        "year": "2024",
+        "event": "Khelo India Winter Games",
+        "detail": "1.6 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r20",
+        "year": "2023",
+        "event": "Khelo India Winter Games",
+        "detail": "10 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r21",
+        "year": "2023",
+        "event": "Khelo India Winter Games",
+        "detail": "1.5 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r22",
+        "year": "2023",
+        "event": "Khelo India Winter Games",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r23",
+        "year": "2022",
+        "event": "National Cross-Country Skiing Championship",
+        "detail": "1.5 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "national"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r24",
+        "year": "2022",
+        "event": "National Cross-Country Skiing Championship",
+        "detail": "10 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "national"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r25",
+        "year": "2022",
+        "event": "National Cross-Country Skiing Championship",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "national"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r26",
+        "year": "2022",
+        "event": "National Winter Biathlon Championship",
+        "detail": "10 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "national",
+          "biathlon"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r27",
+        "year": "2022",
+        "event": "National Winter Biathlon Championship",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "national",
+          "biathlon"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r28",
+        "year": "2022",
+        "event": "All India Open Ski and Snowboard Championship",
+        "detail": "1.5 km",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "national"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r29",
+        "year": "2022",
+        "event": "All India Open Ski and Snowboard Championship",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "national"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r30",
+        "year": "2021",
+        "event": "Khelo India Winter Games",
+        "detail": "1.4 km",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r31",
+        "year": "2021",
+        "event": "Khelo India Winter Games",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r32",
+        "year": "2020",
+        "event": "Khelo India Winter Games",
+        "detail": "10 km",
+        "place": "India",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r33",
+        "year": "2020",
+        "event": "Khelo India Winter Games",
+        "detail": "5 km",
+        "place": "India",
+        "medal": "bronze",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      },
+      {
+        "id": "r34",
+        "year": "—",
+        "event": "Raiffeisen Cross-Country Cup",
+        "detail": "5 km",
+        "place": "Italy",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "international"
+        ],
+        "featured": false,
+        "sourceRef": "portfolio"
+      }
+    ]
+  },
+  "press": [
+    {
+      "id": "ap-2025",
+      "publication": "Associated Press",
+      "title": "Olympic hopeful cross-country skier tries to put India on the winter sports map",
+      "date": "2025-12-10",
+      "byline": "Ken Maguire",
+      "context": "A profile filed during her first World Cup block, on the coffee farm upbringing and the economics of racing without a federation budget.",
+      "url": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
+      "verified": true,
+      "image": "portrait-cap"
+    },
+    {
+      "id": "kf-2025",
+      "publication": "Karnataka First",
+      "title": "Chasing gold through snow",
+      "date": "2025-10-20",
+      "byline": null,
+      "context": "Regional coverage of the Corralco bronzes and the Kodagu background.",
+      "url": "https://www.karnatakafirst.com/2025/10/20/chasing-gold-through-snow/",
+      "verified": true,
+      "image": "medals-detail"
+    },
+    {
+      "id": "fis-profile",
+      "publication": "FIS",
+      "title": "Athlete biography · Bhavani Thekkada Nanjunda",
+      "date": null,
+      "byline": null,
+      "context": "The governing body's complete record of her scored races since 2022.",
+      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
+      "verified": true,
+      "image": "race-orange-bib"
+    },
+    {
+      "id": "kiwg-official",
+      "publication": "Khelo India",
+      "title": "KIWG 2026 medal tally",
+      "date": "2026-02",
+      "byline": null,
+      "context": "Official results for the 2026 edition at Gulmarg.",
+      "url": "https://winter.kheloindia.gov.in/medal-tally",
+      "verified": true,
+      "image": "khelo-ice-sculpture"
+    },
+    {
+      "publication": "Femina",
+      "title": "Meet TN Bhavani, first Indian to win a cross-country skiing medal",
+      "url": "https://share.google/Ynch5cGQ9Yyi3XJpR",
+      "date": "",
+      "context": "A profile built around the bronze in Chile. The third outlet to report that medal as a first for an Indian woman.",
+      "image": "podium-first"
+    },
+    {
+      "publication": "The Hindu",
+      "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
+      "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
+      "date": "",
+      "context": "On the Khelo India Winter Games at Gulmarg. The headline counts three medals as golds. The official tally is one gold and two bronzes.",
+      "image": "podium-gulmarg-2022"
+    },
+    {
+      "publication": "Olympics.com",
+      "title": "Bhavani Thekkada, an inspirational story",
+      "url": "https://www.olympics.com/hi/news/bhavani-thekkada-inspirational-story",
+      "date": "",
+      "context": "Her story on the Olympic movement's own site, published in Hindi.",
+      "image": "portrait-team-kit"
+    },
+    {
+      "publication": "The New Indian Express",
+      "title": "National skiing athlete from Kodagu looks for sponsors to support her Olympic dream",
+      "url": "https://www.newindianexpress.com/sport/other/2022/apr/21/national-skiing-athlete-from-kodagu-looks-for-sponsors-to-support-her-olympic-dream-2444798.html",
+      "date": "2022-04-21",
+      "context": "The earliest of the coverage, before her first World Championships, on funding a season without a federation budget.",
+      "image": "roller-road"
+    },
+    {
+      "publication": "FIS Stories",
+      "title": "Bhavani Thekkada, in the federation's story series",
+      "url": "https://fis.shar.estori.es/go/40b85a82-a28c-897e-7cbb-3a1ef8fbe32b/83bc8941-ccb3-006f-2573-3a1ef8fe4a18",
+      "date": "",
+      "context": "Published by the international governing body for the sport.",
+      "image": "race-forest"
+    },
+    {
+      "publication": "YouTube",
+      "title": "Bhavani Thekkada, on video",
+      "url": "https://youtu.be/uAPd7bUt87o",
+      "date": "",
+      "context": "Video interview and race footage.",
+      "image": "start-line-gulmarg"
+    }
+  ],
+  "gallery": {
+    "groups": [
+      {
+        "id": "race",
+        "label": "Race"
+      },
+      {
+        "id": "training",
+        "label": "Training"
+      },
+      {
+        "id": "mountain",
+        "label": "Mountain"
+      },
+      {
+        "id": "india",
+        "label": "India"
+      },
+      {
+        "id": "international",
+        "label": "International"
+      }
+    ]
+  },
+  "partnership": {
+    "standfirstSource": {
+      "sourceType": "public-secondary",
+      "sourceName": "Associated Press",
+      "sourceUrl": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
+      "verified": true,
+      "needsConfirmation": false,
+      "note": "AP reports she is largely self-funded and has trained with help from the Canadian, Chilean and Italian national teams."
+    },
+    "areas": [
+      {
+        "id": "training",
+        "index": "01",
+        "title": "Training blocks on snow",
+        "body": "The European race season opens in late November, and the athletes on that start list have been on snow since October. A pre-season block in Scandinavia or the Alps decides whether she arrives race-fit or arrives to get fit."
+      },
+      {
+        "id": "travel",
+        "index": "02",
+        "title": "Competition travel",
+        "body": "The 2025 December block ran Ruka to Trondheim to Davos in sixteen days. Entry fees and accommodation are sometimes covered by the federation. Getting there rarely is."
+      },
+      {
+        "id": "coaching",
+        "index": "03",
+        "title": "Coaching and wax service",
+        "body": "Every other athlete on a World Cup start list arrives with a service team reading the snow that morning. Wax chosen for the wrong temperature loses more time than fitness can win back."
+      },
+      {
+        "id": "equipment",
+        "index": "04",
+        "title": "Race skis and kit",
+        "body": "Classic and freestyle skis in cold, normal and warm grinds, plus poles, boots and a racing suit. Equipment is graded to conditions, so a single pair does not cover a season."
+      }
+    ],
+    "cta": {
+      "label": "Discuss a partnership",
+      "href": "#contact",
+      "topic": "Partnership or sponsorship"
+    },
+    "partners": [],
+    "season": {
+      "note": "A season, and where support lands in it",
+      "months": [
+        "Oct",
+        "Nov",
+        "Dec",
+        "Jan",
+        "Feb",
+        "Mar"
+      ],
+      "bands": [
+        {
+          "id": "preseason",
+          "label": "Pre-season on snow",
+          "from": 0.0,
+          "to": 1.6,
+          "need": "Training blocks",
+          "kind": "train"
+        },
+        {
+          "id": "worldcup",
+          "label": "World Cup period",
+          "from": 1.6,
+          "to": 3.0,
+          "need": "Travel, wax service",
+          "kind": "race"
+        },
+        {
+          "id": "fis",
+          "label": "FIS racing",
+          "from": 3.0,
+          "to": 4.0,
+          "need": "Travel",
+          "kind": "race"
+        },
+        {
+          "id": "national",
+          "label": "Khelo India, nationals",
+          "from": 4.0,
+          "to": 5.0,
+          "need": "Travel",
+          "kind": "home"
+        },
+        {
+          "id": "champs",
+          "label": "World Championships",
+          "from": 4.6,
+          "to": 6.0,
+          "need": "Wax service, race skis",
+          "kind": "race"
+        }
+      ],
+      "sourceRef": "fis"
+    },
+    "current": {
+      "note": "Current support",
+      "list": [
+        {
+          "name": "Reliance Foundation",
+          "kind": "Athlete support",
+          "logo": "reliance-foundation.svg",
+          "logoSource": "reliancefoundation.org",
+          "role": "Athlete support through their sports programme: sports psychologist, nutritionist and strength coach, and conditioning blocks in Mumbai through the Indian summer."
+        },
+        {
+          "name": "Government of Karnataka",
+          "kind": "State support",
+          "logo": "government-of-karnataka.png",
+          "logoSource": "karnataka.gov.in",
+          "role": "State backing from her home state, the department that has recognised her results and carried her through domestic selection and the Khelo India programme."
+        }
+      ],
+      "logoNote": "Permission to use both marks confirmed by the athlete, 11 Aug 2026. Each entry falls back to the name set in type until its artwork is present.",
+      "sourceRef": "athlete-brief"
+    },
+    "openTo": [
+      "Sponsorship",
+      "Brand partnerships",
+      "Campaigns",
+      "Product collaborations",
+      "Athlete partnerships"
+    ]
+  },
+  "contact": {
+    "email": "bhavani.thekkada2026@gmail.com",
+    "phone": "+91 97439 36387",
+    "phoneHref": "tel:+919743936387",
+    "instagramHandle": "bhavani.thekkada",
+    "instagramUrl": "https://www.instagram.com/bhavani.thekkada/",
+    "instagramVerified": false,
+    "formIsPrototype": true,
+    "source": {
+      "sourceType": "client-supplied",
+      "sourceName": "Bhavani portfolio.pdf, sponsorship contact page",
+      "verified": false,
+      "needsConfirmation": true,
+      "note": "Published as sponsorship contacts in the supplied portfolio. Confirm before launch. The Instagram URL is constructed from the handle and has not been opened."
+    },
+    "heading": "Work with Bhavani",
+    "lede": "One route in, for everything. Say which of these it is and it reaches the right place faster.",
+    "categories": [
+      "Speaking",
+      "Partnership or sponsorship",
+      "Media",
+      "Brand collaboration",
+      "Other"
+    ],
+    "instagramFeature": "https://www.instagram.com/p/DO5DsKlEY6V/"
+  },
+  "seo": {
+    "title": "Bhavani Thekkada | Indian Cross-Country Skier",
+    "description": "Official athlete portfolio for Indian cross-country skier Bhavani Thekkada Nanjunda, tracing her route from Kodagu and mountaineering into international FIS competition.",
+    "ogImage": "assets/img/hero-portrait-1600.webp",
+    "siteUrl": "https://bt-portfolio-ddd16.web.app/"
+  },
+  "sources": {
+    "fis": {
+      "sourceType": "public-primary",
+      "sourceName": "FIS athlete biography",
+      "sourceUrl": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10"
+    },
+    "awg-wikipedia": {
+      "sourceType": "public-secondary",
+      "sourceName": "India at the 2025 Asian Winter Games",
+      "sourceUrl": "https://en.wikipedia.org/wiki/India_at_the_2025_Asian_Winter_Games",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10"
+    },
+    "kiwg-2026": {
+      "sourceType": "public-secondary",
+      "sourceName": "Khelo India Winter Games 2026 results, via The Tribune and Olympics.com",
+      "sourceUrl": "https://winter.kheloindia.gov.in/medal-tally",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10",
+      "note": "The official tally page renders its table with JavaScript and could not be read directly. Medals, distances and times were confirmed against Tribune India and Olympics.com reporting of the same events."
+    },
+    "ap": {
+      "sourceType": "public-secondary",
+      "sourceName": "Associated Press, Ken Maguire, 10 December 2025",
+      "sourceUrl": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-10"
+    },
+    "portfolio": {
+      "sourceType": "client-supplied",
+      "sourceName": "Bhavani portfolio.pdf",
+      "sourceUrl": null,
+      "verified": false,
+      "needsConfirmation": true,
+      "lastChecked": "2026-08-10",
+      "note": "Supplied by the client. Usable in the prototype, to be confirmed before launch."
+    },
+    "athlete-brief": {
+      "sourceType": "client-supplied",
+      "sourceName": "Bhavani Thekkada, website structure and content brief",
+      "verified": false,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-11",
+      "note": "Supplied by the athlete. Dates before 2022 and all forward targets come from here. Targets are stated intentions and are labelled as such on the page, never as results."
+    },
+    "thebridge": {
+      "sourceType": "public-secondary",
+      "sourceName": "The Bridge",
+      "sourceUrl": "https://thebridge.in/skiing/tn-bhavani-india-first-cross-country-skiing-medallist-54677",
+      "verified": true,
+      "needsConfirmation": false,
+      "lastChecked": "2026-08-12",
+      "note": "Reports her as the first Indian woman to medal in a FIS cross-country event, for the bronze at Corralco. Independent of the AP report, which carries the same characterisation."
+    }
+  },
+  "withheld": [
+    {
+      "claim": "India's No. 1 cross-country skier",
+      "origin": "bhavanithekkada 2026.pdf",
+      "why": "No published national ranking was found. FIS publishes points, not a national number one.",
+      "status": "client-supplied-needs-verification"
+    },
+    {
+      "claim": "First South Indian to receive recognition in skiing",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "Unfalsifiable as worded. No source defines the recognition or the comparison set.",
+      "status": "client-supplied-needs-verification"
+    },
+    {
+      "claim": "First Indian woman to hold an international ski instructor certificate",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "The 2019 New Zealand certification is credible and is published. The 'first Indian woman' part has no source.",
+      "status": "client-supplied-needs-verification"
+    },
+    {
+      "claim": "Committee member for the ski and snowboard federation of India, appointed by IOA",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "No federation or IOA announcement found.",
+      "status": "client-supplied-needs-verification"
+    },
+    {
+      "claim": "First Indian to reach the quarter-finals in cross-country skiing",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "She did reach the sprint quarter-finals at Harbin 2025 and that is published. The 'first Indian' part appears wrong: Padma Namgail also qualified for the quarter-finals in the men's sprint at the same Games.",
+      "status": "contradicted-by-source"
+    },
+    {
+      "claim": "National record in the 5 km, 18:10",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "18:10.4 is her 5 km freestyle time at Harbin 2025 and is published as a result. No source confirms it as a national record.",
+      "status": "partly-verified-figure-published-as-result"
+    },
+    {
+      "claim": "Only female athlete representing India at the Nordic World Ski Championships 2025",
+      "origin": "Bhavani portfolio.pdf",
+      "why": "Plausible but not checked against the Trondheim 2025 entry list.",
+      "status": "client-supplied-needs-verification"
+    },
+    {
+      "claim": "India's first international medal in women's cross-country skiing",
+      "origin": "Associated Press and Karnataka First",
+      "why": "Held back until a second independent outlet was found. The Associated Press and The Bridge both report it, so it is published on the site as reporting and attributed to them, never asserted as a bare fact. No governing body publishes a register of national firsts, so attribution is the strongest honest form available.",
+      "status": "published-attributed"
+    },
+    {
+      "claim": "Reliance Foundation, Government of India and Karnataka Government as partners",
+      "origin": "The existing bt-portfolio-ddd16.web.app site",
+      "why": "No evidence of any of these partnerships. Naming real organisations as sponsors without agreements is the single largest liability on the current site.",
+      "status": "removed"
+    },
+    {
+      "claim": "Nordic Skiing World Champion",
+      "origin": "The existing site's page title",
+      "why": "Untrue. Her best World Championships finish is 104th. Removed.",
+      "status": "removed"
+    }
+  ],
+  "certificationPhases": [
+    {
+      "id": "mountain",
+      "index": "01",
+      "label": "Climbing",
+      "note": "Qualified on rock and snow first.",
+      "image": "team-with-skis",
+      "where": "Darjeeling and Manali",
+      "years": "2013–2017"
+    },
+    {
+      "id": "teaching",
+      "index": "02",
+      "label": "Instructing",
+      "note": "A teaching qualification, then a year teaching it.",
+      "image": "khelo-ladakh-portrait",
+      "where": "Himalayan Mountaineering Institute",
+      "years": "2017"
+    },
+    {
+      "id": "snow",
+      "index": "03",
+      "label": "Skiing",
+      "note": "Skis arrived as equipment for the instructing job.",
+      "image": "khelo-ladakh-skis",
+      "where": "Gulmarg, Kashmir",
+      "years": "2018"
+    },
+    {
+      "id": "international",
+      "index": "04",
+      "label": "Instructing abroad",
+      "note": "The first certification earned outside India.",
+      "image": "ruapehu",
+      "where": "Mt. Ruapehu, New Zealand",
+      "years": "2019"
+    }
+  ],
+  "targets": {
+    "kicker": "The road to 2030",
+    "note": "Four seasons between here and a start list in the French Alps.",
+    "items": [
+      {
+        "year": "2027",
+        "title": "A third World Championship",
+        "line": "Back to the start list, with two editions already behind her."
+      },
+      {
+        "year": "2028",
+        "title": "Asian Winter Games and Worlds",
+        "line": "Qualification for both, on stronger international form."
+      },
+      {
+        "year": "2029",
+        "title": "Olympic qualification pathway",
+        "line": "World Championships, and the points that decide 2030."
+      },
+      {
+        "year": "2030",
+        "title": "Winter Olympics",
+        "line": "The reason the rest of it is planned the way it is."
+      }
+    ],
+    "sourceRef": "athlete-brief",
+    "finale": {
+      "eyebrow": "The target",
+      "year": "2030",
+      "title": "Winter Olympics",
+      "host": "French Alps, France",
+      "dates": "1 to 17 February 2030",
+      "line": "Everything above this is arranged around one start list. Qualification runs on FIS points, and points only come from races she can afford to get to before the window closes.",
+      "steps": [
+        {
+          "k": "Now",
+          "v": "Full FIS calendar, largely self-funded"
+        },
+        {
+          "k": "2027–2029",
+          "v": "World Championships and Asian Winter Games"
+        },
+        {
+          "k": "Decides it",
+          "v": "FIS points across the qualification window"
+        }
+      ],
+      "cta": {
+        "label": "What support pays for",
+        "href": "#partners"
+      },
+      "source": {
+        "sourceType": "public-primary",
+        "sourceName": "International Olympic Committee",
+        "sourceUrl": "https://www.olympics.com/ioc/alpes-2030",
+        "verified": true,
+        "needsConfirmation": false,
+        "lastChecked": "2026-08-12",
+        "note": "The French Alps were awarded the 2030 Winter Olympics at the 142nd IOC Session on 24 July 2024. Games dated 1 to 17 February 2030."
+      }
+    },
+    "eyebrow": "What comes next"
+  },
+  "beyondFinishLine": {
+    "kicker": "Beyond the finish line",
+    "lede": "Qualifying is the target. It is not the whole of the ambition.",
+    "points": [
+      {
+        "title": "A sport with no home crowd",
+        "body": "India has no permanent cross-country base and almost no domestic race calendar. Every season she competes in is assembled from abroad."
+      },
+      {
+        "title": "Making the sport legible",
+        "body": "Most people in India have never watched a cross-country race. Part of the job is explaining what it is and why the distances are hard."
+      },
+      {
+        "title": "Athletes behind her",
+        "body": "A pathway that exists on paper is different from one somebody has already walked. She would rather not be the last as well as among the first."
+      },
+      {
+        "title": "Proving the ceiling is higher",
+        "body": "An Indian woman on a World Cup start list changes what the next selection meeting thinks is realistic."
+      }
+    ],
+    "sourceRef": "athlete-brief"
+  },
+  "speaking": {
+    "lede": "She has spent ten years explaining a sport nobody around her had heard of, to selectors, to sponsors and to customs officers. The talks come out of that.",
+    "themes": [
+      {
+        "title": "Starting from zero infrastructure",
+        "body": "What it actually takes to reach an international start line from a country with no facility, no calendar and no coaching in your discipline.",
+        "from": "Kodagu 2013 to a World Cup start list, 2025"
+      },
+      {
+        "title": "The mountain before the medal",
+        "body": "Mountaineering, instructing, and how an unglamorous apprenticeship turned into an endurance career.",
+        "from": "ABVIMAS and HMI Darjeeling, 2013–2017"
+      },
+      {
+        "title": "Being the only one in the room",
+        "body": "The practical reality of being the sole woman on a team sheet, and what changes when somebody has gone first.",
+        "from": "India’s flagbearer, Asian Winter Games 2025"
+      },
+      {
+        "title": "Endurance, honestly",
+        "body": "What a 10 km interval start costs, how a season is planned, and why most of the work is invisible.",
+        "from": "10 km interval start, Ruka World Cup, 2025"
+      }
+    ],
+    "audiences": [
+      "Corporates",
+      "Schools",
+      "Universities",
+      "Conferences",
+      "Leadership programmes",
+      "Women's events",
+      "Sports organisations",
+      "Panels and fireside conversations"
+    ],
+    "cta": {
+      "label": "Invite Bhavani to speak",
+      "href": "#contact",
+      "topic": "Speaking"
+    },
+    "sourceRef": "athlete-brief",
+    "close": "The athlete is on the FIS record. The storyteller is the reason there were seasons to race at all. Almost every trip had to be paid for by somebody she talked into it first.",
+    "availability": "Her race season runs from late November to March. Dates inside it are limited."
+  },
+  "sport": {
+    "kicker": "The sport",
+    "lede": "The sport splits two ways, by technique and by distance. She races every combination.",
+    "disciplines": [
+      {
+        "name": "Classic",
+        "note": "Skis run inside two grooves cut into the snow. Her sprint at Harbin was a classical race.",
+        "sourceRef": "awg-wikipedia"
+      },
+      {
+        "name": "Freestyle",
+        "note": "A skating stride on a wide groomed piste, no grooves. Her 5 km at Harbin was freestyle, in 18:10.",
+        "sourceRef": "awg-wikipedia"
+      },
+      {
+        "name": "Sprint",
+        "note": "About 1.3 to 1.5 km, run as knockout heats. She reached the quarter-final at Harbin in 2025.",
+        "sourceRef": "awg-wikipedia"
+      },
+      {
+        "name": "Distance",
+        "note": "10 or 15 km, alone against the clock. Bronze at both distances at Gulmarg in 2026.",
+        "sourceRef": "kiwg-2026"
+      }
+    ],
+    "yearNote": "There is no permanent snow in India for her discipline, so her year follows it across the hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September for the southern winter."
+  },
+  "headline": {
+    "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",
+    "sourceRefs": [
+      "ap",
+      "thebridge"
+    ],
+    "line": "Two bronzes in Chile in 2025, a World Cup start list at Ruka in the December that followed, and a sprint quarter-final at the Asian Winter Games. She reached all of it from a country with no cross-country course, no domestic race calendar and no coach in her discipline.",
+    "figures": [
+      {
+        "n": "3",
+        "unit": "World Cup starts",
+        "note": "Ruka, Trondheim and Davos, inside sixteen days",
+        "year": "2025"
+      },
+      {
+        "n": "2",
+        "unit": "World Championships",
+        "note": "Planica and Trondheim, two editions on the start list",
+        "year": "2023 · 2025"
+      },
+      {
+        "n": "2",
+        "unit": "international bronzes",
+        "note": "Sprint and 5 km at Corralco, on the Chilean championship card",
+        "year": "2025"
+      }
+    ]
+  }
+}

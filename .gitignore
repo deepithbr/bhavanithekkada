@@ -1,0 +1,13 @@
+# Build output. release.py regenerates dist/ from index.html and assets/,
+# and tools/make_zip.py regenerates the upload zip from dist/. Neither is
+# a source of truth, and together they are 15MB of churn per rebuild.
+dist/
+bhavani-site-dist.zip
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store

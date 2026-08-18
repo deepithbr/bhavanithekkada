@@ -1,0 +1,422 @@
+[
+  {
+    "id": "portfolioA/p10_00.jpg",
+    "hash": "4073a9f3f2",
+    "w": 4032,
+    "h": 2960,
+    "kb": 2598,
+    "dupes": [
+      "portfolioB/p09_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p07_02.jpg",
+    "hash": "e6d75b38dc",
+    "w": 2268,
+    "h": 4032,
+    "kb": 3506,
+    "dupes": [
+      "portfolioB/p07_02.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p01_00.jpg",
+    "hash": "5b0b3a8ec9",
+    "w": 3508,
+    "h": 2480,
+    "kb": 2251,
+    "dupes": [
+      "portfolioB/p01_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p04_00.jpg",
+    "hash": "4ab8d0600b",
+    "w": 3508,
+    "h": 2480,
+    "kb": 1822,
+    "dupes": [
+      "portfolioB/p04_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p07_00.jpg",
+    "hash": "40a0513da4",
+    "w": 2245,
+    "h": 1684,
+    "kb": 1954,
+    "dupes": [
+      "portfolioB/p07_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p07_01.jpg",
+    "hash": "ff4c59b137",
+    "w": 2233,
+    "h": 1675,
+    "kb": 1811,
+    "dupes": [
+      "portfolioB/p07_01.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_05.jpg",
+    "hash": "cb055da672",
+    "w": 1440,
+    "h": 1800,
+    "kb": 615,
+    "dupes": [
+      "portfolioB/p08_05.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_01.jpg",
+    "hash": "2506040cf3",
+    "w": 1440,
+    "h": 1452,
+    "kb": 676,
+    "dupes": [
+      "portfolioB/p08_01.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_03.jpg",
+    "hash": "e1b03d0acb",
+    "w": 1440,
+    "h": 1447,
+    "kb": 772,
+    "dupes": [
+      "portfolioB/p08_03.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_04.jpg",
+    "hash": "792b0d2c26",
+    "w": 1440,
+    "h": 1440,
+    "kb": 1506,
+    "dupes": [
+      "portfolioB/p08_04.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_00.jpg",
+    "hash": "5f6fc7c195",
+    "w": 1636,
+    "h": 1227,
+    "kb": 1242,
+    "dupes": [
+      "portfolioB/p08_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p09_02.jpg",
+    "hash": "3ac21832e8",
+    "w": 1623,
+    "h": 1080,
+    "kb": 474,
+    "dupes": [
+      "portfolioB/p08_02.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p05_17.jpg",
+    "hash": "576b2a597e",
+    "w": 1140,
+    "h": 855,
+    "kb": 624,
+    "dupes": [
+      "portfolioB/p05_16.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p08_11.jpg",
+    "hash": "08f4589de5",
+    "w": 563,
+    "h": 1434,
+    "kb": 175,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p06_03.jpg",
+    "hash": "28707477ea",
+    "w": 893,
+    "h": 897,
+    "kb": 237,
+    "dupes": [
+      "portfolioB/p06_18.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_19.jpg",
+    "hash": "106aca6b94",
+    "w": 893,
+    "h": 896,
+    "kb": 157,
+    "dupes": [
+      "portfolioB/p06_15.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_02.jpg",
+    "hash": "72c2bc817e",
+    "w": 892,
+    "h": 897,
+    "kb": 153,
+    "dupes": [
+      "portfolioB/p06_17.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_05.jpg",
+    "hash": "8a57f85de8",
+    "w": 1338,
+    "h": 598,
+    "kb": 143,
+    "dupes": [
+      "portfolioB/p06_03.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_18.jpg",
+    "hash": "453ae4d216",
+    "w": 892,
+    "h": 896,
+    "kb": 212,
+    "dupes": [
+      "portfolioB/p06_14.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_01.jpg",
+    "hash": "d833b0a957",
+    "w": 665,
+    "h": 1182,
+    "kb": 438,
+    "dupes": [
+      "portfolioB/p03_01.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_04.jpg",
+    "hash": "c0f69ee3a9",
+    "w": 744,
+    "h": 1046,
+    "kb": 97,
+    "dupes": [
+      "portfolioB/p06_02.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_20.jpg",
+    "hash": "770f6e8523",
+    "w": 744,
+    "h": 1045,
+    "kb": 119,
+    "dupes": [
+      "portfolioB/p06_16.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p08_00.jpg",
+    "hash": "6500f8a791",
+    "w": 897,
+    "h": 861,
+    "kb": 82,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_01.jpg",
+    "hash": "869190c300",
+    "w": 897,
+    "h": 861,
+    "kb": 131,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_04.jpg",
+    "hash": "3d9eae90c9",
+    "w": 1686,
+    "h": 432,
+    "kb": 121,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_02.jpg",
+    "hash": "ba33683182",
+    "w": 844,
+    "h": 861,
+    "kb": 190,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_09.jpg",
+    "hash": "fa7f331d9e",
+    "w": 844,
+    "h": 861,
+    "kb": 76,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_10.jpg",
+    "hash": "1bab58652d",
+    "w": 844,
+    "h": 861,
+    "kb": 122,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_12.jpg",
+    "hash": "a5d1dd706e",
+    "w": 844,
+    "h": 861,
+    "kb": 101,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p05_16.jpg",
+    "hash": "7edb107815",
+    "w": 816,
+    "h": 826,
+    "kb": 267,
+    "dupes": [
+      "portfolioB/p05_15.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_06.jpg",
+    "hash": "ec9346c142",
+    "w": 898,
+    "h": 674,
+    "kb": 248,
+    "dupes": [
+      "portfolioB/p03_06.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_08.jpg",
+    "hash": "b5dda76aef",
+    "w": 2523,
+    "h": 236,
+    "kb": 42,
+    "dupes": []
+  },
+  {
+    "id": "portfolioB/p06_06.jpg",
+    "hash": "53a2ea8ec7",
+    "w": 2523,
+    "h": 236,
+    "kb": 46,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p03_03.jpg",
+    "hash": "4d5a6eb0d3",
+    "w": 1026,
+    "h": 577,
+    "kb": 346,
+    "dupes": [
+      "portfolioB/p03_03.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_05.jpg",
+    "hash": "2e706817ff",
+    "w": 969,
+    "h": 545,
+    "kb": 374,
+    "dupes": [
+      "portfolioB/p03_05.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_04.jpg",
+    "hash": "9e9bc4ec7a",
+    "w": 613,
+    "h": 817,
+    "kb": 345,
+    "dupes": [
+      "portfolioB/p03_04.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p05_15.jpg",
+    "hash": "663d5da0ef",
+    "w": 693,
+    "h": 693,
+    "kb": 106,
+    "dupes": [
+      "portfolioB/p05_14.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_02.jpg",
+    "hash": "04e9a27c07",
+    "w": 842,
+    "h": 563,
+    "kb": 241,
+    "dupes": [
+      "portfolioB/p03_02.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p08_03.jpg",
+    "hash": "e195fb5364",
+    "w": 563,
+    "h": 718,
+    "kb": 101,
+    "dupes": []
+  },
+  {
+    "id": "portfolioB/p06_00.jpg",
+    "hash": "dab37b2043",
+    "w": 340,
+    "h": 1148,
+    "kb": 108,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p08_05.jpg",
+    "hash": "c77fd4531b",
+    "w": 897,
+    "h": 432,
+    "kb": 47,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p06_06.jpg",
+    "hash": "1df5c03c9a",
+    "w": 447,
+    "h": 598,
+    "kb": 58,
+    "dupes": [
+      "portfolioB/p06_04.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p03_00.jpg",
+    "hash": "75b179bf44",
+    "w": 632,
+    "h": 419,
+    "kb": 80,
+    "dupes": [
+      "portfolioB/p03_00.jpg"
+    ]
+  },
+  {
+    "id": "portfolioA/p06_14.jpg",
+    "hash": "052577bedb",
+    "w": 205,
+    "h": 1013,
+    "kb": 63,
+    "dupes": []
+  },
+  {
+    "id": "portfolioA/p06_00.jpg",
+    "hash": "300997a6a7",
+    "w": 137,
+    "h": 1148,
+    "kb": 44,
+    "dupes": []
+  }
+]
