@@ -142,14 +142,14 @@ function initDeck() {
      * the reading position and rode the unpin out, which is what reads as
      * stuck. Every other card flies past the viewer and that one does not.
      *
-     * EXIT is the fix. The head travels 0.6 of a card past the last one, and
-     * `.deck` is 22vh taller to pay for it, which is the same 36vh per card
-     * the rest of the deal runs at. The card fades out at `--t` 1.42 and is
-     * hidden by 1.55, both of which now happen while the stage is still
-     * pinned. The stage is empty for the final 1.8vh, which is under a fiftieth
-     * of a screen.
+     * EXIT is the fix. The head travels a fraction of a card past the last one
+     * so it has somewhere to go, and `.deck` carries a matching ramp in its
+     * height. At 0.6 the exit was clean but the reader then scrolled 39vh of
+     * empty stage before the next chapter's heading arrived. 0.45 still clears
+     * the fade at `--t` 1.42 with the stage pinned, and gives most of that
+     * blank stretch back. Keep this in step with the tail in `.deck`.
      */
-    const EXIT = 0.6;
+    const EXIT = 0.45;
     const head = p * (cards.length - 1 + EXIT);
     cards.forEach((card, i) => {
       /*
@@ -654,11 +654,30 @@ function initNowbar() {
   );
   sections.forEach((s) => io.observe(s));
 
-  // Retracted over the hero and again over the footer, where it would sit on
-  // top of the closing wordmark.
+  /*
+   * Retracted over the hero and again over the footer, where it would sit on
+   * top of the closing wordmark. Also retracted while the section's own heading
+   * is on screen.
+   *
+   * That last one is the point of the thing. The bar exists to answer "which
+   * chapter am I in" for a reader who arrived mid-section, and that question is
+   * already answered, in 59px type, whenever the heading is visible. Without
+   * the check the chapter name appeared twice within 17px of itself, which is
+   * what a reader reads as a mistake rather than as navigation. The bar now
+   * takes over from the title instead of competing with it.
+   */
+  const headingOnScreen = () => {
+    const s = live && document.getElementById(live);
+    const h = s && $(".section-head h2", s);
+    if (!h) return false;
+    const r = h.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  };
+
   onScroll(() => {
     if (window.scrollY < window.innerHeight * 0.75) bar.dataset.shown = "false";
-    else if (live) bar.dataset.shown = "true";
+    else if (live && !headingOnScreen()) bar.dataset.shown = "true";
+    else bar.dataset.shown = "false";
   })();
 }
 
@@ -972,11 +991,24 @@ function initResults() {
   let filter = "all";
   let expanded = false;
 
+  /*
+   * `featured` trims the opening view only.
+   *
+   * It used to be applied on top of the category filter, which made two of the
+   * five buttons dead on arrival: National has seven results and Biathlon two,
+   * and not one of the nine is flagged featured, so both answered "No results
+   * in this category yet" over a record that holds them. A reader who picks a
+   * category has asked for that category, and the honest answer is all of it.
+   *
+   * So: the unfiltered view stays short, and any specific filter shows
+   * everything it matches.
+   */
   const rowsFor = () => {
     const all = DATA.results.rows.filter(
       (r) => filter === "all" || r.tags.includes(filter)
     );
-    return expanded ? all : all.filter((r) => r.featured);
+    if (expanded || filter !== "all") return all;
+    return all.filter((r) => r.featured);
   };
 
   const esc = (s) =>
@@ -1017,12 +1049,21 @@ function initResults() {
       .join("");
   };
 
+  /* The expand button only means something on the unfiltered view. Inside a
+     category every match is already on screen, so offering to expand would be
+     a control that does nothing. */
+  const syncToggle = () => {
+    if (!toggle) return;
+    toggle.hidden = filter !== "all";
+  };
+
   buttons.forEach((b) =>
     b.addEventListener("click", () => {
       filter = b.dataset.filter;
       buttons.forEach((x) =>
         x.setAttribute("aria-pressed", String(x === b))
       );
+      syncToggle();
       render();
     })
   );
@@ -1303,32 +1344,69 @@ function initEnquiry() {
     }
   }
 
-  form.addEventListener("submit", (ev) => {
-    ev.preventDefault();
-    const fd = new FormData(form);
-    const name = String(fd.get("name") || "").trim();
-    const org = String(fd.get("org") || "").trim();
-    const email = String(fd.get("email") || "").trim();
-    const topic = String(fd.get("topic") || "").trim();
-    const message = String(fd.get("message") || "").trim();
-
-    if (!message) {
-      note.textContent = "Add a message first, then this will open your mail client.";
-      return;
-    }
-    /*
-     * Organisation and topic were collected and then dropped on the floor. The
-     * topic is the field that decides who the enquiry is from, so it belongs in
-     * the subject line, not in a select element nobody downstream ever reads.
-     */
+  /*
+   * Post to the endpoint, and keep the mailto as the fallback.
+   *
+   * The fallback is not belt and braces, it is the whole reason this is safe to
+   * ship before the domain exists. Until `RESEND_API_KEY`, `ENQUIRY_FROM` and
+   * `ENQUIRY_TO` are set on the Pages project the function answers 503, and the
+   * form quietly does exactly what it did before: opens the reader's mail
+   * client with everything filled in. Nobody meets a dead form on either side
+   * of the switch, and switching it on is three environment variables and a
+   * redeploy, with no change here.
+   *
+   * Same path covers a blocked fetch, an offline reader, and a function that
+   * errors, which between them are the realistic ways this fails in the wild.
+   */
+  const mailto = ({ name, org, email, topic, message }) => {
     const signoff = [name, org, email].filter(Boolean).join(" · ");
     const body = signoff ? `${message}\n\n—\n${signoff}` : message;
-    const href =
+    window.location.href =
       "mailto:bhavani.thekkada2026@gmail.com" +
       `?subject=${encodeURIComponent(topic || "Enquiry via the website")}` +
       `&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
     note.textContent =
       "Your mail client should be open now, with this message ready to send.";
+  };
+
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const fd = new FormData(form);
+    const f = {
+      name: String(fd.get("name") || "").trim(),
+      org: String(fd.get("org") || "").trim(),
+      email: String(fd.get("email") || "").trim(),
+      topic: String(fd.get("topic") || "").trim(),
+      message: String(fd.get("message") || "").trim(),
+      website: String(fd.get("website") || "").trim(),
+    };
+
+    if (!f.message) {
+      note.textContent = "Add a message first, and this will go straight to her.";
+      return;
+    }
+
+    const button = $("button[type=submit]", form);
+    if (button) button.disabled = true;
+    note.textContent = "Sending…";
+
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(f),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        form.reset();
+        note.textContent = "Sent. She reads these herself, so give her a few days.";
+        return;
+      }
+      throw new Error(data.error || res.status);
+    } catch (err) {
+      mailto(f);
+    } finally {
+      if (button) button.disabled = false;
+    }
   });
 }

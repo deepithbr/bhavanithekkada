@@ -38,6 +38,22 @@ def main() -> int:
         if "index.html" not in names:
             raise SystemExit("make_zip: index.html is not at the archive root.")
 
+    # The zip cannot carry the enquiry endpoint, and failing quietly here would
+    # mean a contact form that looks fine and silently falls back to mailto on
+    # the live site with nobody knowing why.
+    #
+    # Cloudflare Pages only compiles `functions/` on a Git-connected build. A
+    # dashboard zip upload is a static drop: no build step, so no functions. If
+    # this project has an endpoint, it has to deploy from the repo.
+    if (ROOT / "functions").exists():
+        print()
+        print("  NOTE  functions/ exists and is NOT in this zip.")
+        print("        Cloudflare compiles functions only on a Git-connected")
+        print("        build. Uploaded this way, /api/enquiry will 404 and the")
+        print("        form will fall back to opening the reader's mail client.")
+        print("        Connect the repo to Pages to ship the endpoint.")
+        print()
+
     print(f"{OUT.name}  {OUT.stat().st_size / 1024 / 1024:.2f} MB, {len(names)} files")
     for n in [x for x in names if not x.startswith("assets/img/")][:6]:
         print(f"  {n}")

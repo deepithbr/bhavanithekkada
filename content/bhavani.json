@@ -29,7 +29,7 @@
   },
   "hero": {
     "eyebrow": "Cross-Country Skier · India",
-    "line": "From a coffee farm in Kodagu to a World Cup start list.",
+    "line": "The long way to snow.",
     "standfirst": "She grew up on a coffee farm in Karnataka and did not see snow until she was twenty. At thirty she took a World Cup start at 66°N in northern Finland.",
     "standfirstSource": {
       "sourceType": "public-secondary",
@@ -67,16 +67,12 @@
       ]
     },
     "profileHeading": "It started with a film, and a race on television.",
-    "profileBody": "She grew up on her family's coffee farm in Kodagu, in the hills of southern Karnataka, where it has never snowed and where neither of her parents had ever seen snow either. In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to a job instructing in Kashmir, which is where she first put on skis.",
-    "profileBody2": "Cross-country came later, and secondhand. Watching the 2018 Pyeongchang Games she saw the Norwegian Marit Bjørgen race, and decided that was the event she wanted. She left the instructing job to train full time. Her father, who has spent his life on the farm, told her that if it made her happy she should do it.",
+    "profileBody": "She grew up on her family's coffee farm at Perur, near Napoklu in Kodagu, where it has never snowed and where neither of her parents had ever seen snow either. In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to a job instructing in Kashmir, which is where she first put on skis.",
+    "profileBody2": "Cross-country came later, and secondhand. Watching the 2018 Pyeongchang Games she saw the Norwegian Marit Bjørgen race, and decided that was the event she wanted. She left the instructing job to train full time. Her father, Thekkada Nanjunda, who has spent his life on the coffee farm, told her that if it made her happy she should do it.",
     "profileFacts": [
       {
         "k": "Born",
         "v": "14 May 1995, Kodagu, Karnataka"
-      },
-      {
-        "k": "First saw snow",
-        "v": "Aged 20. Racing on it at 26."
       },
       {
         "k": "Mentored by",
@@ -155,8 +151,8 @@
     },
     "footprint": {
       "index": "02",
-      "title": "107 degrees of latitude",
-      "lede": "Every race location across six seasons, plotted by latitude and longitude. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn, and started from a district that has never seen snow.",
+      "title": "66°N to 41°S",
+      "lede": "One hundred and seven degrees of latitude separate her northernmost start from her southernmost. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn, and started from a district that has never seen snow.",
       "anchors": [
         {
           "lat": 66.17,
@@ -186,12 +182,12 @@
     },
     "record": {
       "index": "04",
-      "title": "Every start, 2020 to 2026"
+      "title": "Every scored start, 2020 to 2026"
     },
     "media": {
       "index": "05",
-      "title": "Press and pictures",
-      "lede": "Press coverage, interviews and six seasons of photographs, in one place. Every headline links out to the publication that wrote it."
+      "title": "Press coverage",
+      "lede": "Every article written about her, and six seasons of photographs, in one place. Each headline links out to the publication that ran it."
     },
     "ambition": {
       "index": "06",
@@ -205,7 +201,7 @@
     },
     "partners": {
       "index": "08",
-      "title": "Partnerships",
+      "title": "Partnerships and support",
       "lede": "Bhavani races a full FIS calendar largely at her own expense, and trains alongside other nations' squads because there is no Indian one in her discipline. A season has a fixed shape, and support lands at particular points inside it."
     },
     "contact": {
@@ -791,7 +787,7 @@
         "detail": "10 km",
         "place": "Gulmarg",
         "medal": "bronze",
-        "mark": null,
+        "mark": "33:22.03",
         "tags": [
           "khelo-india"
         ],
@@ -1327,7 +1323,7 @@
       "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
       "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
       "date": "",
-      "context": "On the Khelo India Winter Games at Gulmarg. The headline counts three medals as golds. The official tally is one gold and two bronzes.",
+      "context": "On the Khelo India Winter Games at Gulmarg. The headline counts three medals as golds. The official result is one gold and two bronzes.",
       "image": "podium-gulmarg-2022"
     },
     {
@@ -1337,7 +1333,7 @@
       "url": "https://srinagarnews.net/25/02/2026/bhavani-thekkeda-nanjunda-from-coffee-hills-to-cold-glory-for-souths-sprint-queen-at-kiwg-2026/",
       "date": "2026-02-25",
       "byline": "",
-      "context": "On the sprint gold at Gulmarg. The report calls the two bronzes relays. They were the individual 10 km and 15 km.",
+      "context": "On the sprint gold at Gulmarg. The report calls the two bronzes relays. Both were individual races, timed and placed, at 33:22.03 and 53:20.44.",
       "image": null,
       "verified": true
     },
@@ -1685,7 +1681,7 @@
       "id": "mountain",
       "index": "01",
       "label": "Climbing",
-      "note": "Qualified on rock and snow first.",
+      "note": "Grade A Adventure Course at ABVIMAS, then Special Basic Mountaineering at HMI Darjeeling.",
       "image": "team-with-skis",
       "where": "Darjeeling and Manali",
       "years": "2013–2017"
@@ -1694,7 +1690,7 @@
       "id": "teaching",
       "index": "02",
       "label": "Instructing",
-      "note": "A teaching qualification, then a year teaching it.",
+      "note": "Method of Instruction at HMI Darjeeling, then a year there as a guest instructor.",
       "image": "khelo-ladakh-portrait",
       "where": "Himalayan Mountaineering Institute",
       "years": "2017"
@@ -1703,7 +1699,7 @@
       "id": "snow",
       "index": "03",
       "label": "Skiing",
-      "note": "Skis arrived as equipment for the instructing job.",
+      "note": "Basic and intermediate skiing at the Jawaharlal Institute of Mountaineering, advanced at the Indian Institute of Skiing and Mountaineering in Kashmir.",
       "image": "khelo-ladakh-skis",
       "where": "Gulmarg, Kashmir",
       "years": "2018"
@@ -1712,7 +1708,7 @@
       "id": "international",
       "index": "04",
       "label": "Instructing abroad",
-      "note": "The first certification earned outside India.",
+      "note": "Snowsports instructor certification at Mt. Ruapehu, the first she earned outside India.",
       "image": "ruapehu",
       "where": "Mt. Ruapehu, New Zealand",
       "years": "2019"
@@ -1729,7 +1725,7 @@
       },
       {
         "year": "2028",
-        "title": "Asian Winter Games and Worlds",
+        "title": "Asian Winter Games and World Championships",
         "line": "Qualification for both, on stronger international form."
       },
       {
@@ -1765,10 +1761,6 @@
           "v": "FIS points across the qualification window"
         }
       ],
-      "cta": {
-        "label": "What support pays for",
-        "href": "#partners"
-      },
       "source": {
         "sourceType": "public-primary",
         "sourceName": "International Olympic Committee",
@@ -1777,7 +1769,27 @@
         "needsConfirmation": false,
         "lastChecked": "2026-08-12",
         "note": "The French Alps were awarded the 2030 Winter Olympics at the 142nd IOC Session on 24 July 2024. Games dated 1 to 17 February 2030."
-      }
+      },
+      "stats": [
+        {
+          "n": "11",
+          "k": "FIS-scored starts"
+        },
+        {
+          "n": "3",
+          "k": "World Cup starts"
+        },
+        {
+          "n": "2",
+          "k": "World Championships"
+        },
+        {
+          "n": "14",
+          "k": "race locations"
+        }
+      ],
+      "banner": "One dream. One plan. One start line.",
+      "backdrop": "ruapehu"
     },
     "eyebrow": "What comes next"
   },
@@ -1790,12 +1802,12 @@
         "body": "India has no permanent cross-country base and almost no domestic race calendar. Every season she competes in is assembled from abroad."
       },
       {
-        "title": "Making the sport legible",
+        "title": "Explaining the sport",
         "body": "Most people in India have never watched a cross-country race. Part of the job is explaining what it is and why the distances are hard."
       },
       {
         "title": "Athletes behind her",
-        "body": "A pathway that exists on paper is different from one somebody has already walked. She would rather not be the last as well as among the first."
+        "body": "A pathway that exists on paper is different from one somebody has already walked. Being the first is the easy part to celebrate. Being followed is the harder one, and it is the one she is working on."
       },
       {
         "title": "Proving the ceiling is higher",

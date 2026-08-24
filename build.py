@@ -26,18 +26,32 @@ ROOT = pathlib.Path(__file__).parent
 CONTENT = ROOT / "content"
 OUT_HTML = ROOT / "index.html"
 
-# Yuji Syuku carries the name and nothing else. It is brush-written, so it has
-# to be set in mixed case: brush capitals have no case contrast to work with and
-# turn into a wall. Archivo still does every other heading, which is what keeps
-# the brush reading as a signature rather than as the site's voice.
+# Three families from Google, and the wordmark face self-hosted.
+#
+# Black Rusher by Alpaprana Studio carries her name and nothing else. It is
+# brush-written, so it is set in mixed case: brush capitals have no case
+# contrast to work with and turn into a wall. Archivo still does every other
+# heading, which keeps the brush reading as a signature rather than as the
+# site's voice.
+#
+# It is not on Google Fonts, so it is subset and served from `assets/fonts/`.
+# See the `@font-face` at the top of site.css and tools/make_wordmark_font.py.
+#
+# Two faces were here before it, and both are gone for reasons worth keeping:
+# Yuji Syuku is Japanese and its Latin glyphs are not what it was drawn for,
+# and Kaushan Script was rejected on looks.
 FONTS = (
     "https://fonts.googleapis.com/css2"
     "?family=Archivo:wdth,wght@62..125,400..900"
     "&family=IBM+Plex+Mono:wght@400;500"
     "&family=Newsreader:opsz,wght@6..72,300..600"
-    "&family=Yuji+Syuku"
     "&display=swap"
 )
+
+# Relative to the page. The hero name is the largest thing on the first screen,
+# so the file is fetched at the same time as the stylesheet rather than after
+# the browser has parsed it and discovered the @font-face.
+WORDMARK_FONT = "assets/fonts/black-rusher.woff2"
 
 # Sections the fixed track rail marks, top to bottom.
 RAIL_STOPS = [
@@ -239,6 +253,21 @@ class Img:
             f"{up}{self.base}/{a['file']}-{w}.webp {w}w" for w in a["widths"]
         )
 
+    def focal(self, slot) -> str:
+        """
+        `object-position` for a slot, from the focal point in images.json.
+
+        Every crop on this site is `object-fit: cover`, so the focal point is
+        the difference between a photograph of her and a photograph of her
+        shoulder. Anything that builds an `<img>` by hand has to call this;
+        skipping it silently falls back to dead centre, which is what the whole
+        archive strip was doing.
+        """
+        a = self.by_slot.get(slot)
+        if not a or not a.get("focal"):
+            return "50% 50%"
+        return f"{a['focal'][0] * 100:.1f}% {a['focal'][1] * 100:.1f}%"
+
     def tag(self, slot, sizes="100vw", cls="", loading="lazy", fetchpriority=None,
             up="") -> str:
         """
@@ -252,7 +281,7 @@ class Img:
         if not a:
             return ""
         w, h = a["natural"]
-        pos = f"{a['focal'][0] * 100:.1f}% {a['focal'][1] * 100:.1f}%"
+        pos = self.focal(slot)
         fp = f' fetchpriority="{fetchpriority}"' if fetchpriority else ""
         cl = f' class="{e(cls)}"' if cls else ""
         return (
@@ -303,6 +332,12 @@ def head(c: dict, img: Img, version: str) -> str:
 <meta name="darkreader-lock">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- No `?v=` here. The @font-face in site.css requests this file without a query,
+     and a preload whose URL does not match byte for byte is not a preload: the
+     browser fetches it twice and warns that the first was unused. The file is
+     versioned by its own name if it ever changes. -->
+<link rel="preload" as="font" type="font/woff2" crossorigin
+      href="{e(WORDMARK_FONT)}">
 <link rel="stylesheet" href="{e(FONTS)}">
 <link rel="preload" as="image" href="{e(img.src('hero-portrait', 960))}"
       imagesrcset="{e(img.srcset('hero-portrait'))}" imagesizes="(min-width:900px) 52vw, 100vw">
@@ -324,9 +359,16 @@ def rail() -> str:
     JS places them at each section's real scroll offset rather than spacing them
     evenly down the rail.
     """
+    # Anchors, not divs.
+    #
+    # The rail already showed where the reader was and marked what they had
+    # passed, so it read as navigation and behaved as decoration: eleven dots
+    # that look like stops and do nothing when you press them. Every `data-stop`
+    # is already an element id, so the href costs nothing and works with
+    # JavaScript off, from the keyboard, and on a long-press menu.
     nodes = "".join(
-        f'<div class="node" data-stop="{e(sid)}">'
-        f'<i></i><span class="rail-label mono">{e(label.upper())}</span></div>'
+        f'<a class="node" href="#{e(sid)}" data-stop="{e(sid)}">'
+        f'<i></i><span class="rail-label mono">{e(label.upper())}</span></a>'
         for sid, label in RAIL_STOPS
     )
     # No viewBox: SVG user units are CSS pixels, so main.js can lay the terrain
@@ -385,7 +427,7 @@ def nav(c: dict, has_journal: bool = False) -> str:
   <span class="now-name"></span>
 </div>
 <a class="float-cta" id="float-cta" href="#contact" data-shown="false">
-  <span aria-hidden="true">+</span> Work with me</a>"""
+  <span aria-hidden="true">+</span> Work with Bhavani</a>"""
 
 
 def hero(c: dict, img: Img) -> str:
@@ -406,9 +448,15 @@ def hero(c: dict, img: Img) -> str:
     fade = ""
     b = h.get("burst")
     if b and b.get("frames"):
+        # Each frame crops to its own focal point. These were the other images
+        # built by hand rather than through img.tag, so all seven inherited one
+        # hardcoded `50% 26%` from the stylesheet: right for the portrait it was
+        # written for, wrong for the six that followed it. The ice sculpture
+        # wants 72% across and was being cut at 50%.
         shots = "".join(
             f'<img src="{e(img.src(s, 1200))}" alt="" '
-            f'aria-hidden="true" decoding="async" fetchpriority="low"'
+            f'aria-hidden="true" decoding="async" fetchpriority="low" '
+            f'style="object-position:{img.focal(s)}"'
             f'{" data-on=\"true\"" if i == 0 else ""}>'
             for i, s in enumerate(b["frames"])
             if img.get(s)
@@ -435,13 +483,19 @@ def hero(c: dict, img: Img) -> str:
       <li>World Cup starter</li>
       <li>2 World Championships</li>
       <!--
-        This read "International medallist", which is the generic version of the
-        one thing on this page nobody else can say. A reader who bounces at the
-        hero never scrolls to the claim below it, so the claim has to be up
-        here. The full wording, with the FIS-scored qualifier that makes it
-        defensible, is the first line of the next section.
+        Client's call, taken against advice and recorded here so the next person
+        knows it was a decision and not an oversight.
+
+        This slot has held "International medallist", then "First Indian woman
+        to medal". It now states a ranking. Nothing on the FIS record supports
+        it: FIS publishes no per-nation cross-country ranking, and no article in
+        the press list uses the phrase. It is also the kind of claim that goes
+        stale with a points list rather than staying true.
+
+        The medal claim is not lost. It is the first line of the next section,
+        in full, with the FIS-scored qualifier that makes it defensible.
       -->
-      <li>First Indian woman to medal</li>
+      <li>India's No. 1 cross-country skier</li>
     </ul>
     <!--
       No call to action here at all now.
@@ -487,6 +541,22 @@ def profile(c: dict, img: Img) -> str:
       well after the figures above it had left, which read as a blank screen.
     -->
     <div class="profile-card" data-travel="br-tl" style="--amp:0.55">
+      <!--
+        Back to `portrait-team-kit` after trying a zoom and then a swap.
+
+        All 25 photographs were checked for this slot. Three show her eyes with
+        no glasses on. `portrait-cap` is already cut at its own right edge.
+        `portrait-himachali` is a good photograph but her chin sits on the
+        bottom edge of the source, so no crop can lift her off it. This one is
+        the only one where her face is complete and at a natural height.
+
+        Its known fault is that she is at 18% across with the rest of the frame
+        empty, and there is no fix for that here: the frame already shows 100%
+        of the source width, so `object-position` has nothing left to slide,
+        and scaling in cost her eyes. What this slot actually needs is one
+        head-and-shoulders frame shot for a portrait crop. Until that exists,
+        this is the honest best of the set.
+      -->
       <div class="profile-shot">
         {img.tag('portrait-team-kit', '(min-width:900px) 30vw, 70vw')}
       </div>
@@ -611,9 +681,18 @@ def proof(c: dict) -> str:
     # row crossed into each other's column, by up to 269px at 375 wide. Plates
     # on a shared path stay parallel at every column count. The desktop row
     # keeps its per-plate depth, which is where the variety was wanted.
+    # The plates come up one after another, like a row of bulbs being switched
+    # on. It rides the existing reveal system rather than a new observer: the
+    # article carries `data-anim`, initReveal flips `data-shown` when it enters
+    # view, and CSS staggers off `--i`. That inherits the reduced-motion bypass
+    # and the safety net that stops a dead observer leaving the row dark.
+    #
+    # The light sits on the article, never on the `li`. The `li` is a travel
+    # element whose opacity is already driven by `--o`, and two rules writing
+    # the same property is how this kind of thing breaks.
     plates = "".join(
         f"""<li data-travel="r-l">
-      <article class="bib">
+      <article class="bib" data-anim="bulb" style="--i:{i}">
         <span class="bib-count">{e(p['count'])}</span>
         <span class="bib-unit mono">{e(p['unit'])}</span>
         <span class="bib-rule"></span>
@@ -627,7 +706,7 @@ def proof(c: dict) -> str:
     return f"""
 <section class="proof" id="proof" aria-label="Level of competition">
   <div class="wrap">
-    <h2 class="vh">Level of competition</h2>
+    <h2 class="vh">Career highlights</h2>
     <ul class="bibs">{plates}</ul>
   </div>
 </section>"""
@@ -831,17 +910,40 @@ def career(c: dict, img: Img) -> str:
         f'<div><dt class="mono">{e(x["k"])}</dt><dd>{e(x["v"])}</dd></div>'
         for x in f["steps"]
     )
+    # The stat rail down the right edge. Every figure on it is proved somewhere
+    # else on this page, which is the whole point: a card that states a target
+    # is a claim, and a card that states a target next to the record behind it
+    # is an argument. The mockup this came from carried "100+ races" and "six
+    # years", neither of which the results table supports, so both are gone.
+    fstats = "".join(
+        f'<li><b>{e(x["n"])}</b><span>{e(x["k"])}</span></li>' for x in f["stats"]
+    )
+    # The backdrop, from her own library rather than the stock silhouette on the
+    # reference card. Ruapehu is a 3315x948 banner of the mountain with her in
+    # it, which is the right shape for a card edge and the right subject for a
+    # panel about a summit four years out.
+    back = (
+        f'<div class="tf-back" aria-hidden="true">{img.tag(f["backdrop"], "45vw")}</div>'
+        if f.get("backdrop") and img.get(f["backdrop"])
+        else ""
+    )
+    # The link out is gone at the client's request and the slogan replaces it.
+    # Recorded because it is a deliberate trade: this card no longer offers a
+    # route to the partnership section, so the only path there is the nav.
     finale = f"""
         <div class="target-final">
           <div class="tf-inner">
-            <span class="eyebrow">{e(f['eyebrow'])}</span>
-            <p class="tf-year">{e(f['year'])}</p>
-            <h4>{e(f['title'])}</h4>
-            <p class="tf-where mono">{e(f['host'])} &middot; {e(f['dates'])}</p>
-            <p class="tf-line">{e(f['line'])}</p>
-            <dl class="tf-steps">{fsteps}</dl>
-            <a class="tf-cta" href="{e(f['cta']['href'])}">
-              {e(f['cta']['label'])}<span aria-hidden="true"></span></a>
+            {back}
+            <div class="tf-main">
+              <span class="eyebrow">{e(f['eyebrow'])}</span>
+              <p class="tf-year">{e(f['year'])}</p>
+              <h4>{e(f['title'])}</h4>
+              <p class="tf-where mono">{e(f['host'])} &middot; {e(f['dates'])}</p>
+              <p class="tf-line">{e(f['line'])}</p>
+              <dl class="tf-steps">{fsteps}</dl>
+              <p class="tf-banner mono">{e(f['banner'])}</p>
+            </div>
+            <ul class="tf-stats">{fstats}</ul>
           </div>
         </div>"""
     # No separate hinge screen. There was one, and it read as a disconnected
@@ -1080,13 +1182,26 @@ def footprint(c: dict, world: dict, img: Img) -> str:
     <p class="vh" id="plot-readout" role="status" aria-live="polite"></p>
     <details class="atlas-list">
       <summary>All {len(pts)} locations as a list</summary>
-      <table class="plot-table">
-        <caption class="vh">Every race location, with event, best result and latitude</caption>
-        <thead><tr><th scope="col">Location</th><th scope="col">Event</th>
-        <th scope="col">Years</th><th scope="col">Best result</th>
-        <th scope="col">Latitude</th></tr></thead>
-        <tbody>{rows}</tbody>
-      </table>
+      <!--
+        The table needs 423px of intrinsic width for its five mono columns. At
+        375 it got 327 and the surplus was destroyed rather than scrolled,
+        because `html` carries `overflow-x: clip` to contain the travel
+        animations. The Latitude column, which is the entire point of this
+        chapter, was off the right edge of the phone with no way to reach it.
+
+        `tabindex` makes the scroller keyboard-reachable, which a plain
+        overflow container is not.
+      -->
+      <div class="plot-scroll" tabindex="0" role="region"
+           aria-label="Race locations table, scrolls sideways">
+        <table class="plot-table">
+          <caption class="vh">Every race location, with event, best result and latitude</caption>
+          <thead><tr><th scope="col">Location</th><th scope="col">Event</th>
+          <th scope="col">Years</th><th scope="col">Best result</th>
+          <th scope="col">Latitude</th></tr></thead>
+          <tbody>{rows}</tbody>
+        </table>
+      </div>
     </details>
   </div>
 </section>"""
@@ -1269,12 +1384,18 @@ def media(c: dict, img: Img) -> str:
     # the piece is about. Never the outlet's own article image: we have no
     # licence to those, and this section states outright that no publisher
     # photography is reproduced here.
+    #
+    # The slot is always emitted, even with nothing in it. The row is a grid and
+    # its children are auto-placed, so an entry with no thumbnail used to drop
+    # the whole row one column to the left: publication, headline, date and
+    # context all started 104px inboard of every other row. Three of the
+    # thirteen entries have no picture yet, which was enough to make the list
+    # look like two different components.
     def press_row(p: dict, side: int) -> str:
-        thumb = (
-            f'<span class="press-thumb">{img.tag(p["image"], "72px")}</span>'
-            if p.get("image") and img.get(p["image"])
-            else ""
-        )
+        has_image = p.get("image") and img.get(p["image"])
+        inner = img.tag(p["image"], "72px") if has_image else ""
+        empty = "" if has_image else " is-empty"
+        thumb = f'<span class="press-thumb{empty}">{inner}</span>'
         return (
             f'<div class="press-item" data-side="{side}">'
             f'<a href="{e(p["url"])}" target="_blank" rel="noopener">'
@@ -1337,16 +1458,23 @@ def media(c: dict, img: Img) -> str:
         a = img.get(a_slot)
         bits = [x for x in (a.get("location"), a.get("year")) if x]
         cap = " &middot; ".join(bits) if bits else a.get("category", "").title()
+        # These two are hand-built rather than going through img.tag, and they
+        # were the only images on the site missing their focal point. Every
+        # frame in the archive was cropping from dead centre: the hero portrait
+        # sat at 50% instead of 32%, which on a 960x1707 source in a 404x538
+        # box is the difference between her face and her collar.
         b_tag = (
             f'<img class="shot-b" src="{e(img.src(b_slot, 480))}" alt="" '
-            f'aria-hidden="true" loading="lazy" decoding="async">'
+            f'aria-hidden="true" loading="lazy" decoding="async" '
+            f'style="object-position:{img.focal(b_slot)}">'
             if b_slot else ""
         )
         pairs.append(
             f'<figure class="scrub-frame" data-frame="{len(pairs)}"'
             f'{" data-on=\"true\"" if not pairs else ""}>'
             f'<img class="shot-a" src="{e(img.src(a_slot, 960))}" '
-            f'alt="{e(a["alt"])}" loading="lazy" decoding="async">'
+            f'alt="{e(a["alt"])}" loading="lazy" decoding="async" '
+            f'style="object-position:{img.focal(a_slot)}">'
             f"{b_tag}"
             f'<figcaption class="mono">{cap}</figcaption></figure>'
         )
@@ -1585,6 +1713,12 @@ def partners(c: dict) -> str:
       separate things it was needed for. The bar is the better exhibit but it
       only means something once the costs have names.
     -->
+    <!--
+      The four needs had no heading at all, so they read as a continuation of
+      the current-supporters list above them. A sponsor scanning could not tell
+      where "who already backs her" ended and "what is still unfunded" began.
+    -->
+    <h3 class="eyebrow">What support funds</h3>
     <div class="areas">{areas}</div>
     {cal}
     <div class="hero-ctas" style="margin-top:2.5rem">
@@ -1636,6 +1770,14 @@ def contact(c: dict) -> str:
         <label>Email<input type="email" name="email" autocomplete="email"></label>
         <label>What is this about?<select name="topic" id="enquiry-topic">{topics}</select></label>
         <label>Message<textarea name="message" rows="4"></textarea></label>
+        <!--
+          The honeypot. Off-screen, hidden from assistive tech and out of the
+          tab order, so no person ever meets it. A bot fills every field it
+          finds, so anything arriving with this one set is discarded server
+          side. Cheaper than a CAPTCHA and it asks nothing of the reader.
+        -->
+        <label class="hp" aria-hidden="true">Website
+          <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
         <button class="btn" type="submit">Send enquiry</button>
         <!--
           This note used to open "This form is a prototype. It has no backend
@@ -1645,8 +1787,8 @@ def contact(c: dict) -> str:
           with all five fields already written into the message. That is worth
           describing as behaviour rather than apologising for.
         -->
-        <p class="note" id="enquiry-note">Opens in your own mail client with everything
-        above already filled in, so you can check it before it goes.</p>
+        <p class="note" id="enquiry-note">Goes straight to her inbox. If anything
+        blocks it, your own mail client opens instead with the message intact.</p>
       </form>
     </div>
   </div>
@@ -1654,23 +1796,26 @@ def contact(c: dict) -> str:
 
 
 def footer(c: dict) -> str:
-    fis = c["sources"]["fis"]
     return f"""
 <footer class="foot">
   <div class="wrap foot-inner">
     <span>&copy; {e(c['meta']['lastReviewed'][:4])} {e(c['identity']['fullName'])}</span>
-    <span>Results follow
-      <a href="{e(fis['sourceUrl'])}" target="_blank" rel="noopener">her FIS record</a></span>
+    <!--
+      "Results follow her FIS record" removed at the client's request. The
+      provenance is not lost: the FIS athlete biography is still linked from the
+      nav as the last item, and every result row still carries its sourceRef.
+    -->
     <a href="#top">Back to start</a>
   </div>
   <!--
-    Moved down from the Media lede, where it was the second sentence a reader
-    met in that chapter. A rights disclaimer in the reading path answers a
-    question nobody asked and plants a doubt that was not there before. It is
-    still worth saying, just not there.
+    The rights line lived here for one round and is gone at the client's
+    request. It said that headlines link out and that no article text or
+    publisher photography is reproduced. Both are still true of how the press
+    list is built, and the constraint is enforced in press_row, which never
+    emits an outlet's own article image. It is simply no longer stated on the
+    page. Restore this if scanned tear sheets are ever cleared and published,
+    because at that point the claim would stop being true as written.
   -->
-  <p class="wrap foot-rights">Press headlines link to the publications that wrote them.
-  No article text or publisher photography is reproduced on this site.</p>
 </footer>"""
 
 
@@ -1772,7 +1917,10 @@ def sub_page(c: dict, version: str, title: str, body: str, depth: int = 0) -> st
 <link rel="icon" href="{up}assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:opsz,wght@6..72,300..600&amp;display=swap">
+<!-- Was a second, hand-maintained copy of the font URL that had already drifted
+     out of step with FONTS. It now renders from the same constant, so a font
+     change is one edit rather than two. -->
+<link rel="stylesheet" href="{e(FONTS)}">
 <link rel="stylesheet" href="{up}assets/css/site.css?v={version}">
 <script>document.documentElement.classList.add("js")</script>
 </head>
