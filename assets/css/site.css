@@ -3201,12 +3201,22 @@ html {
   color: var(--fg-dim);
 }
 
+/* The three short sentences, set brighter and a step up so they read as the
+   statement and the line beneath them reads as the reasoning. */
+.tf-lead {
+  margin: 0.7rem 0 0;
+  color: var(--snow);
+  font-size: calc(var(--step-0) * 1.12);
+  line-height: 1.45;
+  max-width: 30ch;
+}
+
 .tf-line {
-  margin: 0.5rem 0 0;
+  margin: 0.35rem 0 0;
   color: var(--fg-dim);
   font-size: calc(var(--step-0) * 0.95);
   line-height: 1.5;
-  max-width: 54ch;
+  max-width: 44ch;
 }
 
 /* What actually decides it, so the card carries a fact rather than a mood. */

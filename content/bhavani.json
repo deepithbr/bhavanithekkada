@@ -1746,7 +1746,7 @@
       "title": "Winter Olympics",
       "host": "French Alps, France",
       "dates": "1 to 17 February 2030",
-      "line": "Everything above this is arranged around one start list. Qualification runs on FIS points, and points only come from races she can afford to get to before the window closes.",
+      "line": "Every result, every FIS point, every decision, building towards the Winter Olympics.",
       "steps": [
         {
           "k": "Now",
@@ -1789,7 +1789,8 @@
         }
       ],
       "banner": "One dream. One plan. One start line.",
-      "backdrop": "ruapehu"
+      "backdrop": "ruapehu",
+      "lead": "Four seasons. Countless races. One start line."
     },
     "eyebrow": "What comes next"
   },

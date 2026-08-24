@@ -939,6 +939,12 @@ def career(c: dict, img: Img) -> str:
               <p class="tf-year">{e(f['year'])}</p>
               <h4>{e(f['title'])}</h4>
               <p class="tf-where mono">{e(f['host'])} &middot; {e(f['dates'])}</p>
+              <!--
+                Two-part statement, matching the reference card. The lead is the
+                three short sentences and is set larger; the line under it
+                carries the argument.
+              -->
+              <p class="tf-lead">{e(f['lead'])}</p>
               <p class="tf-line">{e(f['line'])}</p>
               <dl class="tf-steps">{fsteps}</dl>
               <p class="tf-banner mono">{e(f['banner'])}</p>
