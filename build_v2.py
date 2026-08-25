@@ -467,15 +467,26 @@ def page(c: dict, img: Img) -> str:
 <a class="skip" href="#main">Skip to content</a>
 {nav_block()}
 <main id="main">
-{panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
-       ('View profile', 'about.html'), size='hero', level='h1',
-       pos='50% 30%')}
-<div class="wrap">{statline(c)}</div>
+<section class="masthead" aria-label="Introduction">
+  <div class="wrap masthead-grid">
+    <div class="masthead-copy">
+      <p class="caption" data-rise>India &middot; Cross-country skiing</p>
+      <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
+        <span class="shift">Thekkada</span></h1>
+      <p class="masthead-line" data-rise>{e(c['hero']['line'])}</p>
+      <div class="masthead-cta" data-rise>
+        <a class="btn" data-on="accent" href="about.html">View profile</a>
+        <a class="btn" href="partnership.html">Partner with her</a>
+      </div>
+    </div>
+    <figure class="masthead-shot" data-rise>
+      {img.tag(SHOTS['hero'], "(min-width:900px) 42vw, 92vw", eager=True)}
+      <figcaption class="caption">{img.caption(SHOTS['hero'])}</figcaption>
+    </figure>
+  </div>
+  <div class="wrap">{statline(c)}</div>
+</section>
 {sponsors(c)}
-{panel(img, SHOTS['sport'], 'Cross-country skiing',
-       'Racing on skis across kilometres of snow, uphill and down, '
-       'against the clock or head to head.',
-       ('Read more', 'about.html#sport'))}
 {split(c, img)}
 {records(c, img)}
 {journey_tiles(c, img)}
@@ -583,6 +594,10 @@ def about_page(c, img):
 <section class="prose-fold" data-ground="ice" id="sport">
   <div class="wrap prose">
     <h2>The sport</h2>
+    <p class="pull">Skiing with the mountain taken away and nothing given
+    back. No lift, no gate, no glide for free: every metre downhill was
+    climbed first, at a heart rate most people only meet in a sprint,
+    held for anything from three minutes to an hour.</p>
     <p>{e(sport['lede'])}</p>
     <p>{e(sport.get('yearNote') or '')}</p>
     <dl class="facts">{disciplines}</dl>
@@ -594,13 +609,21 @@ def about_page(c, img):
         f'<dd>{e(t.get("body") or "")}</dd></div>'
         for t in sp.get("themes", [])[:4]
     )
+    talks = "".join(
+        f'<article class="talk" data-rise><span class="talk-n">{n:02d}</span>'
+        f'<h3>{e(t["title"])}</h3><p>{e(t.get("body") or "")}</p></article>'
+        for n, t in enumerate(sp.get("themes", [])[:4], 1)
+    )
     if sp:
         body += f"""
 <section class="prose-fold" id="speaking">
-  <div class="wrap prose">
-    <h2>Speaking</h2>
-    <p>{e(sp.get('lede') or '')}</p>
-    <dl class="facts">{themes}</dl>
+  <div class="wrap">
+    <div class="prose">
+      <h2>Speaking</h2>
+      <p class="pull">{e(sp.get('lede') or '')}</p>
+    </div>
+    <div class="talks">{talks}</div>
+    <p class="prose" style="margin-top:var(--space-md)">{e(sp.get('close') or '')}</p>
   </div>
 </section>"""
     return subpage(c, img, "About", h["line"], body, shot="first-skis-2018",
@@ -843,12 +866,19 @@ def media_page(c, img):
         if pr.get("image") and img.get(pr["image"]):
             thumb = (f'<span class="press-shot">'
                      f'{img.tag(pr["image"], "(min-width:760px) 30vw, 90vw")}</span>')
-        inner = (f'{thumb}<span class="press-body">'
-                 f'<span class="caption">{e(meta)}</span>'
-                 f'<b>{e(head)}</b></span>')
+        n = len(press) + 1
+        img_attr = ""
+        if pr.get("image") and img.get(pr["image"]):
+            a = img.get(pr["image"])
+            img_attr = f' data-peek="../assets/img/{a["file"]}-{a["widths"][min(1, len(a["widths"]) - 1)]}.webp"'
+        inner = (f'<span class="wire-idx caption">{n:02d}</span>'
+                 f'<span class="wire-main"><b>{e(head)}</b>'
+                 f'<span class="caption">{e(meta)}</span></span>'
+                 f'<span class="wire-arrow" aria-hidden="true">&#8599;</span>')
         press.append(
-            f'<li data-rise><a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
-            if url else f'<li data-rise><p>{inner}</p></li>'
+            f'<li data-rise><a{img_attr} href="{e(url)}" rel="noopener" '
+            f'target="_blank">{inner}</a></li>'
+            if url else f'<li data-rise><p{img_attr}>{inner}</p></li>'
         )
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
     # Each tile is a link to the full frame. The grid crops to 3:4 for order;
@@ -867,7 +897,8 @@ def media_page(c, img):
 <section class="prose-fold">
   <div class="wrap">
     <div class="prose"><h2>Press</h2></div>
-    <ul class="press-grid">{''.join(press)}</ul>
+    <ul class="press-wire">{''.join(press)}</ul>
+    <div class="press-peek" aria-hidden="true"><img alt=""></div>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
@@ -903,17 +934,27 @@ def partnership_page(c, img):
     ct = c["contact"]
     body = f"""
 <section class="prose-fold">
-  <div class="wrap prose">
-    <h2>{e(t.get('year', '2030'))} &middot; {e(t.get('title', 'Winter Olympics'))}</h2>
-    <p>{e(t.get('line') or '')}</p>
-    <p class="caption">{e(t.get('host') or '')} &middot; {e(t.get('dates') or '')}</p>
+  <div class="wrap">
+    <div class="target" data-rise>
+      <span class="target-year" aria-hidden="true">2030</span>
+      <div class="prose">
+        <h2>{e(t.get('title', 'Winter Olympics'))}</h2>
+        <p class="pull">{e(t.get('line') or '')}</p>
+        <p class="caption">{e(t.get('host') or '')} &middot; {e(t.get('dates') or '')}</p>
+      </div>
+    </div>
     <ol class="road">{road}</ol>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
-  <div class="wrap prose">
-    <h2>What support funds</h2>
-    <dl class="facts">{areas}</dl>
+  <div class="wrap">
+    <div class="prose">
+      <h2>What support funds</h2>
+      <p class="pull">A sponsor here is not buying a logo on a page. Each of
+      these four lines is a gap between her and the athletes she races, and
+      each one closes with money and nothing else.</p>
+    </div>
+    <dl class="facts funds">{areas}</dl>
   </div>
 </section>
 <section class="prose-fold" id="contact">

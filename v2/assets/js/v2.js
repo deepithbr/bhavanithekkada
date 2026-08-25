@@ -208,8 +208,11 @@
       drawTick = false;
       const r = fig.getBoundingClientRect();
       // 0 when the map enters, 1 by the time its bottom clears 80% of the way
+      // Starts once the map's top clears 85% of the viewport and needs
+      // roughly two map-heights of scroll to finish, so the line travels at
+      // reading speed rather than completing before the reader arrives.
       const p = Math.min(1, Math.max(0,
-        (innerHeight - r.top) / (r.height + innerHeight * 0.6)));
+        (innerHeight * 0.85 - r.top) / (r.height * 1.9)));
       routeLine.style.setProperty("--drawn", p.toFixed(3));
       const lit = Math.floor(p * pins.length);
       pins.forEach((pin, i) => (pin.dataset.lit = String(i <= lit)));
@@ -240,6 +243,38 @@
       requestAnimationFrame(readSync);
     }, { passive: true });
     readSync();
+  }
+
+  /* ---- the press peek -------------------------------------------------- */
+
+  // On a cursor screen, hovering a press row floats its photograph beside
+  // the pointer. Touch screens and reduced motion never see it; the rows
+  // stand on their own.
+  const peek = document.querySelector(".press-peek");
+  if (peek && matchMedia("(hover: hover)").matches && !reduce.matches) {
+    const peekImg = peek.querySelector("img");
+    let px = 0, py = 0, moveTick = false;
+    const place = () => {
+      moveTick = false;
+      peek.style.left = Math.min(px + 24, innerWidth - 260) + "px";
+      peek.style.top = Math.min(py + 16, innerHeight - 180) + "px";
+    };
+    document.querySelectorAll(".press-wire [data-peek]").forEach((row) => {
+      row.addEventListener("mouseenter", () => {
+        peekImg.src = row.dataset.peek;
+        peek.dataset.on = "true";
+      });
+      row.addEventListener("mouseleave", () => {
+        peek.dataset.on = "false";
+      });
+      row.addEventListener("mousemove", (ev) => {
+        px = ev.clientX;
+        py = ev.clientY;
+        if (moveTick) return;
+        moveTick = true;
+        requestAnimationFrame(place);
+      });
+    });
   }
 
   /* ---- the enquiry form ---------------------------------------------- */

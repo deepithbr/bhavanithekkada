@@ -1854,3 +1854,274 @@ a {
   letter-spacing: 0.12em;
   color: var(--color-ink-on-deep-2);
 }
+
+
+/* ------------------------------------------------------------ the masthead */
+
+/*
+ * The typographic hero. Every full-bleed attempt fought its photograph;
+ * this one leads with the name at display size, staggered like Badosa's,
+ * and lets the photograph be a photograph in its own frame beside it.
+ * White ground, so the site opens in daylight.
+ */
+.masthead {
+  background: var(--color-paper);
+  padding-block: var(--space-xl) 0;
+}
+
+.masthead-grid {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+  padding-bottom: var(--space-xl);
+}
+
+@media (min-width: 900px) {
+  .masthead-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-2xl);
+  }
+}
+
+.masthead-copy {
+  display: grid;
+  gap: var(--space-md);
+  justify-items: start;
+}
+
+.masthead h1 {
+  /* Sized so the surname always holds one line inside its seven columns:
+     at 9vw the first render broke Thekkada mid-word again. The global
+     overflow-wrap:anywhere is overridden here because a name never breaks. */
+  font-size: clamp(3rem, 7vw, 6.75rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  color: var(--color-ink);
+  display: grid;
+  overflow-wrap: normal;
+}
+
+.masthead h1 .shift {
+  margin-left: clamp(1.25rem, 4.5vw, 4.5rem);
+  color: var(--color-accent);
+}
+
+.masthead-line {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  color: var(--color-ink-2);
+}
+
+.masthead-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.masthead-shot {
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.masthead-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  animation: hero-drift 22s var(--ease-in-out) forwards;
+  transform-origin: 50% 30%;
+}
+
+.masthead-shot .caption {
+  position: absolute;
+  left: var(--space-sm);
+  bottom: var(--space-sm);
+  color: var(--color-ink-on-deep);
+  text-shadow: 0 0 10px oklch(16% 0.03 255 / 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead-shot img {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------- the wire */
+
+/* Press as a wire service: numbered rows, the headline carrying the weight,
+   and on a cursor screen the photograph floats beside the pointer instead
+   of sitting in a grey box. */
+.press-wire {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+}
+
+.press-wire li {
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.press-wire li:last-child {
+  border-bottom: var(--rule-hair) solid var(--color-line);
+}
+
+.press-wire a,
+.press-wire li > p {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-block: var(--space-md);
+  margin: 0;
+  text-decoration: none;
+}
+
+.wire-idx {
+  color: var(--color-ink-3);
+}
+
+.wire-main {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.wire-main b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press-wire a:hover .wire-main b {
+  color: var(--color-accent);
+}
+
+.wire-arrow {
+  font-size: var(--text-lg);
+  color: var(--color-ink-3);
+  transition: transform var(--dur-mid) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.press-wire a:hover .wire-arrow {
+  transform: translate(3px, -3px);
+  color: var(--color-accent);
+}
+
+.press-peek {
+  position: fixed;
+  z-index: 80;
+  width: 15rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.press-peek img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 18px 50px oklch(0% 0 0 / 0.3);
+}
+
+.press-peek[data-on="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (max-width: 899px) {
+  .press-peek {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------- the talks */
+
+.talks {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .talks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+.talk {
+  position: relative;
+  border: var(--rule-hair) solid var(--color-line);
+  background: var(--color-paper);
+  padding: var(--space-lg);
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.talk-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  color: var(--color-accent-wash);
+  -webkit-text-stroke: 1px var(--color-accent);
+  line-height: 1;
+}
+
+.talk h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.talk p {
+  color: var(--color-ink-2);
+  font-size: var(--text-base);
+}
+
+/* -------------------------------------------------------------- the target */
+
+.target {
+  position: relative;
+  padding-block: var(--space-lg);
+}
+
+.target-year {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(6rem, 18vw, 16rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--color-paper-2);
+  z-index: -1;
+  user-select: none;
+}
+
+.funds .fact {
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-top: none;
+  padding: var(--space-lg);
+}
+
+.funds {
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .funds {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
