@@ -45,31 +45,31 @@
   /* ---- fold reveal ----------------------------------------------------- */
 
   const rising = document.querySelectorAll("[data-rise]");
-  if (!rising.length) return;
-
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 
   // No IntersectionObserver, or the reader asked for less motion: show
-  // everything at once and stop. Nothing on this page depends on the reveal.
-  if (reduce.matches || !("IntersectionObserver" in window)) {
+  // everything at once. Only the reveal is skipped. This block used to
+  // return out of the whole file instead, which unplugged every behaviour
+  // after it on any page without a data-rise element, and for every
+  // reduced-motion reader everywhere; the menu and the form are not motion.
+  if (!rising.length || reduce.matches || !("IntersectionObserver" in window)) {
     rising.forEach((el) => (el.dataset.shown = "true"));
-    return;
+  } else {
+    const seen = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.dataset.shown = "true";
+          // One-shot. Nothing fades out on the way back up, so a reader
+          // scrolling against the page never watches it disassemble.
+          seen.unobserve(entry.target);
+        }
+      },
+      { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
+    );
+
+    rising.forEach((el) => seen.observe(el));
   }
-
-  const seen = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.dataset.shown = "true";
-        // One-shot. Nothing fades out on the way back up, so a reader
-        // scrolling against the page never watches it disassemble.
-        seen.unobserve(entry.target);
-      }
-    },
-    { rootMargin: "0px 0px -12% 0px", threshold: 0.05 }
-  );
-
-  rising.forEach((el) => seen.observe(el));
 
   /* ---- the count-up -------------------------------------------------- */
 
@@ -99,6 +99,31 @@
     totals.forEach((el) => counter.observe(el));
   }
 
+  /* ---- the mobile menu ------------------------------------------------ */
+
+  // One button, one attribute. Escape closes and hands focus back; a tap on
+  // any link closes it too, since every link leaves the page.
+  const navEl = document.getElementById("nav");
+  const navToggle = navEl && navEl.querySelector(".nav-toggle");
+  if (navToggle) {
+    const setOpen = (on) => {
+      navEl.dataset.open = String(on);
+      navToggle.setAttribute("aria-expanded", String(on));
+    };
+    navToggle.addEventListener("click", () => {
+      setOpen(navEl.dataset.open !== "true");
+    });
+    navEl.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape" && navEl.dataset.open === "true") {
+        setOpen(false);
+        navToggle.focus();
+      }
+    });
+    navEl.querySelectorAll(".nav-links a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false))
+    );
+  }
+
   /* ---- the lightbox --------------------------------------------------- */
 
   // The gallery grid shows a 3:4 crop for order; the photograph itself is a
@@ -109,9 +134,14 @@
     const box = document.createElement("div");
     box.className = "lightbox";
     box.hidden = true;
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-modal", "true");
+    box.setAttribute("aria-label", "Photograph viewer");
+    box.tabIndex = -1;
     box.innerHTML =
       '<img alt=""><p class="caption"></p>' +
       '<span class="count"></span>' +
+      '<button type="button" class="shut" aria-label="Close">&times;</button>' +
       '<nav><button type="button" data-go="-1" aria-label="Previous photograph">&larr;</button>' +
       '<button type="button" data-go="1" aria-label="Next photograph">&rarr;</button></nav>';
     document.body.appendChild(box);
@@ -130,9 +160,11 @@
       count.textContent = (at + 1) + " / " + items.length;
     };
 
+    let opener = null;
     const shut = () => {
       box.hidden = true;
       document.documentElement.style.overflow = "";
+      if (opener) opener.focus();
     };
     box.addEventListener("click", (ev) => {
       const btn = ev.target.closest("[data-go]");
@@ -148,14 +180,29 @@
       if (ev.key === "Escape") shut();
       else if (ev.key === "ArrowLeft") show(at - 1);
       else if (ev.key === "ArrowRight") show(at + 1);
+      else if (ev.key === "Tab") {
+        // Focus stays inside the dialog: three buttons, wrapped.
+        const stops = box.querySelectorAll("button");
+        const first = stops[0];
+        const last = stops[stops.length - 1];
+        if (ev.shiftKey && document.activeElement === first) {
+          ev.preventDefault();
+          last.focus();
+        } else if (!ev.shiftKey && document.activeElement === last) {
+          ev.preventDefault();
+          first.focus();
+        }
+      }
     });
 
     items.forEach((a, i) => {
       a.addEventListener("click", (ev) => {
         ev.preventDefault();
+        opener = a;
         show(i);
         box.hidden = false;
         document.documentElement.style.overflow = "hidden";
+        box.focus();
       });
     });
   }
@@ -286,6 +333,13 @@
     const say = (t) => { if (note) note.textContent = t; };
     const EMAIL = "bhavani.thekkada2026@gmail.com";
 
+    // speaking.html links across with ?topic=Speaking; honour it.
+    const pre = new URLSearchParams(location.search).get("topic");
+    if (pre) {
+      const sel = form.querySelector('[name="topic"]');
+      if (sel && [...sel.options].some((o) => o.value === pre)) sel.value = pre;
+    }
+
     const mailto = (f) => {
       const body =
         (f.message || "") + "\n\n" + [f.name, f.email].filter(Boolean).join(" · ");
@@ -300,20 +354,26 @@
       ev.preventDefault();
       const fd = new FormData(form);
       const f = Object.fromEntries(
-        ["name", "email", "topic", "message", "website"].map((k) => [
-          k, String(fd.get(k) || "").trim(),
-        ])
+        ["name", "organisation", "email", "topic", "message", "website"].map(
+          (k) => [k, String(fd.get(k) || "").trim()]
+        )
       );
 
-      let bad = false;
+      // Each miss is named at its own field, not only in the general note,
+      // and focus lands on the first one so the fix is a keystroke away.
+      let firstBad = null;
       for (const k of ["email", "message"]) {
         const el = form.querySelector(`[name="${k}"]`);
+        const err = document.getElementById(el.getAttribute("aria-describedby"));
         const invalid = !f[k] || (k === "email" && !el.checkValidity());
+        el.setAttribute("aria-invalid", String(invalid));
         el.dataset.invalid = String(invalid);
-        bad = bad || invalid;
+        if (err) err.hidden = !invalid;
+        if (invalid && !firstBad) firstBad = el;
       }
-      if (bad) {
+      if (firstBad) {
         say("An email address and a message are all it needs.");
+        firstBad.focus();
         return;
       }
 

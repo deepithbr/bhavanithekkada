@@ -60,6 +60,7 @@ FONTS = (
 NAV = [
     ("About", "about.html"),
     ("Journey", "journey.html"),
+    ("Speaking", "speaking.html"),
     ("Media", "media.html"),
     ("Journal", "journal.html"),
     ("Partnership", "partnership.html"),
@@ -205,12 +206,19 @@ def nav_block(current=None, glass=False) -> str:
         + f'>{e(t)}</a>'
         for t, h in NAV
     )
+    # Work with me rides inside the link row so the mobile menu carries it
+    # too; the styling singles it out on desktop.
+    wcur = ' aria-current="page"' if current == "work-with-me.html" else ""
+    items += (f'<a class="nav-work" href="work-with-me.html"{wcur}>'
+              'Work with me</a>')
     g = ' data-glass="true"' if glass else ""
     return f"""
 <header class="nav" id="nav"{g}>
   <div class="wrap nav-inner">
     <a class="wordmark" href="index.html">Bhavani Thekkada</a>
-    <nav class="nav-links" aria-label="Primary">{items}</nav>
+    <nav class="nav-links" id="nav-links" aria-label="Primary">{items}</nav>
+    <button class="nav-toggle" type="button" aria-expanded="false"
+      aria-controls="nav-links">Menu</button>
   </div>
 </header>"""
 
@@ -223,8 +231,14 @@ def statline(c) -> str:
     lats = [p["lat"] for p in pts]
     span = round(max(lats) - min(lats))
     meds = sum(1 for r in c["results"]["rows"] if r.get("medal"))
+    # Southern-hemisphere pins carry negative latitude; -41degN is not a
+    # place. Hemisphere comes from the sign.
+    def hemi(v):
+        v = round(v)
+        return f"{abs(v)}&deg;{'S' if v < 0 else 'N'}"
+
     bits = [
-        f"{round(min(lats))}&deg;N to {round(max(lats))}&deg;N",
+        f"{hemi(min(lats))} to {hemi(max(lats))}",
         f"{span}&deg; of latitude",
         f"{meds} medals",
         f"{len(pts)} places",
@@ -234,7 +248,7 @@ def statline(c) -> str:
 
 
 def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
-          pos=None) -> str:
+          pos=None, kicker=None) -> str:
     """The benchmark's one repeated shape.
 
     Photograph fills the fold, type centred over it, one outlined button
@@ -259,6 +273,7 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
 <section class="panel"{attrs}>
   <div class="panel-shot">{shot}</div>
   <div class="wrap panel-body" data-rise>
+    {f'<p class="caption">{e(kicker)}</p>' if kicker else ''}
     <{level}>{e(title)}</{level}>
     <p class="sub">{e(sub)}</p>
     {btn}
@@ -429,9 +444,10 @@ def footer(c: dict) -> str:
     return f"""
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-statement">India&rsquo;s cross-country skier, on the road to 2030.</p>
+    <p class="foot-statement">Indian cross-country skier, on the road to 2030.</p>
     <div class="foot-rows">
       <div class="foot-links">{items}
+        <a href="work-with-me.html">Work with me</a>
         <a href="{e(ct['instagramUrl'])}" rel="me">Instagram</a>
         <a href="mailto:{e(ct['email'])}">Email</a>
       </div>
@@ -470,7 +486,7 @@ def page(c: dict, img: Img) -> str:
 <main id="main">
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1',
-       pos='48% 22%')}
+       pos='48% 22%', kicker='Indian cross-country skier')}
 <div class="wrap">{statline(c)}</div>
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
@@ -532,6 +548,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <link rel="stylesheet" href="assets/css/v2.css?v={v}">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 {nav_block(current)}
 <main id="main">
 <section class="panel" data-size="head">{head_shot}
@@ -589,23 +606,59 @@ def about_page(c, img):
     <dl class="facts">{disciplines}</dl>
   </div>
 </section>"""
+    # Speaking has its own page now; About keeps the anchor old links used
+    # and points across.
     sp = c.get("speaking", {})
-    themes = "".join(
-        f'<div class="fact"><dt class="caption">{e(t["title"])}</dt>'
-        f'<dd>{e(t.get("body") or "")}</dd></div>'
-        for t in sp.get("themes", [])[:4]
-    )
     if sp:
         body += f"""
 <section class="prose-fold" id="speaking">
   <div class="wrap prose">
     <h2>Speaking</h2>
     <p>{e(sp.get('lede') or '')}</p>
-    <dl class="facts">{themes}</dl>
+    <a class="btn" href="speaking.html">The talks, in full</a>
   </div>
 </section>"""
     return subpage(c, img, "About", h["line"], body, shot="first-skis-2018",
                    current="about.html", pos="50% 8%", og="about")
+
+
+def road_ahead(c) -> str:
+    """The timeline keeps going. Her brief asks Journey to run past the
+    present into the targets, and to close on the section she titled
+    Beyond the Finish Line, so both live here rather than only on the
+    partnership page."""
+    t = c.get("targets") or {}
+    cards = "".join(
+        f'<article class="step step-future" data-rise>'
+        f'<div class="step-copy">'
+        f'<span class="ghost-year" aria-hidden="true">{e(i["year"])}</span>'
+        f'<p class="caption">{e(i["year"])}</p>'
+        f'<h3>{e(i["title"])}</h3><p>{e(i["line"])}</p></div></article>'
+        for i in t.get("items", [])
+    )
+    bf = c.get("beyondFinishLine") or {}
+    points = "".join(
+        f'<div class="fact"><dt class="caption">{e(p["title"])}</dt>'
+        f'<dd>{e(p["body"])}</dd></div>'
+        for p in bf.get("points", [])
+    )
+    return f"""
+<section class="prose-fold" id="road">
+  <div class="wrap">
+    <div class="prose">
+      <h2>{e(t.get('kicker') or 'The road to 2030')}</h2>
+      <p>{e(t.get('note') or '')}</p>
+    </div>
+    <div class="steps steps-future">{cards}</div>
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice" id="beyond">
+  <div class="wrap prose">
+    <h2>{e(bf.get('kicker') or 'Beyond the finish line')}</h2>
+    <p>{e(bf.get('lede') or '')}</p>
+    <dl class="facts">{points}</dl>
+  </div>
+</section>"""
 
 
 def journey_page(c, img):
@@ -634,9 +687,11 @@ def journey_page(c, img):
         + "</div></section>"
         + route_map(c)
         + record_fold(c)
+        + road_ahead(c)
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
-                   "Six seasons, told in order.", body, shot="ridge-sunrise",
+                   "From Kodagu to the road that ends in 2030.", body,
+                   shot="ridge-sunrise",
                    current="journey.html", pos="50% 62%", og="journey")
 
 
@@ -925,38 +980,63 @@ def partnership_page(c, img):
     <dl class="facts">{areas}</dl>
   </div>
 </section>
+{enquiry_block(c)}"""
+    return subpage(c, img, "Partnership",
+                   "The plan to 2030, and what support pays for.",
+                   body, shot="summit-solo", current="partnership.html",
+                   pos="50% 46%", og="partnership")
+
+
+def enquiry_block(c, heading="Work with Bhavani") -> str:
+    """The one form, shared by Partnership and Work with me.
+
+    Same pipeline V1 ships: POST to /api/enquiry (the Cloudflare Pages
+    function backed by Resend) with a mailto fallback if the function is
+    missing, unconfigured or offline. Organisation is optional and the
+    function already accepts it; the topics match her brief word for word.
+    Each required field carries its own error line, wired to aria-invalid
+    by the script, so a miss is named at the field and not only in the
+    general note."""
+    return f"""
 <section class="prose-fold" id="contact">
   <div class="wrap prose">
-    <h2>Work with Bhavani</h2>
-    <p>{e(ct.get('lede') or 'One route in, for everything.')}</p>
-    <!--
-      The same enquiry pipeline V1 ships: POST to /api/enquiry, which is the
-      Cloudflare Pages function backed by Resend, with a mailto fallback if
-      the function is missing, unconfigured or offline. V2 briefly replaced
-      this with a bare mailto link, which threw away working functionality;
-      this restores it in V2's own markup and voice.
-    -->
+    <h2>{e(heading)}</h2>
+    <p>Speaking, sponsorship, media and brand collaborations. One form,
+    straight to her.</p>
     <form class="enquiry" id="enquiry" method="post" action="/api/enquiry" novalidate>
       <div class="field">
         <label class="caption" for="f-name">Name</label>
         <input id="f-name" name="name" type="text" autocomplete="name">
       </div>
       <div class="field">
+        <label class="caption" for="f-org">Organisation
+          <span class="opt">optional</span></label>
+        <input id="f-org" name="organisation" type="text"
+          autocomplete="organization">
+      </div>
+      <div class="field">
         <label class="caption" for="f-email">Email</label>
-        <input id="f-email" name="email" type="email" autocomplete="email" required>
+        <input id="f-email" name="email" type="email" autocomplete="email"
+          required aria-describedby="f-email-err">
+        <p class="field-err caption" id="f-email-err" hidden>An email address
+        is needed for the reply.</p>
       </div>
       <div class="field">
         <label class="caption" for="f-topic">Topic</label>
         <select id="f-topic" name="topic">
           <option>Sponsorship</option>
           <option>Speaking</option>
-          <option>Press</option>
+          <option>Media</option>
+          <option>Brand collaboration</option>
           <option>Other</option>
         </select>
       </div>
       <div class="field field-wide">
         <label class="caption" for="f-msg">Message</label>
-        <textarea id="f-msg" name="message" rows="5" required></textarea>
+        <textarea id="f-msg" name="message" rows="5" required
+          aria-describedby="f-msg-err"></textarea>
+        <p class="field-err caption" id="f-msg-err" hidden>A line or two about
+        what you have in mind.</p>
       </div>
       <!-- honeypot, same contract as the function expects -->
       <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -967,10 +1047,6 @@ def partnership_page(c, img):
     </form>
   </div>
 </section>"""
-    return subpage(c, img, "Partnership",
-                   "The plan to 2030, and what support pays for.",
-                   body, shot="summit-solo", current="partnership.html",
-                   pos="50% 46%", og="partnership")
 
 
 def parse_post(path):
@@ -1026,6 +1102,49 @@ def pretty_date(iso):
         return iso
 
 
+def speaking_page(c, img):
+    """Athlete, speaker, storyteller: her brief promotes this from a footnote
+    on About to a section of its own, with one clear way to book her."""
+    sp = c.get("speaking") or {}
+    talks = "".join(
+        f'<article class="talk" data-rise><span class="talk-n">{n:02d}</span>'
+        f'<h3>{e(t["title"])}</h3><p>{e(t.get("body") or "")}</p>'
+        f'<p class="caption">{e(t.get("from") or "")}</p></article>'
+        for n, t in enumerate(sp.get("themes", []), 1)
+    )
+    aud = " &middot; ".join(e(a) for a in sp.get("audiences", []))
+    body = f"""
+<section class="prose-fold">
+  <div class="wrap">
+    <div class="prose">
+      <p class="caption">Athlete &middot; Speaker &middot; Storyteller</p>
+      <h2>The talks</h2>
+      <p>{e(sp.get('close') or '')}</p>
+    </div>
+    <div class="talks">{talks}</div>
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice">
+  <div class="wrap prose">
+    <h2>Rooms it fits</h2>
+    <p>{aud}.</p>
+    <p>{e(sp.get('availability') or '')}</p>
+    <a class="btn" data-on="accent"
+       href="work-with-me.html?topic=Speaking">Invite Bhavani to speak</a>
+  </div>
+</section>"""
+    return subpage(c, img, "Speaking", sp.get("lede") or "", body,
+                   shot="flag-almaty", current="speaking.html", og="speaking")
+
+
+def work_with_me_page(c, img):
+    """The brief's ninth section: one prominent route in for everything."""
+    return subpage(c, img, "Work with me",
+                   "Speaking, sponsorship, media and brand collaborations.",
+                   enquiry_block(c), shot="lake-mountains",
+                   current="work-with-me.html", og="work-with-me")
+
+
 def journal_page(c, img, posts):
     """Her space. A list of entries in her own voice, newest first.
 
@@ -1046,8 +1165,8 @@ def journal_page(c, img, posts):
         body = """
 <section class="prose-fold">
   <div class="wrap prose">
-    <p>The first entries are written and waiting on her final word. Race
-    reports land here after each block, in her own voice.</p>
+    <p>Race reports, training notes and the road to 2030, written from
+    inside the season. The first entries land here soon.</p>
   </div>
 </section>"""
     return subpage(c, img, "Journal", "The season, written from inside it.",
@@ -1090,6 +1209,8 @@ def main() -> int:
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
+    (OUT / "speaking.html").write_text(speaking_page(c, img), encoding="utf-8")
+    (OUT / "work-with-me.html").write_text(work_with_me_page(c, img), encoding="utf-8")
     (OUT / "404.html").write_text(f"""<!doctype html>
 <html lang="en">
 <head>
@@ -1107,7 +1228,11 @@ def main() -> int:
     <p class="caption">404</p>
     <h1>Off the course</h1>
     <p class="sub">This page does not exist. The site does.</p>
-    <a class="btn" data-on="accent" href="/v2/index.html">Back to the start</a>
+    <div class="masthead-cta">
+      <a class="btn" data-on="accent" href="/v2/index.html">Back to the start</a>
+      <a class="btn" href="/v2/journey.html">The journey</a>
+      <a class="btn" href="/v2/work-with-me.html">Work with me</a>
+    </div>
   </div>
 </main>
 </body>
@@ -1120,7 +1245,7 @@ def main() -> int:
             journal_post_page(c, img, post), encoding="utf-8")
 
     m = medals(c)
-    print(f"v2/  6 pages   index {out.stat().st_size / 1024:.1f} KB")
+    print(f"v2/  8 pages   index {out.stat().st_size / 1024:.1f} KB")
     print("  benchmark  rogerfederer.com  ·  6 panels + sponsor band + split")
     print(f"  medals     international {sum(m['International'].values())}"
           f"  national {sum(m['National'].values())}")

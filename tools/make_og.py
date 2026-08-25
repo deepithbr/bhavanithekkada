@@ -28,6 +28,8 @@ CARDS = {
     "media": "podium-gulmarg-2023",
     "journal": "classic-tracks",
     "partnership": "summit-solo",
+    "speaking": "flag-almaty",
+    "work-with-me": "lake-mountains",
 }
 
 W, H = 1200, 630
