@@ -67,6 +67,10 @@ NAV = [
 
 JOURNAL_DIR = CONTENT / "journal"
 
+# Absolute origin for share cards: og:image must be absolute or crawlers
+# ignore it. Update once the final domain exists.
+ORIGIN = "https://bhavanithekkada.pages.dev"
+
 # One photograph per panel. Named here rather than inline so the whole cast of
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
@@ -208,6 +212,24 @@ def nav_block(current=None) -> str:
     <nav class="nav-links" aria-label="Primary">{items}</nav>
   </div>
 </header>"""
+
+
+def statline(c) -> str:
+    """Her career in four measured figures. Computed, never typed: the
+    latitude span from the map pins, the medals from the results rows, the
+    places from the pins, so the line can never drift from the site."""
+    pts = c["internationalFootprint"]
+    lats = [p["lat"] for p in pts]
+    span = round(max(lats) - min(lats))
+    meds = sum(1 for r in c["results"]["rows"] if r.get("medal"))
+    bits = [
+        f"{round(min(lats))}&deg;N to {round(max(lats))}&deg;N",
+        f"{span}&deg; of latitude",
+        f"{meds} medals",
+        f"{len(pts)} places",
+    ]
+    inner = "".join(f"<span>{x}</span>" for x in bits)
+    return f'<p class="statline caption" data-rise>{inner}</p>'
 
 
 def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
@@ -429,17 +451,26 @@ def page(c: dict, img: Img) -> str:
 <meta name="color-scheme" content="light">
 <title>Bhavani Thekkada | Indian cross-country skier</title>
 <meta name="description" content="{e(desc)}">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Bhavani Thekkada | Indian cross-country skier">
+<meta property="og:description" content="{e(desc)}">
+<meta property="og:image" content="{ORIGIN}/v2/assets/og/index.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{e(FONTS)}">
 <link rel="stylesheet" href="assets/css/v2.css?v={v}">
+<link rel="preload" as="image" href="../assets/img/{SHOTS['hero']}-1600.webp">
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 {nav_block()}
-<main>
+<main id="main">
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1',
        pos='50% 30%')}
+<div class="wrap">{statline(c)}</div>
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
        'Racing on skis across kilometres of snow, uphill and down, '
@@ -461,7 +492,7 @@ def page(c: dict, img: Img) -> str:
 
 
 def subpage(c, img, title, lede, body_html, shot=None, current=None,
-            pos=None):
+            pos=None, og=None):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -488,6 +519,12 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <meta name="color-scheme" content="light">
 <title>{e(title)} | Bhavani Thekkada</title>
 <meta name="description" content="{e(lede)}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{e(title)} | Bhavani Thekkada">
+<meta property="og:description" content="{e(lede)}">
+<meta property="og:image" content="{ORIGIN}/v2/assets/og/{e(og or 'index')}.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{e(FONTS)}">
@@ -495,7 +532,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 </head>
 <body>
 {nav_block(current)}
-<main>
+<main id="main">
 <section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
     <a class="crumb caption" href="index.html">&larr; Bhavani Thekkada</a>
@@ -533,6 +570,8 @@ def about_page(c, img):
     </figure>
     <div class="prose" data-rise>
       <h2>{e(h['profileHeading'])}</h2>
+      <p class="pull">{e(h['standfirst'])}</p>
+      <p class="pull-cite caption">Reported by the Associated Press</p>
       <p>{e(h['profileBody'])}</p>
       <p>{e(h['profileBody2'])}</p>
     </div>
@@ -565,7 +604,7 @@ def about_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "About", h["line"], body, shot="first-skis-2018",
-                   current="about.html", pos="50% 8%")
+                   current="about.html", pos="50% 8%", og="about")
 
 
 def journey_page(c, img):
@@ -582,6 +621,7 @@ def journey_page(c, img):
   <article class="step" id="beat-{e(b['id'])}" data-rise>
     {shot}
     <div class="step-copy">
+      <span class="ghost-year" aria-hidden="true">{e(str(b['year'])[:4])}</span>
       <p class="caption">{e(b['year'])}</p>
       <h2>{e(b['heading'])}</h2>
       <p>{e(b['body'])}</p>
@@ -596,7 +636,7 @@ def journey_page(c, img):
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
                    "Six seasons, told in order.", body, shot="ridge-sunrise",
-                   current="journey.html", pos="50% 62%")
+                   current="journey.html", pos="50% 62%", og="journey")
 
 
 def route_map(c) -> str:
@@ -638,9 +678,15 @@ def route_map(c) -> str:
         ((xy(p)[0] - ex) ** 2 + (xy(p)[1] - ey) ** 2) ** 0.5 for p in europe
     ) + 2.2
 
+    # The line of her life, in racing order, drawn by scroll: v2.js drives
+    # stroke-dashoffset from the section's progress and the pins light as the
+    # line arrives. Reduced motion sees it complete.
+    route_pts = [xy(p["id"]) for p in c["internationalFootprint"]]
+    route_d = "M " + " L ".join(f"{x:.1f} {y:.1f}" for x, y in route_pts)
     dots = "".join(
-        f'<circle cx="{xy(pid)[0]:.1f}" cy="{xy(pid)[1]:.1f}" r="1.6" class="pin"/>'
-        for pid in pts
+        f'<circle cx="{xy(p["id"])[0]:.1f}" cy="{xy(p["id"])[1]:.1f}" r="1.6" '
+        f'class="pin" data-stop="{i}"/>'
+        for i, p in enumerate(c["internationalFootprint"])
     )
     # dx, dy, anchor per label, tuned against the render
     labels = [
@@ -674,6 +720,7 @@ def route_map(c) -> str:
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
            aria-label="World map marking the fourteen places she has raced or trained.">
         <path d="{w['path']}" class="land"/>
+        <path d="{route_d}" class="route" id="route-line" pathLength="1"/>
         {dots}{cluster}{texts}
       </svg>
       <figcaption class="caption">{roll}</figcaption>
@@ -826,13 +873,13 @@ def media_page(c, img):
 <section class="prose-fold" data-ground="ice">
   <div class="wrap">
     <div class="prose"><h2>Photographs</h2></div>
-    <div class="tiles" style="margin-top:var(--space-md)">{gallery}</div>
+    <div class="masonry" style="margin-top:var(--space-md)">{gallery}</div>
   </div>
 </section>"""
     return subpage(c, img, "Media",
                    "The papers that told her story, and the archive that shows it.",
                    body, shot="podium-gulmarg-2023", current="media.html",
-                   pos="50% 26%")
+                   pos="50% 26%", og="media")
 
 
 def partnership_page(c, img):
@@ -846,10 +893,12 @@ def partnership_page(c, img):
     # The year-by-year ladder the client asked to keep from V1, rendered as a
     # plain list rather than a scroll sequence. The rungs come from the same
     # data V1 used, so the two sites cannot drift apart on the plan.
+    # The ladder climbs left to right: each rung indents further, so 2027 to
+    # 2030 reads as altitude gained, which is her story in one shape.
     road = "".join(
-        f'<li><span class="caption">{e(i["year"])}</span>'
+        f'<li style="--rung:{n}"><span class="caption">{e(i["year"])}</span>'
         f'<b>{e(i["title"])}</b><p>{e(i["line"])}</p></li>'
-        for i in c.get("targets", {}).get("items", [])
+        for n, i in enumerate(c.get("targets", {}).get("items", []))
     )
     ct = c["contact"]
     body = f"""
@@ -912,7 +961,7 @@ def partnership_page(c, img):
     return subpage(c, img, "Partnership",
                    "The plan to 2030, and what support pays for.",
                    body, shot="summit-solo", current="partnership.html",
-                   pos="50% 46%")
+                   pos="50% 46%", og="partnership")
 
 
 def parse_post(path):
@@ -994,7 +1043,7 @@ def journal_page(c, img, posts):
 </section>"""
     return subpage(c, img, "Journal", "The season, written from inside it.",
                    body, shot="classic-tracks", current="journal.html",
-                   pos="50% 40%")
+                   pos="50% 40%", og="journal")
 
 
 def journal_post_page(c, img, post):
@@ -1003,6 +1052,7 @@ def journal_post_page(c, img, post):
     if post["image"] and img.get(post["image"]):
         hero = post["image"]
     body = f"""
+<div class="read-progress" aria-hidden="true"><i id="read-bar"></i></div>
 <article class="prose-fold">
   <div class="wrap prose post">
     <p class="caption">{e(pretty_date(post['date']))}</p>
@@ -1031,6 +1081,29 @@ def main() -> int:
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
+    (OUT / "404.html").write_text(f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Page not found | Bhavani Thekkada</title>
+<link rel="icon" href="/v2/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="{e(FONTS)}">
+<link rel="stylesheet" href="/v2/assets/css/v2.css?v={fingerprint()}">
+</head>
+<body>
+<main id="main" class="panel" data-ground="paper" style="min-height:100svh">
+  <div class="wrap panel-body">
+    <p class="caption">404</p>
+    <h1>Off the course</h1>
+    <p class="sub">This page does not exist. The site does.</p>
+    <a class="btn" data-on="accent" href="/v2/index.html">Back to the start</a>
+  </div>
+</main>
+</body>
+</html>
+""", encoding="utf-8")
     posts = load_posts()
     (OUT / "journal.html").write_text(journal_page(c, img, posts), encoding="utf-8")
     for post in posts:

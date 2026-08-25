@@ -109,30 +109,137 @@
     const box = document.createElement("div");
     box.className = "lightbox";
     box.hidden = true;
-    box.innerHTML = '<img alt=""><p class="caption"></p>';
+    box.innerHTML =
+      '<img alt=""><p class="caption"></p>' +
+      '<span class="count"></span>' +
+      '<nav><button type="button" data-go="-1" aria-label="Previous photograph">&larr;</button>' +
+      '<button type="button" data-go="1" aria-label="Next photograph">&rarr;</button></nav>';
     document.body.appendChild(box);
     const pic = box.querySelector("img");
     const cap = box.querySelector(".caption");
+    const count = box.querySelector(".count");
+    const items = Array.from(fulls);
+    let at = 0;
+
+    const show = (i) => {
+      at = (i + items.length) % items.length;
+      const a = items[at];
+      pic.src = a.getAttribute("href");
+      pic.alt = (a.querySelector("img") || {}).alt || "";
+      cap.textContent = a.dataset.cap || "";
+      count.textContent = (at + 1) + " / " + items.length;
+    };
 
     const shut = () => {
       box.hidden = true;
       document.documentElement.style.overflow = "";
     };
-    box.addEventListener("click", shut);
+    box.addEventListener("click", (ev) => {
+      const btn = ev.target.closest("[data-go]");
+      if (btn) {
+        ev.stopPropagation();
+        show(at + Number(btn.dataset.go));
+        return;
+      }
+      shut();
+    });
     addEventListener("keydown", (ev) => {
-      if (ev.key === "Escape" && !box.hidden) shut();
+      if (box.hidden) return;
+      if (ev.key === "Escape") shut();
+      else if (ev.key === "ArrowLeft") show(at - 1);
+      else if (ev.key === "ArrowRight") show(at + 1);
     });
 
-    fulls.forEach((a) => {
+    items.forEach((a, i) => {
       a.addEventListener("click", (ev) => {
         ev.preventDefault();
-        pic.src = a.getAttribute("href");
-        pic.alt = (a.querySelector("img") || {}).alt || "";
-        cap.textContent = a.dataset.cap || "";
+        show(i);
         box.hidden = false;
         document.documentElement.style.overflow = "hidden";
       });
     });
+  }
+
+  /* ---- the latitude rail ---------------------------------------------- */
+
+  // Her life runs 12N to 66N; the rail maps the page to that span. Pure
+  // presentation, desktop only, and absent under reduced motion because a
+  // permanently moving marker is motion.
+  if (matchMedia("(min-width: 1100px)").matches && !reduce.matches) {
+    const rail = document.createElement("div");
+    rail.className = "lat-rail";
+    rail.setAttribute("aria-hidden", "true");
+    rail.innerHTML =
+      '<span class="lat-end" data-end="n">66&deg;N</span>' +
+      "<i></i><b>12&deg;N</b>" +
+      '<span class="lat-end" data-end="s">12&deg;N</span>';
+    document.body.appendChild(rail);
+    const dot = rail.querySelector("i");
+    const label = rail.querySelector("b");
+    let railTick = false;
+    const railSync = () => {
+      railTick = false;
+      const de = document.documentElement;
+      const max = de.scrollHeight - innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 0;
+      const lat = 12 + (66 - 12) * p;
+      const y = (1 - p) * 100;
+      dot.style.top = y + "%";
+      label.style.top = y + "%";
+      label.textContent = lat.toFixed(1) + "\u00b0N";
+    };
+    addEventListener("scroll", () => {
+      if (railTick) return;
+      railTick = true;
+      requestAnimationFrame(railSync);
+    }, { passive: true });
+    railSync();
+  }
+
+  /* ---- the route draws ------------------------------------------------- */
+
+  const routeLine = document.getElementById("route-line");
+  if (routeLine && !reduce.matches) {
+    const fig = routeLine.closest(".route-map");
+    const pins = fig.querySelectorAll(".pin[data-stop]");
+    pins.forEach((p) => (p.dataset.lit = "false"));
+    let drawTick = false;
+    const draw = () => {
+      drawTick = false;
+      const r = fig.getBoundingClientRect();
+      // 0 when the map enters, 1 by the time its bottom clears 80% of the way
+      const p = Math.min(1, Math.max(0,
+        (innerHeight - r.top) / (r.height + innerHeight * 0.6)));
+      routeLine.style.setProperty("--drawn", p.toFixed(3));
+      const lit = Math.floor(p * pins.length);
+      pins.forEach((pin, i) => (pin.dataset.lit = String(i <= lit)));
+    };
+    addEventListener("scroll", () => {
+      if (drawTick) return;
+      drawTick = true;
+      requestAnimationFrame(draw);
+    }, { passive: true });
+    draw();
+  }
+
+  /* ---- journal reading progress ---------------------------------------- */
+
+  const readBar = document.getElementById("read-bar");
+  if (readBar) {
+    let readTick = false;
+    const readSync = () => {
+      readTick = false;
+      const de = document.documentElement;
+      const max = de.scrollHeight - innerHeight;
+      readBar.style.setProperty(
+        "--read", max > 0 ? (scrollY / max).toFixed(4) : 1);
+    };
+    addEventListener("scroll", () => {
+      if (readTick) return;
+      readTick = true;
+      requestAnimationFrame(readSync);
+    }, { passive: true });
+    readSync();
   }
 
   /* ---- the enquiry form ---------------------------------------------- */
