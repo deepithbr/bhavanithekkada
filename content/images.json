@@ -1,10 +1,10 @@
 {
   "meta": {
-    "lastReviewed": "2026-08-10",
+    "lastReviewed": "2026-08-25",
     "basePath": "assets/img",
     "format": "webp",
-    "provenance": "Every asset was extracted from the client-supplied portfolio PDFs, deduplicated, de-rotated, cropped and re-encoded. No image on this site is hotlinked, and no substitute skier has been used anywhere.",
-    "rightsWarning": "Rights are UNCONFIRMED for the whole set. One extracted frame (p03_00.jpg) carried a visible IMAGO agency watermark, which means at least some race photography in the portfolio originates from a picture agency. The cutout used in race-planica-elbrus appears to derive from that same frame. Confirm ownership or licence for every asset before launch. See CONTENT_NEEDED.md item 22.",
+    "provenance": "Two sources. The original set was extracted from the client-supplied portfolio PDFs, deduplicated, de-rotated, cropped and re-encoded. The set added on 2026-08-25 came directly from the athlete's own Google Drive archive, downloaded with her rights holder's explicit permission and re-encoded by tools/add_images.py. No image on this site is hotlinked, and no substitute skier has been used anywhere.",
+    "rightsWarning": "Rights are settled for the images marked rights:\"owned\", which come from the athlete's own archive. They remain UNCONFIRMED for every image marked rights:\"unconfirmed\", which were extracted from the portfolio PDFs. One of those extracted frames (p03_00.jpg) carried a visible IMAGO agency watermark, so at least some of that race photography originates from a picture agency, and the cutout used in race-planica-elbrus appears to derive from the same frame. Confirm ownership or licence for the unconfirmed set before launch.",
     "focalPointNote": "focal is [x, y] as fractions of width and height, used for object-position so crops keep the subject."
   },
   "images": [
@@ -596,6 +596,485 @@
         0.2
       ],
       "rights": "unconfirmed"
+    },
+    {
+      "slot": "race-worldcup",
+      "file": "race-worldcup",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada in the blue India race suit on the stadium loop in front of a full grandstand, advertising boards and national flags along the barrier behind her.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Trondheim, Norway",
+      "category": "race",
+      "focal": [
+        0.42,
+        0.35
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "flag-harbin",
+      "file": "flag-harbin",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3000,
+        4000
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada holding the Indian flag open above her shoulders in her race bib at the Asian Winter Games.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Harbin, China",
+      "category": "race",
+      "focal": [
+        0.5,
+        0.34
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "chile-lake",
+      "file": "chile-lake",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "A lone skier crossing an open snowfield high above a lake and a line of volcanic peaks in southern Chile.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Antillanca, Chile",
+      "category": "race",
+      "focal": [
+        0.41,
+        0.44
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "chile-corralco",
+      "file": "chile-corralco",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3008,
+        4000
+      ],
+      "ratio": 0.752,
+      "alt": "Bhavani Thekkada on skis with three other racers at the foot of the piste, snow-covered slopes and a chairlift behind them.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Corralco, Chile",
+      "category": "race",
+      "focal": [
+        0.55,
+        0.4
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "holmenkollen",
+      "file": "holmenkollen",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2268,
+        4032
+      ],
+      "ratio": 0.5625,
+      "alt": "Bhavani Thekkada standing on her skis in an India training top below a large ski jump tower.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Holmenkollen, Oslo",
+      "category": "training",
+      "focal": [
+        0.62,
+        0.44
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "republic-day-2016",
+      "file": "republic-day-2016",
+      "widths": [
+        480,
+        825
+      ],
+      "natural": [
+        825,
+        550
+      ],
+      "ratio": 1.5,
+      "alt": "Massed marching contingents and a military band on the Republic Day parade route in New Delhi.",
+      "credit": "Athlete's own archive",
+      "year": 2016,
+      "location": "New Delhi",
+      "category": "archive",
+      "focal": [
+        0.5,
+        0.5
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "summit-solo",
+      "file": "summit-solo",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4896,
+        3672
+      ],
+      "ratio": 1.3333,
+      "alt": "A single climber standing on a rocky summit ridge with a horizon of snow peaks behind and cloud above.",
+      "credit": "Athlete's own archive",
+      "year": 2018,
+      "location": null,
+      "category": "mountain",
+      "focal": [
+        0.62,
+        0.42
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "course-glacier",
+      "file": "course-glacier",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3264,
+        2448
+      ],
+      "ratio": 1.3333,
+      "alt": "A full mountaineering course cohort in climbing kit, sitting and standing together on a glacier below a moraine slope.",
+      "credit": "Athlete's own archive",
+      "year": 2017,
+      "location": null,
+      "category": "mountain",
+      "focal": [
+        0.5,
+        0.62
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "nordic-podium",
+      "file": "nordic-podium",
+      "widths": [
+        480,
+        960,
+        1440
+      ],
+      "natural": [
+        1440,
+        1800
+      ],
+      "ratio": 0.8,
+      "alt": "Two racers in bibs on the top two steps of a podium at a Nordic arena, one being handed a prize.",
+      "credit": "Athlete's own archive",
+      "year": 2022,
+      "location": null,
+      "category": "race",
+      "focal": [
+        0.45,
+        0.2
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "khelo-medals",
+      "file": "khelo-medals",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada standing with her skis and several medals around her neck in front of a Khelo India Winter Games backdrop.",
+      "credit": "Athlete's own archive",
+      "year": 2024,
+      "location": "Ladakh",
+      "category": "race",
+      "focal": [
+        0.5,
+        0.31
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "classic-tracks",
+      "file": "classic-tracks",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "Set classic tracks running away through deep snow and heavily laden pines, a skier small in the distance.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.62,
+        0.47
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "snow-ridge-line",
+      "file": "snow-ridge-line",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        5712,
+        4284
+      ],
+      "ratio": 1.3333,
+      "alt": "A long line of skiers spread across an open snow ridge under a wide pale sky, arms raised.",
+      "credit": "Athlete's own archive",
+      "year": 2026,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.5,
+        0.52
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "night-training",
+      "file": "night-training",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "Skiers training on a floodlit trail after dark, headlamps and lit snow against a black sky.",
+      "credit": "Athlete's own archive",
+      "year": 2026,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.5,
+        0.52
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "family-kodava",
+      "file": "family-kodava",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2448,
+        3060
+      ],
+      "ratio": 0.8,
+      "alt": "Bhavani Thekkada on stage with her mother and father at a Kodava Samaja felicitation in Kodagu.",
+      "credit": "Athlete's own archive",
+      "year": 2019,
+      "location": "Kodagu",
+      "category": "archive",
+      "focal": [
+        0.5,
+        0.45
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "nordic-overlook",
+      "file": "nordic-overlook",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "A skier in an India race suit standing on her skis at the top of a cleared slope, a northern town spread out in the valley below.",
+      "credit": "Athlete's own archive",
+      "year": 2022,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.43,
+        0.4
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "track-solo-pines",
+      "file": "track-solo-pines",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        1643,
+        1643
+      ],
+      "ratio": 1.0,
+      "alt": "A single skier on a set track cut through deep snow, heavily laden conifers standing close on both sides.",
+      "credit": "Athlete's own archive",
+      "year": 2019,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.47,
+        0.62
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "double-pole",
+      "file": "double-pole",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3382,
+        3423
+      ],
+      "ratio": 0.988,
+      "alt": "Bhavani Thekkada mid-stride on skis with both poles planted, a treeline and open sky behind her.",
+      "credit": "Athlete's own archive",
+      "year": 2020,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.48,
+        0.28
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "downhill-tuck",
+      "file": "downhill-tuck",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2764,
+        2764
+      ],
+      "ratio": 1.0,
+      "alt": "Bhavani Thekkada low in a tuck on skis, carrying speed across an open slope against a clear sky.",
+      "credit": "Athlete's own archive",
+      "year": 2020,
+      "location": null,
+      "category": "race",
+      "focal": [
+        0.52,
+        0.42
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "team-gulmarg",
+      "file": "team-gulmarg",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3936,
+        2624
+      ],
+      "ratio": 1.5,
+      "alt": "A full squad of skiers gathered with their skis upright among snow-covered pines.",
+      "credit": "Athlete's own archive",
+      "year": 2022,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.5,
+        0.45
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "portrait-studio",
+      "file": "portrait-studio",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2689,
+        4026
+      ],
+      "ratio": 0.6679,
+      "alt": "Bhavani Thekkada in a white Reliance Foundation polo shirt, arms folded, photographed against a plain light background.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": null,
+      "category": "portrait",
+      "focal": [
+        0.5,
+        0.24
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [

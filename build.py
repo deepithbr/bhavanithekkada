@@ -551,23 +551,21 @@ def profile(c: dict, img: Img) -> str:
     -->
     <div class="profile-card" data-travel="br-tl" style="--amp:0.55">
       <!--
-        Back to `portrait-team-kit` after trying a zoom and then a swap.
+        `portrait-studio`, which is the frame this slot had been waiting for.
 
-        All 25 photographs were checked for this slot. Three show her eyes with
-        no glasses on. `portrait-cap` is already cut at its own right edge.
-        `portrait-himachali` is a good photograph but her chin sits on the
-        bottom edge of the source, so no crop can lift her off it. This one is
-        the only one where her face is complete and at a natural height.
-
-        Its known fault is that she is at 18% across with the rest of the frame
-        empty, and there is no fix for that here: the frame already shows 100%
-        of the source width, so `object-position` has nothing left to slide,
-        and scaling in cost her eyes. What this slot actually needs is one
-        head-and-shoulders frame shot for a portrait crop. Until that exists,
-        this is the honest best of the set.
+        Every earlier candidate came from the portfolio PDFs and every one of
+        them failed the same way: `portrait-cap` is cut at its own right edge,
+        `portrait-himachali` puts her chin on the bottom edge of the source so
+        no crop can lift her off it, and `portrait-team-kit` sits her at 18%
+        across with the rest of the frame empty. The note here used to say what
+        the slot actually needed was one head-and-shoulders frame shot for a
+        portrait crop. This is that frame: upper body, plain ground, eyes level
+        and open, nothing across her face. It also comes from her own archive
+        rather than the portfolio, so it is the first image in this slot with
+        settled rights.
       -->
       <div class="profile-shot">
-        {img.tag('portrait-team-kit', '(min-width:900px) 30vw, 70vw')}
+        {img.tag('portrait-studio', '(min-width:900px) 30vw, 70vw')}
       </div>
       <div class="profile-copy">
         <p class="eyebrow">Who she is</p>

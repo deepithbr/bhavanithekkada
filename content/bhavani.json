@@ -216,7 +216,7 @@
         "year": "1995",
         "heading": "Kodagu",
         "body": "Born 14 May 1995 at Perur, near Napoklu, in the coffee-growing hills of Kodagu. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
-        "image": null,
+        "image": "family-kodava",
         "temperature": "warm",
         "sourceRef": "fis"
       },
@@ -234,7 +234,7 @@
         "year": "2016",
         "heading": "The Republic Day contingent",
         "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp. Her way to altitude came through a cadet uniform.",
-        "image": null,
+        "image": "republic-day-2016",
         "temperature": "warm",
         "sourceRef": "athlete-brief"
       },
@@ -276,7 +276,7 @@
       "location": "Akureyri, Iceland",
       "line": "First FIS-scored starts, in sprint and 10 km interval start.",
       "result": "Sprint qualification 7th · Interval start 6th",
-      "image": null,
+      "image": "nordic-podium",
       "phase": "international",
       "sourceRef": "fis",
       "medals": []
@@ -289,7 +289,7 @@
       "location": "Akureyri, Iceland",
       "line": "Fourth in both the sprint and the interval start.",
       "result": "4th · 4th",
-      "image": null,
+      "image": "snow-ridge-line",
       "phase": "international",
       "sourceRef": "fis",
       "medals": []
@@ -315,7 +315,7 @@
       "location": "Schuchinsk, Kazakhstan",
       "line": "Continental cup racing in sprint and interval start.",
       "result": "42nd · 35th",
-      "image": null,
+      "image": "night-training",
       "phase": "international",
       "sourceRef": "fis",
       "medals": []
@@ -354,7 +354,7 @@
       "location": "Trondheim, Norway",
       "line": "Second World Championships, in the sprint and the 10 km interval start.",
       "result": "Sprint 111th · 10 km 105th",
-      "image": null,
+      "image": "classic-tracks",
       "phase": "international",
       "sourceRef": "fis",
       "medals": []
@@ -367,7 +367,7 @@
       "location": "Corralco, Chile",
       "line": "Third place on consecutive days at Corralco, in the interval start and the sprint. Reported in India as the first international cross-country medals won by an Indian woman.",
       "result": null,
-      "image": null,
+      "image": "chile-corralco",
       "phase": "international",
       "sourceRef": "fis",
       "medals": [
@@ -389,7 +389,7 @@
       "location": "Ruka, Finland",
       "line": "First FIS Cross-Country World Cup start, at 66°N in northern Finland, about forty kilometres short of the Arctic Circle.",
       "result": "10 km 81st · Sprint 77th",
-      "image": null,
+      "image": "race-worldcup",
       "phase": "worldcup",
       "sourceRef": "fis",
       "medals": []
@@ -481,7 +481,7 @@
       "kind": "fis",
       "sourceRef": "fis",
       "best": "4th, sprint and interval start, 2023",
-      "image": null
+      "image": "nordic-overlook"
     },
     {
       "id": "planica",
@@ -526,7 +526,7 @@
       "kind": "fis",
       "sourceRef": "fis",
       "best": "61st, sprint, 2024",
-      "image": null
+      "image": "track-solo-pines"
     },
     {
       "id": "seefeld",
@@ -541,7 +541,7 @@
       "kind": "fis",
       "sourceRef": "fis",
       "best": "111th, interval start, 2024",
-      "image": null
+      "image": "double-pole"
     },
     {
       "id": "lygna",
@@ -556,7 +556,7 @@
       "kind": "fis",
       "sourceRef": "fis",
       "best": "2024 Scandinavian racing block",
-      "image": null
+      "image": "holmenkollen"
     },
     {
       "id": "harbin",
@@ -571,7 +571,7 @@
       "kind": "championship",
       "sourceRef": "awg-wikipedia",
       "best": "23rd, sprint classical, quarter-finalist, 2025",
-      "image": null
+      "image": "flag-harbin"
     },
     {
       "id": "trondheim",
@@ -586,7 +586,7 @@
       "kind": "worldcup",
       "sourceRef": "fis",
       "best": "World Championships and a World Cup start, 2025",
-      "image": null
+      "image": "race-worldcup"
     },
     {
       "id": "antillanca",
@@ -601,7 +601,7 @@
       "kind": "fis",
       "sourceRef": "fis",
       "best": "4th, interval start, 2025",
-      "image": null
+      "image": "chile-lake"
     },
     {
       "id": "corralco",
@@ -616,7 +616,7 @@
       "kind": "podium",
       "sourceRef": "fis",
       "best": "3rd, sprint and 5 km, 2025",
-      "image": null
+      "image": "chile-corralco"
     },
     {
       "id": "ruka",
@@ -631,7 +631,7 @@
       "kind": "worldcup",
       "sourceRef": "fis",
       "best": "World Cup debut, 76th in the sprint, 2025",
-      "image": null
+      "image": "team-gulmarg"
     },
     {
       "id": "davos",
@@ -646,7 +646,7 @@
       "kind": "worldcup",
       "sourceRef": "fis",
       "best": "76th, World Cup sprint and interval start, 2025",
-      "image": null
+      "image": "downhill-tuck"
     }
   ],
   "mountainAchievements": [
@@ -1277,7 +1277,7 @@
       "date": "2025-09-16",
       "byline": "Farhat Naik",
       "context": "Filed from Santiago two days after the Corralco races, and the earliest of the reports on them. Carries her own account of the two bronzes.",
-      "image": null,
+      "image": "khelo-medals",
       "verified": true
     },
     {
@@ -1304,7 +1304,7 @@
       "date": "2025-10-17",
       "byline": "",
       "context": "On India's athletes going into the 2026 Winter Olympics.",
-      "image": null,
+      "image": "holmenkollen",
       "verified": false
     },
     {
@@ -1334,7 +1334,7 @@
       "date": "2026-02-25",
       "byline": "",
       "context": "On the sprint gold at Gulmarg. The report calls the two bronzes relays. Both were individual races, timed and placed, at 33:22.03 and 53:20.44.",
-      "image": null,
+      "image": "trophy-karnataka",
       "verified": true
     },
     {
@@ -1682,7 +1682,7 @@
       "index": "01",
       "label": "Climbing",
       "note": "Grade A Adventure Course at ABVIMAS, then Special Basic Mountaineering at HMI Darjeeling.",
-      "image": "team-with-skis",
+      "image": "summit-solo",
       "where": "Darjeeling and Manali",
       "years": "2013–2017"
     },
@@ -1691,7 +1691,7 @@
       "index": "02",
       "label": "Instructing",
       "note": "Method of Instruction at HMI Darjeeling, then a year there as a guest instructor.",
-      "image": "khelo-ladakh-portrait",
+      "image": "course-glacier",
       "where": "Himalayan Mountaineering Institute",
       "years": "2017"
     },
