@@ -67,7 +67,7 @@ NEW = {
         "Bhavani Thekkada in the blue India race suit on the stadium loop in "
         "front of a full grandstand, advertising boards and national flags "
         "along the barrier behind her.",
-        (0.42, 0.35), "race", 2025, "Trondheim, Norway",
+        (0.42, 0.31), "race", 2025, "Trondheim, Norway",
     ),
     "flag-harbin": (
         "Bhavani/2025/AWG 25/Copy of IMG-20250210-WA0175.jpg",
@@ -115,7 +115,11 @@ NEW = {
         "Bhavani/2022/2.jpg",
         "Two racers in bibs on the top two steps of a podium at a Nordic "
         "arena, one being handed a prize.",
-        (0.45, 0.20), "race", 2022, None,
+        # y=0.06, not the 0.20 that sits on their faces. The heads are high in
+        # this frame, and on the 16/7 deck banner a focal point of 0.20 opened
+        # the visible band at 0.130, which is exactly where the caps start. See
+        # the note above FOCAL_FIXES for why lowering y raises the band.
+        (0.45, 0.06), "race", 2022, None,
     ),
     "khelo-medals": (
         "Bhavani/2024/Copy of IMG_3275.HEIC",
@@ -214,6 +218,25 @@ NEW = {
     ),
 }
 
+# Focal corrections for images that were already in the library before this
+# script existed. They are here rather than hand-edited into images.json so the
+# reasoning survives, and so a re-run does not quietly undo them.
+#
+# The rule these follow is not "put the point on the face". `object-fit: cover`
+# shows a band of the source running from (1 - f) * y to (1 - f) * y + f, where
+# f is the fraction of the source height the container can show. On a wide
+# banner f is about a third, so a focal point sitting on the face puts the top
+# of that band only 0.65 * y above it, and on a photograph where the heads are
+# high in the frame the band opens below them. Lowering y raises the band.
+FOCAL_FIXES = {
+    # Same failure, less severe: the banner opened at 0.175 and clipped the top
+    # of her cap.
+    "khelo-ladakh-skis": (0.44, 0.19),
+    # A tall, tightly framed source in a square press thumbnail. At y=0.18 the
+    # crop began below the top of her head.
+    "portrait-team-kit": (0.18, 0.08),
+}
+
 # Where each new slot is wired. Paths are walked from the root of bhavani.json.
 # Anything not listed here keeps whatever it already had.
 WIRING = [
@@ -257,6 +280,16 @@ WIRING = [
     # Gulmarg, so the Gulmarg pin gets a Gulmarg podium and the 2026 Khelo India
     # card keeps the sculpture.
     (["story", "beats", 3], "first-skis-2018"),
+    # `portrait-himachali` came off this chapter. Her chin sits on the bottom
+    # edge of that source, so in the panel's 4/3 frame the visible band ran to
+    # 0.965 and the card showed a head with no shoulders under it. No focal
+    # point fixes that, because there is nothing below her chin to show.
+    #
+    # The chapter reads "an international ski instructor certification in New
+    # Zealand, on an active volcano". `ruapehu` is a photograph of that volcano
+    # with her standing at the right of it, so it belongs here more than it
+    # belonged anywhere it has been.
+    (["story", "beats", 4], "ruapehu"),
     (["mountainAchievements", 0], "ridge-sunrise"),
     (["certificationPhases", 3], "nz-snowfarm"),
     (["internationalFootprint", 1], "podium-gulmarg-2023"),
@@ -323,6 +356,14 @@ def main() -> int:
             lib["images"].append(entry)
             by_slot[slot] = entry
         print(f"  {slot:<20} {w}x{h}  widths={widths}")
+
+    for slot, focal in FOCAL_FIXES.items():
+        if slot not in by_slot:
+            print(f"  FOCAL FIX SKIPPED, no such slot: {slot}")
+            continue
+        was = by_slot[slot].get("focal")
+        by_slot[slot]["focal"] = [focal[0], focal[1]]
+        print(f"  refocus {slot:<20} {was} -> {list(focal)}")
 
     LIB.write_text(
         json.dumps(lib, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
