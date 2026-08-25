@@ -40,6 +40,8 @@ import html
 import json
 import pathlib
 
+from markdown_it import MarkdownIt
+
 ROOT = pathlib.Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
 OUT = ROOT / "v2"
@@ -59,8 +61,11 @@ NAV = [
     ("About", "about.html"),
     ("Journey", "journey.html"),
     ("Media", "media.html"),
+    ("Journal", "journal.html"),
     ("Partnership", "partnership.html"),
 ]
+
+JOURNAL_DIR = CONTENT / "journal"
 
 # One photograph per panel. Named here rather than inline so the whole cast of
 # the home page is visible in one place and can be swapped without reading any
@@ -294,7 +299,7 @@ def split(c: dict, img: Img) -> str:
 </section>"""
 
 
-def records(c: dict) -> str:
+def records(c, img) -> str:
     """Two divisions, medals only. That is the whole brief for this block."""
     m = medals(c)
     cards = []
@@ -316,13 +321,16 @@ def records(c: dict) -> str:
         )
     total = sum(sum(v.values()) for v in m.values())
     return f"""
-<section class="panel" data-ground="ice" id="records">
-  <div class="wrap panel-body" data-rise>
+<section class="record-band" id="records">
+  <div class="record-copy" data-rise>
     <h2>The record</h2>
     <p class="sub">{total} medals. Two divisions.</p>
     <div class="tally">{''.join(cards)}</div>
     <a class="btn" data-on="accent" href="journey.html#records">View all results</a>
   </div>
+  <figure class="record-shot">
+    {img.tag('nordic-podium', "(min-width:900px) 42vw, 100vw")}
+  </figure>
 </section>"""
 
 
@@ -427,14 +435,14 @@ def page(c: dict, img: Img) -> str:
 <main>
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1',
-       pos='50% 20%')}
+       pos='50% 30%')}
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
        'Racing on skis across kilometres of snow, uphill and down, '
        'against the clock or head to head.',
        ('Read more', 'about.html#sport'))}
 {split(c, img)}
-{records(c)}
+{records(c, img)}
 {journey_tiles(c, img)}
 {media_tiles(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
@@ -766,11 +774,15 @@ def media_page(c, img):
             if url else f'<li data-rise><p>{inner}</p></li>'
         )
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
+    # Each tile is a link to the full frame. The grid crops to 3:4 for order;
+    # a click opens the photograph whole, in a lightbox when JavaScript runs
+    # and as the plain image file when it does not.
     gallery = "".join(
-        f'<figure class="tile"><span class="tile-shot">'
-        f'{img.tag(a["slot"], TILE_SIZES)}</span>'
+        f'<a class="tile" href="../assets/img/{a["file"]}-{a["widths"][-1]}.webp" '
+        f'data-full data-cap="{e((img.caption(a["slot"]) or "").replace("&middot;", chr(183)))}">'
+        f'<span class="tile-shot">{img.tag(a["slot"], TILE_SIZES)}</span>'
         f'<figcaption class="caption">'
-        f'{img.caption(a["slot"]) or "From the archive"}</figcaption></figure>'
+        f'{img.caption(a["slot"]) or "From the archive"}</figcaption></a>'
         for a in lib["images"]
         if a.get("rights") == "owned" and a.get("category") in ("race", "training")
     )
@@ -873,6 +885,105 @@ def partnership_page(c, img):
                    pos="50% 46%")
 
 
+def parse_post(path):
+    """Front-matter and markdown, same file format V1's journal reads.
+
+    Her writing space is a folder of markdown files. She writes or dictates a
+    post, it lands in content/journal as a dated file, and both sites can
+    carry it; nothing about the format belongs to either build. Files with
+    `draft: true` stay off the public page until she has made the words hers.
+    """
+    raw = path.read_text(encoding="utf-8")
+    if not raw.startswith("---"):
+        return None
+    try:
+        _, fm, body = raw.split("---", 2)
+    except ValueError:
+        return None
+    meta = {}
+    for line in fm.strip().splitlines():
+        if ":" in line:
+            k, v = line.split(":", 1)
+            meta[k.strip()] = v.strip()
+    return {
+        "slug": path.stem,
+        "title": meta.get("title", path.stem),
+        "date": meta.get("date", ""),
+        "summary": meta.get("summary", ""),
+        "image": meta.get("image", ""),
+        "draft": meta.get("draft", "false").lower() == "true",
+        "body": body.strip(),
+    }
+
+
+def load_posts():
+    if not JOURNAL_DIR.exists():
+        return []
+    posts = [
+        p for p in (parse_post(f) for f in sorted(JOURNAL_DIR.glob("*.md"))
+                    if not f.name.startswith("_"))
+        if p and not p["draft"]
+    ]
+    return sorted(posts, key=lambda x: x["date"], reverse=True)
+
+
+def pretty_date(iso):
+    try:
+        y, m, d = (int(x) for x in iso.split("-"))
+        months = ("January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November",
+                  "December")
+        return f"{d} {months[m - 1]} {y}"
+    except (ValueError, IndexError):
+        return iso
+
+
+def journal_page(c, img, posts):
+    """Her space. A list of entries in her own voice, newest first.
+
+    While the list is empty the page says so plainly instead of pretending:
+    two entries exist as drafts and go live the day she signs off the words.
+    """
+    if posts:
+        items = "".join(
+            f"""<a class="entry" href="journal-{e(p['slug'])}.html" data-rise>
+          <span class="caption">{e(pretty_date(p['date']))}</span>
+          <h2>{e(p['title'])}</h2>
+          <p>{e(p['summary'])}</p>
+        </a>"""
+            for p in posts
+        )
+        body = f'<section class="prose-fold"><div class="wrap prose">{items}</div></section>'
+    else:
+        body = """
+<section class="prose-fold">
+  <div class="wrap prose">
+    <p>The first entries are written and waiting on her final word. Race
+    reports land here after each block, in her own voice.</p>
+  </div>
+</section>"""
+    return subpage(c, img, "Journal", "The season, written from inside it.",
+                   body, shot="classic-tracks", current="journal.html",
+                   pos="50% 40%")
+
+
+def journal_post_page(c, img, post):
+    md = MarkdownIt()
+    hero = ""
+    if post["image"] and img.get(post["image"]):
+        hero = post["image"]
+    body = f"""
+<article class="prose-fold">
+  <div class="wrap prose post">
+    <p class="caption">{e(pretty_date(post['date']))}</p>
+    {md.render(post['body'])}
+    <p><a class="link-out" href="journal.html">All entries</a></p>
+  </div>
+</article>"""
+    return subpage(c, img, post["title"], post["summary"], body,
+                   shot=hero or "classic-tracks", current="journal.html")
+
+
 def main() -> int:
     c = json.loads((CONTENT / "bhavani.json").read_text(encoding="utf-8"))
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
@@ -890,6 +1001,11 @@ def main() -> int:
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
+    posts = load_posts()
+    (OUT / "journal.html").write_text(journal_page(c, img, posts), encoding="utf-8")
+    for post in posts:
+        (OUT / f"journal-{post['slug']}.html").write_text(
+            journal_post_page(c, img, post), encoding="utf-8")
 
     m = medals(c)
     print(f"v2/  6 pages   index {out.stat().st_size / 1024:.1f} KB")

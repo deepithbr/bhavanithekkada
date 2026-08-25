@@ -99,6 +99,42 @@
     totals.forEach((el) => counter.observe(el));
   }
 
+  /* ---- the lightbox --------------------------------------------------- */
+
+  // The gallery grid shows a 3:4 crop for order; the photograph itself is a
+  // click away, whole. The tile is a real link to the image file, so with no
+  // JavaScript the browser simply opens it; this upgrades the same click.
+  const fulls = document.querySelectorAll("[data-full]");
+  if (fulls.length) {
+    const box = document.createElement("div");
+    box.className = "lightbox";
+    box.hidden = true;
+    box.innerHTML = '<img alt=""><p class="caption"></p>';
+    document.body.appendChild(box);
+    const pic = box.querySelector("img");
+    const cap = box.querySelector(".caption");
+
+    const shut = () => {
+      box.hidden = true;
+      document.documentElement.style.overflow = "";
+    };
+    box.addEventListener("click", shut);
+    addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape" && !box.hidden) shut();
+    });
+
+    fulls.forEach((a) => {
+      a.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        pic.src = a.getAttribute("href");
+        pic.alt = (a.querySelector("img") || {}).alt || "";
+        cap.textContent = a.dataset.cap || "";
+        box.hidden = false;
+        document.documentElement.style.overflow = "hidden";
+      });
+    });
+  }
+
   /* ---- the enquiry form ---------------------------------------------- */
 
   // Same pipeline as V1: POST to the Pages function, and if that is absent,
