@@ -393,7 +393,20 @@ section:not(.hero) > .wrap {
   font-size: var(--step--1);
 }
 
-@media (max-width: 899px) {
+/*
+ * The lede goes when there is not room for it.
+ *
+ * The pinned stage has to hold a title, a lede and a card that can be 450px
+ * tall. On a 702px viewport that leaves the card 453px of clear space below the
+ * lede and it needs 450, so it was riding up and sitting across the last line
+ * of the lede: measured 209px by 28px of genuine overlap, with 31px of slack
+ * left at the bottom of the screen. There is nowhere to push it.
+ *
+ * The height rule is the same trade the width rule already makes. The title
+ * stays either way, and the lede is a sentence the reader has by then met at
+ * the top of the section.
+ */
+@media (max-width: 899px), (max-height: 860px) {
   .deck-head p { display: none; }
 }
 
@@ -1763,19 +1776,21 @@ section:not(.hero) > .wrap {
   overflow: hidden;
   margin: -1.9rem -1.75rem 1.15rem;
   /*
-   * 16/7, not the 16/5 this used to be.
+   * Back to 16/5, and the note above about 16:8 still applies: this band sets
+   * the height of the tallest card, and the card has to fit the pinned stage
+   * without reaching up over the section title.
    *
-   * `object-fit: cover` shows a slice of the source equal to imgAR/boxAR of its
-   * height. Most of the archive is phone portrait at 3:4, so 16/5 left 23% of
-   * the frame visible and the focal point had to sit inside a band a quarter of
-   * the picture tall. On the 2022 card that band ran 0.15 to 0.40 and the
-   * racers' heads were above 0.15, so the banner cut them off at the hairline.
+   * It was briefly 16/7 to stop the 2022 card cutting the racers off at the
+   * hairline. That was the wrong lever. The real fault was the focal point: at
+   * y=0.20 the visible band opened at 0.130, which is where the caps start.
+   * Moving it to y=0.06 opens the band at 0.045 and the heads survive at 16/5
+   * with room to spare. All eleven cards were checked at this ratio with their
+   * corrected focal points before this was changed back.
    *
-   * At 16/7 the same source shows 33%, which is enough for a head and shoulders
-   * to survive. It also matches `.cstep-shot`, which was already 16/7 and never
-   * had this problem.
+   * Widening the band cost 50px a card, which put the tallest at 499px inside a
+   * 430px box and reproduced exactly the overlap the 16:8 note describes.
    */
-  aspect-ratio: 16 / 7;
+  aspect-ratio: 16 / 5;
 }
 
 .deck-shot img {
@@ -2073,14 +2088,22 @@ section:not(.hero) > .wrap {
 @media (min-width: 900px) {
   .scrub-stage {
     grid-template-rows: none;
-    grid-template-columns: minmax(11rem, 20%) minmax(0, 1fr);
+    grid-template-columns: minmax(10rem, 17%) minmax(0, 1fr);
     align-items: center;
     justify-items: stretch;
-    gap: clamp(2rem, 4vw, 4.5rem);
-    /* The rail term keeps the title clear of the Track labels on the left at
-       viewports where the centred column alone does not. */
-    padding-inline: max(2rem, calc(var(--rail) + 1.25rem), calc((100% - var(--col)) / 2))
-      max(2rem, calc((100% - var(--col)) / 2));
+    gap: clamp(1.5rem, 3vw, 3.5rem);
+    /*
+     * Wider than the text column on purpose. This used to be padded to
+     * `(100% - var(--col)) / 2` on both sides, which left the frames about
+     * 877px to share at a 1440 viewport. Two landscape photographs will not sit
+     * side by side in that, so `max-width` clamped them and a 4/3 frame came
+     * out at 474x479, very nearly a square, with the photograph cropped to fit
+     * a shape it was never meant to be in.
+     *
+     * The rail term stays on the left, because that is what keeps the title
+     * clear of the Track labels. The right side only needs air.
+     */
+    padding-inline: max(2rem, calc(var(--rail) + 1.25rem)) max(2rem, 3vw);
     /* Same reason as the deck: clear the header and the marker bar under it. */
     padding-block: calc(var(--top-h, 7rem) + 1rem) 3rem;
   }
@@ -2159,27 +2182,81 @@ section:not(.hero) > .wrap {
   opacity: 1;
 }
 
-/* Two sizes, offset. A pair reads as a spread rather than a slideshow. */
-.scrub-frame .shot-a {
-  position: absolute;
-  left: 4%;
-  top: 6%;
-  width: min(46%, 460px);
-  aspect-ratio: 3 / 4;
+/*
+ * Two sizes, offset. A pair reads as a spread rather than a slideshow.
+ *
+ * Sized by HEIGHT, not width. Both frames used to be a fixed percentage of the
+ * stage width at a fixed 3/4, which meant a landscape photograph was squeezed
+ * into a portrait box and `object-fit: cover` threw the rest away. Now the
+ * shape comes from the photograph (see `frame_shape` in build.py) and the
+ * height is fixed instead, so every frame shares a baseline, the widths vary
+ * with the pictures, and nothing can grow taller than the stage it sits in.
+ *
+ * `max-width` is the guard against the two frames meeting in the middle:
+ * 54% + 30% plus the 4% and 6% insets leaves the pair 6% of clear air at worst.
+ */
+.scrub-frame {
+  /*
+   * A centred spread, not two frames nailed to opposite edges.
+   *
+   * The old layout put `shot-a` at `left: 4%` and `shot-b` at `right: 6%`.
+   * With every frame the same 3/4 that spanned the stage evenly, but the
+   * frames follow their photographs now, and a pair of tall frames on a wide
+   * laptop left several hundred pixels of empty stage between them: the
+   * client's screenshot shows the Trondheim pair with a gap wider than either
+   * photograph. Flex centres the pair as a unit, the gap is fixed and small,
+   * and the same rule serves every width down to a phone.
+   */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2.5rem, 5vw, 5.5rem);
+}
+
+.scrub-frame .shot-a,
+.scrub-frame .shot-b {
+  width: auto;
   object-fit: cover;
   filter: var(--grade);
+}
+
+.scrub-frame .shot-a {
+  height: 68%;
+  max-width: 56%;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
 
 .scrub-frame .shot-b {
-  position: absolute;
-  right: 6%;
-  bottom: 14%;
-  width: min(26%, 250px);
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  filter: var(--grade);
+  height: 34%;
+  max-width: 28%;
+  /* The stagger the corner-pinning used to give. */
+  transform: translateY(18%);
   box-shadow: 0 22px 54px rgba(0, 0, 0, 0.5);
+}
+
+/* Four shapes. `pano` exists for one photograph, the 3.5:1 Ruapehu panorama,
+   which showed 21% of itself in the old portrait frame and shows about half
+   of itself here. */
+.scrub-frame [data-shape="tall"]   { aspect-ratio: 3 / 4; }
+.scrub-frame [data-shape="square"] { aspect-ratio: 1 / 1; }
+.scrub-frame [data-shape="wide"]   { aspect-ratio: 4 / 3; }
+.scrub-frame [data-shape="pano"]   { aspect-ratio: 16 / 9; }
+
+/* Panoramas are width-driven. Sized by height like the others, the `max-width`
+   clamp beat the aspect ratio and squeezed the 16/9 frame towards square,
+   which is the exact fault the shapes exist to prevent. Driven by width, the
+   ratio can only shorten the frame, never narrow it. */
+.scrub-frame .shot-a[data-shape="pano"] { height: auto; width: 56%; max-width: none; }
+.scrub-frame .shot-b[data-shape="pano"] { height: auto; width: 30%; max-width: none; }
+
+/* Below the pinned layout the stage has no fixed height to measure against, so
+   the frames go back to being sized by width. They keep their own shapes. */
+/* Below the pinned layout the stage height is not fixed, so the frames size by
+   width. The flex spread carries over unchanged. */
+@media (max-width: 899px) {
+  .scrub-frame { gap: 1.25rem; }
+  .scrub-frame .shot-a { height: auto; width: min(58%, 460px); max-width: 58%; }
+  .scrub-frame .shot-b { height: auto; width: min(30%, 250px); max-width: 30%; }
 }
 
 .scrub-frame figcaption {
@@ -3745,12 +3822,18 @@ html {
   }
 }
 
+/*
+ * This is the calendar's title, not a footnote, and it was set at 0.62rem,
+ * which computes to 9.9px. That is under the size anything on this page should
+ * be asked to carry, and it was `--fg-dim` on a dark ground as well, so the one
+ * line explaining the whole chart was the least legible thing near it.
+ */
 .cal-note {
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  color: var(--fg-dim);
-  padding-bottom: 0.85rem;
+  color: var(--fg);
+  padding-bottom: 1rem;
   border-bottom: 1px solid var(--rule);
 }
 
@@ -5295,17 +5378,14 @@ html {
   font-size: var(--step--1);
 }
 
-/* Sits under the table, so the reader meets the results first and the note when
-   they have a reason to want it. A paragraph rather than a `<caption>`, which
-   shrink-wrapped to 72px against a max-width on a phone. */
-.results-note {
-  margin: 1.1rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-  font-size: 0.78rem;
-  line-height: 1.55;
-  color: var(--fg-dim);
-  max-width: 68ch;
+/*
+ * The note that used to sit here is gone, and its `border-top` was the line
+ * that closed the table off from the button underneath. Without it the last
+ * row ran straight into whitespace, so the rule moves onto the table itself
+ * and the button gets a little more air.
+ */
+.results {
+  border-bottom: 1px solid var(--rule);
 }
 
 /*
@@ -5435,7 +5515,7 @@ a.src-flag:hover {
 }
 
 .record-more {
-  margin-top: 1.75rem;
+  margin-top: 2.25rem;
 }
 
 /* ----------------------------------------------------------------- media */
@@ -5624,13 +5704,20 @@ a.src-flag:hover {
   }
 }
 
+/* The grid tiles take their shape from the photograph for the same reason the
+   scrub frames do. Left square, the Ruapehu panorama showed 21% of itself. */
 .gal button {
   position: relative;
   display: block;
   padding: 0;
   overflow: hidden;
   background: var(--ink);
+  aspect-ratio: 1 / 1;
 }
+
+.gal button[data-shape="tall"]   { aspect-ratio: 3 / 4; }
+.gal button[data-shape="wide"]   { aspect-ratio: 4 / 3; }
+.gal button[data-shape="pano"]   { aspect-ratio: 16 / 9; grid-column: span 2; }
 
 .gal button img {
   width: 100%;
@@ -5772,6 +5859,28 @@ a.src-flag:hover {
 }
 
 /* -------------------------------------------------------------- partners */
+
+/*
+ * "Current support" and "What support funds" are `h3.eyebrow`, which put them
+ * at 13.3px and `--fg-dim` while the items they head are 24px and full
+ * brightness. A heading that is half the size of its own children reads as a
+ * caption that has drifted loose, which is exactly how it looked.
+ *
+ * Bigger, brighter, and moved down towards the list. It had 64px of air above
+ * it and sat flush on the rule below, so proximity was telling the reader it
+ * belonged to the block above. Now it is nearer the thing it labels.
+ */
+#partners h3.eyebrow {
+  font-size: 0.92rem;
+  letter-spacing: 0.16em;
+  color: var(--fg);
+  margin: 0 0 0.9rem;
+}
+
+#partners .areas-head + h3.eyebrow,
+#partners h3.eyebrow:not(:first-child) {
+  margin-top: 2.75rem;
+}
 
 .areas {
   display: grid;

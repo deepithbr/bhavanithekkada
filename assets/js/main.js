@@ -338,9 +338,26 @@ function initTravel() {
     for (const el of travel) {
       const p = across(el, vh);
       if (p === null) continue;
-      el.style.setProperty("--p", p.toFixed(3));
+      /*
+       * Clamped at 0, so the path is corner to rest and then it holds.
+       *
+       * `across` keeps counting past centre and down to -1 as an element
+       * leaves the top of the screen. Feeding that straight to `--p` meant a
+       * card travelled in from its corner, crossed its resting position at
+       * dead centre, and carried straight on out the other side, so it was
+       * only ever square on the page for the single frame it passed through
+       * the middle. On the small amplitudes, like the press pairs at 0.4, that
+       * reads as a drift and nobody minds. On the funding rows at 0.85 it
+       * reads as a row that never arrives: the client's screenshot caught 02
+       * with its heading still out to the left and its body still half faded.
+       *
+       * Resting is the intended final state anyway. It is where these elements
+       * sit with JavaScript off.
+       */
+      el.style.setProperty("--p", Math.max(0, p).toFixed(3));
       // Faded in by the time it is two thirds of the way up. Nothing fades on
-      // the way out, so text stays readable right to the edge.
+      // the way out, so text stays readable right to the edge. This one keeps
+      // the unclamped value: it is already one-sided.
       el.style.setProperty("--o", clamp01((1.0 - p) / 0.34).toFixed(3));
     }
 

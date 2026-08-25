@@ -95,18 +95,58 @@ NAV = [
 ]
 
 # Gallery running order: slot, span. Presentation only, so it lives here.
+# The photo archive, in order, read as consecutive pairs.
+#
+# This list used to be twenty frames taken from the portfolio PDFs, every one of
+# them `rights: unconfirmed` and most of them under a megapixel: 613x817,
+# 816x826, 842x563. Shown at 460 CSS pixels on a 2x screen they were visibly
+# soft, and because the archive draws from her own high-resolution material now
+# there was no reason to keep them.
+#
+# The order is chronological, so the section does what its heading claims and
+# walks a reader through the seasons instead of shuffling a bag of pictures.
+# Consecutive pairs share a year or sit next to each other in the story, because
+# the two frames appear on screen together.
+#
+# The second element is the frame shape, and it is derived from the photograph
+# rather than chosen. See `frame_shape`.
 GALLERY = [
-    ("hero-portrait", "tall"), ("khelo-ice-sculpture", "wide"),
-    ("race-forest", ""), ("podium-gulmarg-2022", "wide"),
-    ("roller-vidhana-soudha", ""), ("medals-detail", ""),
-    ("track-texture", "tall"), ("khelo-ladakh-skis", ""),
-    ("start-line-gulmarg", "wide"), ("race-orange-bib", ""),
-    ("team-with-skis", "wide"), ("portrait-himachali", ""),
-    ("lake-mountains", ""), ("trophy-karnataka", ""),
-    ("ruapehu", "wide"), ("flag-almaty", ""),
-    ("roller-road", ""), ("india-jacket-detail", ""),
-    ("ski-city-overlook", "tall"), ("portrait-cap", ""),
+    "course-glacier", "republic-day-2016",        # 2017 / 2016  the first mountains
+    "ridge-sunrise", "summit-solo",               # 2018         climbing
+    "first-skis-2018", "ruapehu",                 # 2018 / 2019  onto snow
+    "family-kodava", "track-solo-pines",          # 2019         home, and a track
+    "double-pole", "downhill-tuck",               # 2020         cross-country begins
+    "team-gulmarg", "contingent-2021",            # 2022 / 2021  the India squad
+    "nordic-overlook", "nordic-podium",           # 2022         first European starts
+    "podium-gulmarg-2023", "khelo-medals",        # 2023 / 2024  national titles
+    "holmenkollen", "classic-tracks",             # 2025         the Nordic block
+    "race-worldcup", "flag-harbin",               # 2025         World Cup, Asian Games
+    "chile-corralco", "chile-lake",               # 2025         the Chilean podium
+    "snow-ridge-line", "nz-snowfarm",             # 2026         southern winter
 ]
+
+
+def frame_shape(a: dict) -> str:
+    """
+    The frame follows the photograph, not the other way round.
+
+    Every archive frame used to be `aspect-ratio: 3 / 4` whatever was in it.
+    `object-fit: cover` then threw away the difference, so a 3.5:1 panorama of
+    Mt. Ruapehu showed 21% of its own width and came out as half a face at the
+    edge of the frame. Measured across the old list: three frames under 45%,
+    seven under 60%.
+
+    Four shapes, chosen so nothing loses more than about half of itself.
+    """
+    w, h = a["natural"]
+    r = w / h
+    if r >= 2.2:
+        return "pano"
+    if r >= 1.2:
+        return "wide"
+    if r >= 0.85:
+        return "square"
+    return "tall"
 
 # Label placement for the footprint plot. Presentation, keyed by place id.
 # show=False keeps the point interactive but drops its permanent label, which is
@@ -1372,16 +1412,21 @@ def record(c: dict) -> str:
   <div class="wrap">
     {section_head(c, "record")}
     <div class="filters" role="group" aria-label="Filter results">{filters}</div>
-    <table class="results" id="results-table" aria-describedby="results-note">
-      <!--
-        The note used to live here as a `vh` caption, so it reached screen
-        readers and no sighted reader at all. It is now a paragraph after the
-        table, tied back with `aria-describedby` so it is still the table's
-        description and is only announced once.
+    <!--
+      No note under this table.
 
-        Not a visible `<caption>`: with `caption-side: bottom` and a max-width
-        it shrink-wrapped to 72px on a phone and stacked into 23 lines.
-      -->
+      It has been a `vh` caption, then a visible `<caption>` that shrink-wrapped
+      to 72px on a phone and stacked into 23 lines, then a paragraph tied back
+      with `aria-describedby`. The client has now asked for it gone, and the
+      table reads cleaner without a paragraph of hedging under it. The column
+      headers carry the structure, and a blank Source cell is self-evident once
+      the linked ones are visible beside it.
+
+      `res["note"]` was removed from the content file at the same time rather
+      than left behind, because a string nothing renders is the kind of thing
+      that gets edited for an hour before anyone notices it is dead.
+    -->
+    <table class="results" id="results-table">
       <thead>
         <tr>
           <th scope="col">Year</th><th scope="col">Event</th>
@@ -1392,7 +1437,6 @@ def record(c: dict) -> str:
       </thead>
       <tbody id="results-body">{seeded}</tbody>
     </table>
-    <p class="results-note" id="results-note">{e(res['note'])}</p>
     <div class="record-more">
       <button class="btn" type="button" id="results-toggle" aria-expanded="false">
         View full achievement record</button>
@@ -1462,7 +1506,7 @@ def media(c: dict, img: Img) -> str:
     )
 
     tiles, cats = [], []
-    for i, (slot, _span) in enumerate(GALLERY):
+    for i, slot in enumerate(GALLERY):
         a = img.get(slot)
         if not a:
             continue
@@ -1471,6 +1515,7 @@ def media(c: dict, img: Img) -> str:
             cats.append(cat)
         tiles.append(
             f'<button type="button" data-i="{i}" data-cat="{e(cat)}" '
+            f'data-shape="{frame_shape(a)}" '
             f'data-anim="clip" style="--i:{i % 4}" '
             f'aria-label="Open image: {e(a["alt"])}">'
             f'{img.tag(slot, "(min-width:1100px) 22vw, (min-width:700px) 30vw, 46vw")}'
@@ -1496,28 +1541,41 @@ def media(c: dict, img: Img) -> str:
     # through, and the location and year get to carry weight instead of sitting
     # in a hover label.
     pairs, i = [], 0
-    slots = [s for s, _ in GALLERY if img.get(s)]
+    slots = [s for s in GALLERY if img.get(s)]
     while i < len(slots):
         a_slot = slots[i]
         b_slot = slots[i + 1] if i + 1 < len(slots) else None
         a = img.get(a_slot)
-        bits = [x for x in (a.get("location"), a.get("year")) if x]
+        # `year` is an int on everything that came from her own archive and was
+        # None on the portfolio extractions, so this has to stringify rather
+        # than assume.
+        bits = [str(x) for x in (a.get("location"), a.get("year")) if x]
         cap = " &middot; ".join(bits) if bits else a.get("category", "").title()
-        # These two are hand-built rather than going through img.tag, and they
-        # were the only images on the site missing their focal point. Every
-        # frame in the archive was cropping from dead centre: the hero portrait
-        # sat at 50% instead of 32%, which on a 960x1707 source in a 404x538
-        # box is the difference between her face and her collar.
+        # Hand-built rather than going through img.tag, because these two need
+        # a shape attribute and a `sizes` value the helper does not model. Both
+        # still take their focal point from the library: they were once the only
+        # images on the site missing it, and every frame in the archive was
+        # cropping from dead centre.
+        #
+        # `shot-b` used to be served the 480px file into a box up to 250 CSS
+        # pixels wide, which is 500 device pixels on a 2x screen. It was the
+        # blurriest thing on the page. Both frames now carry the full srcset and
+        # let the browser pick.
+        b = img.get(b_slot) if b_slot else None
         b_tag = (
-            f'<img class="shot-b" src="{e(img.src(b_slot, 480))}" alt="" '
-            f'aria-hidden="true" loading="lazy" decoding="async" '
+            f'<img class="shot-b" data-shape="{frame_shape(b)}" '
+            f'src="{e(img.src(b_slot, 960))}" '
+            f'srcset="{e(img.srcset(b_slot))}" sizes="(min-width:900px) 30vw, 44vw" '
+            f'alt="" aria-hidden="true" loading="lazy" decoding="async" '
             f'style="object-position:{img.focal(b_slot)}">'
-            if b_slot else ""
+            if b else ""
         )
         pairs.append(
             f'<figure class="scrub-frame" data-frame="{len(pairs)}"'
             f'{ON_FIRST if not pairs else ""}>'
-            f'<img class="shot-a" src="{e(img.src(a_slot, 960))}" '
+            f'<img class="shot-a" data-shape="{frame_shape(a)}" '
+            f'src="{e(img.src(a_slot, 1600))}" '
+            f'srcset="{e(img.srcset(a_slot))}" sizes="(min-width:900px) 54vw, 82vw" '
             f'alt="{e(a["alt"])}" loading="lazy" decoding="async" '
             f'style="object-position:{img.focal(a_slot)}">'
             f"{b_tag}"
@@ -2069,7 +2127,7 @@ def journal_post(c: dict, img: Img, p: dict, prev_p, next_p, version: str) -> st
 def data_script(c: dict, lib: dict) -> str:
     by_slot = {i["slot"]: i for i in lib["images"]}
     gal = []
-    for slot, span in GALLERY:
+    for slot in GALLERY:
         a = by_slot.get(slot)
         if not a:
             continue

@@ -187,7 +187,7 @@
     "media": {
       "index": "05",
       "title": "Press coverage",
-      "lede": "Every article written about her, and six seasons of photographs, in one place. Each headline links out to the publication that ran it."
+      "lede": "Every article written about her, and six seasons of photographs, in one place."
     },
     "ambition": {
       "index": "06",
@@ -728,7 +728,6 @@
     }
   ],
   "results": {
-    "note": "Every scored start, by year. A source links out wherever the result was published. Rows with no source are domestic races no organiser published, taken from Bhavani's own record.",
     "filters": [
       {
         "id": "all",
@@ -1789,7 +1788,7 @@
         }
       ],
       "banner": "One dream. One plan. One start line.",
-      "backdrop": "ruapehu",
+      "backdrop": "classic-tracks",
       "lead": "Four seasons. Countless races. One start line."
     },
     "eyebrow": "What comes next"
