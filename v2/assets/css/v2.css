@@ -158,10 +158,14 @@ a {
 /* The benchmark's caption voice: a place and a year, tracked out, never a
    sentence of marketing. */
 .caption {
-  font-family: var(--font-caption);
+  /* Tracked capitals in the display face. These were IBM Plex Mono, and a
+     mono label on every photograph, form field and section head made the
+     whole site read as a technical document. The mono stays for numbers
+     only, where alignment is the point. */
+  font-family: var(--font-display);
   font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-ink-3);
   margin: 0;
@@ -343,15 +347,15 @@ a {
      photograph still reads; the words now always do. */
   background: linear-gradient(
       to right,
-      oklch(16% 0.03 255 / 0.5) 0%,
-      oklch(16% 0.03 255 / 0.12) 55%,
-      oklch(16% 0.03 255 / 0) 80%
+      oklch(16% 0.03 255 / 0.42) 0%,
+      oklch(16% 0.03 255 / 0.08) 52%,
+      oklch(16% 0.03 255 / 0) 78%
     ),
     linear-gradient(
       to bottom,
-      oklch(16% 0.03 255 / 0.25) 0%,
-      oklch(16% 0.03 255 / 0.2) 45%,
-      oklch(16% 0.03 255 / 0.72) 100%
+      oklch(16% 0.03 255 / 0.12) 0%,
+      oklch(16% 0.03 255 / 0.1) 45%,
+      oklch(16% 0.03 255 / 0.62) 100%
     );
 }
 
@@ -817,7 +821,10 @@ a {
 
 .tile-shot img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  /* 4:5, up from 3:4. The taller window keeps shoulders under every face in
+     the portrait frames; the client saw the top row cropping and was right. */
+  aspect-ratio: 4 / 5;
+  height: auto;
   object-fit: cover;
   transition: transform var(--dur-slow) var(--ease-out);
 }
@@ -1512,4 +1519,74 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+
+/* ------------------------------------------------- about split and facts */
+
+.about-split {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .about-split {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-xl);
+  }
+}
+
+.about-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.about-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+}
+
+/* The fact strip runs as a row of cards under the story, not a column
+   inside it. */
+.facts-row {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 720px) {
+  .facts-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Grouped medal lines: the campaign left, its medals as counted dots. */
+.c-meds {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* The tally card's .medal is a flex row sized for a card; inside a table
+   cell it stacked its own number over its own label. Inline here, and the
+   count sits beside its metal on one line. */
+.c-meds .medal {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-left: var(--space-sm);
+  white-space: nowrap;
+}
+
+.c-meds .medal i {
+  align-self: center;
+}
+
+/* Numbers keep the mono; that is where fixed width earns its place. */
+.medal b,
+.tally-total,
+.count {
+  font-variant-numeric: tabular-nums;
 }

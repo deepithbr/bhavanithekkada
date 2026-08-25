@@ -527,11 +527,18 @@ def about_page(c, img):
     )
     body = f"""
 <section class="prose-fold">
-  <div class="wrap prose">
-    <h2>{e(h['profileHeading'])}</h2>
-    <p>{e(h['profileBody'])}</p>
-    <p>{e(h['profileBody2'])}</p>
-    <dl class="facts">{facts}</dl>
+  <div class="wrap about-split">
+    <figure class="about-shot" data-rise>
+      {img.tag('portrait-studio', "(min-width:860px) 38vw, 92vw")}
+    </figure>
+    <div class="prose" data-rise>
+      <h2>{e(h['profileHeading'])}</h2>
+      <p>{e(h['profileBody'])}</p>
+      <p>{e(h['profileBody2'])}</p>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:var(--space-lg)">
+    <dl class="facts facts-row">{facts}</dl>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice" id="sport">
@@ -685,28 +692,47 @@ def record_fold(c) -> str:
     intl = [r for r in rows if "international" in r.get("tags", [])]
     natl = [r for r in rows if "international" not in r.get("tags", [])]
 
-    def table(rs):
-        body = "".join(
-            f'<tr><td class="caption">{e(r["year"])}</td>'
-            f'<td><b>{e(r["event"])}</b><span>{e(r["detail"])}'
-            f' &middot; {e(r["place"])}</span></td>'
-            f'<td class="c-medal"><i data-medal="{e(r["medal"])}"></i>'
-            f'{e(r["medal"])}</td></tr>'
-            for r in rs
-        )
-        return f'<table class="medals"><tbody>{body}</tbody></table>'
+    def grouped(rs):
+        """One line per campaign, not one per medal.
+
+        Twenty national rows rendered as a ledger and the client called it a
+        crawl. Grouped by event and year they read as a record: the campaign
+        on the left, its medals as counted dots on the right."""
+        order, groups = [], {}
+        for r in rs:
+            key = (str(r["year"]), r["event"], r["place"])
+            if key not in groups:
+                groups[key] = []
+                order.append(key)
+            groups[key].append(r["medal"])
+        out = []
+        for year, event, place in order:
+            meds = groups[(year, event, place)]
+            counts = {}
+            for m in meds:
+                counts[m] = counts.get(m, 0) + 1
+            dots = "".join(
+                f'<span class="medal" data-medal="{k}"><i></i><b>{v}</b>{k}</span>'
+                for k in ("gold", "silver", "bronze") if (v := counts.get(k))
+            )
+            out.append(
+                f'<tr><td class="caption">{e(year)}</td>'
+                f'<td><b>{e(event)}</b><span>{e(place)}</span></td>'
+                f'<td class="c-meds">{dots}</td></tr>'
+            )
+        return f'<table class="medals"><tbody>{"".join(out)}</tbody></table>'
 
     return f"""
 <section class="prose-fold" id="records">
   <div class="wrap prose">
     <h2>International <span class="count">{len(intl)}</span></h2>
-    {table(intl)}
+    {grouped(intl)}
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
   <div class="wrap prose">
     <h2>National <span class="count">{len(natl)}</span></h2>
-    {table(natl)}
+    {grouped(natl)}
   </div>
 </section>"""
 
@@ -764,7 +790,7 @@ def media_page(c, img):
             continue
         outlet = pr.get("publication") or ""
         year = str(pr.get("date") or "")[:4]
-        meta = " &middot; ".join(x for x in (outlet, year) if x)
+        meta = f" {chr(183)} ".join(x for x in (outlet, year) if x)
         url = pr.get("url") or ""
         thumb = ""
         if pr.get("image") and img.get(pr["image"]):
