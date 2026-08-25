@@ -1,0 +1,95 @@
+/* Hallmark · tokens · Bhavani Thekkada V2
+ * theme: custom (tuned) · vibe: "white snow, India blue, quiet record"
+ * paper oklch(99% 0.003 250) light  ·  accent oklch(50% 0.17 252) cool
+ * display Archivo · body Newsreader · caption IBM Plex Mono
+ * axes: paper-band=light / display-style=grotesk-sans / accent-hue=cool
+ *
+ * V1 lives at the repository root and is untouched. This file is the whole
+ * colour and spacing vocabulary for V2; every rule in v2.css references a
+ * token by name and never an inline value.
+ */
+
+:root {
+  /* ---- paper ---------------------------------------------------------- */
+  /* Three grounds, not one. White carries the photographs, the ice band
+     separates a section without needing a rule, and the deep band is used
+     once, in the footer, so it reads as an ending. */
+  --color-paper: oklch(99% 0.003 250);
+  --color-paper-2: oklch(96.5% 0.008 245);
+  --color-paper-3: oklch(93% 0.012 245);
+  --color-paper-deep: oklch(22% 0.035 255);
+
+  /* ---- ink ------------------------------------------------------------ */
+  --color-ink: oklch(24% 0.035 255);
+  --color-ink-2: oklch(43% 0.028 255);
+  --color-ink-3: oklch(58% 0.022 255);
+  --color-ink-on-deep: oklch(97% 0.006 250);
+  --color-ink-on-deep-2: oklch(76% 0.018 250);
+
+  /* ---- accent --------------------------------------------------------- */
+  /* One blue. It is the blue of her race suit, and it is the only chromatic
+     colour in the interface. Every other colour on the page arrives inside a
+     photograph. */
+  --color-accent: oklch(50% 0.17 252);
+  --color-accent-bright: oklch(59% 0.18 250);
+  --color-accent-wash: oklch(95% 0.03 250);
+
+  /* ---- medal ---------------------------------------------------------- */
+  --color-gold: oklch(72% 0.13 82);
+  --color-silver: oklch(72% 0.012 250);
+  --color-bronze: oklch(62% 0.10 55);
+
+  /* ---- lines and focus ------------------------------------------------ */
+  --color-line: oklch(89% 0.012 245);
+  --color-line-soft: oklch(93.5% 0.008 245);
+  --color-focus: oklch(50% 0.17 252);
+
+  /* ---- type ----------------------------------------------------------- */
+  --font-display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-caption: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 0.6vw + 1.1rem, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.1vw + 1.25rem, 2rem);
+  --text-3xl: clamp(1.9rem, 1.9vw + 1.4rem, 2.75rem);
+  --text-4xl: clamp(2.3rem, 3.2vw + 1.5rem, 4rem);
+  --text-display-s: clamp(2.6rem, 5vw + 1rem, 5rem);
+  --text-display: clamp(3rem, 8vw + 0.5rem, 7.5rem);
+
+  /* ---- space (4pt) ----------------------------------------------------- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: clamp(5rem, 10vw, 9rem);
+
+  /* ---- rules and radii -------------------------------------------------- */
+  --rule-hair: 1px;
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-pill: 999px;
+
+  /* ---- motion ---------------------------------------------------------- */
+  /* Three easings, no browser default. Durations are short on purpose: the
+     Photographic macrostructure asks for no spatial motion, so the only
+     movement here is a short fade and a slow image scale on hover. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-mid: 320ms;
+  --dur-slow: 700ms;
+
+  /* ---- measure --------------------------------------------------------- */
+  --measure: 58ch;
+  --measure-tight: 42ch;
+  --col: 76rem;
+}

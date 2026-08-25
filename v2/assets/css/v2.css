@@ -1,0 +1,1007 @@
+/* Hallmark · macrostructure: Photographic · H6 knobs: area=full-bleed, caption=centred, text=overlaid
+ * nav: N9 edge-aligned minimal · footer: Ft5 Statement
+ * theme: custom tuned · vibe: "white snow, India blue, quiet record"
+ * paper oklch(99% 0.003 250) · accent oklch(50% 0.17 252) · Archivo + Newsreader + IBM Plex Mono
+ * axes: light / grotesk-sans / cool
+ * enrichment: none — the photographs are the enrichment
+ * tone: austere · audience: sponsors, event bookers, press · use: one enquiry
+ *
+ * BENCHMARK: rogerfederer.com, the site the client named best.
+ *
+ * Not "inspired by". The skeleton is copied deliberately, because the first
+ * attempt at V2 improvised a shape and the client was right that it drifted.
+ * What Federer actually does, measured by scrolling the whole page:
+ *
+ *   1. a thin chrome bar, a wordmark, no link row
+ *   2. a full-bleed hero, type CENTRED over it, one outlined pill button
+ *   3. a sponsor band, one solid colour, logos only
+ *   4. repeated full-bleed panels: centred sans title, serif subtitle
+ *      underneath, one outlined button. Under forty words per panel.
+ *   5. one 50/50 split: photograph on one side, a pull quote with
+ *      attribution and two short paragraphs on the other
+ *   6. a dark footer, two rows of links, legal line
+ *
+ * The one thing changed from the benchmark is the palette, because the client
+ * asked for white and blue and Federer is near-black. Everything structural is
+ * held: centred panel type, the serif subtitle, outlined pills, the quote in
+ * the split, the dark footer.
+ *
+ * V2 is a parallel build. It shares content/*.json and assets/img with V1 and
+ * shares no CSS, no JavaScript and no markup with it.
+ */
+
+@import url("tokens.css");
+
+/* ------------------------------------------------------------------ reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  /* `clip`, never `hidden`. `hidden` on the root turns the viewport into a
+     scroll container and breaks position: sticky further down the page. */
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /*
+   * This design is light on purpose: the brief is white and blue.
+   *
+   * Without this declaration a browser set to prefer dark, or one running an
+   * auto-darkening feature like Brave's, decides the page has no opinion and
+   * inverts it. Measured before this line existed: `--color-paper` resolved
+   * correctly to oklch(99% 0.003 250) and the computed `background-color` on
+   * body came back as rgb(25, 28, 29). The tokens were never the problem.
+   */
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  /*
+   * `height: auto` is load-bearing, not tidiness.
+   *
+   * Every <img> this build emits carries width and height attributes, which
+   * exist to reserve space and stop the page shifting as photographs arrive.
+   * Those attributes set a used height. With only `max-width: 100%` here, a
+   * tile that declared `width: 100%` and `aspect-ratio: 3 / 4` still rendered
+   * at the attribute's height: measured at 260x3060 for a 2448x3060 source,
+   * against the 260x347 the ratio asks for. `aspect-ratio` only governs when
+   * the other axis is auto.
+   *
+   * Everything that fills its box sets an explicit height of its own
+   * (`.panel-shot img`, `.split-shot img`, `.sponsors img`), so this default
+   * never fights the full-bleed photographs.
+   */
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  /* Roman only. An italicised display face, or an italic emphasis word inside
+     an upright heading, is the most reliable generated-design tell there is. */
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.03;
+  margin: 0;
+  /* Long place names break inside themselves rather than pushing the page
+     sideways at 320px. */
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+p,
+figure,
+blockquote {
+  /* `figure` carries a default 40px inline margin in every browser. Inside a
+     grid track it does not shrink the track, it shrinks the card: the media
+     row measured 186px wide against the journey row's 266px, on identical
+     columns, purely because those tiles were figures and these were anchors. */
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  /* Never animated. A focus ring that fades in is one the keyboard user has
+     already moved past. */
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.wrap {
+  width: min(100% - 2 * var(--space-md), var(--col));
+  margin-inline: auto;
+}
+
+@media (min-width: 900px) {
+  .wrap {
+    width: min(100% - 2 * var(--space-xl), var(--col));
+  }
+}
+
+/* ------------------------------------------------------------------ shared */
+
+/* The benchmark's caption voice: a place and a year, tracked out, never a
+   sentence of marketing. */
+.caption {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin: 0;
+}
+
+/* The serif line that sits under every panel title on the benchmark. It is
+   what stops a page of sans headlines reading like a deck. */
+.sub {
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ button */
+
+/* Outlined pill. The benchmark has no filled buttons anywhere on its home
+   page; every call to action is an outline that fills on hover. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.95rem 1.9rem;
+  border: var(--rule-hair) solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background var(--dur-mid) var(--ease-out),
+    color var(--dur-mid) var(--ease-out),
+    border-color var(--dur-mid) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* On a photograph, the outline is white and fills white. */
+.btn[data-on="shot"] {
+  border-color: oklch(100% 0 0 / 0.72);
+  color: var(--color-ink-on-deep);
+}
+
+.btn[data-on="shot"]:hover {
+  background: var(--color-ink-on-deep);
+  color: var(--color-ink);
+  border-color: var(--color-ink-on-deep);
+}
+
+.btn[data-on="accent"] {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn[data-on="accent"]:hover {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+/* --------------------------------------------------------------------- nav */
+
+/* N9 edge-aligned minimal, which is what the benchmark runs: a wordmark and
+   nothing else competing with it. The five destinations live in the footer
+   and in the panels' own buttons, so the bar stays quiet. */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: 4rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep);
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: none;
+  gap: var(--space-lg);
+  align-items: center;
+  margin-inline: auto;
+}
+
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--color-ink-on-deep);
+}
+
+@media (min-width: 900px) {
+  .nav-links {
+    display: flex;
+  }
+}
+
+/* ------------------------------------------------------------------ panels */
+
+/* One shape, used five times, exactly as the benchmark uses it. A photograph
+   fills the fold; the type sits centred over it; one button underneath. */
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: min(88svh, 50rem);
+  text-align: center;
+  padding-block: var(--space-2xl);
+}
+
+.panel[data-size="hero"] {
+  min-height: min(94svh, 56rem);
+}
+
+.panel-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.panel-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(16% 0.03 255 / 0.55) 0%,
+    oklch(16% 0.03 255 / 0.34) 45%,
+    oklch(16% 0.03 255 / 0.66) 100%
+  );
+}
+
+.panel-body {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-md);
+  max-width: 46rem;
+  color: var(--color-ink-on-deep);
+}
+
+.panel-body h1,
+.panel-body h2 {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: var(--text-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+}
+
+.panel-body .sub {
+  color: var(--color-ink-on-deep);
+  max-width: 32ch;
+}
+
+.panel-body .caption {
+  color: var(--color-ink-on-deep-2);
+}
+
+/* A light panel: same centred anatomy, no photograph behind it. The benchmark
+   alternates one of these in so the run of images has somewhere to breathe. */
+.panel[data-ground="paper"],
+.panel[data-ground="ice"] {
+  min-height: 0;
+  padding-block: var(--space-2xl);
+  color: var(--color-ink);
+}
+
+.panel[data-ground="paper"] {
+  background: var(--color-paper);
+}
+
+.panel[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.panel[data-ground="paper"] .panel-body,
+.panel[data-ground="ice"] .panel-body {
+  color: var(--color-ink);
+}
+
+.panel[data-ground="paper"] .panel-body .sub,
+.panel[data-ground="ice"] .panel-body .sub {
+  color: var(--color-ink-2);
+}
+
+/* ------------------------------------------------------------ sponsor band */
+
+/* The benchmark's Rolex strip. One solid colour, logos, nothing else. */
+.sponsors {
+  background: var(--color-paper-deep);
+  padding-block: var(--space-md);
+}
+
+.sponsors-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md) var(--space-2xl);
+}
+
+.sponsors p {
+  font-family: var(--font-caption);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-ink-on-deep-2);
+}
+
+.sponsors img {
+  height: 2.1rem;
+  width: auto;
+  /* The two marks have opposite shapes: Reliance is a wide lockup, the
+     Karnataka crest is nearly square, and at a common 2.1rem the crest reads
+     as a smudge. Square marks get more height below. */
+  /* The two supplied marks are dark-on-transparent and sit on a navy band, so
+     they are lifted to white rather than boxed in a white plate. The plate was
+     the weakest thing on V1 and there is no reason to repeat it. */
+  filter: brightness(0) invert(1);
+  opacity: 0.85;
+}
+
+.sponsors img[src*="karnataka"] {
+  height: 3rem;
+}
+
+/* ------------------------------------------------------------------- split */
+
+/* The benchmark's profile block: photograph one side, quote and two short
+   paragraphs the other. The only place on the home page with more than forty
+   words in it. */
+.split {
+  display: grid;
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .split {
+    /* minmax(0, …) on both tracks. A bare `1fr` refuses to shrink below the
+       image's intrinsic width and pushes the page sideways. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.split-shot {
+  background: var(--color-paper-3);
+  overflow: hidden;
+}
+
+.split-shot img {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+}
+
+.split-body {
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+  display: grid;
+  align-content: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .split-body {
+    padding: var(--space-3xl) var(--space-xl);
+  }
+}
+
+.split-body h2 {
+  font-size: var(--text-3xl);
+}
+
+.split-quote {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--color-ink-on-deep);
+  margin: 0;
+  max-width: 26ch;
+}
+
+.split-cite {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-on-deep-2);
+  font-style: normal;
+}
+
+.split-body p:not(.split-quote) {
+  color: var(--color-ink-on-deep-2);
+  font-size: var(--text-base);
+  max-width: 44ch;
+}
+
+.split-body .btn {
+  justify-self: start;
+  margin-top: var(--space-2xs);
+  border-color: oklch(100% 0 0 / 0.72);
+  color: var(--color-ink-on-deep);
+}
+
+.split-body .btn:hover {
+  background: var(--color-ink-on-deep);
+  color: var(--color-ink);
+  border-color: var(--color-ink-on-deep);
+}
+
+/* ----------------------------------------------------------------- records */
+
+/* Two divisions, medals only, which is the whole brief for this block. The
+   numbers are counted from the results rows at build time. */
+.tally {
+  display: grid;
+  gap: var(--space-lg);
+  width: 100%;
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 720px) {
+  .tally {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.tally-card {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: center;
+  padding: var(--space-lg) var(--space-md);
+  border: var(--rule-hair) solid var(--color-line);
+  background: var(--color-paper);
+}
+
+.tally-card h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+.tally-total {
+  font-family: var(--font-display);
+  font-size: var(--text-display-s);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.tally-label {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink-2);
+}
+
+.tally-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+  margin-top: var(--space-2xs);
+  border-top: var(--rule-hair) solid var(--color-line-soft);
+  width: 100%;
+}
+
+.medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.medal b {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.medal i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+.medal[data-medal="gold"] i {
+  background: var(--color-gold);
+}
+.medal[data-medal="silver"] i {
+  background: var(--color-silver);
+}
+.medal[data-medal="bronze"] i {
+  background: var(--color-bronze);
+}
+
+/* ------------------------------------------------------------------ footer */
+
+/* Ft5 Statement, on the benchmark's dark ground. One line, two rows of links,
+   a legal line. No four columns of navigation nobody reads. */
+.foot {
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+  padding-block: var(--space-2xl) var(--space-lg);
+}
+
+.foot-statement {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  max-width: 15ch;
+  margin: 0;
+}
+
+.foot-rows {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid oklch(100% 0 0 / 0.14);
+}
+
+@media (min-width: 760px) {
+  .foot-rows {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.foot-links a {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.foot-links a:hover {
+  color: var(--color-ink-on-deep);
+}
+
+.foot-fine {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-ink-on-deep-2);
+}
+
+/* ------------------------------------------------------------------ reveal */
+
+/* The only motion on the page: a fade with 10px of lift, once, on entry.
+   Elements are visible by default and hidden only after JavaScript confirms
+   it is running, so a blocked script can never leave a blank page. */
+.js [data-rise] {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+}
+
+.js [data-rise][data-shown="true"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js [data-rise] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------- tiles */
+
+/*
+ * The card row, taken from badosapaula.com, the client's second reference.
+ *
+ * Its whole section is four things: a title, one line, a "See more" link, and
+ * a row of four image cards. Nothing else. That is what makes a section land
+ * as a glance rather than as reading, and it is the shape the client asked
+ * for when they said the sections should arrive one after another, simplified.
+ *
+ * It alternates with the full-bleed panels above: photograph, tiles,
+ * photograph, tiles. The page never asks for two dense folds in a row.
+ */
+.tiles-section {
+  /*
+   * Asymmetric on purpose. Two neighbouring sections each padding
+   * `--space-3xl` top and bottom stacked to about 288px of empty page, which
+   * reads as something failing to load rather than as room to breathe. The
+   * head carries the space above it, so the section only needs a little
+   * underneath.
+   */
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+
+.tiles-section[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.tiles-head {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+  margin-bottom: var(--space-md);
+  max-width: var(--measure);
+}
+
+.tiles-head h2 {
+  font-size: var(--text-3xl);
+}
+
+.tiles-head .sub {
+  font-size: var(--text-lg);
+}
+
+.tiles {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 560px) {
+  .tiles {
+    /* minmax(0, …), never a bare 1fr. A bare 1fr refuses to shrink below the
+       image's intrinsic width and pushes the whole page sideways. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  display: grid;
+  gap: var(--space-xs);
+  align-content: start;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tile-shot {
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.tile-shot img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.tile:hover .tile-shot img,
+.tile:focus-visible .tile-shot img {
+  transform: scale(1.04);
+}
+
+.tile h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.tile .caption {
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------- interior pages */
+
+/* A short photographic header. Same anatomy as a panel, half the height, so
+   an interior page states its name and gets on with it. */
+.panel[data-size="head"] {
+  min-height: min(46svh, 26rem);
+}
+
+.panel[data-size="head"] .panel-body h1 {
+  font-size: var(--text-4xl);
+}
+
+.prose-fold {
+  padding-block: var(--space-2xl);
+}
+
+.prose-fold[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.prose {
+  max-width: var(--measure);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.prose h2 {
+  font-size: var(--text-2xl);
+}
+
+.prose p {
+  color: var(--color-ink-2);
+}
+
+/* Key–value facts: Born, Mentored by, Trains across. The benchmark carries
+   these as quiet rows, never as a table. */
+.facts {
+  margin: var(--space-sm) 0 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.fact {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-top: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.fact dd {
+  margin: 0;
+  color: var(--color-ink-2);
+}
+
+/* The journey: photograph beside copy, alternating sides, stacked plainly on
+   a phone. No rail, no pin, no travel. */
+.steps {
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+.step {
+  display: grid;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+@media (min-width: 800px) {
+  .step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
+
+  /* Alternate. The photograph swaps sides on every other chapter, which is
+     all the movement this page needs. */
+  .step:nth-child(even) .step-shot {
+    order: 2;
+  }
+}
+
+.step-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.step-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+}
+
+.step-copy {
+  display: grid;
+  gap: var(--space-xs);
+  max-width: var(--measure-tight);
+}
+
+.step-copy h2 {
+  font-size: var(--text-2xl);
+}
+
+.step-copy p:not(.caption) {
+  color: var(--color-ink-2);
+}
+
+/* The medal tables. Three columns, hairline rows, the dot carrying colour. */
+.medals {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-2xs);
+}
+
+.medals td {
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
+  border-top: var(--rule-hair) solid var(--color-line);
+  vertical-align: baseline;
+}
+
+.medals td b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  display: block;
+}
+
+.medals td span {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+.c-medal {
+  white-space: nowrap;
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  text-align: right;
+}
+
+.c-medal i {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  margin-right: 0.4rem;
+}
+
+.c-medal i[data-medal="gold"] { background: var(--color-gold); }
+.c-medal i[data-medal="silver"] { background: var(--color-silver); }
+.c-medal i[data-medal="bronze"] { background: var(--color-bronze); }
+
+/* The press list. Headline and outlet, one hairline per row, the whole row
+   the link. */
+.press {
+  list-style: none;
+  margin: var(--space-2xs) 0 0;
+  padding: 0;
+}
+
+.press li {
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.press a,
+.press li > p {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-block: var(--space-sm);
+  text-decoration: none;
+  margin: 0;
+}
+
+.press b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press a:hover b {
+  color: var(--color-accent);
+}
