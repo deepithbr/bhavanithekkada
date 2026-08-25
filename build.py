@@ -26,6 +26,15 @@ ROOT = pathlib.Path(__file__).parent
 CONTENT = ROOT / "content"
 OUT_HTML = ROOT / "index.html"
 
+# Marks the first frame of the hero burst and the first press pair as visible.
+#
+# It is a constant rather than an inline literal because it contains escaped
+# quotes, and a backslash inside an f-string expression is a syntax error before
+# Python 3.12. That built fine locally and would have failed the first
+# Cloudflare build against whatever Python their image ships. Pulling it out
+# means the generator runs on any Python 3.8 and up.
+ON_FIRST = ' data-on="true"'
+
 # Three families from Google, and the wordmark face self-hosted.
 #
 # Black Rusher by Alpaprana Studio carries her name and nothing else. It is
@@ -457,7 +466,7 @@ def hero(c: dict, img: Img) -> str:
             f'<img src="{e(img.src(s, 1200))}" alt="" '
             f'aria-hidden="true" decoding="async" fetchpriority="low" '
             f'style="object-position:{img.focal(s)}"'
-            f'{" data-on=\"true\"" if i == 0 else ""}>'
+            f'{ON_FIRST if i == 0 else ""}>'
             for i, s in enumerate(b["frames"])
             if img.get(s)
         )
@@ -1144,10 +1153,14 @@ def footprint(c: dict, world: dict, img: Img) -> str:
         # sit two screens above this and make the same argument with a different
         # number. The map is the better home for it: this can show the spread on
         # its own axis, where the stat could only assert it.
+        #
+        # It used to close on "and has never had snow", which was the fifth
+        # telling of that line on the page and the second inside this chapter.
+        # It survives in the Kodagu panel, where it is the origin, and in the
+        # profile, where the version about her parents is the better fact.
         f'<p class="card-event">From {abs(south["lat"]):.0f}&deg;S at '
         f'{e(south["place"])} to {abs(north["lat"]):.0f}&deg;N at {e(north["place"])}. '
-        f'Kodagu sits almost exactly halfway between the two, at 12&deg;N, '
-        f'and has never had snow.</p>'
+        f'Kodagu sits almost exactly halfway between the two, at 12&deg;N.</p>'
         f'<p class="card-meta mono">Select a marker for the result</p>'
         f'</div></article>'
     )
@@ -1292,6 +1305,15 @@ def beyond(c: dict, img: Img) -> str:
 </section>"""
 
 
+# Short names for the source column. `portfolio` is deliberately empty.
+#
+# It was briefly "Athlete", to stop the domestic rows looking unsourced. That
+# stamped the word down fifteen rows and made those results read as second
+# class next to FIS and Khelo India, and a source column is read as naming a
+# publication, so it answered a different question than the header asks.
+#
+# The disclosure moved to the table's caption instead, which now says what a
+# blank cell means. Once, under the table, rather than fifteen times inside it.
 SOURCE_LABEL = {
     "fis": "FIS",
     "awg-wikipedia": "Asian Winter Games",
@@ -1304,24 +1326,34 @@ SOURCE_LABEL = {
 def result_row(r: dict, sources: dict) -> str:
     """Must match the row markup in main.js, which re-renders on interaction."""
     s = sources.get(r["sourceRef"], {})
+    # The medal is named, not just coloured.
+    #
+    # It was a 9px dot with the word available only to screen readers, so a
+    # sighted reader got a coloured circle and no key, and a touch reader had no
+    # hover to fall back on. Naming it costs one word and removes the puzzle.
     medal = (
         f'<span class="medal-dot" data-medal="{e(r["medal"])}"></span>'
-        f'<span class="vh">{e(r["medal"])}</span>'
+        f'<span class="medal-name">{e(r["medal"])}</span>'
         if r["medal"] else ""
     )
-    # A source link is worth showing because a journalist can follow it. A label
-    # with no link behind it was only ever a note to ourselves.
+    # A source with a URL is a link a journalist can follow. One without is
+    # still worth naming: these rows are domestic races nobody published, and
+    # the blank cell read as missing data when the real answer is that she is
+    # the source. Saying so is both honest and more useful than an empty cell.
     label = SOURCE_LABEL.get(r["sourceRef"], e(s.get("sourceName", "")))
-    link = (
-        f'<a class="src-flag" href="{e(s["sourceUrl"])}" target="_blank" rel="noopener">{label}</a>'
-        if s.get("sourceUrl")
-        else ""
-    )
+    if s.get("sourceUrl"):
+        link = (f'<a class="src-flag" href="{e(s["sourceUrl"])}" '
+                f'target="_blank" rel="noopener">{label}</a>')
+    elif label:
+        link = (f'<span class="src-flag is-unlinked" '
+                f'title="{e(s.get("sourceName", ""))}">{label}</span>')
+    else:
+        link = ""
     return f"""<tr>
           <td class="c-year">{e(r['year'] or '—')}</td>
           <td class="c-event">{e(r['event'])}<small>{e(r['detail'])}</small></td>
           <td class="c-place">{e(r['place'])}</td>
-          <td class="c-mark">{e(r['mark'] or '')}</td>
+          <td class="c-mark">{e(r['mark'] or '—')}</td>
           <td class="c-medal">{medal}</td>
           <td>{link}</td>
         </tr>"""
@@ -1342,8 +1374,16 @@ def record(c: dict) -> str:
   <div class="wrap">
     {section_head(c, "record")}
     <div class="filters" role="group" aria-label="Filter results">{filters}</div>
-    <table class="results" id="results-table">
-      <caption class="vh">{e(res['note'])}</caption>
+    <table class="results" id="results-table" aria-describedby="results-note">
+      <!--
+        The note used to live here as a `vh` caption, so it reached screen
+        readers and no sighted reader at all. It is now a paragraph after the
+        table, tied back with `aria-describedby` so it is still the table's
+        description and is only announced once.
+
+        Not a visible `<caption>`: with `caption-side: bottom` and a max-width
+        it shrink-wrapped to 72px on a phone and stacked into 23 lines.
+      -->
       <thead>
         <tr>
           <th scope="col">Year</th><th scope="col">Event</th>
@@ -1354,6 +1394,7 @@ def record(c: dict) -> str:
       </thead>
       <tbody id="results-body">{seeded}</tbody>
     </table>
+    <p class="results-note" id="results-note">{e(res['note'])}</p>
     <div class="record-more">
       <button class="btn" type="button" id="results-toggle" aria-expanded="false">
         View full achievement record</button>
@@ -1477,7 +1518,7 @@ def media(c: dict, img: Img) -> str:
         )
         pairs.append(
             f'<figure class="scrub-frame" data-frame="{len(pairs)}"'
-            f'{" data-on=\"true\"" if not pairs else ""}>'
+            f'{ON_FIRST if not pairs else ""}>'
             f'<img class="shot-a" src="{e(img.src(a_slot, 960))}" '
             f'alt="{e(a["alt"])}" loading="lazy" decoding="async" '
             f'style="object-position:{img.focal(a_slot)}">'
@@ -1766,8 +1807,13 @@ def contact(c: dict) -> str:
       <ul class="contact-lines">
         <li><a href="mailto:{e(k['email'])}"><span class="k">Email</span>
           <span class="v">{e(k['email'])}</span></a></li>
-        <li><a href="{e(k['phoneHref'])}"><span class="k">Phone</span>
-          <span class="v">{e(k['phone'])}</span></a></li>
+        <!--
+          The phone number is deliberately not published. It is still in
+          `contact.phone` for whoever handles enquiries, but a personal mobile
+          on a page built to attract strangers is a decision that cannot be
+          taken back once it has been crawled. Email and the form are the two
+          routes in, and both reach the same inbox.
+        -->
         {ig_row}
       </ul>
       <form class="enquiry" id="enquiry" novalidate>
@@ -1793,8 +1839,14 @@ def contact(c: dict) -> str:
           with all five fields already written into the message. That is worth
           describing as behaviour rather than apologising for.
         -->
-        <p class="note" id="enquiry-note">Goes straight to her inbox. If anything
-        blocks it, your own mail client opens instead with the message intact.</p>
+        <!--
+          The note is empty until the form has something to report.
+          Explaining the delivery mechanism before anyone has pressed anything
+          answered a question nobody had asked and made the section end on
+          plumbing. initEnquiry still writes into it: "Sending…", then either
+          the sent confirmation or the mail-client fallback.
+        -->
+        <p class="note" id="enquiry-note" aria-live="polite"></p>
       </form>
     </div>
   </div>

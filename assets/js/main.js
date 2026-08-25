@@ -974,6 +974,11 @@ function initReveal() {
 
 /* ----------------------------------------------------------------- results */
 
+/* Second copy of SOURCE_LABEL in build.py. Keep them in step: this one renders
+   the table after any filter click, that one renders it at build time, and a
+   difference between them shows up as a column that changes when you touch a
+   control. `portfolio` is empty on purpose: the table's caption explains what a
+   blank source cell means, rather than the column repeating it on every row. */
 const SOURCE_LABEL = {
   fis: "FIS",
   "awg-wikipedia": "Asian Winter Games",
@@ -1027,21 +1032,29 @@ function initResults() {
     body.innerHTML = rows
       .map((r) => {
         const src = DATA.sources[r.sourceRef] || {};
+        // Must match result_row in build.py, which renders the same rows at
+        // build time. Any change here needs making there too or the table
+        // changes shape the first time somebody touches a filter.
         const medal = r.medal
           ? `<span class="medal-dot" data-medal="${esc(r.medal)}"></span>` +
-            `<span class="vh">${esc(r.medal)}</span>`
+            `<span class="medal-name">${esc(r.medal)}</span>`
           : "";
-        // Must match result_row in build.py. A source link is worth showing
-        // because it can be followed; a bare label was a note to ourselves.
-        const link = src.sourceUrl
-          ? `<a class="src-flag" href="${esc(src.sourceUrl)}" target="_blank" rel="noopener">` +
-            `${esc(SOURCE_LABEL[r.sourceRef] || src.sourceName)}</a>`
-          : "";
+        const label = SOURCE_LABEL[r.sourceRef] ?? src.sourceName ?? "";
+        let link = "";
+        if (src.sourceUrl) {
+          link =
+            `<a class="src-flag" href="${esc(src.sourceUrl)}" target="_blank" rel="noopener">` +
+            `${esc(label)}</a>`;
+        } else if (label) {
+          link =
+            `<span class="src-flag is-unlinked" title="${esc(src.sourceName ?? "")}">` +
+            `${esc(label)}</span>`;
+        }
         return `<tr>
           <td class="c-year">${esc(r.year ?? "—")}</td>
           <td class="c-event">${esc(r.event)}<small>${esc(r.detail)}</small></td>
           <td class="c-place">${esc(r.place)}</td>
-          <td class="c-mark">${esc(r.mark ?? "")}</td>
+          <td class="c-mark">${esc(r.mark || "—")}</td>
           <td class="c-medal">${medal}</td>
           <td>${link}</td>
         </tr>`;

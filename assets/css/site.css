@@ -5252,8 +5252,40 @@ html {
   font-size: var(--step--1);
 }
 
+/* Sits under the table, so the reader meets the results first and the note when
+   they have a reason to want it. A paragraph rather than a `<caption>`, which
+   shrink-wrapped to 72px against a max-width on a phone. */
+.results-note {
+  margin: 1.1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--fg-dim);
+  max-width: 68ch;
+}
+
+/*
+ * The medal column carries the word as well as the colour.
+ *
+ * A 9px dot with the name available only to screen readers meant a sighted
+ * reader had a coloured circle and no key, and a touch reader had no hover to
+ * fall back on either. The dot still does the fast visual scan down the column;
+ * the word removes the guessing.
+ */
 .results .c-medal {
-  width: 2.5rem;
+  width: 6.5rem;
+  white-space: nowrap;
+}
+
+.medal-name {
+  margin-left: 0.45rem;
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  vertical-align: middle;
 }
 
 .medal-dot {
@@ -5263,6 +5295,7 @@ html {
   border-radius: 50%;
   background: transparent;
   border: 1px solid var(--fg-dim);
+  vertical-align: middle;
 }
 
 .medal-dot[data-medal="gold"] {
@@ -5310,6 +5343,13 @@ a.src-flag::after {
   content: "";
   position: absolute;
   inset: -0.5rem -0.4rem;
+}
+
+/* A source with nothing to link to. Dimmer and not underlined on hover, so it
+   reads as an attribution rather than as a link that has stopped working. */
+.src-flag.is-unlinked {
+  opacity: 0.45;
+  cursor: help;
 }
 
 a.src-flag:hover {

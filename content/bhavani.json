@@ -151,8 +151,8 @@
     },
     "footprint": {
       "index": "02",
-      "title": "66°N to 41°S",
-      "lede": "One hundred and seven degrees of latitude separate her northernmost start from her southernmost. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn, and started from a district that has never seen snow.",
+      "title": "The map of six seasons",
+      "lede": "One hundred and seven degrees of latitude separate her northernmost start from her southernmost. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn.",
       "anchors": [
         {
           "lat": 66.17,
@@ -173,7 +173,7 @@
           "note": "Southernmost start"
         }
       ],
-      "mapNote": "From 41°S at Antillanca to 66°N at Ruka. Kodagu sits almost exactly halfway between the two, at 12°N, and has never had snow."
+      "mapNote": "From 41°S at Antillanca to 66°N at Ruka. Kodagu sits almost exactly halfway between the two, at 12°N."
     },
     "beyond": {
       "index": "03",
@@ -192,7 +192,7 @@
     "ambition": {
       "index": "06",
       "title": "The road to 2030",
-      "lede": "Four seasons between here and a start list in the French Alps. Everything up to this point has already happened. Nothing in this chapter has."
+      "lede": "Four seasons between here and a start list in the French Alps. Everything above this is on the record. What follows is a plan."
     },
     "speaking": {
       "index": "07",
@@ -202,7 +202,7 @@
     "partners": {
       "index": "08",
       "title": "Partnerships and support",
-      "lede": "Bhavani races a full FIS calendar largely at her own expense, and trains alongside other nations' squads because there is no Indian one in her discipline. A season has a fixed shape, and support lands at particular points inside it."
+      "lede": "She races a full FIS calendar largely at her own expense, and trains with other nations' squads because India fields none in her discipline. A season has a fixed shape, and support lands at particular points inside it."
     },
     "contact": {
       "index": "09",
@@ -215,7 +215,7 @@
         "id": "kodagu",
         "year": "1995",
         "heading": "Kodagu",
-        "body": "Born on 14 May 1995 in Kodagu, the coffee-growing hill district of southern Karnataka. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
+        "body": "Born 14 May 1995 at Perur, near Napoklu, in the coffee-growing hills of Kodagu. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
         "image": null,
         "temperature": "warm",
         "sourceRef": "fis"
@@ -224,7 +224,7 @@
         "id": "mountains",
         "year": "2014",
         "heading": "The mountains came first",
-        "body": "She started mountaineering at nineteen, trained at ABVIMAS and at the Himalayan Mountaineering Institute in Darjeeling, and by 2017 was a qualified mountaineer and instructor. Everything that follows runs through that, not through a ski club.",
+        "body": "She started mountaineering at nineteen, trained at ABVIMAS and at the Himalayan Mountaineering Institute in Darjeeling, and qualified as a mountaineer and instructor by 2017. There was no ski club to come up through. The mountains did that job.",
         "image": "team-with-skis",
         "temperature": "warm",
         "sourceRef": "athlete-brief"
@@ -233,7 +233,7 @@
         "id": "ncc",
         "year": "2016",
         "heading": "The Republic Day contingent",
-        "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp. The route into the mountains ran through a uniformed cadet programme.",
+        "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp. Her way to altitude came through a cadet uniform.",
         "image": null,
         "temperature": "warm",
         "sourceRef": "athlete-brief"
@@ -242,7 +242,7 @@
         "id": "snow",
         "year": "2018",
         "heading": "Snow, and then skis",
-        "body": "Alpine skiing arrived as a tool of the instructing job. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe. She had first seen snow only three years earlier.",
+        "body": "She had seen snow for the first time only three years before. Skis arrived as equipment for the instructing job, and the same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
         "image": "ruapehu",
         "temperature": "cool",
         "sourceRef": "athlete-brief"
@@ -251,7 +251,7 @@
         "id": "certified",
         "year": "2019–2020",
         "heading": "Certified abroad, then cross-country",
-        "body": "An international ski instructor certification in New Zealand, on the slopes of an active volcano, and a season pursuing skiing abroad. She moved to cross-country in 2020: the endurance end of the sport, and the one a mountaineering instructor already has most of the engine for.",
+        "body": "She took an international ski instructor certification in New Zealand, on an active volcano, then spent a season skiing abroad. Cross-country followed in 2020, the endurance end of the sport she was already built for.",
         "image": "portrait-himachali",
         "temperature": "cool",
         "sourceRef": "athlete-brief"
@@ -260,7 +260,7 @@
         "id": "international",
         "year": "2022–",
         "heading": "Onto the FIS circuit",
-        "body": "Her first FIS-scored races were in Akureyri, northern Iceland, in January 2022. Planica followed in 2023 and Kazakhstan in 2024, then Harbin, Trondheim, Chile, and a first World Cup start at Ruka.",
+        "body": "Her first FIS-scored races were at Akureyri in northern Iceland, in January 2022. Planica followed in 2023 and Kazakhstan in 2024, then Harbin, Trondheim, Corralco and a first World Cup start at Ruka, all inside 2025.",
         "image": "ski-city-overlook",
         "temperature": "cool",
         "sourceRef": "fis"
@@ -728,7 +728,7 @@
     }
   ],
   "results": {
-    "note": "Every scored start, by year. FIS-scored races carry their finishing position; domestic results are listed where the organiser published one.",
+    "note": "Every scored start, by year. A source links out wherever the result was published. Rows with no source are domestic races no organiser published, taken from Bhavani's own record.",
     "filters": [
       {
         "id": "all",
@@ -1353,7 +1353,7 @@
       "title": "National skiing athlete from Kodagu looks for sponsors to support her Olympic dream",
       "url": "https://www.newindianexpress.com/sport/other/2022/apr/21/national-skiing-athlete-from-kodagu-looks-for-sponsors-to-support-her-olympic-dream-2444798.html",
       "date": "2022-04-21",
-      "context": "The earliest of the coverage, before her first World Championships, on funding a season without a federation budget.",
+      "context": "The earliest of the coverage, published before her first World Championships and already about how a season gets paid for.",
       "image": "roller-road"
     },
     {
@@ -1411,25 +1411,25 @@
         "id": "training",
         "index": "01",
         "title": "Training blocks on snow",
-        "body": "The European race season opens in late November, and the athletes on that start list have been on snow since October. A pre-season block in Scandinavia or the Alps decides whether she arrives race-fit or arrives to get fit."
+        "body": "The European season opens in late November against athletes who have been on snow since October. A pre-season block in Scandinavia or the Alps buys those six weeks back, and it is the difference between racing into form and racing to find it."
       },
       {
         "id": "travel",
         "index": "02",
         "title": "Competition travel",
-        "body": "The 2025 December block ran Ruka to Trondheim to Davos in sixteen days. Entry fees and accommodation are sometimes covered by the federation. Getting there rarely is."
+        "body": "December 2025 ran Ruka to Trondheim to Davos inside sixteen days. The federation covers entry and accommodation on some of it. Flights, transfers and everything between the start lists are hers."
       },
       {
         "id": "coaching",
         "index": "03",
         "title": "Coaching and wax service",
-        "body": "Every other athlete on a World Cup start list arrives with a service team reading the snow that morning. Wax chosen for the wrong temperature loses more time than fitness can win back."
+        "body": "Every other athlete on a World Cup start list has a service team reading the snow that morning and grinding skis to it. She does not. Wax chosen for the wrong temperature costs more time than any amount of fitness gets back."
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and kit",
-        "body": "Classic and freestyle skis in cold, normal and warm grinds, plus poles, boots and a racing suit. Equipment is graded to conditions, so a single pair does not cover a season."
+        "body": "Skis are ground for the snow they will meet, so one pair cannot cover a season. A full race set is classic and freestyle in cold, normal and warm grinds, with poles, boots and a race suit behind them."
       }
     ],
     "cta": {
@@ -1800,7 +1800,7 @@
     "points": [
       {
         "title": "A sport with no home crowd",
-        "body": "India has no permanent cross-country base and almost no domestic race calendar. Every season she competes in is assembled from abroad."
+        "body": "Every season she competes in is assembled from other countries' calendars. There is no home fixture for anyone to turn up to."
       },
       {
         "title": "Explaining the sport",
@@ -1822,7 +1822,7 @@
     "themes": [
       {
         "title": "Starting from zero infrastructure",
-        "body": "What it actually takes to reach an international start line from a country with no facility, no calendar and no coaching in your discipline.",
+        "body": "What it actually takes to reach an international start line when your country has none of the infrastructure the sport assumes you have.",
         "from": "Kodagu 2013 to a World Cup start list, 2025"
       },
       {
@@ -1885,7 +1885,7 @@
         "sourceRef": "kiwg-2026"
       }
     ],
-    "yearNote": "There is no permanent snow in India for her discipline, so her year follows it across the hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September for the southern winter."
+    "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September."
   },
   "headline": {
     "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",

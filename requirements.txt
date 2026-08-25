@@ -1,0 +1,7 @@
+# Cloudflare Pages runs `pip install -r requirements.txt` when it finds this
+# file at the repository root, before the build command. Without it the build
+# fails on `from markdown_it import MarkdownIt` in build.py.
+#
+# markdown-it-py is the only third-party dependency in the whole toolchain.
+# Everything else build.py, release.py and tools/ use is standard library.
+markdown-it-py>=3.0,<4
