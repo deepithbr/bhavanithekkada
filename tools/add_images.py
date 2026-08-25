@@ -171,6 +171,41 @@ NEW = {
         "open slope against a clear sky.",
         (0.52, 0.42), "race", 2020, None,
     ),
+    # The five below exist to break up repetition rather than to fill a hole.
+    # Three photographs were each carrying three different slots, which is what
+    # made the page feel like it kept showing you the same picture: `ruapehu`,
+    # `race-planica-elbrus` and `khelo-ice-sculpture`. Each is now down to the
+    # one or two slots it genuinely belongs to.
+    "first-skis-2018": (
+        "Bhavani/2018/Copy of IMG_0788.JPG",
+        "A skier in a red jacket coming down an open piste, poles trailing, "
+        "carving across the fall line.",
+        (0.50, 0.15), "training", 2018, None,
+    ),
+    "ridge-sunrise": (
+        "Bhavani/2018/Copy of DSC05311.JPG",
+        "A roped line of climbers working up a steep snow slope at first "
+        "light, a horizon of peaks falling away below them.",
+        (0.55, 0.55), "mountain", 2018, None,
+    ),
+    "nz-snowfarm": (
+        "Bhavani/2026/New Zealand/Copy of IMG_6534.HEIC",
+        "A group of skiers standing together on their skis on an open snow "
+        "field under a heavy bank of cloud.",
+        (0.50, 0.53), "training", 2026, "New Zealand",
+    ),
+    "podium-gulmarg-2023": (
+        "Bhavani/2023/Copy of IMG_5350.HEIC",
+        "Three racers on the podium at a cross-country championship in "
+        "Gulmarg, medals around their necks and the event banner behind.",
+        (0.50, 0.36), "race", 2023, "Gulmarg, Jammu and Kashmir, India",
+    ),
+    "contingent-2021": (
+        "Bhavani/2021/Copy of 231891cd-3794-49d7-91c4-82e48f3e4ee5.jpg",
+        "The full India contingent lined up with their medals at a Khelo "
+        "India National Winter Games presentation ceremony.",
+        (0.50, 0.42), "race", 2021, None,
+    ),
     "team-gulmarg": (
         "Bhavani/7.jpg",
         "A full squad of skiers gathered with their skis upright among snow-"
@@ -206,8 +241,30 @@ WIRING = [
     (["internationalFootprint", 12], "team-gulmarg"),
     (["internationalFootprint", 13], "downhill-tuck"),
     (["press", 2], "khelo-medals"),
-    (["press", 5], "holmenkollen"),
     (["press", 8], "trophy-karnataka"),
+    # De-duplication. Each of these three slots was showing a photograph that
+    # already appeared twice elsewhere on the page.
+    #
+    #   ruapehu              beat 3, mountainAchievements 1, cert 3  -> 1 use
+    #   race-planica-elbrus  deck 2, map 3, mountainAchievements 0   -> 2 uses
+    #   khelo-ice-sculpture  deck 10, map 1, press 9                 -> 1 use
+    #
+    # Each keeps the slot it actually belongs to. `ruapehu` is a photograph of
+    # Mt. Ruapehu, so it stays on the summit card. `race-planica-elbrus` is her
+    # racing in a World Championships bib, so it stays on the Planica race and
+    # the Planica pin, and the Elbrus summit card gets a real climbing frame
+    # instead of the composited mountain behind her. `khelo-ice-sculpture` is
+    # Gulmarg, so the Gulmarg pin gets a Gulmarg podium and the 2026 Khelo India
+    # card keeps the sculpture.
+    (["story", "beats", 3], "first-skis-2018"),
+    (["mountainAchievements", 0], "ridge-sunrise"),
+    (["certificationPhases", 3], "nz-snowfarm"),
+    (["internationalFootprint", 1], "podium-gulmarg-2023"),
+    (["press", 5], "contingent-2021"),
+    # trophy-ceremony was already in the library and used nowhere. A Khelo India
+    # closing ceremony is a better fit for a medal-tally story than a repeat of
+    # the snow sculpture.
+    (["press", 9], "trophy-ceremony"),
     # Both of these were illustrated by a photograph of skis. The first two
     # phases are the climbing ones, so they now get climbing photographs.
     (["certificationPhases", 0], "summit-solo"),

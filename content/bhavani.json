@@ -243,7 +243,7 @@
         "year": "2018",
         "heading": "Snow, and then skis",
         "body": "She had seen snow for the first time only three years before. Skis arrived as equipment for the instructing job, and the same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
-        "image": "ruapehu",
+        "image": "first-skis-2018",
         "temperature": "cool",
         "sourceRef": "athlete-brief"
       },
@@ -464,7 +464,7 @@
       "kind": "domestic",
       "sourceRef": "kiwg-2026",
       "best": "Gold, Nordic sprint, Khelo India 2026",
-      "image": "khelo-ice-sculpture"
+      "image": "podium-gulmarg-2023"
     },
     {
       "id": "akureyri",
@@ -656,7 +656,7 @@
       "country": "Russia",
       "metres": 5642,
       "note": "The highest summit in Europe.",
-      "image": "race-planica-elbrus",
+      "image": "ridge-sunrise",
       "sourceRef": "portfolio"
     },
     {
@@ -1304,7 +1304,7 @@
       "date": "2025-10-17",
       "byline": "",
       "context": "On India's athletes going into the 2026 Winter Olympics.",
-      "image": "holmenkollen",
+      "image": "contingent-2021",
       "verified": false
     },
     {
@@ -1346,7 +1346,7 @@
       "context": "Official results for the 2026 edition at Gulmarg.",
       "url": "https://winter.kheloindia.gov.in/medal-tally",
       "verified": true,
-      "image": "khelo-ice-sculpture"
+      "image": "trophy-ceremony"
     },
     {
       "publication": "The New Indian Express",
@@ -1709,7 +1709,7 @@
       "index": "04",
       "label": "Instructing abroad",
       "note": "Snowsports instructor certification at Mt. Ruapehu, the first she earned outside India.",
-      "image": "ruapehu",
+      "image": "nz-snowfarm",
       "where": "Mt. Ruapehu, New Zealand",
       "years": "2019"
     }

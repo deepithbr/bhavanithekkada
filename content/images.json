@@ -1075,6 +1075,126 @@
         0.24
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "first-skis-2018",
+      "file": "first-skis-2018",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4928,
+        3264
+      ],
+      "ratio": 1.5098,
+      "alt": "A skier in a red jacket coming down an open piste, poles trailing, carving across the fall line.",
+      "credit": "Athlete's own archive",
+      "year": 2018,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.5,
+        0.15
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "ridge-sunrise",
+      "file": "ridge-sunrise",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        5472,
+        3648
+      ],
+      "ratio": 1.5,
+      "alt": "A roped line of climbers working up a steep snow slope at first light, a horizon of peaks falling away below them.",
+      "credit": "Athlete's own archive",
+      "year": 2018,
+      "location": null,
+      "category": "mountain",
+      "focal": [
+        0.55,
+        0.55
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "nz-snowfarm",
+      "file": "nz-snowfarm",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4284,
+        5712
+      ],
+      "ratio": 0.75,
+      "alt": "A group of skiers standing together on their skis on an open snow field under a heavy bank of cloud.",
+      "credit": "Athlete's own archive",
+      "year": 2026,
+      "location": "New Zealand",
+      "category": "training",
+      "focal": [
+        0.5,
+        0.53
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "podium-gulmarg-2023",
+      "file": "podium-gulmarg-2023",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4032,
+        3024
+      ],
+      "ratio": 1.3333,
+      "alt": "Three racers on the podium at a cross-country championship in Gulmarg, medals around their necks and the event banner behind.",
+      "credit": "Athlete's own archive",
+      "year": 2023,
+      "location": "Gulmarg, Jammu and Kashmir, India",
+      "category": "race",
+      "focal": [
+        0.5,
+        0.36
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "contingent-2021",
+      "file": "contingent-2021",
+      "widths": [
+        480,
+        960,
+        1280
+      ],
+      "natural": [
+        1280,
+        852
+      ],
+      "ratio": 1.5023,
+      "alt": "The full India contingent lined up with their medals at a Khelo India National Winter Games presentation ceremony.",
+      "credit": "Athlete's own archive",
+      "year": 2021,
+      "location": null,
+      "category": "race",
+      "focal": [
+        0.5,
+        0.42
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [

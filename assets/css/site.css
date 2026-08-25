@@ -1762,7 +1762,20 @@ section:not(.hero) > .wrap {
   position: relative;
   overflow: hidden;
   margin: -1.9rem -1.75rem 1.15rem;
-  aspect-ratio: 16 / 5;
+  /*
+   * 16/7, not the 16/5 this used to be.
+   *
+   * `object-fit: cover` shows a slice of the source equal to imgAR/boxAR of its
+   * height. Most of the archive is phone portrait at 3:4, so 16/5 left 23% of
+   * the frame visible and the focal point had to sit inside a band a quarter of
+   * the picture tall. On the 2022 card that band ran 0.15 to 0.40 and the
+   * racers' heads were above 0.15, so the banner cut them off at the hairline.
+   *
+   * At 16/7 the same source shows 33%, which is enough for a head and shoulders
+   * to survive. It also matches `.cstep-shot`, which was already 16/7 and never
+   * had this problem.
+   */
+  aspect-ratio: 16 / 7;
 }
 
 .deck-shot img {
@@ -4139,8 +4152,18 @@ html {
     height: 100%;
   }
 
-  .js .jpanel[data-size="sm"] { align-self: center; height: 78%; }
-  .js .jpanel[data-size="md"] { align-self: center; height: 88%; }
+  /*
+   * Every panel is full height. The small ones used to be 78% and the medium
+   * ones 88%, which is where the squeezed photographs came from: the copy row
+   * is `auto` and takes what it needs first, so shortening the box only ever
+   * comes out of the picture. At 78% the 2014 chapter had 354px of copy in a
+   * 410px panel and its photograph was left with 56px, a 5.7:1 letterbox
+   * across her face.
+   *
+   * Weight is carried by width instead, which was always doing most of the
+   * work: 560, 430 and 320. The vertical stagger that the reduced heights used
+   * to give is already supplied by `data-lift` below.
+   */
 
   /* Vertical offset breaks the horizon line, so the eye travels a path rather
      than reading along a shelf. Kept small now that the stage is padded, since
