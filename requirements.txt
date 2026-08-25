@@ -5,3 +5,14 @@
 # markdown-it-py is the only third-party dependency in the whole toolchain.
 # Everything else build.py, release.py and tools/ use is standard library.
 markdown-it-py>=3.0,<4
+
+# Cloudflare Pages defaults to Python 3.7 on its older build image, and
+# markdown-it-py 3.x requires 3.8 or newer, so on the default the pip install
+# above fails before build.py is ever reached. `.python-version` pins 3.12; if
+# the build image ignores that file, set a PYTHON_VERSION=3.12 environment
+# variable on the Pages project, which every image honours.
+#
+# build.py itself is undemanding. It carries `from __future__ import
+# annotations`, so its `dict[str, str]` and `list[dict]` annotations are lazy
+# strings and cost nothing at runtime, and it uses no walrus, no match and no
+# same-quote f-string nesting. The floor is the dependency, not the code.
