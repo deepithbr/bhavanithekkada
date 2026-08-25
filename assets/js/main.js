@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initGallery();
   initPeaks();
   initEnquiry();
+  initAnchorScroll();
 });
 
 /* -------------------------------------------------------------- the deck */
@@ -720,6 +721,107 @@ function initCue() {
   onScroll(() => {
     cue.dataset.gone = String(window.scrollY > 40);
   })();
+}
+
+/* ----------------------------------------------------------- anchor scroll */
+
+/**
+ * Smooth scrolling for in-page links, driven here rather than by CSS.
+ *
+ * `scroll-behavior: smooth` on `html` did this for free and did it wrong. On a
+ * document this tall, about 30,000px, the browser abandons a smooth scroll the
+ * moment the layout shifts underneath it, and across a journey that long the
+ * lazy images and the reveal classes guarantee a shift. Measured in Chrome:
+ * clicking RECORD set `location.hash` to `#record` and left `scrollY` at 0 with
+ * the target 13,986px below. It failed the same way for the rail stops, the
+ * hero cue, and a hash typed into the address bar.
+ *
+ * The fix is to re-read the target's document position on every frame instead
+ * of computing it once at the start. A shift above the target moves the
+ * destination and this simply follows it, which is the exact case that defeats
+ * the native version.
+ *
+ * Duration is tied to distance and then capped. A fixed duration makes a short
+ * hop feel slow and a 14,000px run feel endless; 900ms is the ceiling, which
+ * keeps the longest jump on the page brisk enough to sit through.
+ */
+function initAnchorScroll() {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const ease = (t) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  let frame = 0;
+
+  // Any real input from the reader outranks an animation they did not ask to
+  // keep watching. Without this the page fights a mid-flight scroll.
+  const stop = () => {
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+  };
+  ["wheel", "touchstart", "keydown"].forEach((ev) =>
+    window.addEventListener(ev, stop, { passive: true })
+  );
+
+  document.addEventListener("click", (ev) => {
+    if (ev.defaultPrevented || ev.button !== 0) return;
+    if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+
+    const link = ev.target.closest('a[href^="#"]');
+    if (!link || link.target === "_blank") return;
+
+    const id = link.getAttribute("href").slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    ev.preventDefault();
+    stop();
+
+    // Read fresh each frame. This is the whole point of the function.
+    const destination = () => {
+      const limit =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const y = target.getBoundingClientRect().top + window.scrollY;
+      return Math.max(0, Math.min(limit, y));
+    };
+
+    const land = () => {
+      // `pushState` rather than assigning the hash, which would scroll a second
+      // time and undo the landing.
+      history.pushState(null, "", `#${id}`);
+      // Focus follows the jump, so a keyboard reader carries on from the
+      // section they asked for rather than from where they were.
+      if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+      target.focus({ preventScroll: true });
+    };
+
+    const start = window.scrollY;
+    if (reduce.matches) {
+      window.scrollTo(0, destination());
+      land();
+      return;
+    }
+
+    const span = Math.abs(destination() - start);
+    if (span < 2) {
+      land();
+      return;
+    }
+    const ms = Math.min(900, Math.max(320, span * 0.22));
+    const t0 = performance.now();
+
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / ms);
+      window.scrollTo(0, start + (destination() - start) * ease(t));
+      if (t < 1) {
+        frame = requestAnimationFrame(step);
+      } else {
+        frame = 0;
+        land();
+      }
+    };
+    frame = requestAnimationFrame(step);
+  });
 }
 
 /* --------------------------------------------------------------------- nav */
