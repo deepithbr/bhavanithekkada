@@ -67,7 +67,7 @@
       ]
     },
     "profileHeading": "It started with a film, and a race on television.",
-    "profileBody": "She grew up on her family's coffee farm at Perur, near Napoklu in Kodagu, where it has never snowed and where neither of her parents had ever seen snow either. In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to a job instructing in Kashmir, which is where she first put on skis.",
+    "profileBody": "In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to an instructing job in Kashmir, which is where she first put on skis.",
     "profileBody2": "Cross-country came later, and secondhand. Watching the 2018 Pyeongchang Games she saw the Norwegian Marit Bjørgen race, and decided that was the event she wanted. She left the instructing job to train full time. Her father, Thekkada Nanjunda, who has spent his life on the coffee farm, told her that if it made her happy she should do it.",
     "profileFacts": [
       {
@@ -1513,7 +1513,8 @@
           "kind": "Government support",
           "logo": "government-of-india.png",
           "logoSource": "Client-supplied via her existing portfolio (bt-portfolio-ddd16.web.app), 25 Aug 2026",
-          "role": "Named by Bhavani as a current supporter in the client review of 25 Aug 2026. Recorded on her instruction; an earlier review had held this back pending confirmation, and her naming it directly is that confirmation."
+          "role": "National backing for her international programme, recognising her results and her representation of India abroad.",
+          "provenance": "Named by Bhavani as a current supporter in the client review of 25 Aug 2026. Recorded on her instruction; an earlier review had held this back pending confirmation, and her naming it directly is that confirmation."
         }
       ],
       "logoNote": "Permission to use both marks confirmed by the athlete, 11 Aug 2026. Each entry falls back to the name set in type until its artwork is present.",
@@ -1722,7 +1723,7 @@
   ],
   "targets": {
     "kicker": "The road to 2030",
-    "note": "Four seasons between here and a start list in the French Alps.",
+    "note": "Everything above is on the record. These four seasons are the plan.",
     "items": [
       {
         "year": "2027",
@@ -1752,7 +1753,7 @@
       "title": "Winter Olympics",
       "host": "French Alps, France",
       "dates": "1 to 17 February 2030",
-      "line": "Every result, every FIS point, every decision, building towards the Winter Olympics.",
+      "line": "Four seasons of racing decide whether an Indian woman stands on a start line in the French Alps.",
       "steps": [
         {
           "k": "Now",
@@ -1821,30 +1822,31 @@
         "body": "An Indian woman on a World Cup start list changes what the next selection meeting thinks is realistic."
       }
     ],
-    "sourceRef": "athlete-brief"
+    "sourceRef": "athlete-brief",
+    "line": "Cross-country has no home fixture in India and most people she meets have never watched a race. The longer project is to change that: make the sport legible at home, and turn a pathway that exists on paper into one somebody has already walked, so the next Indian woman on a start list is a selection, not a surprise."
   },
   "speaking": {
     "lede": "She has spent ten years explaining a sport nobody around her had heard of, to selectors, to sponsors and to customs officers. The talks come out of that.",
     "themes": [
       {
-        "title": "Starting from zero infrastructure",
-        "body": "What it actually takes to reach an international start line when your country has none of the infrastructure the sport assumes you have.",
-        "from": "Kodagu 2013 to a World Cup start list, 2025"
+        "title": "Two thousand kilometres from snow",
+        "body": "How an athlete from a district with no winter reached a World Cup start list, and what the decade in between says about starting from wherever you actually are.",
+        "from": "Kodagu to Ruka, 2013–2025"
       },
       {
-        "title": "The mountain before the medal",
-        "body": "Mountaineering, instructing, and how an unglamorous apprenticeship turned into an endurance career.",
-        "from": "ABVIMAS and HMI Darjeeling, 2013–2017"
+        "title": "Carrying the flag",
+        "body": "She led India into an Asian Winter Games as flagbearer. On being the first, being the only one, and what changes for the next woman on the team sheet.",
+        "from": "Harbin, February 2025"
       },
       {
-        "title": "Being the only one in the room",
-        "body": "The practical reality of being the sole woman on a team sheet, and what changes when somebody has gone first.",
-        "from": "India’s flagbearer, Asian Winter Games 2025"
+        "title": "The mountain apprenticeship",
+        "body": "Before the racing there were glaciers, rope work and instructing jobs in Kashmir. What an unglamorous apprenticeship builds that talent alone does not.",
+        "from": "HMI Darjeeling to Gulmarg, 2014–2019"
       },
       {
-        "title": "Endurance, honestly",
-        "body": "What a 10 km interval start costs, how a season is planned, and why most of the work is invisible.",
-        "from": "10 km interval start, Ruka World Cup, 2025"
+        "title": "What endurance costs",
+        "body": "A 10 km race at a World Cup, planned to the heartbeat. The invisible work behind one visible hour, told honestly enough to be useful to any team.",
+        "from": "Ruka World Cup, 2025"
       }
     ],
     "audiences": [

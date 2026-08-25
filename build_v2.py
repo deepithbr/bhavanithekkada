@@ -76,10 +76,10 @@ ORIGIN = "https://bhavanithekkada.pages.dev"
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "double-pole",
+    "hero": "race-worldcup",
     "sport": "classic-tracks",
     "about": "portrait-studio",
-    "closer": "chile-lake",
+    "closer": "holmenkollen",
 }
 
 # The four photographs in the media row. Journey takes its four from the story
@@ -410,7 +410,7 @@ def journey_tiles(c: dict, img: Img) -> str:
     ]
     return tiles(
         c["sections"]["journey"]["title"],
-        "Six seasons, from the coffee hills to a World Cup start list.",
+        "Six seasons, fourteen race locations, both hemispheres.",
         ("View journey", "journey.html"),
         items,
     )
@@ -486,7 +486,7 @@ def page(c: dict, img: Img) -> str:
 <main id="main">
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1',
-       pos='48% 22%', kicker='Indian cross-country skier')}
+       pos='50% 45%', kicker='Indian cross-country skier')}
 <div class="wrap">{statline(c)}</div>
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
@@ -499,7 +499,7 @@ def page(c: dict, img: Img) -> str:
 {media_tiles(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
        'Four seasons between here and a start list in the French Alps.',
-       ('Partner with her', 'partnership.html'))}
+       ('Partner with her', 'partnership.html'), pos='50% 46%')}
 </main>
 {footer(c)}
 <script src="assets/js/v2.js?v={v}" defer></script>
@@ -637,11 +637,6 @@ def road_ahead(c) -> str:
         for i in t.get("items", [])
     )
     bf = c.get("beyondFinishLine") or {}
-    points = "".join(
-        f'<div class="fact"><dt class="caption">{e(p["title"])}</dt>'
-        f'<dd>{e(p["body"])}</dd></div>'
-        for p in bf.get("points", [])
-    )
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
@@ -655,8 +650,8 @@ def road_ahead(c) -> str:
 <section class="prose-fold" data-ground="ice" id="beyond">
   <div class="wrap prose">
     <h2>{e(bf.get('kicker') or 'Beyond the finish line')}</h2>
-    <p>{e(bf.get('lede') or '')}</p>
-    <dl class="facts">{points}</dl>
+    <p class="pull">{e(bf.get('lede') or '')}</p>
+    <p>{e(bf.get('line') or '')}</p>
   </div>
 </section>"""
 
@@ -959,7 +954,14 @@ def partnership_page(c, img):
         f'<b>{e(i["title"])}</b><p>{e(i["line"])}</p></li>'
         for n, i in enumerate(c.get("targets", {}).get("items", []))
     )
-    ct = c["contact"]
+    # Her brief: show the partners she has, labelled, and no others. The
+    # names sit here with the role each one actually plays, which is the
+    # honest version of a logo band.
+    support = "".join(
+        f'<div class="fact"><dt class="caption">{e(p["name"])}</dt>'
+        f'<dd>{e(p.get("role") or p.get("kind") or "")}</dd></div>'
+        for p in (c["partnership"].get("current") or {}).get("list", [])
+    )
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
@@ -980,7 +982,21 @@ def partnership_page(c, img):
     <dl class="facts">{areas}</dl>
   </div>
 </section>
-{enquiry_block(c)}"""
+<section class="prose-fold" id="current">
+  <div class="wrap prose">
+    <h2>Current support</h2>
+    <dl class="facts">{support}</dl>
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice" id="contact">
+  <div class="wrap prose">
+    <h2>Work with Bhavani</h2>
+    <p>The case is on this page. The conversation starts on one, whatever
+    shape the partnership takes.</p>
+    <a class="btn" data-on="accent"
+       href="work-with-me.html?topic=Sponsorship">Start the conversation</a>
+  </div>
+</section>"""
     return subpage(c, img, "Partnership",
                    "The plan to 2030, and what support pays for.",
                    body, shot="summit-solo", current="partnership.html",
@@ -1121,12 +1137,20 @@ def speaking_page(c, img):
       <h2>The talks</h2>
       <p>{e(sp.get('close') or '')}</p>
     </div>
+    <dl class="facts facts-row" style="margin-block:var(--space-lg)">
+      <div class="fact"><dt class="caption">Flagbearer</dt>
+        <dd>Led India in at the Asian Winter Games, Harbin 2025.</dd></div>
+      <div class="fact"><dt class="caption">Two World Championships</dt>
+        <dd>Planica 2023 and Trondheim 2025, on the FIS record.</dd></div>
+      <div class="fact"><dt class="caption">Three World Cup starts</dt>
+        <dd>Ruka, Trondheim and Davos, all inside one season.</dd></div>
+    </dl>
     <div class="talks">{talks}</div>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
   <div class="wrap prose">
-    <h2>Rooms it fits</h2>
+    <h2>Audiences</h2>
     <p>{aud}.</p>
     <p>{e(sp.get('availability') or '')}</p>
     <a class="btn" data-on="accent"
