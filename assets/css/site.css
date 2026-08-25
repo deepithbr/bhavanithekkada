@@ -89,8 +89,27 @@
   box-sizing: border-box;
 }
 
+/*
+ * No `scroll-behavior: smooth`.
+ *
+ * It broke every anchor on the site. Measured in Chrome: clicking RECORD in
+ * the top nav set `location.hash` to `#record` and left `scrollY` at 0, with
+ * the target still 13,986px down the page. Same for the rail stops, the hero
+ * cue, and a hash typed straight into the address bar. Setting
+ * `scroll-behavior: auto` and repeating the identical jump moved the page to
+ * 9,778px immediately.
+ *
+ * The cause is the length of this document, about 30,000px. A smooth scroll is
+ * abandoned the moment the layout shifts under it, and over a journey that long
+ * the lazy images and the reveal classes guarantee a shift. So the browser
+ * started animating, gave up, and left the reader where they were.
+ *
+ * Losing the animation costs nothing here. A smooth scroll across 14,000px is
+ * not a nice transition, it is a reader watching the page for several seconds.
+ * The rail is meant to be a fast index, and an instant jump is what an index
+ * should do.
+ */
 html {
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -595,6 +614,18 @@ section:not(.hero) > .wrap {
   transform: translateY(-50%);
   text-decoration: none;
   cursor: pointer;
+  /*
+   * `.track-rail` is a fixed overlay running the full height of the window, so
+   * it sets `pointer-events: none` to stay transparent to clicks on the content
+   * behind it. That is right, and the nodes inherited it. They were anchors
+   * with valid hrefs, they took focus from the keyboard, they showed a pointer
+   * cursor, and a mouse click went straight through them to the body:
+   * `elementFromPoint` at a node's centre returned BODY.
+   *
+   * Re-enabled here and only here, so the rail keeps letting clicks through
+   * everywhere except the 20px stops that are meant to catch them.
+   */
+  pointer-events: auto;
 }
 
 /* The label is the whole point of hovering: the dots are unlabelled until you
@@ -6269,6 +6300,8 @@ a.src-flag:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* `scroll-behavior` is already `auto` everywhere, so this only restates the
+     default. Kept as a guard in case smooth is ever reintroduced. */
   html {
     scroll-behavior: auto;
   }
