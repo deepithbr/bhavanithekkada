@@ -20,7 +20,11 @@ DIST = ROOT / "dist"
 # Everything the browser asks for, and nothing it does not. `journal/` is only
 # present when at least one post is published, so it is copied if it exists.
 SHIP_FILES = ["index.html", "journal.html"]
-SHIP_DIRS = ["assets", "journal"]
+SHIP_DIRS = ["assets", "journal",
+             # The journal editor and the V2 build ride along so both are
+             # reachable on the deployed site: /admin for her writing room,
+             # /v2 for the redesign under client review.
+             "admin", "v2"]
 
 
 def main() -> int:

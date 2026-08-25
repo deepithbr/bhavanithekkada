@@ -372,7 +372,7 @@ def journey_tiles(c: dict, img: Img) -> str:
     ]
     return tiles(
         c["sections"]["journey"]["title"],
-        "Six seasons, from a coffee farm in Kodagu to a World Cup start list.",
+        "Six seasons, from the coffee hills to a World Cup start list.",
         ("View journey", "journey.html"),
         items,
     )
@@ -387,9 +387,13 @@ def media_tiles(c: dict, img: Img) -> str:
         for s in MEDIA_TILES
     ]
     stories = sum(1 for pr in c["press"] if pr.get("title"))
+    photos = sum(
+        1 for a in img.by_slot.values()
+        if a.get("rights") == "owned" and a.get("category") in ("race", "training")
+    )
     return tiles(
         "Six seasons, photographed",
-        f"{stories} stories in print. Fifty photographs from her own archive.",
+        f"{stories} stories in print, {photos} photographs from her own archive.",
         ("View media", "media.html"),
         items,
         ground="ice",
@@ -880,7 +884,7 @@ def partnership_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
-                   "Four seasons of racing stand between now and the French Alps.",
+                   "The plan to 2030, and what support pays for.",
                    body, shot="summit-solo", current="partnership.html",
                    pos="50% 46%")
 

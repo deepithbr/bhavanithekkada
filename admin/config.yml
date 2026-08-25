@@ -1,0 +1,52 @@
+# Decap CMS configuration — Bhavani's journal editor.
+#
+# Backend: the site's own GitHub repository. She signs in with her GitHub
+# account (added as a collaborator on the repo), and every Publish is a
+# commit to content/journal. The OAuth handshake runs through the two Pages
+# Functions at /api/auth and /api/callback, so no secret ever reaches the
+# browser.
+#
+# ONE VALUE TO SET AFTER DEPLOY: base_url must be the live site origin.
+# It is the address the OAuth popup returns to. See SETUP-DECAP.md.
+
+backend:
+  name: github
+  repo: deepithbr/bhavanithekkada
+  branch: main
+  base_url: https://SET-AFTER-DEPLOY.pages.dev
+  auth_endpoint: api/auth
+
+publish_mode: simple
+
+# Photographs she attaches from the editor land beside the site's own
+# images, in their own folder so the curated library stays curated.
+media_folder: "assets/img/journal"
+public_folder: "/assets/img/journal"
+
+collections:
+  - name: journal
+    label: Journal
+    label_singular: Entry
+    folder: content/journal
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    sort_by: ["date"]
+    fields:
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: Date, widget: datetime, format: "YYYY-MM-DD", time_format: false }
+      - name: summary
+        label: Summary
+        widget: text
+        hint: One or two sentences. This is the line shown on the journal page.
+      - name: image
+        label: Header image
+        widget: string
+        required: false
+        hint: Optional. The name of a site photograph (for example flag-harbin), or leave empty.
+      - { name: tags, label: Tags, widget: string, required: false }
+      - name: draft
+        label: Draft
+        widget: boolean
+        default: true
+        hint: Keep on while writing. Switch off and publish to put the entry on the site.
+      - { name: body, label: Entry, widget: markdown }
