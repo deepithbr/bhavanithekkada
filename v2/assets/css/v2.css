@@ -1152,7 +1152,11 @@ a {
 
 .press-shot img {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  /* 3:2, not 16:9. A cinema band across a tall source keeps a sliver and
+     throws the person away; two cards rendered as a blue field with a piece
+     of her face and read as duplicates of each other. 3:2 holds a face and
+     its context in every source the press list uses. */
+  aspect-ratio: 3 / 2;
   height: auto;
   object-fit: cover;
   transition: transform var(--dur-slow) var(--ease-out);
