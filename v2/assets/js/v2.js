@@ -196,41 +196,29 @@
     railSync();
   }
 
-  /* ---- the route draws ------------------------------------------------- */
+  /* ---- the places arrive ----------------------------------------------- */
 
-  // Plays once, on arrival. The draw was scroll-driven first, and finishing
-  // it required scrolling the map half out of view, so nobody ever watched
-  // the line reach Chile. Now the section entering the viewport starts a
-  // six-second timeline: the line travels Kodagu to Davos, pins lighting in
-  // racing order as it passes, and then it is simply the finished map.
-  // Reduced motion sees it complete from the first frame.
-  const routeLine = document.getElementById("route-line");
-  if (routeLine) {
-    const fig = routeLine.closest(".route-map");
-    const pins = fig.querySelectorAll(".pin[data-stop]");
+  // When the map enters, the fourteen pins appear one at a time in racing
+  // order, 340ms apart: Kodagu first, the Chilean pair near the end. Runs
+  // once. Reduced motion, or no observer, sees the finished map.
+  const routeFig = document.querySelector(".route-map");
+  if (routeFig) {
+    const pins = Array.from(routeFig.querySelectorAll(".pin[data-stop]"))
+      .sort((a, b) => Number(a.dataset.stop) - Number(b.dataset.stop));
     if (reduce.matches || !("IntersectionObserver" in window)) {
-      routeLine.style.setProperty("--drawn", "1");
       pins.forEach((p) => (p.dataset.lit = "true"));
     } else {
       pins.forEach((p) => (p.dataset.lit = "false"));
-      const DUR = 6000;
-      const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
       const arrive = new IntersectionObserver((entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           arrive.disconnect();
-          const t0 = performance.now();
-          const step = (now) => {
-            const p = ease(Math.min(1, (now - t0) / DUR));
-            routeLine.style.setProperty("--drawn", p.toFixed(4));
-            const lit = Math.floor(p * (pins.length - 1) + 0.0001);
-            pins.forEach((pin, i) => (pin.dataset.lit = String(i <= lit || p >= 1)));
-            if (p < 1) requestAnimationFrame(step);
-          };
-          requestAnimationFrame(step);
+          pins.forEach((pin, i) => {
+            setTimeout(() => (pin.dataset.lit = "true"), 250 + i * 340);
+          });
         }
       }, { threshold: 0.45 });
-      arrive.observe(fig);
+      arrive.observe(routeFig);
     }
   }
 

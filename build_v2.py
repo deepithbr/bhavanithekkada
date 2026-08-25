@@ -679,11 +679,11 @@ def route_map(c) -> str:
         ((xy(p)[0] - ex) ** 2 + (xy(p)[1] - ey) ** 2) ** 0.5 for p in europe
     ) + 2.2
 
-    # The line of her life, in racing order, drawn by scroll: v2.js drives
-    # stroke-dashoffset from the section's progress and the pins light as the
-    # line arrives. Reduced motion sees it complete.
-    route_pts = [xy(p["id"]) for p in c["internationalFootprint"]]
-    route_d = "M " + " L ".join(f"{x:.1f} {y:.1f}" for x, y in route_pts)
+    # No connecting line. Her route doubles back across continents, so drawn
+    # honestly it reads as string rather than a journey; the client called it
+    # odd and was right. The story lives in the order instead: the pins
+    # appear one at a time, Kodagu first and Chile near the end, which is the
+    # same narrative without the geometry.
     dots = "".join(
         f'<circle cx="{xy(p["id"])[0]:.1f}" cy="{xy(p["id"])[1]:.1f}" r="1.6" '
         f'class="pin" data-stop="{i}"/>'
@@ -721,7 +721,6 @@ def route_map(c) -> str:
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
            aria-label="World map marking the fourteen places she has raced or trained.">
         <path d="{w['path']}" class="land"/>
-        <path d="{route_d}" class="route" id="route-line" pathLength="1"/>
         {dots}{cluster}{texts}
       </svg>
       <figcaption class="caption">{roll}</figcaption>
