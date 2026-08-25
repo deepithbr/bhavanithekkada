@@ -70,4 +70,95 @@
   );
 
   rising.forEach((el) => seen.observe(el));
+
+  /* ---- the count-up -------------------------------------------------- */
+
+  // The two division totals count from zero when they first enter, over
+  // 900ms, eased. The markup carries the real number, so a blocked script,
+  // a crawler or a reduced-motion reader simply sees the total. Numbers are
+  // the site's whole argument; they get the one flourish.
+  const totals = document.querySelectorAll(".tally-total");
+  if (totals.length) {
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+    const counter = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        counter.unobserve(entry.target);
+        const el = entry.target;
+        const end = parseInt(el.textContent, 10);
+        if (!Number.isFinite(end)) continue;
+        const t0 = performance.now();
+        const step = (now) => {
+          const t = Math.min(1, (now - t0) / 900);
+          el.textContent = String(Math.round(end * ease(t)));
+          if (t < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      }
+    }, { threshold: 0.6 });
+    totals.forEach((el) => counter.observe(el));
+  }
+
+  /* ---- the enquiry form ---------------------------------------------- */
+
+  // Same pipeline as V1: POST to the Pages function, and if that is absent,
+  // unconfigured or down, open the reader's own mail client with the message
+  // intact. The form never dead-ends: worst case is mailto, which is where
+  // this page started.
+  const form = document.getElementById("enquiry");
+  if (form) {
+    const note = document.getElementById("enquiry-note");
+    const say = (t) => { if (note) note.textContent = t; };
+    const EMAIL = "bhavani.thekkada2026@gmail.com";
+
+    const mailto = (f) => {
+      const body =
+        (f.message || "") + "\n\n" + [f.name, f.email].filter(Boolean).join(" · ");
+      location.href =
+        "mailto:" + EMAIL +
+        "?subject=" + encodeURIComponent(f.topic || "Enquiry via the website") +
+        "&body=" + encodeURIComponent(body);
+      say("Your mail client should be open with this message ready to send.");
+    };
+
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const fd = new FormData(form);
+      const f = Object.fromEntries(
+        ["name", "email", "topic", "message", "website"].map((k) => [
+          k, String(fd.get(k) || "").trim(),
+        ])
+      );
+
+      let bad = false;
+      for (const k of ["email", "message"]) {
+        const el = form.querySelector(`[name="${k}"]`);
+        const invalid = !f[k] || (k === "email" && !el.checkValidity());
+        el.dataset.invalid = String(invalid);
+        bad = bad || invalid;
+      }
+      if (bad) {
+        say("An email address and a message are all it needs.");
+        return;
+      }
+
+      const btn = form.querySelector("button[type=submit]");
+      btn.disabled = true;
+      say("Sending\u2026");
+      try {
+        const r = await fetch("/api/enquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(f),
+        });
+        if (!r.ok) throw new Error(String(r.status));
+        form.reset();
+        say("Sent. It lands directly in her inbox.");
+      } catch {
+        mailto(f);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
 })();

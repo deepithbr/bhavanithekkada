@@ -66,7 +66,7 @@ NAV = [
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "nordic-overlook",
+    "hero": "flag-harbin",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "chile-lake",
@@ -74,7 +74,7 @@ SHOTS = {
 
 # The four photographs in the media row. Journey takes its four from the story
 # beats, so it always matches whatever the journey page shows.
-MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "flag-harbin"]
+MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "nordic-overlook"]
 
 TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 
@@ -183,14 +183,19 @@ def first_sentences(text: str, n: int = 2) -> str:
     return " ".join(parts) if parts else text
 
 
-def nav_block() -> str:
+def nav_block(current=None) -> str:
     """N9 edge-aligned.
 
     The benchmark hides its navigation behind a single MENU word. That is a
     step too far for a site nobody has visited before, so a link row stays,
     tracked-out at 12px, never competing with the panel titles beneath it.
     """
-    items = "".join(f'<a href="{e(h)}">{e(t)}</a>' for t, h in NAV)
+    items = "".join(
+        f'<a href="{e(h)}"'
+        + (' aria-current="page"' if h == current else "")
+        + f'>{e(t)}</a>'
+        for t, h in NAV
+    )
     return f"""
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
@@ -200,7 +205,8 @@ def nav_block() -> str:
 </header>"""
 
 
-def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2") -> str:
+def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
+          pos=None) -> str:
     """The benchmark's one repeated shape.
 
     Photograph fills the fold, type centred over it, one outlined button
@@ -214,9 +220,16 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2") -> str:
         btn = f'<a class="btn" data-on="shot" href="{e(href)}">{e(label)}</a>'
     cap = img.caption(slot)
     cap = f'<p class="caption">{cap}</p>' if cap else ""
+    shot = img.tag(slot, "100vw", eager=hero)
+    if pos:
+        # Steer the cover crop for this panel only. The library's focal point
+        # is right for every other container this photograph appears in.
+        shot = shot.replace(
+            f"object-position:{img.focal(slot)}", f"object-position:{pos}"
+        )
     return f"""
 <section class="panel"{attrs}>
-  <div class="panel-shot">{img.tag(slot, "100vw", eager=hero)}</div>
+  <div class="panel-shot">{shot}</div>
   <div class="wrap panel-body" data-rise>
     <{level}>{e(title)}</{level}>
     <p class="sub">{e(sub)}</p>
@@ -413,7 +426,8 @@ def page(c: dict, img: Img) -> str:
 {nav_block()}
 <main>
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
-       ('View profile', 'about.html'), size='hero', level='h1')}
+       ('View profile', 'about.html'), size='hero', level='h1',
+       pos='50% 20%')}
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
        'Racing on skis across kilometres of snow, uphill and down, '
@@ -434,7 +448,8 @@ def page(c: dict, img: Img) -> str:
 """
 
 
-def subpage(c, img, title, lede, body_html, shot=None):
+def subpage(c, img, title, lede, body_html, shot=None, current=None,
+            pos=None):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -444,9 +459,15 @@ def subpage(c, img, title, lede, body_html, shot=None):
     v = fingerprint()
     head_shot = ""
     if shot:
-        head_shot = (
-            f'<div class="panel-shot">{img.tag(shot, "100vw", eager=True)}</div>'
-        )
+        tag = img.tag(shot, "100vw", eager=True)
+        if pos:
+            # A header band shows less than half the frame, so each page says
+            # which slice. The library focal point serves the tiles; a 46svh
+            # strip needs its own judgement, made against the render.
+            tag = tag.replace(
+                f"object-position:{img.focal(shot)}", f"object-position:{pos}"
+            )
+        head_shot = "<div class=\"panel-shot\">" + tag + "</div>"
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -461,10 +482,11 @@ def subpage(c, img, title, lede, body_html, shot=None):
 <link rel="stylesheet" href="assets/css/v2.css?v={v}">
 </head>
 <body>
-{nav_block()}
+{nav_block(current)}
 <main>
 <section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
+    <a class="crumb caption" href="index.html">&larr; Bhavani Thekkada</a>
     <h1>{e(title)}</h1>
     <p class="sub">{e(lede)}</p>
   </div>
@@ -523,7 +545,8 @@ def about_page(c, img):
     <dl class="facts">{themes}</dl>
   </div>
 </section>"""
-    return subpage(c, img, "About", h["line"], body, shot="track-solo-pines")
+    return subpage(c, img, "About", h["line"], body, shot="first-skis-2018",
+                   current="about.html", pos="50% 8%")
 
 
 def journey_page(c, img):
@@ -537,7 +560,7 @@ def journey_page(c, img):
                 + "</figure>"
             )
         items.append(f"""
-  <article class="step" id="beat-{e(b['id'])}">
+  <article class="step" id="beat-{e(b['id'])}" data-rise>
     {shot}
     <div class="step-copy">
       <p class="caption">{e(b['year'])}</p>
@@ -553,51 +576,88 @@ def journey_page(c, img):
         + record_fold(c)
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
-                   "Six seasons, told in order.", body, shot="ridge-sunrise")
+                   "Six seasons, told in order.", body, shot="ridge-sunrise",
+                   current="journey.html", pos="50% 62%")
 
 
 def route_map(c) -> str:
-    """The route, drawn. A static SVG: the land path from worldmap.json and a
-    pin for each of the fourteen places she has raced or trained.
+    """The route, drawn, second attempt after actually looking at the first.
 
-    Deliberately not the interactive map from V1. No hover cards, no focus
-    management, nothing to learn: the map is a picture of the route, and the
-    chapters above it are the story. Labels only where the V1 plot showed
-    them, because the Alpine cluster collides at this size and a smudge of
-    overlapping names reads worse than fewer names.
+    The first render labelled nine pins at a type size that came out at 22
+    CSS pixels, stacked SCHUCHINSK over HARBIN over GULMARG, and let the six
+    European dots fuse into one blue smear. Three decisions fix it, made by
+    eye against the rendered page rather than by hope:
+
+    The frame crops to her world, longitude -85 to 145 and latitude -45 to
+    70, which spends no width on the Pacific and makes every pin a third
+    larger for free.
+
+    Europe is named as one thing. Seven venues sit inside a circle a few
+    units wide, and seven leader lines in that space is a diagram of string.
+    A ring marks the cluster and one label counts it; the fourteen names are
+    all listed under the map in racing order, so nothing is lost.
+
+    Labels are 2.8 units, hand-placed, with the collisions checked on
+    screen: the eastern pair stack vertically instead of overwriting each
+    other, and Chile's two venues share one label because their dots touch.
     """
     w = json.loads((CONTENT / "worldmap.json").read_text(encoding="utf-8"))
     lat_top = w["latTop"]
-    height = lat_top - w["latBottom"]
-    labels = {
-        "kodagu": (8, 11, "start"), "gulmarg": (8, -7, "start"),
-        "akureyri": (9, 3, "start"), "planica": (-9, 13, "end"),
-        "schuchinsk": (9, 3, "start"), "harbin": (-9, 3, "end"),
-        "trondheim": (-9, -6, "end"), "corralco": (9, 4, "start"),
-        "ruka": (9, 2, "start"),
-    }
-    pins = []
-    for p in c["internationalFootprint"]:
-        x, y = p["lon"] + 180.0, lat_top - p["lat"]
-        lab = ""
-        if p["id"] in labels:
-            dx, dy, anchor = labels[p["id"]]
-            lab = (f'<text x="{x + dx:.1f}" y="{y + dy:.1f}" '
-                   f'text-anchor="{anchor}">{e(p["place"])}</text>')
-        pins.append(
-            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.2" class="pin"/>{lab}'
-        )
+    pts = {p["id"]: p for p in c["internationalFootprint"]}
+
+    def xy(pid):
+        p = pts[pid]
+        return p["lon"] + 180.0, lat_top - p["lat"]
+
+    europe = ["planica", "idre", "seefeld", "lygna", "trondheim", "ruka", "davos"]
+    ex = sum(xy(p)[0] for p in europe) / len(europe)
+    ey = sum(xy(p)[1] for p in europe) / len(europe)
+    # The ring is measured, not guessed: radius reaches the farthest of the
+    # seven plus clearance. The first guess of 7.5 left Trondheim and Ruka
+    # sitting outside their own circle, visible the moment it rendered.
+    er = max(
+        ((xy(p)[0] - ex) ** 2 + (xy(p)[1] - ey) ** 2) ** 0.5 for p in europe
+    ) + 2.2
+
+    dots = "".join(
+        f'<circle cx="{xy(pid)[0]:.1f}" cy="{xy(pid)[1]:.1f}" r="1.6" class="pin"/>'
+        for pid in pts
+    )
+    # dx, dy, anchor per label, tuned against the render
+    labels = [
+        ("kodagu", 3.5, 4.5, "start", "Kodagu"),
+        ("gulmarg", 3.5, -1.5, "start", "Gulmarg"),
+        ("schuchinsk", 0, -3.5, "middle", "Schuchinsk"),
+        ("harbin", 0, 5.5, "middle", "Harbin"),
+        ("akureyri", -3.5, -2.5, "end", "Akureyri"),
+        ("corralco", 3.5, 1.0, "start", "Chile"),
+    ]
+    texts = "".join(
+        f'<text x="{xy(pid)[0] + dx:.1f}" y="{xy(pid)[1] + dy:.1f}" '
+        f'text-anchor="{a}">{e(t)}</text>'
+        for pid, dx, dy, a, t in labels
+    )
+    cluster = (
+        f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="{er:.1f}" class="ring"/>'
+        f'<text x="{ex:.1f}" y="{ey + er + 3.5:.1f}" text-anchor="middle">'
+        f"The European winter &middot; 7 venues</text>"
+    )
+    order = [p["place"] for p in c["internationalFootprint"]]
+    roll = " &middot; ".join(order)
+    # crop: lon -85..145 -> x 95..325, lat 70..-45
+    vx, vw = 95, 230
+    vy, vh = lat_top - 70, 115
     return f"""
 <section class="prose-fold" data-ground="ice" id="route">
   <div class="wrap">
     <div class="prose"><h2>The route</h2></div>
     <figure class="route-map">
-      <svg viewBox="0 0 360 {height:.0f}" role="img"
-           aria-label="World map marking the fourteen places she has raced or trained, from Kodagu to Corralco.">
+      <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
+           aria-label="World map marking the fourteen places she has raced or trained.">
         <path d="{w['path']}" class="land"/>
-        {''.join(pins)}
+        {dots}{cluster}{texts}
       </svg>
-      <figcaption class="caption">Fourteen places, six seasons, both hemispheres</figcaption>
+      <figcaption class="caption">{roll}</figcaption>
     </figure>
   </div>
 </section>"""
@@ -606,9 +666,8 @@ def route_map(c) -> str:
 def record_fold(c) -> str:
     """Where the journey lands: the record, at the foot of the story.
 
-    The client's structure, exactly: the journey page tells the six seasons,
-    shows the route, and ends on what they produced. A heading, a count, and
-    the rows. No sentences.
+    A heading, a count, and the rows. No sentences, per the client's note
+    that the two divisions should carry numerically.
     """
     rows = [r for r in c["results"]["rows"] if r.get("medal")]
     intl = [r for r in rows if "international" in r.get("tags", [])]
@@ -703,8 +762,8 @@ def media_page(c, img):
                  f'<span class="caption">{e(meta)}</span>'
                  f'<b>{e(head)}</b></span>')
         press.append(
-            f'<li><a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
-            if url else f'<li><p>{inner}</p></li>'
+            f'<li data-rise><a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
+            if url else f'<li data-rise><p>{inner}</p></li>'
         )
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
     gallery = "".join(
@@ -730,7 +789,8 @@ def media_page(c, img):
 </section>"""
     return subpage(c, img, "Media",
                    "The papers that told her story, and the archive that shows it.",
-                   body, shot="night-training")
+                   body, shot="podium-gulmarg-2023", current="media.html",
+                   pos="50% 42%")
 
 
 def partnership_page(c, img):
@@ -768,13 +828,49 @@ def partnership_page(c, img):
 <section class="prose-fold" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>One route in, for everything.</p>
-    <p><a class="btn" data-on="accent" href="mailto:{e(ct['email'])}">{e(ct['email'])}</a></p>
+    <p>{e(ct.get('lede') or 'One route in, for everything.')}</p>
+    <!--
+      The same enquiry pipeline V1 ships: POST to /api/enquiry, which is the
+      Cloudflare Pages function backed by Resend, with a mailto fallback if
+      the function is missing, unconfigured or offline. V2 briefly replaced
+      this with a bare mailto link, which threw away working functionality;
+      this restores it in V2's own markup and voice.
+    -->
+    <form class="enquiry" id="enquiry" method="post" action="/api/enquiry" novalidate>
+      <div class="field">
+        <label class="caption" for="f-name">Name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name">
+      </div>
+      <div class="field">
+        <label class="caption" for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label class="caption" for="f-topic">Topic</label>
+        <select id="f-topic" name="topic">
+          <option>Sponsorship</option>
+          <option>Speaking</option>
+          <option>Press</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label class="caption" for="f-msg">Message</label>
+        <textarea id="f-msg" name="message" rows="5" required></textarea>
+      </div>
+      <!-- honeypot, same contract as the function expects -->
+      <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field-wide">
+        <button class="btn" data-on="accent" type="submit">Send enquiry</button>
+        <p class="caption" id="enquiry-note" aria-live="polite"></p>
+      </div>
+    </form>
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
                    "Four seasons of racing stand between now and the French Alps.",
-                   body, shot="snow-ridge-line")
+                   body, shot="summit-solo", current="partnership.html",
+                   pos="50% 46%")
 
 
 def main() -> int:

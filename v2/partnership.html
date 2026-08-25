@@ -9,19 +9,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Newsreader:opsz,wght@6..72,300..500&amp;display=swap">
-<link rel="stylesheet" href="assets/css/v2.css?v=12aeebb6">
+<link rel="stylesheet" href="assets/css/v2.css?v=fd56843c">
 </head>
 <body>
 
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a class="wordmark" href="index.html">Bhavani Thekkada</a>
-    <nav class="nav-links" aria-label="Primary"><a href="about.html">About</a><a href="journey.html">Journey</a><a href="media.html">Media</a><a href="partnership.html">Partnership</a></nav>
+    <nav class="nav-links" aria-label="Primary"><a href="about.html">About</a><a href="journey.html">Journey</a><a href="media.html">Media</a><a href="partnership.html" aria-current="page">Partnership</a></nav>
   </div>
 </header>
 <main>
-<section class="panel" data-size="head"><div class="panel-shot"><img src="../assets/img/snow-ridge-line-1600.webp" srcset="../assets/img/snow-ridge-line-480.webp 480w, ../assets/img/snow-ridge-line-960.webp 960w, ../assets/img/snow-ridge-line-1600.webp 1600w" sizes="100vw" width="5712" height="4284" alt="A long line of skiers spread across an open snow ridge under a wide pale sky, arms raised." loading="eager" decoding="async" fetchpriority="high" style="object-position:50.0% 52.0%"></div>
+<section class="panel" data-size="head"><div class="panel-shot"><img src="../assets/img/summit-solo-1600.webp" srcset="../assets/img/summit-solo-480.webp 480w, ../assets/img/summit-solo-960.webp 960w, ../assets/img/summit-solo-1600.webp 1600w" sizes="100vw" width="4896" height="3672" alt="A single climber standing on a rocky summit ridge with a horizon of snow peaks behind and cloud above." loading="eager" decoding="async" fetchpriority="high" style="object-position:50% 46%"></div>
   <div class="wrap panel-body">
+    <a class="crumb caption" href="index.html">&larr; Bhavani Thekkada</a>
     <h1>Partnership</h1>
     <p class="sub">Four seasons of racing stand between now and the French Alps.</p>
   </div>
@@ -44,8 +45,43 @@
 <section class="prose-fold" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>One route in, for everything.</p>
-    <p><a class="btn" data-on="accent" href="mailto:bhavani.thekkada2026@gmail.com">bhavani.thekkada2026@gmail.com</a></p>
+    <p>One route in, for everything. Say which of these it is and it reaches the right place faster.</p>
+    <!--
+      The same enquiry pipeline V1 ships: POST to /api/enquiry, which is the
+      Cloudflare Pages function backed by Resend, with a mailto fallback if
+      the function is missing, unconfigured or offline. V2 briefly replaced
+      this with a bare mailto link, which threw away working functionality;
+      this restores it in V2's own markup and voice.
+    -->
+    <form class="enquiry" id="enquiry" method="post" action="/api/enquiry" novalidate>
+      <div class="field">
+        <label class="caption" for="f-name">Name</label>
+        <input id="f-name" name="name" type="text" autocomplete="name">
+      </div>
+      <div class="field">
+        <label class="caption" for="f-email">Email</label>
+        <input id="f-email" name="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label class="caption" for="f-topic">Topic</label>
+        <select id="f-topic" name="topic">
+          <option>Sponsorship</option>
+          <option>Speaking</option>
+          <option>Press</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label class="caption" for="f-msg">Message</label>
+        <textarea id="f-msg" name="message" rows="5" required></textarea>
+      </div>
+      <!-- honeypot, same contract as the function expects -->
+      <input class="vh" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field-wide">
+        <button class="btn" data-on="accent" type="submit">Send enquiry</button>
+        <p class="caption" id="enquiry-note" aria-live="polite"></p>
+      </div>
+    </form>
   </div>
 </section>
 </main>
@@ -62,6 +98,6 @@
     </div>
   </div>
 </footer>
-<script src="assets/js/v2.js?v=12aeebb6" defer></script>
+<script src="assets/js/v2.js?v=fd56843c" defer></script>
 </body>
 </html>

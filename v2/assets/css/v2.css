@@ -195,7 +195,7 @@ a {
   white-space: nowrap;
   padding: 0.95rem 1.9rem;
   border: var(--rule-hair) solid var(--color-ink);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-none);
   background: transparent;
   color: var(--color-ink);
   cursor: pointer;
@@ -303,9 +303,17 @@ a {
   position: relative;
   isolation: isolate;
   display: grid;
-  place-items: center;
-  min-height: min(88svh, 50rem);
-  text-align: center;
+  /* The type block hangs on the site column's left edge. `.wrap` centres
+     itself with auto margins, which beat grid alignment and quietly centred
+     the whole body; the panel carries the column padding itself instead and
+     the body's margins are zeroed below. */
+  padding-inline: max(var(--space-md), calc((100% - var(--col)) / 2));
+  /* Bottom-left, not centre. Centred stacks read as slides in sequence, and
+     the client said the page felt like a document. A cover anchors its type
+     to a corner; five covers in a row read as a magazine. */
+  place-items: end start;
+  min-height: min(80svh, 46rem);
+  text-align: left;
   padding-block: var(--space-2xl);
 }
 
@@ -334,18 +342,25 @@ a {
      at the centre of the frame, and 0.34 let a busy midtone eat them. The
      photograph still reads; the words now always do. */
   background: linear-gradient(
-    to bottom,
-    oklch(16% 0.03 255 / 0.5) 0%,
-    oklch(16% 0.03 255 / 0.44) 45%,
-    oklch(16% 0.03 255 / 0.7) 100%
-  );
+      to right,
+      oklch(16% 0.03 255 / 0.5) 0%,
+      oklch(16% 0.03 255 / 0.12) 55%,
+      oklch(16% 0.03 255 / 0) 80%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(16% 0.03 255 / 0.25) 0%,
+      oklch(16% 0.03 255 / 0.2) 45%,
+      oklch(16% 0.03 255 / 0.72) 100%
+    );
 }
 
 .panel-body {
   display: grid;
-  justify-items: center;
+  justify-items: start;
+  margin-inline: 0;
   gap: var(--space-md);
-  max-width: 46rem;
+  max-width: 40rem;
   color: var(--color-ink-on-deep);
 }
 
@@ -1025,10 +1040,24 @@ a {
 
 .route-map text {
   font-family: var(--font-caption);
-  font-size: 6.5px;
-  letter-spacing: 0.06em;
+  /* 2.8 svg units, roughly 11px rendered at the column width. The first
+     pass used 6.5 and the labels came out at 22px, larger than body copy. */
+  font-size: 2.8px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   fill: var(--color-ink-2);
+}
+
+.route-map .ring {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  stroke-dasharray: 1.6 1.1;
+}
+
+.route-map figcaption {
+  max-width: none;
+  line-height: 1.8;
 }
 
 /* ------------------------------------------------------------- the ladder */
@@ -1162,4 +1191,198 @@ a {
   @view-transition {
     navigation: none;
   }
+}
+
+
+/* ---------------------------------------------------------- the hero, met */
+
+/*
+ * The hero introduces her, so she faces the reader, and the type keeps out
+ * of her face by height, not by side.
+ *
+ * A first pass tried to steer her to the right and set the name on the left.
+ * Geometry refused: the source is portrait and the hero is wide, so the crop
+ * is vertical and she is horizontally centred whatever object-position asks.
+ * The benchmark solves this the honest way on its own hero: face in the
+ * upper third, the name across the chest. So the crop holds her face high,
+ * the body anchors to the foot of the panel where the scrim is strongest,
+ * and the name crosses her jacket, never her face, at every width.
+ */
+.panel[data-size="hero"] {
+  min-height: min(94svh, 56rem);
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  /* Big enough to own the frame, small enough that the surname never breaks.
+     At the full display clamp "Thekkada" measured wider than the body column
+     and split mid-word. */
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  overflow-wrap: normal;
+}
+
+
+/* ------------------------------------------------------------ the cinema */
+
+/*
+ * The motion pass, and the discipline behind it.
+ *
+ * The one video in the archive is a vertical phone montage with a caption
+ * burned into every frame, so the hero stays photographic and the cinema is
+ * done with motion instead: a twenty-second drift on the hero crop, the kind
+ * a documentary holds on a still. Slow enough that nobody watches it happen;
+ * the frame simply feels alive rather than printed.
+ *
+ * Everything here animates transform and opacity only, runs once, and
+ * collapses under prefers-reduced-motion. Nothing loops except the hero
+ * drift, and nothing moves against the reader's scroll.
+ */
+@keyframes hero-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.07); }
+}
+
+.panel[data-size="hero"] .panel-shot img {
+  animation: hero-drift 22s var(--ease-in-out) forwards;
+  transform-origin: 50% 30%;
+}
+
+/* The name arrives once, from below, ahead of the line and the button. A
+   landing, not a slideshow. */
+@keyframes hero-enter {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.panel[data-size="hero"] .panel-body > * {
+  animation: hero-enter 700ms var(--ease-out) backwards;
+}
+
+.panel[data-size="hero"] .panel-body > :nth-child(2) { animation-delay: 120ms; }
+.panel[data-size="hero"] .panel-body > :nth-child(3) { animation-delay: 240ms; }
+.panel[data-size="hero"] .panel-body > :nth-child(4) { animation-delay: 340ms; }
+
+/* Tiles stagger by column, 70ms apart. One wave across the row, then still. */
+.js .tiles [data-rise]:nth-child(2)[data-shown="true"] { transition-delay: 70ms; }
+.js .tiles [data-rise]:nth-child(3)[data-shown="true"] { transition-delay: 140ms; }
+.js .tiles [data-rise]:nth-child(4)[data-shown="true"] { transition-delay: 210ms; }
+
+/* Sponsors rest quiet and answer the cursor. Grey is the resting state, so
+   the band never competes with the hero above it; colour is the reward. */
+.sponsors img {
+  filter: grayscale(1) opacity(0.72);
+  transition: filter var(--dur-mid) var(--ease-out);
+}
+
+.sponsors img:hover {
+  filter: none;
+}
+
+/* The record counts up when it enters. The number is set by JS text, so the
+   markup already holds the true value for anything that does not run it. */
+.tally-total {
+  font-kerning: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel[data-size="hero"] .panel-shot img,
+  .panel[data-size="hero"] .panel-body > * {
+    animation: none;
+  }
+
+  .sponsors img {
+    filter: none;
+  }
+}
+
+
+
+}
+
+
+/* The way back. Subpages open with a small crumb to the front page, so the
+   reader never depends on knowing the wordmark is a link. */
+.crumb {
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.crumb:hover {
+  color: var(--color-ink-on-deep);
+}
+
+/* The nav names where you are. */
+.nav-links a[aria-current="page"] {
+  color: var(--color-ink-on-deep);
+  border-bottom: 2px solid var(--color-accent-bright);
+  padding-bottom: 0.3rem;
+}
+
+
+/* ---------------------------------------------------------------- enquiry */
+
+.enquiry {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .enquiry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.field {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.enquiry input,
+.enquiry select,
+.enquiry textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-radius: var(--radius-none);
+  padding: 0.7rem 0.85rem;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.enquiry input:hover,
+.enquiry select:hover,
+.enquiry textarea:hover {
+  border-color: var(--color-ink-3);
+}
+
+.enquiry input:focus-visible,
+.enquiry select:focus-visible,
+.enquiry textarea:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.enquiry [data-invalid="true"] {
+  border-color: oklch(55% 0.19 25);
+}
+
+.enquiry button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+#enquiry-note {
+  margin-top: var(--space-2xs);
+  text-transform: none;
+  letter-spacing: 0.02em;
 }
