@@ -2602,6 +2602,26 @@ section:not(.hero) > .wrap {
 }
 
 /*
+ * This lede carries `class="lede"` but sits in `.sport-head`, not
+ * `.section-head`, so the site's lede rule never reached it and it fell back to
+ * body size. It rendered at 18.2px against 24px in every other chapter, which
+ * put the sentence that introduces the sport two steps below the four cards
+ * that follow it: "Classic" is 38.4px, so the item was 2.1 times its own
+ * framing and the eye landed there first.
+ *
+ * Matched to the site's lede size, which brings that ratio to 1.6 and reads as
+ * introduction then list. The colour stays brighter than the other ledes on
+ * purpose: this is the only chapter with no heading above it, so the sentence
+ * is doing the heading's job as well as its own.
+ */
+.sport-head .lede {
+  margin: 0;
+  max-width: 54ch;
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+/*
  * A four-lane band, not a table.
  *
  * Each discipline sits on its own line and slides across as the section passes,
