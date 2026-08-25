@@ -52,10 +52,12 @@ FONTS = (
     "&display=swap"
 )
 
+# The five pages the client asked for, and no more: home, about, the
+# journey with the record at the end of it, media, partnership. Records is
+# not a destination of its own; it is where the journey lands.
 NAV = [
     ("About", "about.html"),
     ("Journey", "journey.html"),
-    ("Records", "records.html"),
     ("Media", "media.html"),
     ("Partnership", "partnership.html"),
 ]
@@ -64,7 +66,7 @@ NAV = [
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "race-worldcup",
+    "hero": "nordic-overlook",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "chile-lake",
@@ -72,7 +74,7 @@ SHOTS = {
 
 # The four photographs in the media row. Journey takes its four from the story
 # beats, so it always matches whatever the journey page shows.
-MEDIA_TILES = ["khelo-medals", "chile-corralco", "nordic-overlook", "flag-harbin"]
+MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "flag-harbin"]
 
 TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 
@@ -225,7 +227,13 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2") -> str:
 
 
 def sponsors(c: dict) -> str:
-    """The benchmark's Rolex band: one solid colour, logos, no copy.
+    """The benchmark's sponsor band: logos and nothing else.
+
+    No label. The first pass wrote CURRENT SUPPORT beside the marks and forced
+    both to white on navy, which flattened the Reliance lockup and reduced the
+    Karnataka crest to an unreadable silhouette. The client called it what it
+    was. Federer's band carries no caption either: two logos on a quiet ground
+    say whose support this is without a heading announcing it.
 
     Only marks with written permission on file appear. Permission for both was
     confirmed on 11 Aug 2026 and is recorded in the content file.
@@ -241,10 +249,7 @@ def sponsors(c: dict) -> str:
         return ""
     return f"""
 <aside class="sponsors" aria-label="Current support">
-  <div class="wrap sponsors-inner">
-    <p>{e(cur.get("note", "Current support"))}</p>
-    {logos}
-  </div>
+  <div class="wrap sponsors-inner">{logos}</div>
 </aside>"""
 
 
@@ -296,13 +301,14 @@ def records(c: dict) -> str:
         <div class="tally-row">{rows}</div>
       </article>"""
         )
+    total = sum(sum(v.values()) for v in m.values())
     return f"""
 <section class="panel" data-ground="ice" id="records">
   <div class="wrap panel-body" data-rise>
     <h2>The record</h2>
-    <p class="sub">Every medal, split two ways.</p>
+    <p class="sub">{total} medals. Two divisions.</p>
     <div class="tally">{''.join(cards)}</div>
-    <a class="btn" data-on="accent" href="records.html">View all results</a>
+    <a class="btn" data-on="accent" href="journey.html#records">View all results</a>
   </div>
 </section>"""
 
@@ -359,9 +365,10 @@ def media_tiles(c: dict, img: Img) -> str:
     </figure>"""
         for s in MEDIA_TILES
     ]
+    stories = sum(1 for pr in c["press"] if pr.get("title"))
     return tiles(
         "Six seasons, photographed",
-        "Press coverage and the working archive.",
+        f"{stories} stories in print. Fifty photographs from her own archive.",
         ("View media", "media.html"),
         items,
         ground="ice",
@@ -408,7 +415,9 @@ def page(c: dict, img: Img) -> str:
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1')}
 {sponsors(c)}
-{panel(img, SHOTS['sport'], 'Cross-country skiing', c['sport']['lede'],
+{panel(img, SHOTS['sport'], 'Cross-country skiing',
+       'Racing on skis across kilometres of snow, uphill and down, '
+       'against the clock or head to head.',
        ('Read more', 'about.html#sport'))}
 {split(c, img)}
 {records(c)}
@@ -416,7 +425,7 @@ def page(c: dict, img: Img) -> str:
 {media_tiles(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
        'Four seasons between here and a start list in the French Alps.',
-       ('Become a partner', 'partnership.html'))}
+       ('Partner with her', 'partnership.html'))}
 </main>
 {footer(c)}
 <script src="assets/js/v2.js?v={v}" defer></script>
@@ -499,7 +508,22 @@ def about_page(c, img):
     <dl class="facts">{disciplines}</dl>
   </div>
 </section>"""
-    return subpage(c, img, "About", h["line"], body, shot="portrait-studio")
+    sp = c.get("speaking", {})
+    themes = "".join(
+        f'<div class="fact"><dt class="caption">{e(t["title"])}</dt>'
+        f'<dd>{e(t.get("body") or "")}</dd></div>'
+        for t in sp.get("themes", [])[:4]
+    )
+    if sp:
+        body += f"""
+<section class="prose-fold" id="speaking">
+  <div class="wrap prose">
+    <h2>Speaking</h2>
+    <p>{e(sp.get('lede') or '')}</p>
+    <dl class="facts">{themes}</dl>
+  </div>
+</section>"""
+    return subpage(c, img, "About", h["line"], body, shot="track-solo-pines")
 
 
 def journey_page(c, img):
@@ -525,9 +549,95 @@ def journey_page(c, img):
         '<section class="prose-fold"><div class="wrap steps">'
         + "".join(items)
         + "</div></section>"
+        + route_map(c)
+        + record_fold(c)
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
                    "Six seasons, told in order.", body, shot="ridge-sunrise")
+
+
+def route_map(c) -> str:
+    """The route, drawn. A static SVG: the land path from worldmap.json and a
+    pin for each of the fourteen places she has raced or trained.
+
+    Deliberately not the interactive map from V1. No hover cards, no focus
+    management, nothing to learn: the map is a picture of the route, and the
+    chapters above it are the story. Labels only where the V1 plot showed
+    them, because the Alpine cluster collides at this size and a smudge of
+    overlapping names reads worse than fewer names.
+    """
+    w = json.loads((CONTENT / "worldmap.json").read_text(encoding="utf-8"))
+    lat_top = w["latTop"]
+    height = lat_top - w["latBottom"]
+    labels = {
+        "kodagu": (8, 11, "start"), "gulmarg": (8, -7, "start"),
+        "akureyri": (9, 3, "start"), "planica": (-9, 13, "end"),
+        "schuchinsk": (9, 3, "start"), "harbin": (-9, 3, "end"),
+        "trondheim": (-9, -6, "end"), "corralco": (9, 4, "start"),
+        "ruka": (9, 2, "start"),
+    }
+    pins = []
+    for p in c["internationalFootprint"]:
+        x, y = p["lon"] + 180.0, lat_top - p["lat"]
+        lab = ""
+        if p["id"] in labels:
+            dx, dy, anchor = labels[p["id"]]
+            lab = (f'<text x="{x + dx:.1f}" y="{y + dy:.1f}" '
+                   f'text-anchor="{anchor}">{e(p["place"])}</text>')
+        pins.append(
+            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="2.2" class="pin"/>{lab}'
+        )
+    return f"""
+<section class="prose-fold" data-ground="ice" id="route">
+  <div class="wrap">
+    <div class="prose"><h2>The route</h2></div>
+    <figure class="route-map">
+      <svg viewBox="0 0 360 {height:.0f}" role="img"
+           aria-label="World map marking the fourteen places she has raced or trained, from Kodagu to Corralco.">
+        <path d="{w['path']}" class="land"/>
+        {''.join(pins)}
+      </svg>
+      <figcaption class="caption">Fourteen places, six seasons, both hemispheres</figcaption>
+    </figure>
+  </div>
+</section>"""
+
+
+def record_fold(c) -> str:
+    """Where the journey lands: the record, at the foot of the story.
+
+    The client's structure, exactly: the journey page tells the six seasons,
+    shows the route, and ends on what they produced. A heading, a count, and
+    the rows. No sentences.
+    """
+    rows = [r for r in c["results"]["rows"] if r.get("medal")]
+    intl = [r for r in rows if "international" in r.get("tags", [])]
+    natl = [r for r in rows if "international" not in r.get("tags", [])]
+
+    def table(rs):
+        body = "".join(
+            f'<tr><td class="caption">{e(r["year"])}</td>'
+            f'<td><b>{e(r["event"])}</b><span>{e(r["detail"])}'
+            f' &middot; {e(r["place"])}</span></td>'
+            f'<td class="c-medal"><i data-medal="{e(r["medal"])}"></i>'
+            f'{e(r["medal"])}</td></tr>'
+            for r in rs
+        )
+        return f'<table class="medals"><tbody>{body}</tbody></table>'
+
+    return f"""
+<section class="prose-fold" id="records">
+  <div class="wrap prose">
+    <h2>International <span class="count">{len(intl)}</span></h2>
+    {table(intl)}
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice">
+  <div class="wrap prose">
+    <h2>National <span class="count">{len(natl)}</span></h2>
+    {table(natl)}
+  </div>
+</section>"""
 
 
 def records_page(c, img):
@@ -546,20 +656,19 @@ def records_page(c, img):
         )
         return f'<table class="medals"><tbody>{body}</tbody></table>'
 
+    # No sentences. The client asked for the two divisions to carry
+    # numerically, so each block is a heading, a count, and the rows.
     m = medals(c)
     body = f"""
 <section class="prose-fold">
   <div class="wrap prose">
-    <h2>International</h2>
-    <p>{sum(m['International'].values())} medals, every one on snow outside India.</p>
+    <h2>International <span class="count">{sum(m['International'].values())}</span></h2>
     {table(intl)}
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
   <div class="wrap prose">
-    <h2>National</h2>
-    <p>{sum(m['National'].values())} medals across the Khelo India Winter Games
-       and the national championships.</p>
+    <h2>National <span class="count">{sum(m['National'].values())}</span></h2>
     {table(natl)}
   </div>
 </section>"""
@@ -568,17 +677,34 @@ def records_page(c, img):
 
 
 def media_page(c, img):
+    """Press as cards, not a list of links.
+
+    Each card is the thumbnail the press entry already carries, the
+    publication, the year, and the headline. The whole card is the link. Two
+    columns, so ten stories read as a page of stories rather than a wall of
+    blue text. The fields are `publication` and `title`: the first pass read
+    `outlet` and `headline`, which do not exist, so every outlet line
+    rendered empty.
+    """
     press = []
     for pr in c["press"]:
-        head = pr.get("headline") or pr.get("title") or ""
+        head = pr.get("title") or ""
         if not head:
             continue
-        outlet = pr.get("outlet") or ""
+        outlet = pr.get("publication") or ""
+        year = str(pr.get("date") or "")[:4]
+        meta = " &middot; ".join(x for x in (outlet, year) if x)
         url = pr.get("url") or ""
-        inner = f'<b>{e(head)}</b><span class="caption">{e(outlet)}</span>'
+        thumb = ""
+        if pr.get("image") and img.get(pr["image"]):
+            thumb = (f'<span class="press-shot">'
+                     f'{img.tag(pr["image"], "(min-width:760px) 30vw, 90vw")}</span>')
+        inner = (f'{thumb}<span class="press-body">'
+                 f'<span class="caption">{e(meta)}</span>'
+                 f'<b>{e(head)}</b></span>')
         press.append(
             f'<li><a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
-            if url else f"<li><p>{inner}</p></li>"
+            if url else f'<li><p>{inner}</p></li>'
         )
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
     gallery = "".join(
@@ -591,9 +717,9 @@ def media_page(c, img):
     )
     body = f"""
 <section class="prose-fold">
-  <div class="wrap prose">
-    <h2>Press</h2>
-    <ul class="press">{''.join(press)}</ul>
+  <div class="wrap">
+    <div class="prose"><h2>Press</h2></div>
+    <ul class="press-grid">{''.join(press)}</ul>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
@@ -603,8 +729,8 @@ def media_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Media",
-                   "Every article written about her, and six seasons of photographs.",
-                   body, shot="khelo-medals")
+                   "The papers that told her story, and the archive that shows it.",
+                   body, shot="night-training")
 
 
 def partnership_page(c, img):
@@ -615,6 +741,14 @@ def partnership_page(c, img):
         for a in p.get("areas", [])
     )
     t = c.get("targets", {}).get("finale", {})
+    # The year-by-year ladder the client asked to keep from V1, rendered as a
+    # plain list rather than a scroll sequence. The rungs come from the same
+    # data V1 used, so the two sites cannot drift apart on the plan.
+    road = "".join(
+        f'<li><span class="caption">{e(i["year"])}</span>'
+        f'<b>{e(i["title"])}</b><p>{e(i["line"])}</p></li>'
+        for i in c.get("targets", {}).get("items", [])
+    )
     ct = c["contact"]
     body = f"""
 <section class="prose-fold">
@@ -622,6 +756,7 @@ def partnership_page(c, img):
     <h2>{e(t.get('year', '2030'))} &middot; {e(t.get('title', 'Winter Olympics'))}</h2>
     <p>{e(t.get('line') or '')}</p>
     <p class="caption">{e(t.get('host') or '')} &middot; {e(t.get('dates') or '')}</p>
+    <ol class="road">{road}</ol>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
@@ -638,8 +773,8 @@ def partnership_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
-                   "The road to 2030, and what support makes possible.",
-                   body, shot="chile-lake")
+                   "Four seasons of racing stand between now and the French Alps.",
+                   body, shot="snow-ridge-line")
 
 
 def main() -> int:
@@ -657,7 +792,6 @@ def main() -> int:
     out.write_text(page(c, img), encoding="utf-8")
     (OUT / "about.html").write_text(about_page(c, img), encoding="utf-8")
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
-    (OUT / "records.html").write_text(records_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
 

@@ -330,11 +330,14 @@ a {
   content: "";
   position: absolute;
   inset: 0;
+  /* The middle stop is the one that matters: the sub line and the button sit
+     at the centre of the frame, and 0.34 let a busy midtone eat them. The
+     photograph still reads; the words now always do. */
   background: linear-gradient(
     to bottom,
-    oklch(16% 0.03 255 / 0.55) 0%,
-    oklch(16% 0.03 255 / 0.34) 45%,
-    oklch(16% 0.03 255 / 0.66) 100%
+    oklch(16% 0.03 255 / 0.5) 0%,
+    oklch(16% 0.03 255 / 0.44) 45%,
+    oklch(16% 0.03 255 / 0.7) 100%
   );
 }
 
@@ -399,8 +402,13 @@ a {
 
 /* The benchmark's Rolex strip. One solid colour, logos, nothing else. */
 .sponsors {
-  background: var(--color-paper-deep);
-  padding-block: var(--space-md);
+  /* A light band, and the marks in their own colours. Forcing them to white
+     on navy flattened the Reliance lockup and turned the Karnataka crest
+     into a silhouette nobody could read. A logo is a thing you do not get to
+     recolour. */
+  background: var(--color-paper-2);
+  padding-block: var(--space-lg);
+  border-bottom: var(--rule-hair) solid var(--color-line);
 }
 
 .sponsors-inner {
@@ -411,29 +419,14 @@ a {
   gap: var(--space-md) var(--space-2xl);
 }
 
-.sponsors p {
-  font-family: var(--font-caption);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--color-ink-on-deep-2);
-}
-
 .sponsors img {
-  height: 2.1rem;
+  height: 2.4rem;
   width: auto;
-  /* The two marks have opposite shapes: Reliance is a wide lockup, the
-     Karnataka crest is nearly square, and at a common 2.1rem the crest reads
-     as a smudge. Square marks get more height below. */
-  /* The two supplied marks are dark-on-transparent and sit on a navy band, so
-     they are lifted to white rather than boxed in a white plate. The plate was
-     the weakest thing on V1 and there is no reason to repeat it. */
-  filter: brightness(0) invert(1);
-  opacity: 0.85;
 }
 
+/* Shape, not importance: the crest is square where the lockup is wide. */
 .sponsors img[src*="karnataka"] {
-  height: 3rem;
+  height: 3.4rem;
 }
 
 /* ------------------------------------------------------------------- split */
@@ -1004,4 +997,169 @@ a {
 
 .press a:hover b {
   color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------- the route */
+
+.route-map {
+  margin: var(--space-md) 0 0;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.route-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.route-map .land {
+  fill: var(--color-paper-3);
+  stroke: none;
+}
+
+.route-map .pin {
+  fill: var(--color-accent);
+}
+
+.route-map text {
+  font-family: var(--font-caption);
+  font-size: 6.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--color-ink-2);
+}
+
+/* ------------------------------------------------------------- the ladder */
+
+/* 2027 to 2030, one rung a year. An ordered list because it is one. */
+.road {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.road li {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-top: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.road b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+}
+
+.road p {
+  font-size: var(--text-base);
+}
+
+/* The count beside a records heading. A number, not a sentence. */
+.prose h2 .count {
+  font-family: var(--font-display);
+  color: var(--color-accent);
+  margin-left: var(--space-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ------------------------------------------------------------- press cards */
+
+.press-grid {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+}
+
+@media (min-width: 760px) {
+  .press-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.press-grid a,
+.press-grid li > p {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 0;
+  text-decoration: none;
+  align-content: start;
+}
+
+.press-shot {
+  display: block;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.press-shot img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.press-grid a:hover .press-shot img {
+  transform: scale(1.03);
+}
+
+.press-body {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.press-body b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press-grid a:hover .press-body b {
+  color: var(--color-accent);
+}
+
+
+/* -------------------------------------------------------- page transitions */
+
+/*
+ * Cross-document view transitions, and nothing else.
+ *
+ * The question was whether navigation should animate. On a multi-page site
+ * the honest answer is: barely. A reader clicking VIEW JOURNEY wants the
+ * journey, and every hundred milliseconds of choreography between the click
+ * and the content is a cost they did not ask to pay. What a cut needs is not
+ * a performance, it is continuity: the browser cross-fades the two documents
+ * over a fifth of a second, the shared navy bar holds still because it looks
+ * identical on both sides, and the page never white-flashes.
+ *
+ * This is two rules of CSS, runs in the compositor, and degrades to an
+ * instant cut in browsers that do not know the at-rule. No JavaScript, no
+ * router, nothing to break.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
 }
