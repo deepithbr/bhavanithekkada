@@ -22,7 +22,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "v2" / "assets" / "og"
 
 CARDS = {
-    "index": "flag-harbin",
+    "index": "double-pole",
     "about": "portrait-studio",
     "journey": "ridge-sunrise",
     "media": "podium-gulmarg-2023",

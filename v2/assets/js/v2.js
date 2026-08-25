@@ -198,31 +198,40 @@
 
   /* ---- the route draws ------------------------------------------------- */
 
+  // Plays once, on arrival. The draw was scroll-driven first, and finishing
+  // it required scrolling the map half out of view, so nobody ever watched
+  // the line reach Chile. Now the section entering the viewport starts a
+  // six-second timeline: the line travels Kodagu to Davos, pins lighting in
+  // racing order as it passes, and then it is simply the finished map.
+  // Reduced motion sees it complete from the first frame.
   const routeLine = document.getElementById("route-line");
-  if (routeLine && !reduce.matches) {
+  if (routeLine) {
     const fig = routeLine.closest(".route-map");
     const pins = fig.querySelectorAll(".pin[data-stop]");
-    pins.forEach((p) => (p.dataset.lit = "false"));
-    let drawTick = false;
-    const draw = () => {
-      drawTick = false;
-      const r = fig.getBoundingClientRect();
-      // 0 when the map enters, 1 by the time its bottom clears 80% of the way
-      // Starts once the map's top clears 85% of the viewport and needs
-      // roughly two map-heights of scroll to finish, so the line travels at
-      // reading speed rather than completing before the reader arrives.
-      const p = Math.min(1, Math.max(0,
-        (innerHeight * 0.85 - r.top) / (r.height * 1.9)));
-      routeLine.style.setProperty("--drawn", p.toFixed(3));
-      const lit = Math.floor(p * pins.length);
-      pins.forEach((pin, i) => (pin.dataset.lit = String(i <= lit)));
-    };
-    addEventListener("scroll", () => {
-      if (drawTick) return;
-      drawTick = true;
-      requestAnimationFrame(draw);
-    }, { passive: true });
-    draw();
+    if (reduce.matches || !("IntersectionObserver" in window)) {
+      routeLine.style.setProperty("--drawn", "1");
+      pins.forEach((p) => (p.dataset.lit = "true"));
+    } else {
+      pins.forEach((p) => (p.dataset.lit = "false"));
+      const DUR = 6000;
+      const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      const arrive = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          arrive.disconnect();
+          const t0 = performance.now();
+          const step = (now) => {
+            const p = ease(Math.min(1, (now - t0) / DUR));
+            routeLine.style.setProperty("--drawn", p.toFixed(4));
+            const lit = Math.floor(p * (pins.length - 1) + 0.0001);
+            pins.forEach((pin, i) => (pin.dataset.lit = String(i <= lit || p >= 1)));
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        }
+      }, { threshold: 0.45 });
+      arrive.observe(fig);
+    }
   }
 
   /* ---- journal reading progress ---------------------------------------- */

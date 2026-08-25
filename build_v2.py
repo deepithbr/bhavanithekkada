@@ -75,7 +75,7 @@ ORIGIN = "https://bhavanithekkada.pages.dev"
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "flag-harbin",
+    "hero": "double-pole",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "chile-lake",
@@ -470,7 +470,7 @@ def page(c: dict, img: Img) -> str:
 <main id="main">
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
        ('View profile', 'about.html'), size='hero', level='h1',
-       pos='50% 30%')}
+       pos='48% 22%')}
 <div class="wrap">{statline(c)}</div>
 {sponsors(c)}
 {panel(img, SHOTS['sport'], 'Cross-country skiing',
