@@ -2125,3 +2125,79 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+
+/* ---------------------------------------------------- the blended opening */
+
+/*
+ * What makes the reference heroes read premium is not the photograph, it is
+ * that the photograph owns the entire frame: the navigation floats over it
+ * as glass, the image runs to every edge, and the frame hands over to the
+ * page through a graded fade rather than a hard seam. Three pieces below do
+ * exactly that, index only.
+ */
+
+/* The nav over the hero: transparent glass at the top of the page, its own
+   scrim guaranteeing the links, turning solid navy the moment the reader
+   scrolls. Interior pages never set data-glass and keep the solid bar. */
+.nav[data-glass="true"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(16% 0.03 255 / 0.55),
+    oklch(16% 0.03 255 / 0)
+  );
+  transition: background var(--dur-mid) var(--ease-out);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] {
+  background: var(--color-paper-deep);
+}
+
+/* The hero fills the viewport from the very top, under the glass nav. */
+.nav[data-glass="true"] + main .panel[data-size="hero"] {
+  min-height: 100svh;
+}
+
+/* The grade. One navy wash multiplied over the photograph pulls every frame
+   into the site's palette, which is what "blended" looks like in practice:
+   the image, the nav and the page reading as one material. */
+.panel[data-size="hero"] .panel-shot img {
+  filter: saturate(0.92) contrast(1.04);
+}
+
+.panel[data-size="hero"] .panel-shot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-paper-deep);
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
+/* The handover: the photograph fades into the page ground at its foot, so
+   the section ends as a gradient rather than a cut. */
+.panel[data-size="hero"] .panel-shot::after {
+  background: linear-gradient(
+      to right,
+      oklch(16% 0.03 255 / 0.48) 0%,
+      oklch(16% 0.03 255 / 0.1) 52%,
+      oklch(16% 0.03 255 / 0) 78%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(16% 0.03 255 / 0.35) 0%,
+      oklch(16% 0.03 255 / 0.08) 30%,
+      oklch(16% 0.03 255 / 0.55) 82%,
+      var(--color-paper) 100%
+    );
+}
+
+/* The name over a full-viewport frame earns more size than the panel default. */
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.2rem, 8vw, 7.75rem);
+}
