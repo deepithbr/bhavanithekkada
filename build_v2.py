@@ -57,13 +57,15 @@ FONTS = (
 # The five pages the client asked for, and no more: home, about, the
 # journey with the record at the end of it, media, partnership. Records is
 # not a destination of its own; it is where the journey lands.
+# Her eight destinations, 26 Aug: Home is the wordmark, Contact is the
+# pill at the end of the row.
 NAV = [
-    ("About", "about.html"),
-    ("Journey", "journey.html"),
+    ("My journey", "journey.html"),
+    ("Achievements", "achievements.html"),
     ("Speaking", "speaking.html"),
+    ("Partner with me", "partnership.html"),
     ("Media", "media.html"),
     ("Journal", "journal.html"),
-    ("Partnership", "partnership.html"),
 ]
 
 JOURNAL_DIR = CONTENT / "journal"
@@ -208,9 +210,8 @@ def nav_block(current=None, glass=False) -> str:
     )
     # Work with me rides inside the link row so the mobile menu carries it
     # too; the styling singles it out on desktop.
-    wcur = ' aria-current="page"' if current == "work-with-me.html" else ""
-    items += (f'<a class="nav-work" href="work-with-me.html"{wcur}>'
-              'Work with me</a>')
+    wcur = ' aria-current="page"' if current == "contact.html" else ""
+    items += f'<a class="nav-work" href="contact.html"{wcur}>Contact</a>'
     g = ' data-glass="true"' if glass else ""
     return f"""
 <header class="nav" id="nav"{g}>
@@ -307,6 +308,108 @@ def sponsors(c: dict) -> str:
 <aside class="sponsors" aria-label="Current support">
   <div class="wrap sponsors-inner">{logos}</div>
 </aside>"""
+
+
+def glance(c) -> str:
+    """Career at a glance, her homepage copy of 26 Aug. The paragraph is
+    hers, first person, and stands attributed as her own words; the
+    latitude statline sits under it as the quiet numeric version."""
+    h = c["hero"]
+    return f"""
+<section class="prose-fold" id="glance">
+  <div class="wrap">
+    <div class="prose" data-rise>
+      <p class="caption">{e(h.get('glanceKicker') or 'Career at a glance')}</p>
+      <h2>{e(h.get('glanceHeadline') or '')}</h2>
+      <p class="pull">{e(h.get('glanceBody') or '')}</p>
+      <p class="pull-cite caption">Bhavani, in her own words</p>
+    </div>
+    {statline(c)}
+  </div>
+</section>"""
+
+
+def who_she_is(c, img) -> str:
+    """Her Who-she-is block: the film, Bjørgen, the father's advice,
+    and the three facts she chose. This replaces the About page; the
+    story lives on the homepage now, as her document places it."""
+    h = c["hero"]
+    facts = "".join(
+        f'<div class="fact"><dt class="caption">{e(x["k"])}</dt>'
+        f'<dd>{e(x["v"])}</dd></div>'
+        for x in h.get("profileFacts", [])
+    )
+    return f"""
+<section class="split" id="who">
+  <figure class="split-shot">{img.tag(SHOTS['about'], "(min-width:900px) 50vw, 100vw")}</figure>
+  <div class="split-body" data-rise>
+    <p class="caption">{e(h.get('profileKicker') or 'Who she is')}</p>
+    <h2>{e(h['profileHeading'])}</h2>
+    <p>{e(h['profileBody'])}</p>
+    <p>{e(h['profileBody2'])}</p>
+    <p>{e(h.get('profileBody3') or '')}</p>
+  </div>
+</section>
+<section class="prose-fold" id="who-facts">
+  <div class="wrap">
+    <dl class="facts facts-row">{facts}</dl>
+  </div>
+</section>"""
+
+
+def levels_band(c) -> str:
+    """Level of competition: her three start-level cards verbatim, plus
+    the two medal counts computed from the results rows so the band can
+    never disagree with the tables on the Achievements page."""
+    rows = [r for r in c["results"]["rows"] if r.get("medal")]
+    intl = sum(1 for r in rows if "international" in r.get("tags", []))
+    natl = len(rows) - intl
+    cards = list(c.get("levels", []))
+    cards.append({"n": str(intl), "k": "International medals",
+                  "s": "FIS & international competition"})
+    cards.append({"n": str(natl), "k": "National medals",
+                  "s": "National & Khelo India competitions"})
+    lis = "".join(
+        f'<article class="level" data-rise>'
+        f'<span class="level-n tally-total">{e(x["n"])}</span>'
+        f'<h3>{e(x["k"])}</h3><p class="caption">{e(x["s"])}</p></article>'
+        for x in cards
+    )
+    return f"""
+<section class="prose-fold" data-ground="ice" id="level">
+  <div class="wrap">
+    <div class="prose"><p class="caption">Level of competition</p></div>
+    <div class="levels">{lis}</div>
+    <p class="caption" style="margin-top:var(--space-md)">
+      <a href="achievements.html">The full record, race by race &rarr;</a></p>
+  </div>
+</section>"""
+
+
+def sport_fold(c) -> str:
+    """The sport, in her structure: headline, one paragraph, four format
+    cards, then the winter that moves around the world."""
+    sp = c["sport"]
+    cards = "".join(
+        f'<div class="fact"><dt class="caption">{e(d["name"])}</dt>'
+        f'<dd>{e(d.get("note") or "")}</dd></div>'
+        for d in sp.get("disciplines", [])[:4]
+    )
+    return f"""
+<section class="prose-fold" id="sport">
+  <div class="wrap prose">
+    <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
+    <h2>{e(sp.get('headline') or '')}</h2>
+    <p>{e(sp.get('lede') or '')}</p>
+    <dl class="facts facts-quad">{cards}</dl>
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice" id="winter">
+  <div class="wrap prose">
+    <h2>{e(sp.get('winterHeading') or '')}</h2>
+    <p>{e(sp.get('winterBody') or '')}</p>
+  </div>
+</section>"""
 
 
 def split(c: dict, img: Img) -> str:
@@ -447,7 +550,7 @@ def footer(c: dict) -> str:
     <p class="foot-statement">Indian cross-country skier, on the road to 2030.</p>
     <div class="foot-rows">
       <div class="foot-links">{items}
-        <a href="work-with-me.html">Work with me</a>
+        <a href="contact.html">Contact</a>
         <a href="{e(ct['instagramUrl'])}" rel="me">Instagram</a>
         <a href="mailto:{e(ct['email'])}">Email</a>
       </div>
@@ -485,16 +588,13 @@ def page(c: dict, img: Img) -> str:
 {nav_block(glass=True)}
 <main id="main">
 {panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
-       ('View profile', 'about.html'), size='hero', level='h1',
+       ('Explore my journey', 'journey.html'), size='hero', level='h1',
        pos='50% 45%', kicker='Indian cross-country skier')}
-<div class="wrap">{statline(c)}</div>
+{glance(c)}
 {sponsors(c)}
-{panel(img, SHOTS['sport'], 'Cross-country skiing',
-       'Racing on skis across kilometres of snow, uphill and down, '
-       'against the clock or head to head.',
-       ('Read more', 'about.html#sport'))}
-{split(c, img)}
-{records(c, img)}
+{who_she_is(c, img)}
+{levels_band(c)}
+{sport_fold(c)}
 {journey_tiles(c, img)}
 {media_tiles(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
@@ -681,7 +781,6 @@ def journey_page(c, img):
         + "".join(items)
         + "</div></section>"
         + route_map(c)
-        + record_fold(c)
         + road_ahead(c)
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
@@ -994,7 +1093,7 @@ def partnership_page(c, img):
     <p>The case is on this page. The conversation starts on one, whatever
     shape the partnership takes.</p>
     <a class="btn" data-on="accent"
-       href="work-with-me.html?topic=Sponsorship">Start the conversation</a>
+       href="contact.html?topic=Sponsorship">Start the conversation</a>
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
@@ -1118,6 +1217,26 @@ def pretty_date(iso):
         return iso
 
 
+def achievements_page(c, img):
+    """Her Achievements destination: the medal tables that used to close
+    Journey, and the official FIS trail for anyone verifying them."""
+    fis = c["hero"]["ctaTertiary"]["href"]
+    body = record_fold(c) + f"""
+<section class="prose-fold" id="official">
+  <div class="wrap prose">
+    <h2>The official record</h2>
+    <p>Every FIS-scored start she has taken is published on her athlete
+    page, independent of this site.</p>
+    <a class="btn" data-on="accent" href="{e(fis)}" rel="noopener"
+       target="_blank">Open her FIS profile</a>
+  </div>
+</section>"""
+    return subpage(c, img, "Achievements",
+                   "The medal record, and where to verify it.", body,
+                   shot="khelo-medals", current="achievements.html",
+                   og="achievements")
+
+
 def speaking_page(c, img):
     """Athlete, speaker, storyteller: her brief promotes this from a footnote
     on About to a section of its own, with one clear way to book her."""
@@ -1154,19 +1273,20 @@ def speaking_page(c, img):
     <p>{aud}.</p>
     <p>{e(sp.get('availability') or '')}</p>
     <a class="btn" data-on="accent"
-       href="work-with-me.html?topic=Speaking">Invite Bhavani to speak</a>
+       href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
   </div>
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,
                    shot="flag-almaty", current="speaking.html", og="speaking")
 
 
-def work_with_me_page(c, img):
-    """The brief's ninth section: one prominent route in for everything."""
-    return subpage(c, img, "Work with me",
+def contact_page(c, img):
+    """Her ninth destination, renamed Contact on the 26 Aug structure:
+    one route in for everything."""
+    return subpage(c, img, "Contact",
                    "Speaking, sponsorship, media and brand collaborations.",
                    enquiry_block(c), shot="lake-mountains",
-                   current="work-with-me.html", og="work-with-me")
+                   current="contact.html", og="contact")
 
 
 def journal_page(c, img, posts):
@@ -1229,12 +1349,12 @@ def main() -> int:
     OUT.mkdir(exist_ok=True)
     out = OUT / "index.html"
     out.write_text(page(c, img), encoding="utf-8")
-    (OUT / "about.html").write_text(about_page(c, img), encoding="utf-8")
+    (OUT / "achievements.html").write_text(achievements_page(c, img), encoding="utf-8")
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
     (OUT / "speaking.html").write_text(speaking_page(c, img), encoding="utf-8")
-    (OUT / "work-with-me.html").write_text(work_with_me_page(c, img), encoding="utf-8")
+    (OUT / "contact.html").write_text(contact_page(c, img), encoding="utf-8")
     (OUT / "404.html").write_text(f"""<!doctype html>
 <html lang="en">
 <head>
@@ -1255,7 +1375,7 @@ def main() -> int:
     <div class="masthead-cta">
       <a class="btn" data-on="accent" href="/v2/index.html">Back to the start</a>
       <a class="btn" href="/v2/journey.html">The journey</a>
-      <a class="btn" href="/v2/work-with-me.html">Work with me</a>
+      <a class="btn" href="/v2/contact.html">Contact</a>
     </div>
   </div>
 </main>

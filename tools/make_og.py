@@ -23,13 +23,13 @@ OUT = ROOT / "v2" / "assets" / "og"
 
 CARDS = {
     "index": "race-worldcup",
-    "about": "portrait-studio",
+    "achievements": "khelo-medals",
     "journey": "ridge-sunrise",
     "media": "podium-gulmarg-2023",
     "journal": "classic-tracks",
     "partnership": "summit-solo",
     "speaking": "flag-almaty",
-    "work-with-me": "lake-mountains",
+    "contact": "lake-mountains",
 }
 
 W, H = 1200, 630

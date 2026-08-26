@@ -2405,3 +2405,195 @@ a {
     margin-right: var(--space-sm);
   }
 }
+
+
+/* ----------------------------------------------- daylight, 26 Aug review */
+
+/*
+ * The client: blue and white rather than dark backgrounds. The navy keeps
+ * two jobs, the glass bar over the hero photograph and the type itself;
+ * the chrome that used to sit on navy, the bar and the footer, now sits
+ * on paper. Appended last so these win the cascade at equal specificity.
+ */
+.nav {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-bottom: var(--rule-hair) solid var(--color-line);
+}
+
+.nav .wordmark {
+  color: var(--color-ink);
+}
+
+.nav .nav-links a {
+  color: var(--color-ink-2);
+}
+
+.nav .nav-links a:hover,
+.nav .nav-links a[aria-current="page"] {
+  color: var(--color-ink);
+}
+
+.nav .nav-toggle {
+  color: var(--color-ink);
+}
+
+.nav .nav-links .nav-work {
+  color: var(--color-accent);
+}
+
+@media (min-width: 900px) {
+  .nav .nav-links .nav-work {
+    border-color: var(--color-accent);
+  }
+
+  .nav .nav-links .nav-work:hover {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+}
+
+@media (max-width: 899px) {
+  .nav .nav-links {
+    background: var(--color-paper);
+    border-bottom: var(--rule-hair) solid var(--color-line);
+  }
+
+  .nav .nav-links a {
+    border-top-color: var(--color-line);
+  }
+}
+
+/* The glass bar over the hero keeps its light-on-photo type until the
+   reader scrolls, then joins the daylight chrome. */
+.nav[data-glass="true"]:not([data-scrolled="true"]) {
+  background: linear-gradient(
+    to bottom,
+    oklch(16% 0.03 255 / 0.55),
+    oklch(16% 0.03 255 / 0)
+  );
+  border-bottom: none;
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
+  color: var(--color-ink-on-deep);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+  color: var(--color-ink-on-deep-2);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a[aria-current="page"] {
+  color: var(--color-ink-on-deep);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
+  color: var(--color-ink-on-deep);
+}
+
+@media (max-width: 899px) {
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links {
+    background: var(--color-paper);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+    color: var(--color-ink-2);
+  }
+}
+
+.nav[data-glass="true"][data-scrolled="true"] {
+  background: var(--color-paper);
+}
+
+/* The footer joins the daylight too: ice ground, ink type. */
+.foot {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.foot-rows {
+  border-top-color: var(--color-line);
+}
+
+.foot-links a {
+  color: var(--color-ink-2);
+}
+
+.foot-links a:hover {
+  color: var(--color-ink);
+}
+
+.foot-fine {
+  color: var(--color-ink-3);
+}
+
+/* --------------------------------------------------- level of competition */
+
+/* Her stat band: the number carries the section, everything else whispers. */
+.levels {
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  margin-top: var(--space-md);
+}
+
+.level-n {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.level h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-2xs);
+}
+
+.level .caption {
+  color: var(--color-ink-3);
+  margin-top: var(--space-3xs);
+}
+
+/* Four format cards for the sport: two up on a phone, four across wide. */
+.facts-quad {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .facts-quad {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* The who-she-is facts row sits directly under its split, quiet. */
+#who-facts {
+  padding-top: 0;
+}
+
+
+/* Who-she-is joins the daylight: the story panel sits on ice, not navy. */
+.split-body {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.split-body .caption {
+  color: var(--color-ink-3);
+}
+
+.split-body p {
+  color: var(--color-ink-2);
+}
+
+.split-body h2 {
+  color: var(--color-ink);
+}

@@ -67,22 +67,33 @@
       ]
     },
     "profileHeading": "It started with a film, and a race on television.",
-    "profileBody": "In 2013 she watched a Bollywood film with a trekking sequence in it and went looking for the mountains it was set in. That took her to Darjeeling, to a mountaineering qualification, and to an instructing job in Kashmir, which is where she first put on skis.",
-    "profileBody2": "Cross-country came later, and secondhand. Watching the 2018 Pyeongchang Games she saw the Norwegian Marit Bjørgen race, and decided that was the event she wanted. She left the instructing job to train full time. Her father, Thekkada Nanjunda, who has spent his life on the coffee farm, told her that if it made her happy she should do it.",
+    "profileBody": "In 2013, a Bollywood film sparked her curiosity about the mountains. What began with an NCC mountaineering camp in Manali led her into mountaineering, eventually to a career as a mountaineering instructor in Darjeeling, and later to Kashmir, where she first discovered skiing.",
+    "profileBody2": "In 2018, while training in alpine skiing in Kashmir, she came across the Norwegian legend Marit Bjørgen racing cross-country at the Winter Olympics. It was her first glimpse of the sport, and it stayed with her. Two years later she finally had the chance to try it herself, and what began as a chance to try something new became a passion. In 2021 she decided to pursue cross-country skiing full time.",
     "profileFacts": [
       {
         "k": "Born",
-        "v": "14 May 1995, Kodagu, Karnataka"
+        "v": "14 May 1995 · Kodagu, Karnataka"
       },
       {
         "k": "Mentored by",
-        "v": "Shiva Keshavan, six-time Olympian, luge"
+        "v": "Shiva Keshavan · Six-time Olympian, luge"
       },
       {
         "k": "Trains across",
-        "v": "Kashmir, Europe, South America, New Zealand"
+        "v": "Indian Himalayas · Europe · South America · New Zealand · Asia"
       }
-    ]
+    ],
+    "glanceKicker": "Career at a glance",
+    "glanceHeadline": "When the path doesn’t exist, build one.",
+    "glanceBody": "From the coffee estates of Kodagu to international start lines, this journey has been built across continents and seasons. In a sport with limited pathways in India, I became the country’s first woman to win an international cross-country skiing medal — and I’m still building towards what comes next.",
+    "glanceSource": {
+      "sourceType": "client-supplied",
+      "sourceName": "web26bt.pdf, homepage copy, 26 Aug 2026",
+      "verified": false,
+      "note": "The first-woman claim is hers, supplied in her own homepage copy. Presented in her voice, attributed to her."
+    },
+    "profileKicker": "Who she is",
+    "profileBody3": "Her father, Thekkada Nanjunda, who has spent his life on the coffee farm, never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it."
   },
   "proofOfLevel": [
     {
@@ -1870,30 +1881,29 @@
   },
   "sport": {
     "kicker": "The sport",
-    "lede": "The sport splits two ways, by technique and by distance. She races every combination.",
+    "lede": "Cross-country skiing combines two techniques, Classic and Freestyle, across race formats that run from high-speed Sprint events to demanding Distance races. She competes across both techniques and both formats, in races from 5 km to 21 km so far.",
     "disciplines": [
       {
         "name": "Classic",
-        "note": "Skis run inside two grooves cut into the snow. Her sprint at Harbin was a classical race.",
-        "sourceRef": "awg-wikipedia"
+        "note": "Traditional diagonal-stride technique."
       },
       {
         "name": "Freestyle",
-        "note": "A skating stride on a wide groomed piste, no grooves. Her 5 km at Harbin was freestyle, in 18:10.",
-        "sourceRef": "awg-wikipedia"
+        "note": "Skating technique."
       },
       {
         "name": "Sprint",
-        "note": "About 1.3 to 1.5 km, run as knockout heats. She reached the quarter-final at Harbin in 2025.",
-        "sourceRef": "awg-wikipedia"
+        "note": "Approximately 1 to 1.6 km."
       },
       {
         "name": "Distance",
-        "note": "10 or 15 km, alone against the clock. Bronze at both distances at Gulmarg in 2026.",
-        "sourceRef": "kiwg-2026"
+        "note": "5 to 50 km and beyond."
       }
     ],
-    "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September."
+    "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September.",
+    "headline": "Two techniques. Two race formats. Endless ways to race.",
+    "winterHeading": "Following winter around the world.",
+    "winterBody": "With limited snow infrastructure in India, training and competition follow the seasons: from the Indian Himalayas to Europe, South America, New Zealand and across Asia."
   },
   "headline": {
     "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",
@@ -1922,5 +1932,22 @@
         "year": "2025"
       }
     ]
-  }
+  },
+  "levels": [
+    {
+      "n": "3",
+      "k": "World Cup starts",
+      "s": "FIS Cross-Country World Cup · 2025"
+    },
+    {
+      "n": "2",
+      "k": "World Championships",
+      "s": "Nordic World Ski Championships · 2023 & 2025"
+    },
+    {
+      "n": "1",
+      "k": "Asian Games",
+      "s": "Asian Winter Games · 2025"
+    }
+  ]
 }
