@@ -2597,3 +2597,39 @@ a {
 .split-body h2 {
   color: var(--color-ink);
 }
+
+
+/* ------------------------------------------------------ the hero rotation */
+
+/* Four frames crossfading the way stadium screens change: slow, no
+   controls, the photograph simply becomes another photograph. */
+.panel-shot[data-slides="true"] img.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-out);
+}
+
+.panel-shot[data-slides="true"] img.slide[data-on="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-shot[data-slides="true"] img.slide {
+    transition: none;
+  }
+}
+
+/* The merged who-she-is: her statement leads, the story follows under a
+   quieter subhead, and the facts close the section on the same ground. */
+.split-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: var(--space-md);
+}
+
+#who-facts .statline {
+  margin-top: var(--space-md);
+}

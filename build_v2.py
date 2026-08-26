@@ -60,6 +60,7 @@ FONTS = (
 # Her eight destinations, 26 Aug: Home is the wordmark, Contact is the
 # pill at the end of the row.
 NAV = [
+    ("Home", "index.html"),
     ("My journey", "journey.html"),
     ("Achievements", "achievements.html"),
     ("Speaking", "speaking.html"),
@@ -310,6 +311,50 @@ def sponsors(c: dict) -> str:
 </aside>"""
 
 
+# The hero rotation: four frames, each with its own crop, crossfading
+# slowly. Not a carousel, no dots, no arrows: the frame changes the way
+# stadium screens change, and reduced motion holds the first frame.
+HERO_SLIDES = [
+    ("race-worldcup", "50% 45%"),
+    ("flag-harbin", "50% 30%"),
+    ("holmenkollen", "50% 46%"),
+    ("double-pole", "48% 22%"),
+]
+
+
+def hero_panel(c, img) -> str:
+    shots = []
+    for n, (slot, pos) in enumerate(HERO_SLIDES):
+        tag = img.tag(slot, "100vw", eager=(n == 0))
+        tag = tag.replace(
+            f"object-position:{img.focal(slot)}", f"object-position:{pos}"
+        )
+        # The caption already carries entities (&middot;); e() would
+        # double-escape them into visible text. Quote-escape only.
+        cap = (img.caption(slot) or "").replace('"', "&quot;")
+        tag = tag.replace(
+            "<img ",
+            f'<img class="slide" data-i="{n}" data-on='
+            f'"{str(n == 0).lower()}" data-cap="{cap}" ',
+            1,
+        )
+        if n > 0:
+            tag = tag.replace(' loading="eager"', ' loading="lazy"')
+        shots.append(tag)
+    first_cap = img.caption(HERO_SLIDES[0][0]) or ""  # entities intact
+    return f"""
+<section class="panel" data-size="hero">
+  <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
+  <div class="wrap panel-body" data-rise>
+    <p class="caption">Indian cross-country skier</p>
+    <h1>Bhavani Thekkada</h1>
+    <p class="sub">{e(c['hero']['line'])}</p>
+    <a class="btn" data-on="shot" href="journey.html">Explore my journey</a>
+    <p class="caption" id="hero-cap">{first_cap}</p>
+  </div>
+</section>"""
+
+
 def glance(c) -> str:
     """Career at a glance, her homepage copy of 26 Aug. The paragraph is
     hers, first person, and stands attributed as her own words; the
@@ -330,9 +375,10 @@ def glance(c) -> str:
 
 
 def who_she_is(c, img) -> str:
-    """Her Who-she-is block: the film, Bjørgen, the father's advice,
-    and the three facts she chose. This replaces the About page; the
-    story lives on the homepage now, as her document places it."""
+    """Career at a glance and Who she is, one section. Separately the
+    glance was a pull quote alone on white and read as a gap; merged,
+    her statement opens the story panel and the story follows it, with
+    her three facts and the latitude line closing the section."""
     h = c["hero"]
     facts = "".join(
         f'<div class="fact"><dt class="caption">{e(x["k"])}</dt>'
@@ -343,8 +389,11 @@ def who_she_is(c, img) -> str:
 <section class="split" id="who">
   <figure class="split-shot">{img.tag(SHOTS['about'], "(min-width:900px) 50vw, 100vw")}</figure>
   <div class="split-body" data-rise>
-    <p class="caption">{e(h.get('profileKicker') or 'Who she is')}</p>
-    <h2>{e(h['profileHeading'])}</h2>
+    <p class="caption">{e(h.get('glanceKicker') or 'Career at a glance')}</p>
+    <h2>{e(h.get('glanceHeadline') or '')}</h2>
+    <p class="split-quote">{e(h.get('glanceBody') or '')}</p>
+    <p class="split-cite caption">Bhavani, in her own words</p>
+    <h3>{e(h['profileHeading'])}</h3>
     <p>{e(h['profileBody'])}</p>
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
@@ -353,6 +402,7 @@ def who_she_is(c, img) -> str:
 <section class="prose-fold" id="who-facts">
   <div class="wrap">
     <dl class="facts facts-row">{facts}</dl>
+    {statline(c)}
   </div>
 </section>"""
 
@@ -378,7 +428,11 @@ def levels_band(c) -> str:
     return f"""
 <section class="prose-fold" data-ground="ice" id="level">
   <div class="wrap">
-    <div class="prose"><p class="caption">Level of competition</p></div>
+    <div class="prose">
+      <p class="caption">The record</p>
+      <h2>Level of competition</h2>
+      <p>Where she has raced, and what it has returned so far.</p>
+    </div>
     <div class="levels">{lis}</div>
     <p class="caption" style="margin-top:var(--space-md)">
       <a href="achievements.html">The full record, race by race &rarr;</a></p>
@@ -402,11 +456,7 @@ def sport_fold(c) -> str:
     <h2>{e(sp.get('headline') or '')}</h2>
     <p>{e(sp.get('lede') or '')}</p>
     <dl class="facts facts-quad">{cards}</dl>
-  </div>
-</section>
-<section class="prose-fold" data-ground="ice" id="winter">
-  <div class="wrap prose">
-    <h2>{e(sp.get('winterHeading') or '')}</h2>
+    <h3 id="winter">{e(sp.get('winterHeading') or '')}</h3>
     <p>{e(sp.get('winterBody') or '')}</p>
   </div>
 </section>"""
@@ -512,7 +562,7 @@ def journey_tiles(c: dict, img: Img) -> str:
         for b in beats
     ]
     return tiles(
-        c["sections"]["journey"]["title"],
+        "My journey",
         "Six seasons, fourteen race locations, both hemispheres.",
         ("View journey", "journey.html"),
         items,
@@ -585,12 +635,9 @@ def page(c: dict, img: Img) -> str:
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-{nav_block(glass=True)}
+{nav_block(current="index.html", glass=True)}
 <main id="main">
-{panel(img, SHOTS['hero'], 'Bhavani Thekkada', c['hero']['line'],
-       ('Explore my journey', 'journey.html'), size='hero', level='h1',
-       pos='50% 45%', kicker='Indian cross-country skier')}
-{glance(c)}
+{hero_panel(c, img)}
 {sponsors(c)}
 {who_she_is(c, img)}
 {levels_band(c)}
