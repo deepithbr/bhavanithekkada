@@ -2607,7 +2607,7 @@ a {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1600ms var(--ease-out);
+  transition: opacity 900ms var(--ease-out);
 }
 
 .panel-shot[data-slides="true"] img.slide[data-on="true"] {
