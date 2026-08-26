@@ -1090,16 +1090,9 @@ def partnership_page(c, img):
         for a in p.get("areas", [])
     )
     t = c.get("targets", {}).get("finale", {})
-    # The year-by-year ladder the client asked to keep from V1, rendered as a
-    # plain list rather than a scroll sequence. The rungs come from the same
-    # data V1 used, so the two sites cannot drift apart on the plan.
-    # The ladder climbs left to right: each rung indents further, so 2027 to
-    # 2030 reads as altitude gained, which is her story in one shape.
-    road = "".join(
-        f'<li style="--rung:{n}"><span class="caption">{e(i["year"])}</span>'
-        f'<b>{e(i["title"])}</b><p>{e(i["line"])}</p></li>'
-        for n, i in enumerate(c.get("targets", {}).get("items", []))
-    )
+    # The season-by-season road lives on Journey only; printing it here
+    # too made the two pages repeat each other word for word, which the
+    # client flagged. Partnership keeps the target and points across.
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
@@ -1119,7 +1112,8 @@ def partnership_page(c, img):
         <p class="caption">{e(t.get('host') or '')} &middot; {e(t.get('dates') or '')}</p>
       </div>
     </div>
-    <ol class="road">{road}</ol>
+    <p class="caption" style="margin-top:var(--space-md)">
+      <a href="journey.html#road">The season-by-season road, on My journey &rarr;</a></p>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
