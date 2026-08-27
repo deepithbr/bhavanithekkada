@@ -101,7 +101,7 @@
 
   /* ---- the hero rotation ---------------------------------------------- */
 
-  // Four frames, 4 seconds each, crossfaded by CSS. Reduced motion never
+  // Three frames, 7 seconds each: stadium-screen pace, crossfaded by CSS. Reduced motion never
   // rotates, and a hidden tab pauses so the fade is never wasted offscreen.
   const slides = document.querySelectorAll('[data-slides="true"] .slide');
   if (slides.length > 1 && !reduce.matches) {
@@ -112,7 +112,7 @@
       at = (at + 1) % slides.length;
       slides.forEach((s2, i) => (s2.dataset.on = String(i === at)));
       if (cap) cap.textContent = slides[at].dataset.cap || "";
-    }, 4000);
+    }, 7000);
   }
 
   /* ---- the mobile menu ------------------------------------------------ */

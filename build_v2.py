@@ -314,10 +314,12 @@ def sponsors(c: dict) -> str:
 # The hero rotation: four frames, each with its own crop, crossfading
 # slowly. Not a carousel, no dots, no arrows: the frame changes the way
 # stadium screens change, and reduced motion holds the first frame.
+# Three frames, not four: the Worlds start, the flag, the motion. The
+# Holmenkollen frame left the rotation because it closes the page and a
+# hero should not preview its own ending.
 HERO_SLIDES = [
     ("race-worldcup", "50% 45%"),
-    ("flag-harbin", "50% 30%"),
-    ("holmenkollen", "50% 46%"),
+    ("flag-harbin", "50% 34%"),
     ("double-pole", "48% 22%"),
 ]
 
