@@ -29,7 +29,7 @@
   },
   "hero": {
     "eyebrow": "Cross-Country Skier · India",
-    "line": "The long way to snow.",
+    "line": "India’s pioneer on the world’s snowy slopes. Breaking barriers. Making history.",
     "standfirst": "She grew up on a coffee farm in Karnataka and did not see snow until she was twenty. At thirty she took a World Cup start at 66°N in northern Finland.",
     "standfirstSource": {
       "sourceType": "public-secondary",
@@ -76,7 +76,7 @@
       },
       {
         "k": "Mentored by",
-        "v": "Shiva Keshavan · Six-time Olympian, luge"
+        "v": "Shiva Keshavan · Six-time Olympian, Luge"
       },
       {
         "k": "Trains across",
@@ -93,8 +93,7 @@
       "note": "The first-woman claim is hers, supplied in her own homepage copy. Presented in her voice, attributed to her."
     },
     "profileKicker": "Who she is",
-    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it.",
-    "line2": "India’s pioneer on the world’s snowy slopes. Breaking barriers. Making history."
+    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it."
   },
   "proofOfLevel": [
     {

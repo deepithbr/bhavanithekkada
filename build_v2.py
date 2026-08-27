@@ -348,7 +348,6 @@ def hero_panel(c, img) -> str:
     <p class="caption">Indian cross-country skier</p>
     <h1>Bhavani Thekkada</h1>
     <p class="sub">{e(c['hero']['line'])}</p>
-    <p class="sub sub-2">{e(c['hero'].get('line2') or '')}</p>
   </div>
 </section>"""
 
@@ -444,7 +443,6 @@ def levels_band(c) -> str:
     <div class="prose">
       <p class="caption">The record</p>
       <h2>Level of competition</h2>
-      <p>Where she has raced, and what it has returned so far.</p>
     </div>
     <div class="levels">{lis}</div>
     <p class="caption" style="margin-top:var(--space-md)">
@@ -851,7 +849,7 @@ def journey_page(c, img):
         + road_ahead(c)
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
-                   "From Kodagu to the road that ends in 2030.", body,
+                   "A journey across continents, seasons, and start lines.", body,
                    shot="ridge-sunrise",
                    current="journey.html", pos="50% 62%", og="journey")
 
@@ -1297,7 +1295,7 @@ def achievements_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Achievements",
-                   "The medal record, and where to verify it.", body,
+                   "A record of medals, milestones, and verified results.", body,
                    shot="khelo-medals", current="achievements.html",
                    og="achievements")
 
