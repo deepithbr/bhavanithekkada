@@ -347,8 +347,9 @@ def hero_panel(c, img) -> str:
   <div class="wrap panel-body" data-rise>
     <p class="caption">Indian cross-country skier</p>
     <h1>Bhavani Thekkada</h1>
-    <p class="sub">{e(c['hero']['line'])}</p>
+    <p class="sub hero-line">{e(c['hero']['line'])}</p>
   </div>
+  <div class="scroll-cue" aria-hidden="true"><i></i></div>
 </section>"""
 
 
@@ -465,16 +466,22 @@ def sport_fold(c) -> str:
     ds = sp.get("disciplines", [])
     return f"""
 <section class="prose-fold" id="sport">
-  <div class="wrap prose">
-    <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
-    <h2>{e(sp.get('nordicHeading') or 'Nordic Skiing')}</h2>
-    <p>{e(sp.get('nordicIntro') or '')}</p>
-    <p>{e(sp.get('lede') or '')}</p>
-    <h3>Techniques</h3>
-    <dl class="facts facts-quad">{group(ds[:2])}</dl>
-    <h3>Formats</h3>
-    <dl class="facts facts-quad">{group(ds[2:4])}</dl>
-    <h3 id="winter">{e(sp.get('winterHeading') or '')}</h3>
+  <div class="wrap sport-grid">
+    <div class="prose" data-rise>
+      <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
+      <h2>{e(sp.get('nordicHeading') or 'Nordic Skiing')}</h2>
+      <p>{e(sp.get('nordicIntro') or '')}</p>
+      <p>{e(sp.get('lede') or '')}</p>
+    </div>
+    <div class="sport-cards" data-rise>
+      <h3>Techniques</h3>
+      <dl class="facts facts-pair">{group(ds[:2])}</dl>
+      <h3>Formats</h3>
+      <dl class="facts facts-pair">{group(ds[2:4])}</dl>
+    </div>
+  </div>
+  <div class="wrap prose" id="winter" style="margin-top:var(--space-lg)">
+    <h3>{e(sp.get('winterHeading') or '')}</h3>
     <p>{e(sp.get('winterBody') or '')}</p>
   </div>
 </section>"""
@@ -543,7 +550,7 @@ def records(c, img) -> str:
 </section>"""
 
 
-def tiles(title, sub, cta, items, ground=None) -> str:
+def tiles(title, sub, cta, items, ground=None, kicker=None) -> str:
     """The card row from badosapaula.com, the client's second reference.
 
     A section is four things there: a title, one line, a link, four cards.
@@ -557,8 +564,11 @@ def tiles(title, sub, cta, items, ground=None) -> str:
 <section class="tiles-section"{attrs}>
   <div class="wrap">
     <div class="tiles-head" data-rise>
+      <div>
+      {f'<p class="caption">{e(kicker)}</p>' if kicker else ''}
       <h2>{e(title)}</h2>
       <p class="sub">{e(sub)}</p>
+      </div>
       <a class="btn" data-on="accent" href="{e(href)}">{e(label)}</a>
     </div>
     <div class="tiles">{cards}</div>
@@ -584,6 +594,7 @@ def journey_tiles(c: dict, img: Img) -> str:
         "Six seasons, fourteen race locations, both hemispheres.",
         ("View journey", "journey.html"),
         items,
+        kicker="The journey",
     )
 
 
@@ -591,7 +602,6 @@ def media_tiles(c: dict, img: Img) -> str:
     items = [
         f"""<figure class="tile" data-rise>
       <span class="tile-shot">{img.tag(s, TILE_SIZES)}</span>
-      <figcaption class="caption">{img.caption(s) or 'From the archive'}</figcaption>
     </figure>"""
         for s in MEDIA_TILES
     ]
@@ -606,6 +616,7 @@ def media_tiles(c: dict, img: Img) -> str:
         ("View media", "media.html"),
         items,
         ground="ice",
+        kicker="The archive",
     )
 
 

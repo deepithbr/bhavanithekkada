@@ -2696,3 +2696,99 @@ a {
   letter-spacing: -0.01em;
   margin-top: var(--space-lg);
 }
+
+
+/* ------------------------------------------------ the homepage, composed */
+
+/* Generous vertical rhythm: sections breathe the way the benchmark's do. */
+.prose-fold {
+  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+/* The hero tagline: her sentence, set as an aside rather than a shout. */
+.panel[data-size="hero"] .hero-line {
+  font-style: italic;
+  font-size: var(--text-lg);
+  max-width: 40ch;
+  opacity: 0.92;
+}
+
+/* A quiet scroll cue where the button used to be: one thin line, falling. */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-md);
+  width: 1px;
+  height: 56px;
+  overflow: hidden;
+}
+
+.scroll-cue i {
+  position: absolute;
+  left: 0;
+  top: -100%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--color-ink-2));
+  animation: cue-drop 2.2s var(--ease-in-out) infinite;
+}
+
+@keyframes cue-drop {
+  0% { top: -100%; }
+  60% { top: 100%; }
+  100% { top: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { display: none; }
+}
+
+/* Levels: hairline left rules give the numbers a colonnade to stand in. */
+.levels .level {
+  border-left: var(--rule-hair) solid var(--color-line);
+  padding-left: var(--space-md);
+}
+
+/* The who-she-is facts sit in a ruled strip, not loose on the page. */
+#who-facts .facts-row {
+  border-block: var(--rule-hair) solid var(--color-line);
+  padding-block: var(--space-md);
+}
+
+/* Sport: editorial column left, the four format cards right. */
+.sport-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 960px) {
+  .sport-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+}
+
+.sport-cards h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin-top: var(--space-lg);
+}
+
+.sport-cards h3:first-child {
+  margin-top: 0;
+}
+
+.facts-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Tile-band kickers share the caption voice of every other section. */
+.tiles-head .caption {
+  margin-bottom: var(--space-2xs);
+  color: var(--color-ink-3);
+}
