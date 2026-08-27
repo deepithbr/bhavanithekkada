@@ -621,14 +621,15 @@ def media_tiles(c: dict, img: Img) -> str:
 
 
 def footer(c: dict) -> str:
+    # Her item 6: the block beneath every page goes. What survives is what
+    # her document's Contact section lists: Instagram, email, copyright.
+    # The page links live in the navigation alone.
     ct = c["contact"]
-    items = "".join(f'<a href="{e(h)}">{e(t)}</a>' for t, h in NAV)
     return f"""
 <footer class="foot">
   <div class="wrap">
     <div class="foot-rows" style="margin-top:0;border-top:none">
-      <div class="foot-links">{items}
-        <a href="contact.html">Contact</a>
+      <div class="foot-links">
         <a href="{e(ct['instagramUrl'])}" rel="me">Instagram</a>
         <a href="mailto:{e(ct['email'])}">Email</a>
       </div>
