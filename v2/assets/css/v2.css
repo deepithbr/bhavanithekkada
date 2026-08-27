@@ -2824,15 +2824,34 @@ a {
     background: var(--color-paper);
   }
 
-  /* The story card: the split stretches to the full viewport, and the
-     photograph covers its half edge to edge. */
+  /* The story card: the split stretches to the full viewport. The
+     photograph pins inside it, holding the viewport while the story
+     scrolls through beside her, so she watches the reader read. */
   .stack .split {
     min-height: 100svh;
     background: var(--color-paper-2);
+    align-items: start;
+  }
+
+  .stack .split-shot {
+    position: sticky;
+    top: 0;
+    height: 100svh;
   }
 
   .stack .split-shot img {
     height: 100%;
     object-fit: cover;
   }
+}
+
+
+/* The facts close the story column, spaced like a signature. */
+.split-body .facts {
+  margin-top: var(--space-lg);
+}
+
+.split-body .facts .fact {
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-2xs);
 }

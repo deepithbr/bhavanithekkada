@@ -392,10 +392,10 @@ def quote_card(c) -> str:
 
 
 def who_she_is(c, img) -> str:
-    """Career at a glance and Who she is, one section. Separately the
-    glance was a pull quote alone on white and read as a gap; merged,
-    her statement opens the story panel and the story follows it, with
-    her three facts and the latitude line closing the section."""
+    """The story card. Her portrait pins and holds the viewport while
+    the story and her three facts scroll through beside it; the facts
+    live in the column so the text side is long enough to actually
+    travel past the pinned photograph."""
     h = c["hero"]
     facts = "".join(
         f'<div class="fact"><dt class="caption">{e(x["k"])}</dt>'
@@ -411,6 +411,7 @@ def who_she_is(c, img) -> str:
     <p>{e(h['profileBody'])}</p>
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
+    <dl class="facts">{facts}</dl>
   </div>
 </section>"""
 
@@ -680,7 +681,6 @@ def page(c: dict, img: Img) -> str:
 {quote_card(c)}
 {who_she_is(c, img)}
 </div>
-{who_facts(c)}
 {sponsors(c)}
 {levels_band(c)}
 {sport_fold(c)}
