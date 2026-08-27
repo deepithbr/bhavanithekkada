@@ -2792,3 +2792,47 @@ a {
   margin-bottom: var(--space-2xs);
   color: var(--color-ink-3);
 }
+
+
+/* ---------------------------------------------------- the opening stack */
+
+/*
+ * The benchmark's signature move: the first folds pin at the top and the
+ * next one rides up over them, so the opening reads as cards being laid
+ * on a table. Pure sticky positioning, no scroll hijacking; a reader
+ * scrolling fast simply sees sections. Desktop only, because the story
+ * card cannot fit a phone viewport and a clipped sticky card is worse
+ * than an honest scroll.
+ */
+@media (min-width: 900px) {
+  .stack > * {
+    position: sticky;
+    top: 0;
+  }
+
+  /* Every card after the first casts back onto the one beneath it. */
+  .stack > * + * {
+    box-shadow: 0 -28px 70px oklch(20% 0.03 255 / 0.28);
+  }
+
+  /* The statement card: full viewport, her words centred, opaque ground
+     so the hero disappears completely beneath it. */
+  .stack .stack-card {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    background: var(--color-paper);
+  }
+
+  /* The story card: the split stretches to the full viewport, and the
+     photograph covers its half edge to edge. */
+  .stack .split {
+    min-height: 100svh;
+    background: var(--color-paper-2);
+  }
+
+  .stack .split-shot img {
+    height: 100%;
+    object-fit: cover;
+  }
+}

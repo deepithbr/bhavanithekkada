@@ -378,7 +378,7 @@ def quote_card(c) -> str:
     replaces the bare pull quote that read as an empty stretch."""
     h = c["hero"]
     return f"""
-<section class="prose-fold" id="glance">
+<section class="prose-fold stack-card" id="glance">
   <div class="wrap">
     <figure class="quote-card" data-rise>
       <span class="qmark" aria-hidden="true">&ldquo;</span>
@@ -412,7 +412,16 @@ def who_she_is(c, img) -> str:
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
   </div>
-</section>
+</section>"""
+
+
+def who_facts(c) -> str:
+    facts = "".join(
+        f'<div class="fact"><dt class="caption">{e(x["k"])}</dt>'
+        f'<dd>{e(x["v"])}</dd></div>'
+        for x in c["hero"].get("profileFacts", [])
+    )
+    return f"""
 <section class="prose-fold" id="who-facts">
   <div class="wrap">
     <dl class="facts facts-row">{facts}</dl>
@@ -666,10 +675,13 @@ def page(c: dict, img: Img) -> str:
 <a class="skip" href="#main">Skip to content</a>
 {nav_block(current="index.html", glass=True)}
 <main id="main">
+<div class="stack">
 {hero_panel(c, img)}
 {quote_card(c)}
-{sponsors(c)}
 {who_she_is(c, img)}
+</div>
+{who_facts(c)}
+{sponsors(c)}
 {levels_band(c)}
 {sport_fold(c)}
 {journey_tiles(c, img)}
