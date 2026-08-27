@@ -155,14 +155,14 @@
     box.setAttribute("aria-label", "Photograph viewer");
     box.tabIndex = -1;
     box.innerHTML =
-      '<img alt=""><p class="caption"></p>' +
+      '<img alt="">' +
       '<span class="count"></span>' +
       '<button type="button" class="shut" aria-label="Close">&times;</button>' +
       '<nav><button type="button" data-go="-1" aria-label="Previous photograph">&larr;</button>' +
       '<button type="button" data-go="1" aria-label="Next photograph">&rarr;</button></nav>';
     document.body.appendChild(box);
     const pic = box.querySelector("img");
-    const cap = box.querySelector(".caption");
+    const cap = null; // captions came off the photographs, 27 Aug list
     const count = box.querySelector(".count");
     const items = Array.from(fulls);
     let at = 0;
@@ -172,7 +172,7 @@
       const a = items[at];
       pic.src = a.getAttribute("href");
       pic.alt = (a.querySelector("img") || {}).alt || "";
-      cap.textContent = a.dataset.cap || "";
+      if (cap) cap.textContent = a.dataset.cap || "";
       count.textContent = (at + 1) + " / " + items.length;
     };
 

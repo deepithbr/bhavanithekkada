@@ -2633,3 +2633,66 @@ a {
 #who-facts .statline {
   margin-top: var(--space-md);
 }
+
+
+/* ------------------------------------------------------- the quote card */
+
+/* Her reference: Badosa's quote treatment. Accent bar, oversized mark,
+   the words in the reading face, her name beneath in caps. */
+.quote-card {
+  position: relative;
+  margin: 0;
+  background: var(--color-paper-2);
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
+.qmark {
+  position: absolute;
+  top: 0.2rem;
+  left: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.35;
+  user-select: none;
+}
+
+.quote-card blockquote {
+  margin: 0;
+}
+
+.quote-card blockquote p {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-xl);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--color-ink);
+  text-align: center;
+}
+
+.quote-card figcaption {
+  margin-top: var(--space-md);
+  text-align: center;
+  color: var(--color-ink-3);
+}
+
+/* The hero's second line sits quieter under the tagline. */
+.panel[data-size="hero"] .sub-2 {
+  font-size: var(--text-base);
+  opacity: 0.85;
+}
+
+/* Sport group labels and prose h3 in general. */
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-lg);
+}

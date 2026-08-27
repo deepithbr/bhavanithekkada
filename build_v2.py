@@ -262,8 +262,8 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
     if cta:
         label, href = cta
         btn = f'<a class="btn" data-on="shot" href="{e(href)}">{e(label)}</a>'
-    cap = img.caption(slot)
-    cap = f'<p class="caption">{cap}</p>' if cap else ""
+    # Her 27 Aug design list: no place-and-date captions on photographs.
+    cap = ""
     shot = img.tag(slot, "100vw", eager=hero)
     if pos:
         # Steer the cover crop for this panel only. The library's focal point
@@ -341,7 +341,6 @@ def hero_panel(c, img) -> str:
         if n > 0:
             tag = tag.replace(' loading="eager"', ' loading="lazy"')
         shots.append(tag)
-    first_cap = img.caption(HERO_SLIDES[0][0]) or ""  # entities intact
     return f"""
 <section class="panel" data-size="hero">
   <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
@@ -349,8 +348,7 @@ def hero_panel(c, img) -> str:
     <p class="caption">Indian cross-country skier</p>
     <h1>Bhavani Thekkada</h1>
     <p class="sub">{e(c['hero']['line'])}</p>
-    <a class="btn" data-on="shot" href="journey.html">Explore my journey</a>
-    <p class="caption" id="hero-cap">{first_cap}</p>
+    <p class="sub sub-2">{e(c['hero'].get('line2') or '')}</p>
   </div>
 </section>"""
 
@@ -374,6 +372,25 @@ def glance(c) -> str:
 </section>"""
 
 
+def quote_card(c) -> str:
+    """Her design reference for the statement: a quote card, oversized
+    marks, the words in the reading face, her name beneath. The card
+    replaces the bare pull quote that read as an empty stretch."""
+    h = c["hero"]
+    return f"""
+<section class="prose-fold" id="glance">
+  <div class="wrap">
+    <figure class="quote-card" data-rise>
+      <span class="qmark" aria-hidden="true">&ldquo;</span>
+      <blockquote>
+        <p>{e(h.get('glanceHeadline') or '')} {e(h.get('glanceBody') or '')}</p>
+      </blockquote>
+      <figcaption class="caption">Bhavani, in her own words</figcaption>
+    </figure>
+  </div>
+</section>"""
+
+
 def who_she_is(c, img) -> str:
     """Career at a glance and Who she is, one section. Separately the
     glance was a pull quote alone on white and read as a gap; merged,
@@ -389,11 +406,8 @@ def who_she_is(c, img) -> str:
 <section class="split" id="who">
   <figure class="split-shot">{img.tag(SHOTS['about'], "(min-width:900px) 50vw, 100vw")}</figure>
   <div class="split-body" data-rise>
-    <p class="caption">{e(h.get('glanceKicker') or 'Career at a glance')}</p>
-    <h2>{e(h.get('glanceHeadline') or '')}</h2>
-    <p class="split-quote">{e(h.get('glanceBody') or '')}</p>
-    <p class="split-cite caption">Bhavani, in her own words</p>
-    <h3>{e(h['profileHeading'])}</h3>
+    <p class="caption">{e(h.get('profileKicker') or 'Who she is')}</p>
+    <h2>{e(h['profileHeading'])}</h2>
     <p>{e(h['profileBody'])}</p>
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
@@ -402,7 +416,6 @@ def who_she_is(c, img) -> str:
 <section class="prose-fold" id="who-facts">
   <div class="wrap">
     <dl class="facts facts-row">{facts}</dl>
-    {statline(c)}
   </div>
 </section>"""
 
@@ -444,18 +457,25 @@ def sport_fold(c) -> str:
     """The sport, in her structure: headline, one paragraph, four format
     cards, then the winter that moves around the world."""
     sp = c["sport"]
-    cards = "".join(
-        f'<div class="fact"><dt class="caption">{e(d["name"])}</dt>'
-        f'<dd>{e(d.get("note") or "")}</dd></div>'
-        for d in sp.get("disciplines", [])[:4]
-    )
+
+    def group(pair):
+        return "".join(
+            f'<div class="fact"><dt class="caption">{e(d["name"])}</dt>'
+            f'<dd>{e(d.get("note") or "")}</dd></div>'
+            for d in pair
+        )
+    ds = sp.get("disciplines", [])
     return f"""
 <section class="prose-fold" id="sport">
   <div class="wrap prose">
     <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
-    <h2>{e(sp.get('headline') or '')}</h2>
+    <h2>{e(sp.get('nordicHeading') or 'Nordic Skiing')}</h2>
+    <p>{e(sp.get('nordicIntro') or '')}</p>
     <p>{e(sp.get('lede') or '')}</p>
-    <dl class="facts facts-quad">{cards}</dl>
+    <h3>Techniques</h3>
+    <dl class="facts facts-quad">{group(ds[:2])}</dl>
+    <h3>Formats</h3>
+    <dl class="facts facts-quad">{group(ds[2:4])}</dl>
     <h3 id="winter">{e(sp.get('winterHeading') or '')}</h3>
     <p>{e(sp.get('winterBody') or '')}</p>
   </div>
@@ -597,8 +617,7 @@ def footer(c: dict) -> str:
     return f"""
 <footer class="foot">
   <div class="wrap">
-    <p class="foot-statement">Indian cross-country skier, on the road to 2030.</p>
-    <div class="foot-rows">
+    <div class="foot-rows" style="margin-top:0;border-top:none">
       <div class="foot-links">{items}
         <a href="contact.html">Contact</a>
         <a href="{e(ct['instagramUrl'])}" rel="me">Instagram</a>
@@ -618,7 +637,7 @@ def page(c: dict, img: Img) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="only light">
 <title>Bhavani Thekkada | Indian cross-country skier</title>
 <meta name="description" content="{e(desc)}">
 <meta property="og:type" content="profile">
@@ -638,6 +657,7 @@ def page(c: dict, img: Img) -> str:
 {nav_block(current="index.html", glass=True)}
 <main id="main">
 {hero_panel(c, img)}
+{quote_card(c)}
 {sponsors(c)}
 {who_she_is(c, img)}
 {levels_band(c)}
@@ -680,7 +700,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="only light">
 <title>{e(title)} | Bhavani Thekkada</title>
 <meta name="description" content="{e(lede)}">
 <meta property="og:type" content="article">
@@ -965,16 +985,18 @@ def record_fold(c) -> str:
             )
         return f'<table class="medals"><tbody>{"".join(out)}</tbody></table>'
 
+    # Her item 7: the tables run the full content width, the heading
+    # keeps the prose measure.
     return f"""
 <section class="prose-fold" id="records">
-  <div class="wrap prose">
-    <h2>International <span class="count">{len(intl)}</span></h2>
+  <div class="wrap">
+    <div class="prose"><h2>International <span class="count">{len(intl)}</span></h2></div>
     {grouped(intl)}
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">
-  <div class="wrap prose">
-    <h2>National <span class="count">{len(natl)}</span></h2>
+  <div class="wrap">
+    <div class="prose"><h2>National <span class="count">{len(natl)}</span></h2></div>
     {grouped(natl)}
   </div>
 </section>"""
@@ -1126,6 +1148,8 @@ def partnership_page(c, img):
   <div class="wrap prose">
     <h2>Current support</h2>
     <dl class="facts">{support}</dl>
+    <h3 style="margin-top:var(--space-lg)">Open to</h3>
+    <p>{" &middot; ".join(e(x) for x in c["partnership"].get("openTo", []))}.</p>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice" id="contact">
@@ -1401,7 +1425,7 @@ def main() -> int:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light">
+<meta name="color-scheme" content="only light">
 <title>Page not found | Bhavani Thekkada</title>
 <link rel="icon" href="/v2/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{e(FONTS)}">

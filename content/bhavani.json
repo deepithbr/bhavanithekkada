@@ -85,7 +85,7 @@
     ],
     "glanceKicker": "Career at a glance",
     "glanceHeadline": "When the path doesn’t exist, build one.",
-    "glanceBody": "From the coffee estates of Kodagu to international start lines, this journey has been built across continents and seasons. In a sport with limited pathways in India, I became the country’s first woman to win an international cross-country skiing medal — and I’m still building towards what comes next.",
+    "glanceBody": "From the coffee estates of Kodagu to international start lines, Bhavani Thekkada’s journey has been built across continents and seasons. In a sport with limited pathways in India, she became the country’s first woman to win an international cross-country skiing medal — and is still building towards what comes next.",
     "glanceSource": {
       "sourceType": "client-supplied",
       "sourceName": "web26bt.pdf, homepage copy, 26 Aug 2026",
@@ -93,7 +93,8 @@
       "note": "The first-woman claim is hers, supplied in her own homepage copy. Presented in her voice, attributed to her."
     },
     "profileKicker": "Who she is",
-    "profileBody3": "Her father, Thekkada Nanjunda, who has spent his life on the coffee farm, never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it."
+    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it.",
+    "line2": "India’s pioneer on the world’s snowy slopes. Breaking barriers. Making history."
   },
   "proofOfLevel": [
     {
@@ -244,7 +245,7 @@
         "id": "ncc",
         "year": "2016",
         "heading": "The Republic Day contingent",
-        "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp. Her way to altitude came through a cadet uniform.",
+        "body": "Selected for the NCC contingent at the Republic Day Parade in New Delhi, a year after the All India NCC camp.",
         "image": "republic-day-2016",
         "temperature": "warm",
         "sourceRef": "athlete-brief"
@@ -252,8 +253,8 @@
       {
         "id": "snow",
         "year": "2018",
-        "heading": "Snow, and then skis",
-        "body": "She had seen snow for the first time only three years before. Skis arrived as equipment for the instructing job, and the same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
+        "heading": "Climbed Mount Elbrus",
+        "body": "She started alpine skiing. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
         "image": "first-skis-2018",
         "temperature": "cool",
         "sourceRef": "athlete-brief"
@@ -262,7 +263,7 @@
         "id": "certified",
         "year": "2019–2020",
         "heading": "Certified abroad, then cross-country",
-        "body": "She took an international ski instructor certification in New Zealand, on an active volcano, then spent a season skiing abroad. Cross-country followed in 2020, the endurance end of the sport she was already built for.",
+        "body": "Took an international ski instructor certification in New Zealand, on an active volcano, then spent a season skiing abroad. Cross-country followed in 2020.",
         "image": "ruapehu",
         "temperature": "cool",
         "sourceRef": "athlete-brief"
@@ -271,7 +272,7 @@
         "id": "international",
         "year": "2022–",
         "heading": "Onto the FIS circuit",
-        "body": "Her first FIS-scored races were at Akureyri in northern Iceland, in January 2022. Planica followed in 2023 and Kazakhstan in 2024, then Harbin, Trondheim, Corralco and a first World Cup start at Ruka, all inside 2025.",
+        "body": "First FIS-scored races at Akureyri, northern Iceland, in January 2022. Planica followed in 2023 and Kazakhstan in 2024, then Harbin, Trondheim, Corralco and a first World Cup start at Ruka.",
         "image": "ski-city-overlook",
         "temperature": "cool",
         "sourceRef": "fis"
@@ -1532,7 +1533,7 @@
       "sourceRef": "athlete-brief"
     },
     "openTo": [
-      "Sponsorship",
+      "Sponsorships",
       "Brand partnerships",
       "Campaigns",
       "Product collaborations",
@@ -1881,7 +1882,7 @@
   },
   "sport": {
     "kicker": "The sport",
-    "lede": "Cross-country skiing combines two techniques, Classic and Freestyle, across race formats that run from high-speed Sprint events to demanding Distance races. She competes across both techniques and both formats, in races from 5 km to 21 km so far.",
+    "lede": "Two techniques, two race formats, endless ways to race. Cross-country skiing combines two techniques — Classic and Freestyle — across race formats that run from high-speed Sprint events to demanding Distance races. Bhavani competes across both techniques and both formats, in races from 5 km to 21 km so far.",
     "disciplines": [
       {
         "name": "Classic",
@@ -1903,7 +1904,9 @@
     "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September.",
     "headline": "Two techniques. Two race formats. Endless ways to race.",
     "winterHeading": "Following winter around the world.",
-    "winterBody": "With limited snow infrastructure in India, training and competition follow the seasons: from the Indian Himalayas to Europe, South America, New Zealand and across Asia."
+    "winterBody": "With limited snow infrastructure in India, training and competition follow the seasons: from the Indian Himalayas to Europe, South America, New Zealand and across Asia.",
+    "nordicHeading": "Nordic Skiing",
+    "nordicIntro": "Known as cross-country skiing, this is the ultimate test of human endurance. Athletes navigate snow-covered terrain using only their own power, combining explosive strength with cardiovascular excellence."
   },
   "headline": {
     "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",
