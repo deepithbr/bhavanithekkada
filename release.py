@@ -49,7 +49,13 @@ def main() -> int:
 
     # Firebase, Netlify and Cloudflare Pages all read this. Long cache on the
     # fingerprinted assets, none on the document, matching serve.py.
-    (DIST / "_headers").write_text(
+    #
+    # Written to the repo root as well as dist. Pages reads _headers from
+    # the root of whatever it serves, and this project keeps functions/ at
+    # the repo root, which only works if Pages is pointed at the root. In
+    # that setup a dist-only _headers is never deployed and the cache and
+    # security headers silently do nothing.
+    headers = (
         "/*\n"
         "  X-Content-Type-Options: nosniff\n"
         "  Referrer-Policy: strict-origin-when-cross-origin\n"
@@ -58,9 +64,10 @@ def main() -> int:
         "  Cache-Control: no-cache\n"
         "\n"
         "/assets/*\n"
-        "  Cache-Control: public, max-age=31536000, immutable\n",
-        encoding="utf-8",
+        "  Cache-Control: public, max-age=31536000, immutable\n"
     )
+    (DIST / "_headers").write_text(headers, encoding="utf-8")
+    (ROOT / "_headers").write_text(headers, encoding="utf-8")
 
     files = sorted(p for p in DIST.rglob("*") if p.is_file())
     total = sum(p.stat().st_size for p in files)
