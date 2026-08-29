@@ -350,10 +350,10 @@ def hero_panel(c, img) -> str:
     <div class="hero-chip">
     <p class="caption hero-tag">Indian cross-country skier</p>
     <p class="hero-cred" aria-live="off">
-      <span data-on="true">Three World Cup starts</span>
-      <span data-on="false">Two World Championships</span>
-      <span data-on="false">Asian Winter Games flagbearer</span>
-      <span data-on="false">Twenty national medals</span>
+      <span data-on="true"><b>03</b> World Cup starts</span>
+      <span data-on="false"><b>02</b> World Championships</span>
+      <span data-on="false"><b>01</b> Asian Winter Games, flagbearer</span>
+      <span data-on="false"><b>20</b> National medals</span>
     </p>
     </div>
   </div>

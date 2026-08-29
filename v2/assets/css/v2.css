@@ -3509,14 +3509,15 @@ a {
    rotating credential. */
 .hero-chip {
   display: inline-grid;
-  gap: var(--space-2xs);
+  gap: var(--space-3xs);
   justify-self: start;
   margin-top: var(--space-md);
-  padding: var(--space-sm) var(--space-md);
-  background: rgba(4, 12, 25, 0.48);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  padding: var(--space-sm) var(--space-md) var(--space-xs);
+  background: rgba(10, 22, 40, 0.26);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border-left: 3px solid var(--color-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .panel[data-size="hero"] .hero-chip .hero-tag {
@@ -3525,4 +3526,40 @@ a {
 
 .hero-chip .hero-cred span {
   text-shadow: none;
+}
+
+
+/* Inside the chip: the credential cycles as a stat, oversized numeral in
+   the light accent with a caps label beside it, the same voice as the
+   Level of competition band further down the page. */
+.hero-chip .hero-tag {
+  color: oklch(78% 0.1 245);
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+}
+
+.hero-chip .hero-cred {
+  height: 2.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(100% 0 0 / 0.92);
+}
+
+.hero-chip .hero-cred span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+}
+
+.hero-chip .hero-cred b {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: oklch(78% 0.1 245);
+  font-variant-numeric: tabular-nums;
 }
