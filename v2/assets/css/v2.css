@@ -4420,7 +4420,7 @@ body {
    visiting sponsor is reading for. The marks keep a light ground. */
 
 .backing {
-  padding-block: var(--space-3xl);
+  padding-block: var(--space-2xl) var(--space-lg);
 }
 
 .backing-head {
@@ -4435,7 +4435,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: clamp(2rem, 6vw, 5.5rem);
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
 }
 
 /* One box, one optical size, whatever shape the artwork arrives in. The
@@ -4458,7 +4458,7 @@ body {
 }
 
 .backing-more {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
   padding-top: var(--space-md);
   border-top: var(--rule-hair) solid var(--color-line);
   text-align: center;
@@ -4676,10 +4676,13 @@ body {
   .stack > :nth-child(7) { z-index: 7; }
 
   /* Each card needs an opaque ground or the one beneath shows through. */
+  /* The last card is a footer plate, not a fold. Holding it to a full
+     viewport left a screenful of nothing between the marks and the site
+     footer, so it is only as tall as what it carries. */
   .stack > .backing {
     background: var(--color-paper-2);
-    display: grid;
-    align-content: center;
+    display: block;
+    min-height: 0;
   }
 
   /* The footer is not a card; without a stacking order of its own the

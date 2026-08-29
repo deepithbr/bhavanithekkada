@@ -1434,7 +1434,12 @@ def achievements_page(c, img):
     return subpage(c, img, "Achievements",
                    "A record of medals, milestones, and verified results.", body,
                    shot="khelo-medals", current="achievements.html",
-                   og="achievements")
+                   # The library focal sits at 31%, which is her eye line.
+                   # A banner this wide shows only a fifth of a portrait
+                   # source, so 31% starts the band across her face and
+                   # cuts the cap off. Her head sits at 19-24%; anchoring
+                   # at 20% keeps it whole with air above it.
+                   pos="50% 20%", og="achievements")
 
 
 def speaking_page(c, img):
