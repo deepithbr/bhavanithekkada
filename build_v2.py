@@ -93,6 +93,9 @@ MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "nordic-overlo
 
 TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 
+# Three across on a desktop, two on a phone.
+SEASON_SIZES = "(min-width:900px) 30vw, 45vw"
+
 
 def fingerprint() -> str:
     """Short content hash over every asset the page links.
@@ -284,6 +287,89 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
     <p class="sub">{e(sub)}</p>
     {btn}
     {cap}
+  </div>
+</section>"""
+
+
+SEASONS = [
+    ("2020", "downhill-tuck"),
+    ("2021", "contingent-2021"),
+    ("2022", "nordic-overlook"),
+    ("2023", "podium-gulmarg-2023"),
+    ("2024", "khelo-medals"),
+    ("2025", "flag-harbin"),
+]
+
+
+def seasons(c, img) -> str:
+    """Six seasons, one photograph each.
+
+    The years are the ones recorded against the photographs in the image
+    library, not years written to fit a story. Nothing is captioned beyond
+    its year, because a caption this section cannot verify is worse than
+    no caption at all; the alt text carries the description."""
+    cards = "".join(
+        f'<a class="season" href="journey.html" data-rise>'
+        f'<span class="season-shot">{img.tag(slot, SEASON_SIZES)}</span>'
+        f'<span class="season-year">{e(year)}</span></a>'
+        for year, slot in SEASONS
+        if img.get(slot)
+    )
+    return f"""
+<section class="seasons-band" id="seasons">
+  <div class="wrap">
+    <div class="seasons-head" data-rise>
+      <div>
+        <p class="caption">The journey</p>
+        <h2>Six seasons</h2>
+      </div>
+      <div class="seasons-say">
+        <p>Fourteen race locations, both hemispheres. There was no route to
+        follow out of India in this sport, so it got built one start line at
+        a time.</p>
+        <a class="btn" href="journey.html">View journey</a>
+      </div>
+    </div>
+    <div class="seasons-grid">{cards}</div>
+  </div>
+</section>"""
+
+
+def backing(c) -> str:
+    """The wrap-up: who actually stands behind the season.
+
+    This was a logo strip wedged between two sections. As the last thing on
+    the page it can say what each one provides, which is the part a visiting
+    sponsor is reading for. The marks stay on a light ground; forcing them
+    white flattened the Reliance lockup and lost the Karnataka crest.
+
+    Only marks with written permission on file appear. Permission was
+    confirmed on 11 Aug 2026 and is recorded in the content file."""
+    cur = c["partnership"].get("current") or {}
+    rows = [p for p in cur.get("list", []) if p.get("logo")]
+    if not rows:
+        return ""
+    cards = "".join(
+        f'<article class="backer" data-rise>'
+        f'<span class="backer-mark">'
+        f'<img src="../assets/img/partners/{e(p["logo"])}" '
+        f'alt="{e(p["name"])}" loading="lazy" decoding="async"></span>'
+        f'<p class="caption backer-kind">{e(p.get("kind") or "")}</p>'
+        f'<h3>{e(p["name"])}</h3>'
+        f'<p class="backer-role">{e(p.get("role") or "")}</p>'
+        f'</article>'
+        for p in rows
+    )
+    return f"""
+<section class="backing" id="backing" data-ground="ice">
+  <div class="wrap">
+    <div class="backing-head" data-rise>
+      <p class="caption">{e(cur.get('note') or 'Current support')}</p>
+      <h2>Backed by</h2>
+    </div>
+    <div class="backers">{cards}</div>
+    <p class="backing-more caption" data-rise>
+      <a href="partnership.html">Partner with her &rarr;</a></p>
   </div>
 </section>"""
 
@@ -681,19 +767,13 @@ def page(c: dict, img: Img) -> str:
 <div class="stack">
 {hero_panel(c, img)}
 {who_she_is(c, img)}
-{panel(img, 'chile-lake', 'My journey',
-       'Six seasons, fourteen race locations, both hemispheres. There was '
-       'no route to follow out of India in this sport, so it got built one '
-       'start line at a time.',
-       ('View journey', 'journey.html'), kicker='The journey',
-       pos='38% 44%', align='right')}
-</div>
-{sponsors(c)}
 {sport_fold(c, img)}
-{media_tiles(c, img)}
+</div>
+{seasons(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
        'Four seasons between here and a start list in the French Alps.',
        ('Partner with her', 'partnership.html'), pos='50% 46%')}
+{backing(c)}
 </main>
 {footer(c)}
 <script src="assets/js/v2.js?v={v}" defer></script>

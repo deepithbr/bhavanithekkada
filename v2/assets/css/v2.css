@@ -4395,3 +4395,194 @@ body {
     gap: var(--space-lg);
   }
 }
+
+/* ==================== the sport as the third card
+
+   The client's section order: hero, Who she is, then the sport, all three
+   sliding up as cards. The band needs to fill the card and paint its own
+   ground, or the one beneath shows through as it rises. */
+
+@media (min-width: 900px) {
+  .stack > .sport-band {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    background: var(--color-paper);
+    padding-block: var(--space-2xl);
+  }
+}
+
+
+/* ==================== six seasons
+
+   One photograph a year, captioned with nothing but the year. The years
+   are the ones recorded against the photographs, so the row cannot claim
+   a season a picture does not belong to. */
+
+.seasons-band {
+  background: var(--color-paper-2);
+  padding-block: var(--space-3xl);
+}
+
+.seasons-head {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: end;
+  margin-bottom: var(--space-xl);
+}
+
+@media (min-width: 900px) {
+  .seasons-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-2xl);
+  }
+}
+
+.seasons-head h2 {
+  font-size: var(--text-3xl);
+  margin-top: var(--space-2xs);
+}
+
+.seasons-say {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-md);
+}
+
+.seasons-say p {
+  color: var(--color-ink-body);
+  max-width: 46ch;
+}
+
+.seasons-grid {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .seasons-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+.season {
+  display: grid;
+  gap: var(--space-2xs);
+  text-decoration: none;
+  color: inherit;
+}
+
+.season-shot {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-paper-3, var(--color-paper));
+}
+
+.season-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 600ms var(--ease-out);
+}
+
+.season:hover .season-shot img,
+.season:focus-visible .season-shot img {
+  transform: scale(1.035);
+}
+
+.season-year {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink);
+  padding-top: var(--space-3xs);
+  border-top: 2px solid var(--color-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .season-shot img {
+    transition: none;
+  }
+}
+
+
+/* ==================== the wrap-up: who backs the season
+
+   This was a logo strip wedged between two sections. As the last thing on
+   the page it says what each supporter provides, which is the part a
+   visiting sponsor is reading for. The marks keep a light ground. */
+
+.backing {
+  padding-block: var(--space-3xl);
+}
+
+.backing-head h2 {
+  font-size: var(--text-3xl);
+  margin-top: var(--space-2xs);
+}
+
+.backers {
+  display: grid;
+  gap: var(--space-xl);
+  margin-top: var(--space-2xl);
+}
+
+@media (min-width: 820px) {
+  .backers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.backer {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-md);
+}
+
+/* One box, one optical size, whatever shape the artwork arrives in. */
+.backer-mark {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 3.6rem;
+  margin-bottom: var(--space-2xs);
+}
+
+.backer-mark img {
+  max-height: 100%;
+  max-width: 11rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.backer-kind {
+  color: var(--color-ink-3);
+}
+
+.backer h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.backer-role {
+  color: var(--color-ink-body);
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.55;
+}
+
+.backing-more {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-line);
+}
