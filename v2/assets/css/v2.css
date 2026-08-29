@@ -3462,3 +3462,43 @@ a {
     width: 100%;
   }
 }
+
+
+/* -------------------------------------- hero tagline and credential line */
+
+.panel[data-size="hero"] .hero-tag {
+  margin-top: var(--space-sm);
+  color: oklch(100% 0 0 / 0.88);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+
+/* One fixed line; credentials fade through it. No layout shift, ever. */
+.hero-cred {
+  position: relative;
+  height: 1.6em;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: oklch(100% 0 0 / 0.95);
+}
+
+.hero-cred span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+  text-shadow: 0 1px 2px rgba(3, 9, 20, 0.6), 0 4px 16px rgba(3, 9, 20, 0.5);
+}
+
+.hero-cred span[data-on="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cred span {
+    transition: none;
+  }
+}

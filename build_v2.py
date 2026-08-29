@@ -347,6 +347,13 @@ def hero_panel(c, img) -> str:
   <div class="wrap panel-body hero-min" data-rise>
     <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
       <span class="stagger">Thekkada</span></h1>
+    <p class="caption hero-tag">Indian cross-country skier</p>
+    <p class="hero-cred" aria-live="off">
+      <span data-on="true">Three World Cup starts</span>
+      <span data-on="false">Two World Championships</span>
+      <span data-on="false">Asian Winter Games flagbearer</span>
+      <span data-on="false">Twenty national medals</span>
+    </p>
   </div>
 </section>"""
 
@@ -1170,6 +1177,17 @@ def partnership_page(c, img):
     )
     body = f"""
 <section class="prose-fold">
+  <div class="wrap prose">
+    <p class="pull">From the coffee estates of Kodagu to international
+    start lines, this journey has been built across continents and
+    seasons. In a sport with limited pathways in India, I became the
+    country&rsquo;s first woman to win an international cross-country
+    skiing medal &mdash; and I&rsquo;m still building towards what comes
+    next.</p>
+    <p class="pull-cite caption">Bhavani Thekkada</p>
+  </div>
+</section>
+<section class="prose-fold" data-ground="ice">
   <div class="wrap">
     <div class="target" data-rise>
       <span class="target-year" aria-hidden="true">2030</span>

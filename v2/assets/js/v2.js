@@ -127,6 +127,20 @@
     }, 7000);
   }
 
+  /* ---- the credential line -------------------------------------------- */
+
+  // Under the hero name: her verified credentials fade through one fixed
+  // line, 3.4s each. Reduced motion holds the first; a hidden tab pauses.
+  const creds = document.querySelectorAll(".hero-cred span");
+  if (creds.length > 1 && !reduce.matches) {
+    let ci = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      ci = (ci + 1) % creds.length;
+      creds.forEach((c2, i) => (c2.dataset.on = String(i === ci)));
+    }, 3400);
+  }
+
   /* ---- the mobile menu ------------------------------------------------ */
 
   // One button, one attribute. Escape closes and hands focus back; a tap on
