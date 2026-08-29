@@ -3422,7 +3422,12 @@ a {
   line-height: 1.05;
   letter-spacing: 0.01em;
   color: oklch(99% 0.002 250);
-  text-shadow: 0 2px 60px oklch(5% 0.02 255 / 0.45);
+  /* The name crosses bright bib and snow; the strokes carry their own
+     edge: one tight shadow for definition, two soft ones for ground. */
+  text-shadow:
+    0 1px 2px rgba(3, 9, 20, 0.6),
+    0 4px 16px rgba(3, 9, 20, 0.55),
+    0 12px 44px rgba(3, 9, 20, 0.5);
 }
 
 .panel[data-size="hero"] .hero-min h1::after {
@@ -3436,16 +3441,16 @@ a {
 /* One even veil so the name reads on any exposure; no zones, no fades. */
 .panel[data-size="hero"] .panel-shot::after {
   background: linear-gradient(
-    rgba(3, 9, 20, 0.2),
-    rgba(3, 9, 20, 0.2)
+    rgba(3, 9, 20, 0.42),
+    rgba(3, 9, 20, 0.42)
   );
 }
 
 @media (min-width: 900px) {
   .panel[data-size="hero"] .panel-shot::after {
     background: linear-gradient(
-      rgba(3, 9, 20, 0.2),
-      rgba(3, 9, 20, 0.2)
+      rgba(3, 9, 20, 0.42),
+      rgba(3, 9, 20, 0.42)
     );
   }
 }
