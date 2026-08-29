@@ -84,7 +84,9 @@ SHOTS = {
     "hero": "hero-race-pro",
     "sport": "classic-tracks",
     "about": "portrait-studio",
-    "closer": "holmenkollen",
+    # Swapped with the Partnership banner at the client's request,
+    # 30 Aug 2026, to see how each reads in the other place.
+    "closer": "summit-solo",
 }
 
 # The four photographs in the media row. Journey takes its four from the story
@@ -789,7 +791,7 @@ def page(c: dict, img: Img) -> str:
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
-       ('View journey', 'journey.html'), pos='50% 46%',
+       ('View journey', 'journey.html'), pos='50% 52%',
        size='closer', mark='Olympic Winter Games')}
 {media_strip(c, img)}
 {backing(c)}
@@ -1315,8 +1317,11 @@ def partnership_page(c, img):
 </section>"""
     return subpage(c, img, "Partnership",
                    "What support pays for, and who backs her now.",
-                   body, shot="summit-solo", current="partnership.html",
-                   pos="50% 46%", og="partnership")
+                   body, shot="holmenkollen", current="partnership.html",
+                   # Portrait source in a wide banner shows about a fifth
+                   # of its height, so the anchor sits on her rather than
+                   # on the stadium above her.
+                   pos="52% 38%", og="partnership")
 
 
 def enquiry_block(c, heading="Work with Bhavani") -> str:
