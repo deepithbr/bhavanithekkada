@@ -127,18 +127,64 @@
     }, 7000);
   }
 
-  /* ---- the credential line -------------------------------------------- */
+  /* ---- the level of competition, typed --------------------------------- */
 
-  // Under the hero name: her verified credentials fade through one fixed
-  // line, 3.4s each. Reduced motion holds the first; a hidden tab pauses.
-  const creds = document.querySelectorAll(".hero-cred span");
-  if (creds.length > 1 && !reduce.matches) {
-    let ci = 0;
-    setInterval(() => {
-      if (document.hidden) return;
-      ci = (ci + 1) % creds.length;
-      creds.forEach((c2, i) => (c2.dataset.on = String(i === ci)));
-    }, 3400);
+  // Her record is still being written, so the hero writes it: each figure
+  // types in, holds, erases, and the next one follows. The lines come from
+  // the ghost spans already in the markup, so a reader with no JavaScript
+  // still sees the first figure and a screen reader gets the plain list.
+  // Reduced motion holds the first figure and never moves.
+  const typer = document.querySelector('.hero-cred[data-type="true"]');
+  if (typer && !reduce.matches) {
+    const lines = [...typer.querySelectorAll(".cred-ghost")].map((g) => [
+      g.querySelector("b").textContent,
+      g.querySelector("span").textContent,
+    ]);
+    const nEl = typer.querySelector(".cred-n");
+    const tEl = typer.querySelector(".cred-t");
+
+    if (lines.length > 1) {
+      const TYPE = 46;
+      const ERASE = 22;
+      const HOLD = 2100;
+      const GAP = 320;
+      let li = 0;
+
+      // A hidden tab should not burn through the cycle; wait and retry.
+      const step = (fn, ms) =>
+        setTimeout(() => (document.hidden ? step(fn, 400) : fn()), ms);
+
+      const write = (full, i, done) => {
+        nEl.textContent = full[0].slice(0, Math.min(i, 2));
+        tEl.textContent = full[1].slice(0, Math.max(0, i - 2));
+        if (i >= 2 + full[1].length) step(done, HOLD);
+        else step(() => write(full, i + 1, done), i < 2 ? TYPE * 2 : TYPE);
+      };
+
+      const erase = (full, i, done) => {
+        nEl.textContent = full[0].slice(0, Math.min(i, 2));
+        tEl.textContent = full[1].slice(0, Math.max(0, i - 2));
+        if (i <= 0) step(done, GAP);
+        else step(() => erase(full, i - 1, done), ERASE);
+      };
+
+      const cycle = () => {
+        const full = lines[li];
+        write(full, 0, () =>
+          erase(full, 2 + full[1].length, () => {
+            li = (li + 1) % lines.length;
+            cycle();
+          })
+        );
+      };
+
+      // The markup ships the first figure written out; erase it, then start.
+      const opener = lines[0];
+      erase(opener, 2 + opener[1].length, () => {
+        li = 0;
+        cycle();
+      });
+    }
   }
 
   /* ---- the mobile menu ------------------------------------------------ */

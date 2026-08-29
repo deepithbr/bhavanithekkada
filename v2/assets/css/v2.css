@@ -3796,3 +3796,147 @@ a {
     font-size: clamp(2rem, 9.2vw, 2.9rem);
   }
 }
+
+/* ------------------------------- the level of competition, typed
+
+   The client's note: she is rewriting the record, so the hero should
+   look like it is being written. One plate, one caret, five figures
+   cycling through it, and the way to the full record at the far right
+   of the same line. */
+
+.hero-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+  justify-self: stretch;
+  margin-top: var(--space-md);
+}
+
+.hero-chip {
+  margin-top: 0;
+}
+
+.cred-kicker {
+  color: oklch(80% 0.105 245);
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  margin: 0;
+}
+
+/* The live line and the ghosts share one grid cell. The ghosts are there
+   only to hold the plate at its widest, so the caret never shifts it. */
+.hero-chip .hero-cred > .cred-live,
+.hero-chip .hero-cred > .cred-ghost {
+  position: static;
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+  opacity: 1;
+  transition: none;
+}
+
+.hero-chip .hero-cred > .cred-ghost {
+  visibility: hidden;
+}
+
+.hero-chip .hero-cred .cred-t {
+  position: static;
+  display: inline;
+  opacity: 1;
+  transition: none;
+  font-variant-numeric: normal;
+}
+
+/* Tabular figures so 03 and 20 occupy the same width as they swap. */
+.hero-chip .hero-cred .cred-n {
+  min-width: 2ch;
+}
+
+.cred-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 0.1em;
+  background: oklch(80% 0.105 245);
+  animation: credCaret 1.05s step-end infinite;
+}
+
+@keyframes credCaret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The way to the record, at the far right of the hero foot. */
+.hero-record {
+  font-family: var(--font-caption);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(100% 0 0 / 0.9);
+  text-decoration: none;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid oklch(100% 0 0 / 0.3);
+  white-space: nowrap;
+  transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+.hero-record span {
+  display: inline-block;
+  margin-left: 0.4em;
+  transition: transform 200ms var(--ease-out);
+}
+
+.hero-record:hover,
+.hero-record:focus-visible {
+  color: oklch(84% 0.105 245);
+  border-color: oklch(84% 0.105 245);
+}
+
+.hero-record:hover span {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cred-caret {
+    animation: none;
+  }
+
+  .hero-record span {
+    transition: none;
+  }
+}
+
+/* On a phone the two stack; the record link keeps its own line so it
+   stays a comfortable tap target and never wraps mid-phrase. */
+@media (max-width: 700px) {
+  .hero-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  /* A 25px link is not a tap target; the underline drops with the padding. */
+  .hero-record {
+    padding-block: 0.7rem;
+  }
+}
+
+/* The record link goes to the true right edge of the panel, not the right
+   edge of the text column: the column stops 200px short to leave the
+   coordinate rail its air, and the client asked for the far extreme. It
+   sits on the panel's own bottom inset, so it lines up with the plate. */
+@media (min-width: 900px) {
+  .hero-foot {
+    width: calc(100% + 2 * var(--space-xl));
+  }
+}

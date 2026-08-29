@@ -337,6 +337,32 @@ def hero_panel(c, img) -> str:
     punchline instead. Three short lines, the point of difference in
     accent, the credential chip beneath. The name is gone from here
     because it is already the first thing on the page."""
+    # The level of competition, typed rather than listed: she is still
+    # writing this record, so the hero writes it too. The ghost lines hold
+    # the plate at its widest so nothing jitters while the caret works,
+    # and the same five figures feed the Career page.
+    lv = levels_data(c)
+    ghosts = "".join(
+        f'<span class="cred-ghost"><b>{int(x["n"]):02d}</b>'
+        f'<span>{e(x["k"])}</span></span>'
+        for x in lv
+    )
+    spoken = " ".join(f'{e(x["n"])} {e(x["k"])}.' for x in lv)
+    first = lv[0]
+    chip = f"""<div class="hero-foot">
+      <div class="hero-chip">
+        <p class="caption cred-kicker">Level of competition</p>
+        <p class="hero-cred" data-type="true" aria-hidden="true">
+          <span class="cred-live"><b class="cred-n">{int(first["n"]):02d}</b><span
+            class="cred-t">{e(first["k"])}</span><i class="cred-caret"></i></span>
+          {ghosts}
+        </p>
+        <p class="vh">Level of competition. {spoken}</p>
+      </div>
+      <a class="hero-record" href="achievements.html">Full record <span
+        aria-hidden="true">&rarr;</span></a>
+    </div>"""
+
     slot = "hero-race-pro"
     tag = img.tag(slot, "100vw", eager=True)
     tag = tag.replace(
@@ -348,14 +374,7 @@ def hero_panel(c, img) -> str:
   <div class="wrap panel-body hero-min" data-rise>
     <h1 class="hero-punch"><span>Pioneering</span><span><span
       class="hl">India&rsquo;s</span> path</span><span>on snow</span></h1>
-    <div class="hero-chip">
-    <p class="hero-cred" aria-live="off">
-      <span data-on="true"><b>03</b> World Cup starts</span>
-      <span data-on="false"><b>02</b> World Championships</span>
-      <span data-on="false"><b>01</b> Asian Winter Games, flagbearer</span>
-      <span data-on="false"><b>20</b> National medals</span>
-    </p>
-    </div>
+    {chip}
   </div>
 </section>"""
 
@@ -437,10 +456,12 @@ def who_facts(c) -> str:
 </section>"""
 
 
-def levels_band(c) -> str:
-    """Level of competition: her three start-level cards verbatim, plus
-    the two medal counts computed from the results rows so the band can
-    never disagree with the tables on the Achievements page."""
+def levels_data(c):
+    """The five level-of-competition figures, in one place.
+
+    The hero types them and the Career page tabulates them; both read
+    this, so the two can never disagree. The medal counts are computed
+    from the results rows rather than typed."""
     rows = [r for r in c["results"]["rows"] if r.get("medal")]
     intl = sum(1 for r in rows if "international" in r.get("tags", []))
     natl = len(rows) - intl
@@ -449,12 +470,23 @@ def levels_band(c) -> str:
                   "s": "FIS & international competition"})
     cards.append({"n": str(natl), "k": "National medals",
                   "s": "National & Khelo India competitions"})
+    return cards
+
+
+def levels_band(c, link=True) -> str:
+    """Level of competition: her three start-level cards verbatim, plus
+    the two medal counts computed from the results rows so the band can
+    never disagree with the tables on the Achievements page."""
+    cards = levels_data(c)
     lis = "".join(
         f'<article class="level" data-rise>'
         f'<span class="level-n tally-total">{e(x["n"])}</span>'
         f'<h3>{e(x["k"])}</h3><p class="caption">{e(x["s"])}</p></article>'
         for x in cards
     )
+    more = ('<p class="caption" style="margin-top:var(--space-md)">'
+            '<a href="achievements.html">The full record, race by race '
+            '&rarr;</a></p>') if link else ""
     return f"""
 <section class="prose-fold" data-ground="ice" id="level">
   <div class="wrap">
@@ -463,8 +495,7 @@ def levels_band(c) -> str:
       <h2>Level of competition</h2>
     </div>
     <div class="levels">{lis}</div>
-    <p class="caption" style="margin-top:var(--space-md)">
-      <a href="achievements.html">The full record, race by race &rarr;</a></p>
+    {more}
   </div>
 </section>"""
 
@@ -714,7 +745,6 @@ def page(c: dict, img: Img) -> str:
 {who_she_is(c, img)}
 </div>
 {sponsors(c)}
-{levels_band(c)}
 {sport_fold(c)}
 {journey_tiles(c, img)}
 {media_tiles(c, img)}
@@ -1351,7 +1381,7 @@ def achievements_page(c, img):
     """Her Achievements destination: the medal tables that used to close
     Journey, and the official FIS trail for anyone verifying them."""
     fis = c["hero"]["ctaTertiary"]["href"]
-    body = record_fold(c) + f"""
+    body = levels_band(c, link=False) + record_fold(c) + f"""
 <section class="prose-fold" id="official">
   <div class="wrap prose">
     <h2>The official record</h2>
