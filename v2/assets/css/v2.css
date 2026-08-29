@@ -3416,11 +3416,11 @@ a {
 }
 
 .panel[data-size="hero"] .hero-min h1 {
-  font-family: var(--font-display);
-  font-size: clamp(3.8rem, 9.5vw, 9rem);
-  font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-family: "Black Rusher", var(--font-display);
+  font-size: clamp(3.4rem, 8.5vw, 8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
   color: oklch(99% 0.002 250);
   text-shadow: 0 2px 60px oklch(5% 0.02 255 / 0.45);
 }
