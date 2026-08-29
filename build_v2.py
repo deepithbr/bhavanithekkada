@@ -381,7 +381,7 @@ def quote_card(c) -> str:
     <figure class="quote-card" data-rise>
       <span class="qmark" aria-hidden="true">&ldquo;</span>
       <blockquote>
-        <p>{e(h.get('glanceHeadline') or '')} {e(h.get('glanceBody') or '')}</p>
+        <p>{e(h.get('glanceHeadline') or '')}</p>
       </blockquote>
       <figcaption class="caption">Bhavani Thekkada</figcaption>
     </figure>
