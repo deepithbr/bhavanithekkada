@@ -5431,37 +5431,54 @@ body {
    frame in accent. Both borrowed here. What is not borrowed is the
    density: their cards carry sixty to ninety words, hers carry twenty. */
 
-/* The statement band: the reference's outlined phrase over a solid one,
-   standing between the page header and the cards rather than inside the
-   header. On the light ground the outline is drawn in ink, not white. */
+/* The statement band, in the site's own registers.
+
+   The first pass drew the phrase in outlined type because the client's
+   reference does. Nothing else here is outlined, so it read as borrowed.
+   This is the shape the homepage hero already uses for a two-part
+   statement: a tracked-out overline with a drawn accent rule, then the
+   line itself in the heavy display weight. Same two registers the rest
+   of the site runs on, no sixth one invented for one band. */
 .statement-band {
   padding-block: var(--space-2xl) var(--space-xl);
 }
 
 .head-stack {
   display: grid;
-  gap: 0.04em;
+  justify-items: start;
+  gap: var(--space-sm);
   margin: 0;
 }
 
 .head-out {
-  font-family: var(--font-display);
-  font-size: clamp(2.1rem, 6.4vw, 5.8rem);
-  font-weight: 800;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  font-family: var(--font-caption);
+  font-size: clamp(0.72rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.36em;
+  line-height: 1;
   text-transform: uppercase;
-  color: transparent;
-  -webkit-text-stroke: 1.4px var(--color-ink);
+  color: var(--color-ink-2);
+}
+
+.head-out::before {
+  content: "";
+  width: clamp(1.6rem, 4vw, 3.2rem);
+  height: 2px;
+  background: var(--color-accent);
+  flex: none;
 }
 
 .head-in {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 4vw, 3.5rem);
+  font-size: clamp(2rem, 5vw, 4.4rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  line-height: 0.96;
+  letter-spacing: -0.035em;
   color: var(--color-ink);
+  max-width: 16ch;
 }
 
 .head-in i {

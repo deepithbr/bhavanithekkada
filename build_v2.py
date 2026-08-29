@@ -1529,7 +1529,7 @@ def speaking_page(c, img):
   <div class="wrap">
     <p class="head-stack" data-rise>
       <span class="head-out">From no snow to</span>
-      <span class="head-in">a World Cup start line<i
+      <span class="head-in">A World Cup start line<i
         aria-hidden="true">.</i></span></p>
   </div>
 </section>
