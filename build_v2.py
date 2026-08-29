@@ -363,13 +363,15 @@ MEDIA_STRIP = ["race-worldcup", "chile-corralco", "night-training",
 def media_strip(c, img) -> str:
     """The way through to Media, after the journey.
 
-    The client's reference is a page of skis leaning across it at a steep
-    angle. Four photographs do the same here: each one tipped to the same
-    lean and stepped down the page, so the group reads as a set of skis
-    stood against a wall rather than a row of thumbnails."""
+    The client's reference leans a pair of skis across the page. So the
+    photographs are cut into ski silhouettes rather than set in tilted
+    rectangles: pointed tip, parallel sides, rounded tail, leaning at one
+    angle and stepped down the page. The proportion is stylised, nearer
+    1:3.6 than a real ski's 1:15, because a true ski leaves a sliver of
+    photograph and the photographs are the point of the section."""
     frames = "".join(
         f'<a class="frame" href="media.html" tabindex="-1" aria-hidden="true" '
-        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 22vw, 44vw")}</a>'
+        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 16vw, 44vw")}</a>'
         # Rights are settled before a photograph is published, here as
         # everywhere else on the site.
         for n, slot in enumerate(
@@ -377,8 +379,22 @@ def media_strip(c, img) -> str:
              if (img.get(x) or {}).get("rights") == "owned"]
         )
     )
+    # One clip path, defined once, referenced by every frame. Normalised
+    # coordinates so it stretches to whatever size the frame ends up.
+    ski = """<svg class="ski-def" width="0" height="0" aria-hidden="true"
+      focusable="false"><defs><clipPath id="ski"
+      clipPathUnits="objectBoundingBox"><path d="M0.5,0
+      C0.665,0.004 0.855,0.028 0.951,0.072
+      C0.988,0.089 1,0.107 1,0.136
+      L1,0.957 C1,0.981 0.989,0.994 0.962,0.997
+      C0.892,1 0.677,1 0.5,1
+      C0.323,1 0.108,1 0.038,0.997
+      C0.011,0.994 0,0.981 0,0.957
+      L0,0.136 C0,0.107 0.012,0.089 0.049,0.072
+      C0.145,0.028 0.335,0.004 0.5,0 Z"/></clipPath></defs></svg>"""
     return f"""
 <section class="media-strip" id="media">
+  {ski}
   <div class="wrap media-strip-inner">
     <div class="media-say" data-rise>
       <p class="caption">Media</p>
@@ -392,12 +408,11 @@ def media_strip(c, img) -> str:
 
 
 def backing(c) -> str:
-    """The wrap-up: who stands behind the season.
+    """The wrap-up: one centred line, three marks, one way through.
 
-    A sponsor board, not a page of prose. The mark carries the name, so
-    the card under it is one fragment saying what that support actually
-    is. The full sentences stay on the Partnerships page, where someone
-    has asked to read them.
+    No descriptors. Each mark carries its own name, and what the support
+    actually provides is on the Partnerships page, where someone has asked
+    to read it.
 
     Only marks with written permission on file appear. Permission was
     confirmed on 11 Aug 2026 and is recorded in the content file."""
@@ -405,24 +420,19 @@ def backing(c) -> str:
     rows = [p for p in cur.get("list", []) if p.get("logo")]
     if not rows:
         return ""
-    cards = "".join(
-        f'<article class="backer" data-rise>'
+    marks = "".join(
         f'<span class="backer-mark">'
         f'<img src="../assets/img/partners/{e(p["logo"])}" '
         f'alt="{e(p["name"])}" loading="lazy" decoding="async"></span>'
-        f'<p class="backer-line">{e(p.get("short") or p.get("kind") or "")}</p>'
-        f'</article>'
         for p in rows
     )
     return f"""
 <section class="backing" id="backing" data-ground="ice">
   <div class="wrap">
-    <div class="backing-head" data-rise>
-      <h2>{e(cur.get('note') or 'Current support')}</h2>
-    </div>
-    <div class="backers">{cards}</div>
+    <h2 class="backing-head" data-rise>Supported by</h2>
+    <div class="backers" data-rise>{marks}</div>
     <p class="backing-more caption" data-rise>
-      <a href="partnership.html">See partnership options &rarr;</a></p>
+      <a href="partnership.html">Partnership options &rarr;</a></p>
   </div>
 </section>"""
 

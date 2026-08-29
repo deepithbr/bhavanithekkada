@@ -4522,43 +4522,30 @@ body {
   padding-block: var(--space-3xl);
 }
 
-.backing-head h2 {
+.backing-head {
   font-size: var(--text-3xl);
-  margin-top: 0;
+  text-align: center;
+  margin: 0;
 }
 
 .backers {
-  display: grid;
-  gap: var(--space-md);
-  margin-top: var(--space-xl);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 5.5rem);
+  margin-top: var(--space-2xl);
 }
 
-@media (min-width: 820px) {
-  .backers {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* A sponsor board: the mark leads, one fragment under it says what the
-   support is. No headings repeating what the logo already says, and no
-   paragraph where a phrase will do. */
-.backer {
-  display: grid;
-  align-content: start;
-  justify-items: center;
-  text-align: center;
-  gap: var(--space-sm);
-  padding: var(--space-lg) var(--space-md);
-  background: var(--color-paper);
-  border-top: 3px solid var(--color-accent);
-}
-
-/* One box, one optical size, whatever shape the artwork arrives in. */
+/* One box, one optical size, whatever shape the artwork arrives in. The
+   marks keep a light ground; forcing them white flattened the Reliance
+   lockup and lost the Karnataka crest. */
 .backer-mark {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 5rem;
+  flex: 0 1 auto;
 }
 
 .backer-mark img {
@@ -4569,22 +4556,11 @@ body {
   object-fit: contain;
 }
 
-.backer-line {
-  font-family: var(--font-caption);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  line-height: 1.6;
-  color: var(--color-ink-2);
-  max-width: 28ch;
-  text-wrap: balance;
-}
-
 .backing-more {
   margin-top: var(--space-2xl);
   padding-top: var(--space-md);
   border-top: var(--rule-hair) solid var(--color-line);
+  text-align: center;
 }
 
 /* ------------------- the sport lockup, flipped
@@ -4867,8 +4843,16 @@ body {
 .media-lean {
   display: flex;
   justify-content: center;
-  gap: clamp(0.5rem, 1.6vw, 1.4rem);
-  padding-block: var(--space-xl);
+  align-items: center;
+  gap: clamp(0.4rem, 1.2vw, 1.1rem);
+  /* The lean needs headroom or the tips clip against the section edge. */
+  padding-block: var(--space-2xl);
+}
+
+.ski-def {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
 .frame {
@@ -4876,14 +4860,15 @@ body {
   display: block;
   flex: 1 1 0;
   min-width: 0;
-  max-width: 13rem;
-  aspect-ratio: 3 / 4;
+  max-width: 9.5rem;
+  /* A ski, not a photo frame: long, narrow, pointed at the tip. */
+  aspect-ratio: 1 / 3.6;
   overflow: hidden;
   background: var(--color-paper-2);
+  clip-path: url(#ski);
   /* One lean for all four, stepped down the page so the set rises. */
-  transform: rotate(-11deg) translateY(calc(var(--i) * 1.4rem));
-  box-shadow: 0 18px 40px oklch(20% 0.03 255 / 0.18);
-  transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out);
+  transform: rotate(-15deg) translateY(calc(var(--i) * 1.6rem));
+  transition: transform 420ms var(--ease-out), filter 420ms var(--ease-out);
 }
 
 .frame img {
@@ -4893,13 +4878,15 @@ body {
   display: block;
 }
 
-.media-lean:hover .frame {
-  box-shadow: 0 10px 26px oklch(20% 0.03 255 / 0.14);
+/* clip-path cuts a box shadow off with the shape, so the lift is carried
+   by a drop-shadow filter on the frame instead. */
+.frame {
+  filter: drop-shadow(0 16px 30px oklch(20% 0.03 255 / 0.22));
 }
 
 .frame:hover {
-  transform: rotate(-11deg) translateY(calc(var(--i) * 1.4rem - 1.1rem));
-  box-shadow: 0 26px 54px oklch(20% 0.03 255 / 0.26);
+  transform: rotate(-15deg) translateY(calc(var(--i) * 1.6rem - 1.2rem));
+  filter: drop-shadow(0 26px 44px oklch(20% 0.03 255 / 0.3));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4918,10 +4905,14 @@ body {
     padding-block: 0;
   }
 
+  /* On a phone the skis flatten back to photographs: four tipped slivers
+     in 390px is a pattern, not a picture. */
   .frame {
     max-width: none;
+    aspect-ratio: 3 / 4;
+    clip-path: none;
     transform: none;
-    box-shadow: none;
+    filter: none;
   }
 
   .frame:hover {
