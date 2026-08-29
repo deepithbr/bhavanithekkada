@@ -321,7 +321,7 @@ def sponsors(c: dict) -> str:
 # opens so a visitor meets her before the venues, then the Worlds
 # start, then the flag.
 HERO_SLIDES = [
-    ("hero-portrait", "50% 25%"),
+    ("hero-portrait", "50% 14%"),
     ("race-worldcup", "50% 45%"),
     ("flag-harbin", "50% 34%"),
 ]
