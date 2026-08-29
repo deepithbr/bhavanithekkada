@@ -1538,11 +1538,26 @@
       "sourceRef": "athlete-brief"
     },
     "openTo": [
-      "Sponsorships",
-      "Brand partnerships",
-      "Campaigns",
-      "Product collaborations",
-      "Athlete partnerships"
+      {
+        "label": "Sponsorships",
+        "image": "race-worldcup"
+      },
+      {
+        "label": "Brand partnerships",
+        "image": "flag-harbin"
+      },
+      {
+        "label": "Campaigns",
+        "image": "downhill-tuck"
+      },
+      {
+        "label": "Product collaborations",
+        "image": "double-pole"
+      },
+      {
+        "label": "Athlete partnerships",
+        "image": "team-gulmarg"
+      }
     ],
     "tileShots": [
       {

@@ -98,6 +98,9 @@ TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 # Three across on a desktop, two on a tablet, one on a phone.
 SKILL_SIZES = "(min-width:900px) 30vw, (min-width:600px) 45vw, 92vw"
 
+# Five across on a desktop, two on a phone.
+OPT_SIZES = "(min-width:1100px) 19vw, (min-width:640px) 32vw, 46vw"
+
 
 
 def fingerprint() -> str:
@@ -1308,9 +1311,17 @@ def partnership_page(c, img):
         for x in (p.get("current") or {}).get("list", [])
         if x.get("logo")
     )
-    open_to = "".join(
-        f'<li>{e(x)}</li>' for x in p.get("openTo", [])
-    )
+    # Rights are settled before a photograph is published, here as
+    # everywhere else; a category without an owned frame still lists.
+    def opt(x):
+        sl = x.get("image")
+        shot = ""
+        if sl and (img.get(sl) or {}).get("rights") == "owned":
+            shot = (f'<span class="opt-shot">{img.tag(sl, OPT_SIZES)}</span>')
+        cls = " opt-shot-tile" if shot else ""
+        return f'<li class="opt{cls}">{shot}<span>{e(x["label"])}</span></li>'
+
+    open_to = "".join(opt(x) for x in p.get("openTo", []))
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
@@ -1337,9 +1348,8 @@ def partnership_page(c, img):
 <section class="prose-fold" data-ground="ice" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>Four seasons stand between here and the 2030 Games. A partnership
-    now is a share in the work that decides them, not a mark on a race
-    suit.</p>
+    <p>Partner with Bhavani across sport, storytelling and long-term
+    impact.</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Sponsorship">Start the conversation</a>
   </div>
