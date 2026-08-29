@@ -5101,3 +5101,37 @@ body {
     width: 100%;
   }
 }
+
+/* ---------------------- section labels take the lockup face
+
+   The client liked the cross-country skiing lockup and asked for it on
+   the headings. Applied by what a heading is, not where it sits: a short
+   noun phrase that NAMES a block of the page gets it, and a heading you
+   read as a sentence does not. Wide tracking at light weight is a label
+   treatment; it works on two words the eye takes in as one shape and it
+   pulls a sentence apart.
+
+   So this covers the section labels, which all live in .prose or carry
+   their own class. It deliberately does not cover the story beats on
+   Journey, which are chapter titles inside .step-copy, or the medal
+   table headers, which carry a count. */
+
+.prose > h2,
+.media-say h2,
+.backing-head {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.1vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* The Journey heading is six words rather than two, so it takes a step
+   down to hold two lines rather than four. */
+#road .prose > h2 {
+  font-size: clamp(1.15rem, 1.8vw, 1.85rem);
+  max-width: 22ch;
+}
