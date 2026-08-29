@@ -5267,26 +5267,6 @@ body {
   max-width: 52ch;
 }
 
-.open-list {
-  list-style: none;
-  margin: var(--space-md) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-2xs);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-}
-
-.open-list li {
-  font-family: var(--font-caption);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  padding: var(--space-xs) 0 var(--space-xs) var(--space-sm);
-  border-left: 3px solid var(--color-accent);
-}
-
 /* ---------------------- speaking cards carry a frame
 
    The reference puts a photograph on every skill card. Six here, one a
@@ -5528,26 +5508,6 @@ body {
   color: var(--color-ink-body);
   margin-top: var(--space-3xs);
   max-width: 52ch;
-}
-
-.open-list {
-  list-style: none;
-  margin: var(--space-md) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-2xs);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
-}
-
-.open-list li {
-  font-family: var(--font-caption);
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  padding: var(--space-xs) 0 var(--space-xs) var(--space-sm);
-  border-left: 3px solid var(--color-accent);
 }
 
 /* ---------------------- speaking cards carry a frame
@@ -5800,12 +5760,6 @@ body {
   }
 }
 
-/* The list answers the heading, so it sits directly under it; the
-   paragraph then explains, and the button closes. */
-#book .open-list {
-  margin-top: var(--space-lg);
-}
-
 .book-body {
   margin-top: var(--space-lg);
   margin-bottom: var(--space-lg);
@@ -5886,4 +5840,54 @@ body {
 
 .nav .nav-links {
   margin-right: 0;
+}
+
+/* ---------------------- open to, in the same tile language
+
+   The client asked for these to read like the funded areas, only
+   simpler. Same pale plate, same numeral, same label face, and no body
+   at all: each of the five is a two-word category and needs no more.
+   The numeral comes from a counter, so the markup stays a plain list.
+   No body at all: each of the five is a two-word category. */
+
+.open-tiles {
+  list-style: none;
+  counter-reset: opt;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+.open-tiles li {
+  counter-increment: opt;
+  position: relative;
+  background: var(--color-paper-2);
+  padding: var(--space-md);
+  min-height: 7.5rem;
+  display: grid;
+  align-content: end;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.open-tiles li::before {
+  content: counter(opt, decimal-leading-zero);
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-indent: 0;
+  color: var(--color-accent);
+  opacity: 0.16;
+  font-variant-numeric: tabular-nums;
 }

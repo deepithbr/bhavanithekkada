@@ -1325,11 +1325,13 @@ def partnership_page(c, img):
   </div>
 </section>
 <section class="prose-fold" id="open">
-  <div class="wrap prose">
-    <h2>Open to</h2>
-    <p>She is actively looking for partners in these areas for the seasons
-    between here and 2030.</p>
-    <ul class="open-list">{open_to}</ul>
+  <div class="wrap">
+    <div class="prose">
+      <h2>Open to</h2>
+      <p>She is actively looking for partners in these areas for the
+      seasons between here and 2030.</p>
+    </div>
+    <ol class="open-tiles">{open_to}</ol>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice" id="contact">
@@ -1557,7 +1559,6 @@ def speaking_page(c, img):
     # what they are buying. This names the trade instead: her decade, and
     # what it is worth to the room she is standing in.
     inv = sp.get("invite") or {}
-    formats = "".join(f'<li>{e(x)}</li>' for x in inv.get("formats", []))
     body = f"""
 <section class="statement-band">
   <div class="wrap">
@@ -1575,7 +1576,6 @@ def speaking_page(c, img):
 <section class="prose-fold" data-ground="ice" id="book">
   <div class="wrap prose">
     <h2>{e(inv.get('heading') or 'What to invite her for')}</h2>
-    <ul class="open-list">{formats}</ul>
     <p class="book-body">{e(inv.get('body') or '')}</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
