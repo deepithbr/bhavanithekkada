@@ -1244,17 +1244,18 @@
       },
       {
         "id": "r34",
-        "year": "—",
+        "year": "2022",
         "event": "Raiffeisen Cross-Country Cup",
         "detail": "5 km",
-        "place": "Italy",
+        "place": "Dobbiaco, Italy",
         "medal": "silver",
-        "mark": null,
+        "mark": "18:03",
         "tags": [
           "international"
         ],
         "featured": false,
-        "sourceRef": "portfolio"
+        "sourceRef": "portfolio; press",
+        "provenance": "Year, venue, distance and time verified 30 Aug 2026 against The South First (thesouthfirst.com, Karnataka desk), which reports a silver at the Raiffeisen Langlauf Cup in Dobbiaco, Italy in December 2022 over 5 km in 18:03. The site carried the event under its English name, Raiffeisen Cross-Country Cup, and no year at all. TIER UNCONFIRMED: the series appears in the FISI Suedtirol regional archive and is organised by ASC Toblach, and no Italian venue shows on her FIS athlete page, so this looks like a regional cup rather than a FIS-scored race. Confirm with her before the site describes the level."
       }
     ]
   },
