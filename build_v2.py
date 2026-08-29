@@ -369,7 +369,7 @@ def backing(c) -> str:
     </div>
     <div class="backers">{cards}</div>
     <p class="backing-more caption" data-rise>
-      <a href="partnership.html">Partner with her &rarr;</a></p>
+      <a href="partnership.html">See partnership options &rarr;</a></p>
   </div>
 </section>"""
 
@@ -768,9 +768,11 @@ def page(c: dict, img: Img) -> str:
 {sport_fold(c, img)}
 </div>
 {seasons(c, img)}
-{panel(img, SHOTS['closer'], 'The road to 2030',
-       'Four seasons between here and a start list in the French Alps.',
-       ('Partner with her', 'partnership.html'), pos='50% 46%')}
+{panel(img, SHOTS['closer'],
+       'Join me on my journey to the 2030 French Alps Olympic Winter Games',
+       'Cross-country skiing',
+       ('Partner with me', 'partnership.html'), pos='50% 46%',
+       size='closer')}
 {backing(c)}
 </main>
 {footer(c)}

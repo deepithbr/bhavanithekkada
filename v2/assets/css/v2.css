@@ -4663,3 +4663,29 @@ body {
 .hero-chip {
   padding-block: var(--space-xs);
 }
+
+/* ---------------------- the closing panel, to the client's reference
+
+   The reference sets one long first-person line at display size with the
+   discipline alone beneath it. A sixty-six character sentence needs a
+   wider measure than a four-word title did, so this panel gets one. */
+
+.panel[data-size="closer"] .panel-body {
+  max-width: 46rem;
+}
+
+.panel[data-size="closer"] h2 {
+  font-size: clamp(1.75rem, 3.1vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.panel[data-size="closer"] .sub {
+  font-family: var(--font-caption);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: var(--space-xs);
+  color: oklch(100% 0 0 / 0.86);
+}
