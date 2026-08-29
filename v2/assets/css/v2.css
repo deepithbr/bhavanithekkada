@@ -4852,14 +4852,39 @@ body {
   margin-top: var(--space-lg);
 }
 
-/* ---------------------- the road, drawn on the map
+/* ---------------------- the road, staged
 
-   Every start line she has raced sits as a plain pin. The 2030 venue is
-   not one of those, so it is not drawn like one: a filled mark inside a
-   halo, with lines bowed in from the far pins so the map says converging
-   rather than scattered. The lines draw themselves when the section
-   arrives, like the stroke under the closing headline. */
+   The client's order, and it matters: every dot she will stand on comes
+   up first, and La Clusaz arrives last, on its own. Five stages on one
+   attribute, each one waiting for the last to finish rather than racing
+   it, because the first pass had the destination land while the lines
+   were still drawing and it read as noise.
 
+     pins   her fourteen venues, in racing order
+     plan   the three stops before the Games
+     lines  every one of them running to the Alps
+     dest   La Clusaz, alone
+     rest   everything else steps back
+
+   Grouped fades, not per-element: the pins and lines overlap around La
+   Clusaz, and fading them one by one composites back to solid, which was
+   the clutter the client pointed at. */
+
+/* Hollow, because she has not raced these yet. */
+.plan-pin {
+  fill: var(--color-paper-2);
+  stroke: var(--color-accent);
+  stroke-width: 0.7;
+}
+
+.plan-label {
+  font-weight: 600;
+  fill: var(--color-ink);
+}
+
+/* Her record running to the Alps: thin, so fourteen of them read as a
+   convergence rather than a web. Without fill:none an SVG path fills
+   itself, and these came out as black wedges across the map. */
 .route-arc {
   fill: none;
   stroke: var(--color-accent);
@@ -4868,33 +4893,106 @@ body {
   opacity: 0.42;
 }
 
-.js .route-arc {
+/* The three stops before the Games: heavier, because they are the road. */
+.road-arc {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* Everything after the pins starts hidden and arrives on cue. */
+.js .route-map .plan-pin,
+.js .route-map .plan-label,
+.js .route-map .dest-halo,
+.js .route-map .dest-dot,
+.js .route-map .dest-lead,
+.js .route-map .dest-label {
+  opacity: 0;
+  transition: opacity 800ms var(--ease-out);
+}
+
+.js .route-arc,
+.js .road-arc {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
 
-.route-map[data-drawn="true"] .route-arc {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1400ms cubic-bezier(0.22, 0.61, 0.36, 1);
+/* plan */
+.route-map:is([data-stage="plan"], [data-stage="lines"], [data-stage="dest"],
+  [data-stage="rest"]) :is(.plan-pin, .plan-label) {
+  opacity: 1;
 }
 
-/* Staggered so they arrive as a sequence, not a flash. */
-.route-map[data-drawn="true"] .route-arc:nth-of-type(2) { transition-delay: 110ms; }
-.route-map[data-drawn="true"] .route-arc:nth-of-type(3) { transition-delay: 220ms; }
-.route-map[data-drawn="true"] .route-arc:nth-of-type(4) { transition-delay: 330ms; }
-.route-map[data-drawn="true"] .route-arc:nth-of-type(5) { transition-delay: 440ms; }
-.route-map[data-drawn="true"] .route-arc:nth-of-type(6) { transition-delay: 550ms; }
-.route-map[data-drawn="true"] .route-arc:nth-of-type(7) { transition-delay: 660ms; }
+.route-map[data-stage="plan"] .plan-pin[data-step="1"],
+.route-map[data-stage="plan"] .plan-label[data-step="1"] {
+  transition-delay: 200ms;
+}
+
+.route-map[data-stage="plan"] .plan-pin[data-step="2"],
+.route-map[data-stage="plan"] .plan-label[data-step="2"] {
+  transition-delay: 400ms;
+}
+
+/* lines */
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  :is(.route-arc, .road-arc) {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  .road-arc[data-step="1"] {
+  transition-delay: 160ms;
+}
+
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  .road-arc[data-step="2"] {
+  transition-delay: 320ms;
+}
+
+/* dest */
+.route-map:is([data-stage="dest"], [data-stage="rest"])
+  :is(.dest-dot, .dest-lead, .dest-label) {
+  opacity: 1;
+}
+
+.route-map:is([data-stage="dest"], [data-stage="rest"]) .dest-halo {
+  opacity: 0.55;
+}
+
+/* rest */
+.route-map .past,
+.route-map .past-lines,
+.route-map .plan {
+  transition: opacity 900ms var(--ease-out);
+}
+
+.route-map[data-stage="rest"] .past {
+  opacity: 0.26;
+}
+
+.route-map[data-stage="rest"] .past-lines {
+  opacity: 0.3;
+}
+
+.route-map[data-stage="rest"] .plan {
+  opacity: 0.45;
+}
 
 .dest-halo {
   fill: none;
   stroke: var(--color-accent);
-  stroke-width: 0.5;
-  opacity: 0.55;
+  stroke-width: 0.6;
 }
 
+/* Her European venues sit directly under La Clusaz, so even faded they
+   touch it. A paper-coloured ring cuts the destination out of them. */
 .dest-dot {
   fill: var(--color-accent);
+  stroke: var(--color-paper-2);
+  stroke-width: 0.9;
 }
 
 .dest-lead {
@@ -4912,137 +5010,19 @@ body {
   fill: var(--color-ink);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .js .route-arc {
-    stroke-dashoffset: 0;
-  }
-
-  .route-map[data-drawn="true"] .route-arc {
-    transition: none;
-  }
-}
-
-/* The map sits inside the road section now, so it needs its own air. */
+/* The map sits inside the road section, so it needs its own air. */
 #road .route-map {
-  margin-block: var(--space-lg) var(--space-xl);
-}
-
-/* ---------------------- the road, staged
-
-   The client's sequence: the map arrives, her venues light up, lines run
-   from all of them to La Clusaz, the three named stops before the Games
-   appear on that road, and then everything she has already raced steps
-   back so the destination is what is left standing.
-
-   Four stages on one attribute. The pins keep their own pop animation;
-   these rules only handle what arrives after them and what recedes. */
-
-/* Hollow, because she has not raced these yet. */
-.plan-pin {
-  fill: var(--color-paper-2);
-  stroke: var(--color-accent);
-  stroke-width: 0.7;
-}
-
-.plan-label {
-  font-weight: 600;
-  fill: var(--color-ink);
-}
-
-.road-arc {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 0.5;
-  stroke-linecap: round;
-  opacity: 0.7;
-}
-
-.js .road-arc {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-/* Everything after the pins starts hidden and arrives on cue. */
-.js .route-map .plan-pin,
-.js .route-map .plan-label,
-.js .route-map .dest-halo,
-.js .route-map .dest-dot,
-.js .route-map .dest-lead,
-.js .route-map .dest-label {
-  opacity: 0;
-  transition: opacity 600ms var(--ease-out);
-}
-
-.route-map[data-stage="road"] .route-arc,
-.route-map[data-stage="rest"] .route-arc,
-.route-map[data-stage="road"] .road-arc,
-.route-map[data-stage="rest"] .road-arc {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1500ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.route-map[data-stage="road"] .road-arc[data-step="1"],
-.route-map[data-stage="rest"] .road-arc[data-step="1"] {
-  transition-delay: 180ms;
-}
-
-.route-map[data-stage="road"] .road-arc[data-step="2"],
-.route-map[data-stage="rest"] .road-arc[data-step="2"] {
-  transition-delay: 360ms;
-}
-
-.route-map[data-stage="road"] .plan-pin,
-.route-map[data-stage="road"] .plan-label,
-.route-map[data-stage="rest"] .plan-pin,
-.route-map[data-stage="rest"] .plan-label {
-  opacity: 1;
-  transition-delay: 700ms;
-}
-
-.route-map[data-stage="road"] .dest-halo,
-.route-map[data-stage="rest"] .dest-halo {
-  opacity: 0.55;
-  transition-delay: 1100ms;
-}
-
-.route-map[data-stage="road"] .dest-dot,
-.route-map[data-stage="road"] .dest-lead,
-.route-map[data-stage="road"] .dest-label,
-.route-map[data-stage="rest"] .dest-dot,
-.route-map[data-stage="rest"] .dest-lead,
-.route-map[data-stage="rest"] .dest-label {
-  opacity: 1;
-  transition-delay: 1100ms;
-}
-
-/* The record steps back. It is still there, and still readable, but it
-   stops competing with the one place the section is about. */
-/* Faded as one group, not pin by pin. Six overlapping dots at 22% each
-   composite back to 65% and the cluster stays solid; fading the group
-   composites once and it actually recedes. */
-.route-map .past,
-.route-map .past-lines {
-  transition: opacity 900ms var(--ease-out);
-}
-
-.route-map[data-stage="rest"] .past {
-  opacity: 0.3;
-}
-
-.route-map[data-stage="rest"] .past-lines {
-  opacity: 0.4;
+  margin-block: var(--space-lg) 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .js .route-arc,
   .js .road-arc {
     stroke-dashoffset: 0;
   }
 
-  .js .route-map .plan-pin,
-  .js .route-map .plan-label,
-  .js .route-map .dest-dot,
-  .js .route-map .dest-lead,
-  .js .route-map .dest-label {
+  .js .route-map :is(.plan-pin, .plan-label, .dest-dot, .dest-lead,
+    .dest-label) {
     opacity: 1;
   }
 
@@ -5050,9 +5030,7 @@ body {
     opacity: 0.55;
   }
 
-  .route-map .pin,
-  .route-map .route-arc,
-  .route-map text {
+  .route-map :is(.past, .past-lines, .plan, .route-arc, text) {
     transition: none;
   }
 }

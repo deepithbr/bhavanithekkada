@@ -916,21 +916,12 @@ def about_page(c, img):
 
 
 def road_ahead(c, map_html="") -> str:
-    """The timeline keeps going. Her brief asks Journey to run past the
-    present into the targets, so the page closes on those.
+    """Where the page lands: one heading and the map.
 
-    Beyond the finish line used to close this page as well. Removed at the
-    client's instruction, 30 Aug 2026; the copy stays in the content file
-    against the day they want it back."""
-    t = c.get("targets") or {}
-    cards = "".join(
-        f'<article class="step step-future" data-rise>'
-        f'<div class="step-copy">'
-        f'<span class="ghost-year" aria-hidden="true">{e(i["year"])}</span>'
-        f'<p class="caption">{e(i["year"])}</p>'
-        f'<h3>{e(i["title"])}</h3><p>{e(i["line"])}</p></div></article>'
-        for i in t.get("items", [])
-    )
+    The four target cards used to run under it. Removed at the client's
+    instruction, 30 Aug 2026; the years they carried are on the map now,
+    as the three stops before the Games. Beyond the finish line closed
+    this page before that. Both sets of copy stay in the content file."""
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
@@ -938,7 +929,6 @@ def road_ahead(c, map_html="") -> str:
       <h2>The road to 2030 Winter Olympics</h2>
     </div>
     {map_html}
-    <div class="steps steps-future">{cards}</div>
   </div>
 </section>"""
 
@@ -1075,7 +1065,7 @@ def route_map(c) -> str:
 
     lx, ly = dx_ - 16.0, dy_ + 0.6
     dest = (
-        f'<g class="past-lines">{arcs}</g>{plan}'
+        f'<g class="past-lines">{arcs}</g><g class="plan">{plan}</g>'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="4.2" class="dest-halo"/>'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="2.4" class="dest-dot"/>'
         f'<path class="dest-lead" d="M{dx_ - 4.4:.1f},{dy_:.1f} '

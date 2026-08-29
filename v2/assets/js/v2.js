@@ -192,7 +192,7 @@
   // The stroke under the destination draws itself once, when its panel
   // arrives. Reduced motion gets it already drawn, from CSS, and this
   // still marks it so nothing is left half-scratched.
-  const drawn = document.querySelectorAll(".mark-draw, .route-map");
+  const drawn = document.querySelectorAll(".mark-draw");
   if (drawn.length) {
     const pen = new IntersectionObserver(
       (rows, obs) => {
@@ -408,17 +408,21 @@
     const STEP = 150;
     const FIRST = 220;
 
-    // The whole sequence, once: her venues light up in racing order, the
-    // lines run to La Clusaz, the three named stops before the Games
-    // arrive on that road, and then the record steps back so the
-    // destination is what is left standing.
+    // The client's order: every dot she will stand on comes up first, and
+    // La Clusaz arrives last, on its own. Each stage waits for the one
+    // before it to finish rather than racing it; the first pass had the
+    // destination land while the lines were still drawing.
     const run = () => {
       pins.forEach((pin, i) => {
         setTimeout(() => (pin.dataset.lit = "true"), FIRST + i * STEP);
       });
       const lit = FIRST + pins.length * STEP;
-      setTimeout(() => (routeFig.dataset.stage = "road"), lit + 200);
-      setTimeout(() => (routeFig.dataset.stage = "rest"), lit + 2600);
+      const at = (ms, stage) =>
+        setTimeout(() => (routeFig.dataset.stage = stage), ms);
+      at(lit + 250, "plan");        // the three stops before the Games
+      at(lit + 1550, "lines");      // all of it running to the Alps
+      at(lit + 3550, "dest");       // La Clusaz, alone
+      at(lit + 5000, "rest");       // and the rest steps back
     };
 
     if (reduce.matches || !("IntersectionObserver" in window)) {
