@@ -393,8 +393,9 @@ def backing(c) -> str:
   <div class="wrap">
     <h2 class="backing-head" data-rise>Supported by</h2>
     <div class="backers" data-rise>{marks}</div>
-    <p class="backing-more caption" data-rise>
-      <a href="partnership.html">Partnership options &rarr;</a></p>
+    <p class="backing-more" data-rise>
+      <a class="btn" data-on="accent"
+         href="partnership.html">Partner with her</a></p>
   </div>
 </section>"""
 

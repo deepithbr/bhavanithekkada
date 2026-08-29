@@ -4460,11 +4460,18 @@ body {
   object-fit: contain;
 }
 
+/* The only commercial ask on the homepage, so it is a button rather
+   than a caption link. A tiny underlined line in the last inch of a page
+   is a footnote, and this is the whole reason a sponsor is reading. */
 .backing-more {
   margin-top: var(--space-xl);
-  padding-top: var(--space-md);
+  padding-top: var(--space-lg);
   border-top: var(--rule-hair) solid var(--color-line);
   text-align: center;
+}
+
+.backing-more .btn {
+  display: inline-flex;
 }
 
 /* ------------------- the sport lockup, flipped
