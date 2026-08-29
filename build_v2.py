@@ -543,7 +543,7 @@ def levels_data(c):
     return cards
 
 
-def levels_band(c, link=True) -> str:
+def levels_band(c, link=True, head=True) -> str:
     """Level of competition: her three start-level cards verbatim, plus
     the two medal counts computed from the results rows so the band can
     never disagree with the tables on the Achievements page."""
@@ -560,10 +560,8 @@ def levels_band(c, link=True) -> str:
     return f"""
 <section class="prose-fold" data-ground="ice" id="level">
   <div class="wrap">
-    <div class="prose">
-      <p class="caption">The record</p>
-      <h2>Level of competition</h2>
-    </div>
+    {'<div class="prose"><p class="caption">The record</p>'
+     '<h2>Level of competition</h2></div>' if head else ''}
     <div class="levels">{lis}</div>
     {more}
   </div>
@@ -1444,7 +1442,30 @@ def achievements_page(c, img):
     """Her Achievements destination: the medal tables that used to close
     Journey, and the official FIS trail for anyone verifying them."""
     fis = c["hero"]["ctaTertiary"]["href"]
-    body = levels_band(c, link=False) + record_fold(c) + f"""
+    # Her record down the middle with photographs either side, the way the
+    # client's reference lays out a story page. The rails are decorative
+    # duplicates of nothing: they carry no information the tables do not,
+    # so they are hidden from screen readers and out of the tab order, and
+    # they only appear where there is real margin to put them in.
+    def rail(slots, side):
+        shots = "".join(
+            f'<figure class="rail-shot" data-rise style="--n:{n}">'
+            f'{img.tag(sl, "20vw")}</figure>'
+            for n, sl in enumerate(slots)
+            if (img.get(sl) or {}).get("rights") == "owned"
+        )
+        return f'<aside class="rail rail-{side}" aria-hidden="true">{shots}</aside>'
+
+    body = (
+        '<div class="rail-layout">'
+        + rail(["nordic-podium", "contingent-2021"], "left")
+        + '<div class="rail-main">'
+        + levels_band(c, link=False, head=False)
+        + record_fold(c)
+        + "</div>"
+        + rail(["podium-gulmarg-2023", "flag-harbin"], "right")
+        + "</div>"
+    ) + f"""
 <section class="prose-fold" id="official">
   <div class="wrap prose">
     <h2>The official record</h2>

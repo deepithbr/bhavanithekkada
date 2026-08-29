@@ -5034,3 +5034,66 @@ body {
     transition: none;
   }
 }
+
+/* ---------------------- the record, with photographs either side
+
+   The client's reference runs its story down a centre column with photos
+   held in the margins, arriving as you scroll. The same here, with two
+   rules: the rails only exist where there is genuine margin to put them
+   in, and they carry nothing the tables do not, so they are hidden from
+   screen readers and out of the tab order. */
+
+.rail {
+  display: none;
+}
+
+@media (min-width: 1240px) {
+  .rail-layout {
+    display: grid;
+    /* 62rem down the middle left the rails at 207px, which is a thumbnail
+       rather than a photograph. The tables do not need that width. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 54rem) minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--space-lg);
+  }
+
+  .rail {
+    display: grid;
+    gap: var(--space-3xl);
+    padding-block: var(--space-3xl);
+  }
+
+  .rail-left {
+    justify-items: end;
+  }
+
+  .rail-right {
+    justify-items: start;
+  }
+
+  /* Staggered, so the two sides do not read as a pair of columns. */
+  .rail-right {
+    padding-top: calc(var(--space-3xl) * 2);
+  }
+
+  .rail-shot {
+    margin: 0;
+    width: min(100%, 19rem);
+  }
+
+  .rail-shot:nth-child(2) {
+    margin-top: var(--space-2xl);
+  }
+
+  .rail-shot img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* The sections inside keep their own wrap; it just fills the middle
+     column now instead of centring against the viewport. */
+  .rail-main .wrap {
+    width: 100%;
+  }
+}
