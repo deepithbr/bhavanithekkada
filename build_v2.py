@@ -1571,7 +1571,6 @@ def speaking_page(c, img):
     <p class="book-body">{e(inv.get('body') or '')}</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
-    <p class="caption book-note">{e(sp.get('availability') or '')}</p>
   </div>
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,
