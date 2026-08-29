@@ -5059,11 +5059,14 @@ body {
     column-gap: var(--space-lg);
   }
 
+  /* Spread across the whole run of the tables left gaps the length of a
+     screen between frames. They follow each other now: one arrives, the
+     next is already on its way in. */
   .rail {
     display: grid;
-    align-content: space-between;
-    gap: var(--space-2xl);
-    padding-block: var(--space-2xl);
+    align-content: start;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
   }
 
   .rail-left {
@@ -5076,7 +5079,7 @@ body {
 
   /* Staggered, so the two sides do not read as a pair of columns. */
   .rail-right {
-    padding-top: calc(var(--space-2xl) * 2.4);
+    padding-top: calc(var(--space-xl) + 9rem);
   }
 
   .rail-shot {
@@ -5084,9 +5087,7 @@ body {
     width: min(100%, 19rem);
   }
 
-  .rail-shot:nth-child(2) {
-    margin-top: var(--space-2xl);
-  }
+
 
   .rail-shot img {
     width: 100%;

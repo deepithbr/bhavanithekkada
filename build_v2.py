@@ -1464,11 +1464,15 @@ def achievements_page(c, img):
     body = (
         levels_band(c, link=False, head=False)
         + '<div class="rail-layout">'
-        + rail(["nordic-podium", "contingent-2021", "team-gulmarg"], "left")
+        # Ordered to match the tables beside them: the three international
+        # frames come first, then the three from home. Reading down the
+        # page with the right rail offset, that is Corralco, Trondheim,
+        # Harbin, then Khelo India, Gulmarg, Gulmarg.
+        + rail(["chile-corralco", "flag-harbin", "podium-gulmarg-2023"], "left")
         + '<div class="rail-main">'
         + record_fold(c)
         + "</div>"
-        + rail(["podium-gulmarg-2023", "flag-harbin", "race-worldcup"], "right")
+        + rail(["race-worldcup", "contingent-2021", "team-gulmarg"], "right")
         + "</div>"
     ) + f"""
 <section class="prose-fold" id="official">
