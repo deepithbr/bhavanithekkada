@@ -935,8 +935,7 @@ def road_ahead(c, map_html="") -> str:
 <section class="prose-fold" id="road">
   <div class="wrap">
     <div class="prose">
-      <h2>{e(t.get('kicker') or 'The road to 2030')}</h2>
-      <p>{e(t.get('note') or '')}</p>
+      <h2>The road to 2030 Winter Olympics</h2>
     </div>
     {map_html}
     <div class="steps steps-future">{cards}</div>
@@ -1009,16 +1008,6 @@ def route_map(c) -> str:
         p = pts[pid]
         return p["lon"] + 180.0, lat_top - p["lat"]
 
-    europe = ["planica", "idre", "seefeld", "lygna", "trondheim", "ruka", "davos"]
-    ex = sum(xy(p)[0] for p in europe) / len(europe)
-    ey = sum(xy(p)[1] for p in europe) / len(europe)
-    # The ring is measured, not guessed: radius reaches the farthest of the
-    # seven plus clearance. The first guess of 7.5 left Trondheim and Ruka
-    # sitting outside their own circle, visible the moment it rendered.
-    er = max(
-        ((xy(p)[0] - ex) ** 2 + (xy(p)[1] - ey) ** 2) ** 0.5 for p in europe
-    ) + 2.2
-
     # No connecting line. Her route doubles back across continents, so drawn
     # honestly it reads as string rather than a journey; the client called it
     # odd and was right. The story lives in the order instead: the pins
@@ -1043,17 +1032,12 @@ def route_map(c) -> str:
         f'text-anchor="{a}">{e(t)}</text>'
         for pid, dx, dy, a, t in labels
     )
-    cluster = (
-        f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="{er:.1f}" class="ring"/>'
-        f'<text x="{ex:.1f}" y="{ey + er + 3.5:.1f}" text-anchor="middle">'
-        f"The European winter &middot; 7 venues</text>"
-    )
     # Where it is all pointed. Cross-country and para-Nordic at the 2030
     # Games are at La Clusaz, on the Confins plateau in Haute-Savoie;
     # biathlon is up the valley at Le Grand-Bornand. Coordinates are the
     # village, 45.905N 6.425E.
     dx_, dy_ = 6.425 + 180.0, lat_top - 45.905
-    far = [q for q in c["internationalFootprint"] if q["id"] not in europe]
+    far = list(c["internationalFootprint"])
 
     def arc(pid):
         """A bowed line from a start line she has raced to the one ahead."""
@@ -1065,9 +1049,33 @@ def route_map(c) -> str:
                 f'd="M{x1:.1f},{y1:.1f} Q{cx:.1f},{cy:.1f} {dx_:.1f},{dy_:.1f}"/>')
 
     arcs = "".join(arc(q["id"]) for q in far)
-    lx, ly = ex - er - 4.0, dy_ + 0.6
+    # The three named stops between here and the Games, from the target
+    # cards below the map. Hollow marks, because she has not raced them
+    # yet; the pins she has raced are filled.
+    plan_pos = {"Falun": (-3.4, -2.4, "end"),
+                "Lahti": (3.4, -2.4, "start"),
+                "Almaty": (0, 5.2, "middle")}
+    plan = ""
+    for n_, v in enumerate(c.get("targets", {}).get("venues", [])):
+        px, py = v["lon"] + 180.0, lat_top - v["lat"]
+        odx, ody, anc = plan_pos.get(v["place"], (0, -3.0, "middle"))
+        mx, my = (px + dx_) / 2, (py + dy_) / 2
+        rvx, rvy = dx_ - px, dy_ - py
+        plan += (
+            f'<path class="road-arc" pathLength="1" data-step="{n_}" '
+            f'd="M{px:.1f},{py:.1f} '
+            f'Q{mx - rvy * 0.13:.1f},{my + rvx * 0.13:.1f} '
+            f'{dx_:.1f},{dy_:.1f}"/>'
+            f'<circle cx="{px:.1f}" cy="{py:.1f}" r="1.7" class="plan-pin" '
+            f'data-step="{n_}"/>'
+            f'<text class="plan-label" data-step="{n_}" '
+            f'x="{px + odx:.1f}" y="{py + ody:.1f}" text-anchor="{anc}">'
+            f'{e(v["place"])} {e(v["year"])}</text>'
+        )
+
+    lx, ly = dx_ - 16.0, dy_ + 0.6
     dest = (
-        f'{arcs}'
+        f'<g class="past-lines">{arcs}</g>{plan}'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="4.2" class="dest-halo"/>'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="2.4" class="dest-dot"/>'
         f'<path class="dest-lead" d="M{dx_ - 4.4:.1f},{dy_:.1f} '
@@ -1088,7 +1096,7 @@ def route_map(c) -> str:
            trained, with lines converging on La Clusaz in the French Alps,
            where the 2030 Olympic cross-country races will be held.">
         <path d="{w['path']}" class="land"/>
-        {dots}{cluster}{texts}{dest}
+        <g class="past">{dots}{texts}</g>{dest}
       </svg>
       <figcaption class="caption">{roll}</figcaption>
     </figure>"""

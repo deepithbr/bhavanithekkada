@@ -4926,3 +4926,133 @@ body {
 #road .route-map {
   margin-block: var(--space-lg) var(--space-xl);
 }
+
+/* ---------------------- the road, staged
+
+   The client's sequence: the map arrives, her venues light up, lines run
+   from all of them to La Clusaz, the three named stops before the Games
+   appear on that road, and then everything she has already raced steps
+   back so the destination is what is left standing.
+
+   Four stages on one attribute. The pins keep their own pop animation;
+   these rules only handle what arrives after them and what recedes. */
+
+/* Hollow, because she has not raced these yet. */
+.plan-pin {
+  fill: var(--color-paper-2);
+  stroke: var(--color-accent);
+  stroke-width: 0.7;
+}
+
+.plan-label {
+  font-weight: 600;
+  fill: var(--color-ink);
+}
+
+.road-arc {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+.js .road-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* Everything after the pins starts hidden and arrives on cue. */
+.js .route-map .plan-pin,
+.js .route-map .plan-label,
+.js .route-map .dest-halo,
+.js .route-map .dest-dot,
+.js .route-map .dest-lead,
+.js .route-map .dest-label {
+  opacity: 0;
+  transition: opacity 600ms var(--ease-out);
+}
+
+.route-map[data-stage="road"] .route-arc,
+.route-map[data-stage="rest"] .route-arc,
+.route-map[data-stage="road"] .road-arc,
+.route-map[data-stage="rest"] .road-arc {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1500ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.route-map[data-stage="road"] .road-arc[data-step="1"],
+.route-map[data-stage="rest"] .road-arc[data-step="1"] {
+  transition-delay: 180ms;
+}
+
+.route-map[data-stage="road"] .road-arc[data-step="2"],
+.route-map[data-stage="rest"] .road-arc[data-step="2"] {
+  transition-delay: 360ms;
+}
+
+.route-map[data-stage="road"] .plan-pin,
+.route-map[data-stage="road"] .plan-label,
+.route-map[data-stage="rest"] .plan-pin,
+.route-map[data-stage="rest"] .plan-label {
+  opacity: 1;
+  transition-delay: 700ms;
+}
+
+.route-map[data-stage="road"] .dest-halo,
+.route-map[data-stage="rest"] .dest-halo {
+  opacity: 0.55;
+  transition-delay: 1100ms;
+}
+
+.route-map[data-stage="road"] .dest-dot,
+.route-map[data-stage="road"] .dest-lead,
+.route-map[data-stage="road"] .dest-label,
+.route-map[data-stage="rest"] .dest-dot,
+.route-map[data-stage="rest"] .dest-lead,
+.route-map[data-stage="rest"] .dest-label {
+  opacity: 1;
+  transition-delay: 1100ms;
+}
+
+/* The record steps back. It is still there, and still readable, but it
+   stops competing with the one place the section is about. */
+/* Faded as one group, not pin by pin. Six overlapping dots at 22% each
+   composite back to 65% and the cluster stays solid; fading the group
+   composites once and it actually recedes. */
+.route-map .past,
+.route-map .past-lines {
+  transition: opacity 900ms var(--ease-out);
+}
+
+.route-map[data-stage="rest"] .past {
+  opacity: 0.3;
+}
+
+.route-map[data-stage="rest"] .past-lines {
+  opacity: 0.4;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .road-arc {
+    stroke-dashoffset: 0;
+  }
+
+  .js .route-map .plan-pin,
+  .js .route-map .plan-label,
+  .js .route-map .dest-dot,
+  .js .route-map .dest-lead,
+  .js .route-map .dest-label {
+    opacity: 1;
+  }
+
+  .js .route-map .dest-halo {
+    opacity: 0.55;
+  }
+
+  .route-map .pin,
+  .route-map .route-arc,
+  .route-map text {
+    transition: none;
+  }
+}

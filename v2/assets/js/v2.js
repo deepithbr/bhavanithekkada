@@ -405,19 +405,34 @@
   if (routeFig) {
     const pins = Array.from(routeFig.querySelectorAll(".pin[data-stop]"))
       .sort((a, b) => Number(a.dataset.stop) - Number(b.dataset.stop));
+    const STEP = 150;
+    const FIRST = 220;
+
+    // The whole sequence, once: her venues light up in racing order, the
+    // lines run to La Clusaz, the three named stops before the Games
+    // arrive on that road, and then the record steps back so the
+    // destination is what is left standing.
+    const run = () => {
+      pins.forEach((pin, i) => {
+        setTimeout(() => (pin.dataset.lit = "true"), FIRST + i * STEP);
+      });
+      const lit = FIRST + pins.length * STEP;
+      setTimeout(() => (routeFig.dataset.stage = "road"), lit + 200);
+      setTimeout(() => (routeFig.dataset.stage = "rest"), lit + 2600);
+    };
+
     if (reduce.matches || !("IntersectionObserver" in window)) {
-      pins.forEach((p) => (p.dataset.lit = "true"));
+      pins.forEach((p2) => (p2.dataset.lit = "true"));
+      routeFig.dataset.stage = "rest";
     } else {
-      pins.forEach((p) => (p.dataset.lit = "false"));
+      pins.forEach((p2) => (p2.dataset.lit = "false"));
       const arrive = new IntersectionObserver((entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           arrive.disconnect();
-          pins.forEach((pin, i) => {
-            setTimeout(() => (pin.dataset.lit = "true"), 250 + i * 340);
-          });
+          run();
         }
-      }, { threshold: 0.45 });
+      }, { threshold: 0.3 });
       arrive.observe(routeFig);
     }
   }

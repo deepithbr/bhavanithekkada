@@ -1815,7 +1815,27 @@
       "backdrop": "classic-tracks",
       "lead": "Four seasons. Countless races. One start line."
     },
-    "eyebrow": "What comes next"
+    "eyebrow": "What comes next",
+    "venues": [
+      {
+        "year": "2027",
+        "place": "Falun",
+        "lat": 60.6065,
+        "lon": 15.6355
+      },
+      {
+        "year": "2029",
+        "place": "Almaty",
+        "lat": 43.238,
+        "lon": 76.8829
+      },
+      {
+        "year": "2029",
+        "place": "Lahti",
+        "lat": 60.9827,
+        "lon": 25.6612
+      }
+    ]
   },
   "beyondFinishLine": {
     "kicker": "Beyond the finish line",
