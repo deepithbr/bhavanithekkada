@@ -3061,3 +3061,131 @@ a {
       var(--color-paper) 100%
     );
 }
+
+
+/* --------------------------------------- the sport, redesigned (UI brief) */
+
+/* Visual first: heading and two short serif lines, then the two technique
+   blocks doing the explaining, then the formats pair, then her line as a
+   ruled close. No repeated hairlines, no data-sheet columns. */
+.sport-head {
+  max-width: 60ch;
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.sport-head h2 {
+  margin-bottom: var(--space-2xs);
+}
+
+.sport-intro {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+}
+
+.tech-blocks {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+@media (min-width: 760px) {
+  .tech-blocks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+.tech {
+  position: relative;
+  background: var(--color-paper-2);
+  padding: var(--space-lg) var(--space-lg) var(--space-md);
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+}
+
+.tech-n {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-accent);
+  opacity: 0.16;
+  user-select: none;
+}
+
+.tech h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.tech svg {
+  width: min(15rem, 100%);
+  height: auto;
+  color: var(--color-ink-2);
+  margin-block: var(--space-2xs);
+}
+
+.tech p {
+  font-family: var(--font-body);
+  color: var(--color-ink-2);
+}
+
+.formats {
+  margin-top: var(--space-xl);
+}
+
+.formats-row {
+  display: grid;
+  gap: var(--space-md) var(--space-2xl);
+  margin-top: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .formats-row {
+    grid-template-columns: repeat(2, minmax(0, 22rem));
+  }
+}
+
+.format h4 {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.format p {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  margin-top: var(--space-3xs);
+}
+
+.sport-bridge {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-line);
+  color: var(--color-ink-2);
+  letter-spacing: 0.14em;
+}
+
+.sport-bridge::before {
+  content: "";
+  display: block;
+  width: 2.4rem;
+  height: 2px;
+  background: var(--color-accent);
+  margin-bottom: var(--space-2xs);
+  margin-top: calc(-1 * var(--space-md) - 1px);
+}

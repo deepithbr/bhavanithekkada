@@ -471,36 +471,61 @@ def levels_band(c) -> str:
 
 
 def sport_fold(c) -> str:
-    """The sport, in her structure: headline, one paragraph, four format
-    cards, then the winter that moves around the world."""
+    """The sport, redesigned to the UI brief: visual first. Two feature
+    blocks with oversized numerals and line-drawn movement diagrams carry
+    Classic and Freestyle; Sprint and Distance sit beneath as a compact
+    pair; her connection closes the section as a ruled strip. The old
+    two-column data-sheet composition is gone."""
     sp = c["sport"]
-
-    def group(pair):
-        return "".join(
-            f'<div class="fact"><dt class="caption">{e(d["name"])}</dt>'
-            f'<dd>{e(d.get("note") or "")}</dd></div>'
-            for d in pair
-        )
     ds = sp.get("disciplines", [])
+
+    # Minimal monochrome movement diagrams. Classic: parallel tracks and
+    # parallel skis, forward. Freestyle: skis angled outward, pushing wide.
+    classic_svg = """<svg viewBox="0 0 220 110" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <line x1="12" y1="72" x2="208" y2="72" opacity="0.35"/>
+      <line x1="12" y1="82" x2="208" y2="82" opacity="0.35"/>
+      <line x1="12" y1="94" x2="208" y2="94" opacity="0.35"/>
+      <line x1="12" y1="104" x2="208" y2="104" opacity="0.35"/>
+      <rect x="52" y="73" width="92" height="5" rx="2.5"/>
+      <rect x="88" y="95" width="92" height="5" rx="2.5"/>
+      <path d="M150 38h44m0 0-10-8m10 8-10 8" stroke-width="2.4"/>
+    </svg>"""
+    freestyle_svg = """<svg viewBox="0 0 220 110" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <line x1="104" y1="98" x2="48" y2="34" stroke-width="5"/>
+      <line x1="116" y1="98" x2="172" y2="34" stroke-width="5"/>
+      <path d="M60 62 38 44m0 0 2 12m-2-12 12-2" stroke-width="2.2"/>
+      <path d="M160 62l22-18m0 0-2 12m2-12-12-2" stroke-width="2.2"/>
+    </svg>"""
+    art = [classic_svg, freestyle_svg]
+    techs = "".join(
+        f'<article class="tech" data-rise>'
+        f'<span class="tech-n" aria-hidden="true">0{n + 1}</span>'
+        f'<h3>{e(d["name"])}</h3>{art[n]}'
+        f'<p>{e(d.get("note") or "")}</p></article>'
+        for n, d in enumerate(ds[:2])
+    )
+    formats = "".join(
+        f'<div class="format"><h4>{e(d["name"])}</h4>'
+        f'<p>{e(d.get("note") or "")}</p></div>'
+        for d in ds[2:4]
+    )
     return f"""
 <section class="prose-fold" id="sport">
-  <div class="wrap sport-grid">
-    <div class="prose" data-rise>
+  <div class="wrap">
+    <div class="sport-head" data-rise>
       <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
       <h2>{e(sp.get('nordicHeading') or 'Cross-Country Skiing')}</h2>
-      <p>{e(sp.get('nordicIntro') or '')}</p>
-      <p>{e(sp.get('lede') or '')}</p>
-      <p>{e(sp.get('contrast') or '')}</p>
+      <p class="sport-intro">{e(sp.get('nordicIntro') or '')}</p>
+      <p class="sport-intro">{e(sp.get('lede') or '')}</p>
     </div>
-    <div class="sport-cards" data-rise>
-      <h3>Two ways to ski</h3>
-      <dl class="facts facts-pair">{group(ds[:2])}</dl>
-      <h3>Two types of racing</h3>
-      <dl class="facts facts-pair">{group(ds[2:4])}</dl>
+    <div class="tech-blocks">{techs}</div>
+    <div class="formats" data-rise>
+      <p class="caption">Race formats</p>
+      <div class="formats-row">{formats}</div>
     </div>
-  </div>
-  <div class="wrap prose" style="margin-top:var(--space-lg)">
-    <p>{e(sp.get('context') or '')}</p>
+    <p class="sport-bridge caption" data-rise>{e(sp.get('context') or '')}</p>
   </div>
 </section>"""
 
