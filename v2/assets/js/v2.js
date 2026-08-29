@@ -187,6 +187,50 @@
     }
   }
 
+  /* ---- the card stack -------------------------------------------------- */
+
+  // Every homepage section holds while the next one rises over it. A card
+  // the height of the viewport pins at top 0; a card taller than the
+  // viewport has to pin at a negative top so its LAST screenful is what
+  // holds, or everything past the first screen can never be scrolled to.
+  // That offset is the card's own height, which CSS cannot read, so it is
+  // measured here and re-measured whenever a card changes size.
+  const stack = document.querySelector(".stack");
+  const wide = window.matchMedia("(min-width: 900px)");
+  if (stack && stack.children.length > 1) {
+    const cards = [...stack.children];
+
+    const layout = () => {
+      if (!wide.matches) {
+        cards.forEach((c2) => {
+          c2.style.position = "";
+          c2.style.top = "";
+        });
+        return;
+      }
+      const vh = window.innerHeight;
+      cards.forEach((c2) => {
+        const h = c2.getBoundingClientRect().height;
+        c2.style.position = "sticky";
+        c2.style.top = h > vh ? Math.round(vh - h) + "px" : "0px";
+      });
+    };
+
+    layout();
+    wide.addEventListener("change", layout);
+
+    // Late layout shifts move these numbers: fonts landing, a photograph
+    // decoding, the typed line changing the chip's width. Watching the
+    // cards catches all of it. Setting `top` never changes a height, so
+    // this cannot feed itself.
+    if (window.ResizeObserver) {
+      const ro = new ResizeObserver(layout);
+      cards.forEach((c2) => ro.observe(c2));
+    } else {
+      window.addEventListener("resize", layout);
+    }
+  }
+
   /* ---- the mobile menu ------------------------------------------------ */
 
   // One button, one attribute. Escape closes and hands focus back; a tap on

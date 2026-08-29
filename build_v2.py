@@ -766,7 +766,6 @@ def page(c: dict, img: Img) -> str:
 {hero_panel(c, img)}
 {who_she_is(c, img)}
 {sport_fold(c, img)}
-</div>
 {seasons(c, img)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
@@ -774,6 +773,7 @@ def page(c: dict, img: Img) -> str:
        ('Partner with me', 'partnership.html'), pos='50% 46%',
        size='closer')}
 {backing(c)}
+</div>
 </main>
 {footer(c)}
 <script src="assets/js/v2.js?v={v}" defer></script>

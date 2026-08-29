@@ -4631,23 +4631,8 @@ body {
    static, or the pinned hero would paint over them. */
 
 @media (min-width: 900px) {
-  .stack > .split,
-  .stack > .sport-band {
-    position: relative;
-    top: auto;
-  }
-
-  .stack > .panel {
-    z-index: 1;
-  }
-
-  .stack > .split {
-    z-index: 2;
-  }
-
-  .stack > .sport-band {
-    z-index: 3;
-  }
+  /* Superseded: tall cards now pin their bottom edge instead of opting
+     out of pinning altogether. See 'every section is a card' below. */
 
   /* The portrait still pins inside the card while the story scrolls past
      it, which is the behaviour the client asked for and the reason the
@@ -4688,4 +4673,63 @@ body {
   text-transform: uppercase;
   margin-top: var(--space-xs);
   color: oklch(100% 0 0 / 0.86);
+}
+
+/* ==================== every section is a card, and tall cards still work
+
+   The client wants the whole homepage stacking, not just the first two.
+   The blocker was that a card pinned at top:0 which is taller than the
+   viewport stops moving the moment its top hits zero, so its own foot can
+   never be scrolled to. That is what swallowed the Born / Mentored by
+   rows.
+
+   Pinning the bottom edge instead solves it. A card scrolls normally
+   until its last screenful is in view, then holds there while the next
+   card rises over it. Everything above was read on the way past, and a
+   card exactly one viewport tall behaves the same as it did before. */
+
+@media (min-width: 900px) {
+  /* Relative is the floor, not the effect: without JavaScript every card
+     scrolls normally and nothing is unreachable. The script promotes each
+     one to sticky and gives it the offset it needs, because a card taller
+     than the viewport has to pin at a NEGATIVE top to hold its last
+     screenful, and that value is the element's own height, which CSS
+     cannot read. `bottom: 0` is not the answer: it pins on the way up,
+     not the way down. Measured before this line: at 1500px of scroll a
+     bottom-pinned card had already travelled to -780. */
+  .stack > * {
+    position: relative;
+    min-height: 100svh;
+  }
+
+  /* Later cards paint over earlier ones. Sibling order already does this,
+     but the stack now mixes image panels and painted grounds, so the
+     order is written down rather than inferred. */
+  .stack > :nth-child(1) { z-index: 1; }
+  .stack > :nth-child(2) { z-index: 2; }
+  .stack > :nth-child(3) { z-index: 3; }
+  .stack > :nth-child(4) { z-index: 4; }
+  .stack > :nth-child(5) { z-index: 5; }
+  .stack > :nth-child(6) { z-index: 6; }
+
+  /* Each card needs an opaque ground or the one beneath shows through. */
+  .stack > .seasons-band {
+    background: var(--color-paper-2);
+    display: grid;
+    align-content: center;
+  }
+
+  .stack > .backing {
+    background: var(--color-paper-2);
+    display: grid;
+    align-content: center;
+  }
+
+  /* The footer is not a card; without a stacking order of its own the
+     pinned cards would paint over it. */
+  .site-footer,
+  footer {
+    position: relative;
+    z-index: 10;
+  }
 }
