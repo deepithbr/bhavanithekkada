@@ -1267,6 +1267,30 @@
         0.34
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "nordic-overlook-cine",
+      "file": "nordic-overlook-cine",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "A skier in an India race suit standing on her skis at the top of a cleared slope, a northern town spread out in the valley below.",
+      "credit": "Athlete's own archive",
+      "year": 2022,
+      "location": null,
+      "category": "hero-grade",
+      "focal": [
+        0.43,
+        0.4
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [

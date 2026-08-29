@@ -3436,16 +3436,16 @@ a {
 /* One even veil so the name reads on any exposure; no zones, no fades. */
 .panel[data-size="hero"] .panel-shot::after {
   background: linear-gradient(
-    rgba(3, 9, 20, 0.32),
-    rgba(3, 9, 20, 0.32)
+    rgba(3, 9, 20, 0.2),
+    rgba(3, 9, 20, 0.2)
   );
 }
 
 @media (min-width: 900px) {
   .panel[data-size="hero"] .panel-shot::after {
     background: linear-gradient(
-      rgba(3, 9, 20, 0.32),
-      rgba(3, 9, 20, 0.32)
+      rgba(3, 9, 20, 0.2),
+      rgba(3, 9, 20, 0.2)
     );
   }
 }
