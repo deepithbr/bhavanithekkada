@@ -2607,7 +2607,7 @@ a {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1400ms var(--ease-out);
+  transition: opacity 1100ms var(--ease-out);
 }
 
 .panel-shot[data-slides="true"] img.slide[data-on="true"] {
@@ -2928,4 +2928,66 @@ a {
   color: oklch(100% 0 0 / 0.93);
   opacity: 1;
   margin-top: var(--space-2xs);
+}
+
+
+/* -------------------------------------- hero brief, 30 Aug: final pass */
+
+/*
+ * Implementation brief applied verbatim where it speaks, reconciled with
+ * the design system where it defers: Archivo is the strong sans the brief
+ * says to reuse; the paper handover at the foot stays because the page
+ * below is white and the brief leaves hero height and sections alone.
+ */
+.panel[data-size="hero"] .panel-shot::before {
+  opacity: 0.08;
+}
+
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 12, 22, 0.72) 0%,
+      rgba(5, 12, 22, 0.42) 42%,
+      rgba(5, 12, 22, 0.08) 72%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(5, 12, 22, 0.2) 0%,
+      rgba(5, 12, 22, 0) 38%,
+      rgba(5, 12, 22, 0.24) 78%,
+      var(--color-paper) 100%
+    );
+}
+
+/* Lower-left third, with breathing room off the bottom edge. */
+.panel[data-size="hero"] {
+  padding-bottom: clamp(4rem, 11vh, 7rem);
+}
+
+/* The name: the strongest element, no effects, the overlay does the work. */
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.4rem, 7vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  text-shadow: none;
+  color: oklch(99% 0.002 250);
+}
+
+/* The eyebrow: secondary, tracked, firm. */
+.panel[data-size="hero"] .panel-body .caption {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+/* The sub-punchline: refined sans, short measure, quiet confidence. */
+.panel[data-size="hero"] .hero-line {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 32rem;
+  color: oklch(100% 0 0 / 0.92);
 }
