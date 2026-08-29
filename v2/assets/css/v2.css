@@ -3563,3 +3563,18 @@ a {
   color: oklch(78% 0.1 245);
   font-variant-numeric: tabular-nums;
 }
+
+
+/* The chip must be as wide as its widest credential. Absolute spans do
+   not size their parent, so the lines stack as grid layers instead: same
+   crossfade, honest width. */
+.hero-chip .hero-cred {
+  display: grid;
+  height: auto;
+  min-height: 2.6rem;
+}
+
+.hero-chip .hero-cred span {
+  position: static;
+  grid-area: 1 / 1;
+}
