@@ -915,7 +915,7 @@ def about_page(c, img):
                    current="about.html", pos="50% 8%", og="about")
 
 
-def road_ahead(c) -> str:
+def road_ahead(c, map_html="") -> str:
     """The timeline keeps going. Her brief asks Journey to run past the
     present into the targets, so the page closes on those.
 
@@ -938,6 +938,7 @@ def road_ahead(c) -> str:
       <h2>{e(t.get('kicker') or 'The road to 2030')}</h2>
       <p>{e(t.get('note') or '')}</p>
     </div>
+    {map_html}
     <div class="steps steps-future">{cards}</div>
   </div>
 </section>"""
@@ -967,8 +968,11 @@ def journey_page(c, img):
         '<section class="prose-fold"><div class="wrap steps">'
         + "".join(items)
         + "</div></section>"
-        + route_map(c)
-        + road_ahead(c)
+        # One heading, not two. The map and the target cards were two
+        # sections both about what comes next, and after the client
+        # renamed the map to The road to 2030 the page carried that
+        # heading twice.
+        + road_ahead(c, route_map(c))
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
                    "A journey across continents, seasons, and start lines.", body,
@@ -1044,25 +1048,50 @@ def route_map(c) -> str:
         f'<text x="{ex:.1f}" y="{ey + er + 3.5:.1f}" text-anchor="middle">'
         f"The European winter &middot; 7 venues</text>"
     )
+    # Where it is all pointed. Cross-country and para-Nordic at the 2030
+    # Games are at La Clusaz, on the Confins plateau in Haute-Savoie;
+    # biathlon is up the valley at Le Grand-Bornand. Coordinates are the
+    # village, 45.905N 6.425E.
+    dx_, dy_ = 6.425 + 180.0, lat_top - 45.905
+    far = [q for q in c["internationalFootprint"] if q["id"] not in europe]
+
+    def arc(pid):
+        """A bowed line from a start line she has raced to the one ahead."""
+        x1, y1 = xy(pid)
+        mx, my = (x1 + dx_) / 2, (y1 + dy_) / 2
+        vx_, vy_ = dx_ - x1, dy_ - y1
+        cx, cy = mx - vy_ * 0.16, my + vx_ * 0.16
+        return (f'<path class="route-arc" pathLength="1" '
+                f'd="M{x1:.1f},{y1:.1f} Q{cx:.1f},{cy:.1f} {dx_:.1f},{dy_:.1f}"/>')
+
+    arcs = "".join(arc(q["id"]) for q in far)
+    lx, ly = ex - er - 4.0, dy_ + 0.6
+    dest = (
+        f'{arcs}'
+        f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="4.2" class="dest-halo"/>'
+        f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="2.4" class="dest-dot"/>'
+        f'<path class="dest-lead" d="M{dx_ - 4.4:.1f},{dy_:.1f} '
+        f'L{lx + 1.2:.1f},{ly - 0.6:.1f}"/>'
+        f'<text class="dest-label" x="{lx:.1f}" y="{ly:.1f}" '
+        f'text-anchor="end">La Clusaz &middot; 2030</text>'
+    )
+
     order = [p["place"] for p in c["internationalFootprint"]]
     roll = " &middot; ".join(order)
     # crop: lon -85..145 -> x 95..325, lat 70..-45
     vx, vw = 95, 230
     vy, vh = lat_top - 70, 115
     return f"""
-<section class="prose-fold" data-ground="ice" id="route">
-  <div class="wrap">
-    <div class="prose"><h2>The route</h2></div>
-    <figure class="route-map">
+    <figure class="route-map" id="route">
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
-           aria-label="World map marking the fourteen places she has raced or trained.">
+           aria-label="World map marking the fourteen places she has raced or
+           trained, with lines converging on La Clusaz in the French Alps,
+           where the 2030 Olympic cross-country races will be held.">
         <path d="{w['path']}" class="land"/>
-        {dots}{cluster}{texts}
+        {dots}{cluster}{texts}{dest}
       </svg>
       <figcaption class="caption">{roll}</figcaption>
-    </figure>
-  </div>
-</section>"""
+    </figure>"""
 
 
 def record_fold(c) -> str:

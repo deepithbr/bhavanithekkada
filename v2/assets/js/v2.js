@@ -192,7 +192,7 @@
   // The stroke under the destination draws itself once, when its panel
   // arrives. Reduced motion gets it already drawn, from CSS, and this
   // still marks it so nothing is left half-scratched.
-  const drawn = document.querySelectorAll(".mark-draw");
+  const drawn = document.querySelectorAll(".mark-draw, .route-map");
   if (drawn.length) {
     const pen = new IntersectionObserver(
       (rows, obs) => {

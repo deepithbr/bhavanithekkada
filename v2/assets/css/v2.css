@@ -4851,3 +4851,78 @@ body {
 .split-body .split-note + .facts {
   margin-top: var(--space-lg);
 }
+
+/* ---------------------- the road, drawn on the map
+
+   Every start line she has raced sits as a plain pin. The 2030 venue is
+   not one of those, so it is not drawn like one: a filled mark inside a
+   halo, with lines bowed in from the far pins so the map says converging
+   rather than scattered. The lines draw themselves when the section
+   arrives, like the stroke under the closing headline. */
+
+.route-arc {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.34;
+  stroke-linecap: round;
+  opacity: 0.42;
+}
+
+.js .route-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.route-map[data-drawn="true"] .route-arc {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1400ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Staggered so they arrive as a sequence, not a flash. */
+.route-map[data-drawn="true"] .route-arc:nth-of-type(2) { transition-delay: 110ms; }
+.route-map[data-drawn="true"] .route-arc:nth-of-type(3) { transition-delay: 220ms; }
+.route-map[data-drawn="true"] .route-arc:nth-of-type(4) { transition-delay: 330ms; }
+.route-map[data-drawn="true"] .route-arc:nth-of-type(5) { transition-delay: 440ms; }
+.route-map[data-drawn="true"] .route-arc:nth-of-type(6) { transition-delay: 550ms; }
+.route-map[data-drawn="true"] .route-arc:nth-of-type(7) { transition-delay: 660ms; }
+
+.dest-halo {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  opacity: 0.55;
+}
+
+.dest-dot {
+  fill: var(--color-accent);
+}
+
+.dest-lead {
+  stroke: var(--color-ink-3);
+  stroke-width: 0.28;
+  fill: none;
+}
+
+.dest-label {
+  font-family: var(--font-caption);
+  font-size: 3.1px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .route-arc {
+    stroke-dashoffset: 0;
+  }
+
+  .route-map[data-drawn="true"] .route-arc {
+    transition: none;
+  }
+}
+
+/* The map sits inside the road section now, so it needs its own air. */
+#road .route-map {
+  margin-block: var(--space-lg) var(--space-xl);
+}
