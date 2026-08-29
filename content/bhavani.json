@@ -1423,25 +1423,26 @@
         "id": "training",
         "index": "01",
         "title": "Training blocks on snow",
-        "body": "The European season opens in late November against athletes who have been on snow since October. A pre-season block in Scandinavia or the Alps buys those six weeks back, and it is the difference between racing into form and racing to find it."
+        "body": "The European season opens in November against athletes who have been on snow since October. A pre-season block buys those six weeks back."
       },
       {
         "id": "travel",
         "index": "02",
         "title": "Competition travel",
-        "body": "December 2025 ran Ruka to Trondheim to Davos inside sixteen days. The federation covers entry and accommodation on some of it. Flights, transfers and everything between the start lists are hers."
+        "body": "December 2025 ran Ruka to Trondheim to Davos in sixteen days. Flights, transfers and everything between the start lists are hers.",
+        "image": "chile-lake"
       },
       {
         "id": "coaching",
         "index": "03",
         "title": "Coaching and wax service",
-        "body": "Every other athlete on a World Cup start list has a service team reading the snow that morning and grinding skis to it. She does not. Wax chosen for the wrong temperature costs more time than any amount of fitness gets back."
+        "body": "Every other athlete on a World Cup start list has a team reading the snow that morning and grinding skis to it. She does not."
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and kit",
-        "body": "Skis are ground for the snow they will meet, so one pair cannot cover a season. A full race set is classic and freestyle in cold, normal and warm grinds, with poles, boots and a race suit behind them."
+        "body": "Skis are ground for the snow they will meet, so one pair cannot cover a season."
       }
     ],
     "cta": {
@@ -1542,6 +1543,10 @@
       "Campaigns",
       "Product collaborations",
       "Athlete partnerships"
+    ],
+    "tileShots": [
+      "nz-snowfarm",
+      "classic-tracks"
     ]
   },
   "contact": {

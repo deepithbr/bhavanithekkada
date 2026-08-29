@@ -4146,8 +4146,11 @@ a {
    full display weight with the point of difference in accent. Her name
    grows in the bar to match, since it is now the wordmark. */
 
+/* Her name is the first thing on the page and the punchline sits under
+   it on the same left edge, so the two read as one move down the screen.
+   That only works if the name is big enough to start it. */
 .wordmark-name {
-  font-size: clamp(1.35rem, 2.7vw, 2.4rem);
+  font-size: clamp(1.6rem, 3.4vw, 3.2rem);
 }
 
 /* The link row tightens so her name can hold its size down to a laptop.
@@ -4155,7 +4158,7 @@ a {
    there and only there. */
 @media (min-width: 900px) and (max-width: 1080px) {
   .wordmark-name {
-    font-size: 1.45rem;
+    font-size: 1.75rem;
   }
 }
 
@@ -5329,67 +5332,270 @@ body {
 }
 
 
-/* ---------------------- what support funds, as cards
+/* ---------------------- what support funds, as a mosaic
 
-   Four lines in a definition list read as small print on a page asking
-   somebody for money. The same four as numbered cards read as a budget. */
+   The client's reference lays its proof out as a bento of mixed tiles:
+   pale plates carrying type, photographic ones carrying none, and one
+   tall frame with its text over the picture. Same here.
+
+   Columns rather than a grid, because the tiles are genuinely different
+   heights and a grid would either stretch them or leave holes. The
+   photo-only tiles are texture: they say nothing the type tiles do not,
+   so they are hidden from screen readers. */
 
 .funds {
-  display: grid;
-  gap: var(--space-lg);
   margin-top: var(--space-lg);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  columns: 1;
+  column-gap: var(--space-md);
 }
 
-@media (min-width: 820px) {
+@media (min-width: 700px) {
   .funds {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xl) var(--space-lg);
+    columns: 2;
+  }
+}
+
+@media (min-width: 1040px) {
+  .funds {
+    columns: 3;
   }
 }
 
 .fund {
-  position: relative;
-  border-top: 2px solid var(--color-ink);
-  padding-top: var(--space-sm);
+  break-inside: avoid;
+  margin: 0 0 var(--space-md);
   display: grid;
   align-content: start;
   gap: var(--space-2xs);
+  position: relative;
+  background: var(--color-paper-2);
+  padding: var(--space-md);
 }
 
 .fund-n {
   position: absolute;
-  top: var(--space-xs);
-  right: 0;
+  top: var(--space-sm);
+  right: var(--space-md);
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.2rem, 3.6vw, 3.2rem);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--color-accent);
-  opacity: 0.14;
+  opacity: 0.16;
   font-variant-numeric: tabular-nums;
   user-select: none;
 }
 
 .fund h3 {
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-indent: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink);
-  max-width: 16ch;
+  max-width: 15ch;
 }
 
 .fund p {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  font-size: clamp(0.98rem, 0.2vw + 0.92rem, 1.06rem);
   line-height: 1.55;
   color: var(--color-ink-body);
-  max-width: 44ch;
 }
+
+/* The tall one: its type sits on the photograph, so the photograph has
+   to give it a ground. */
+.fund-shot {
+  min-height: clamp(20rem, 34vw, 27rem);
+  align-content: end;
+  padding: var(--space-lg);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-ink-on-deep);
+}
+
+.fund-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+}
+
+.fund-img img,
+.fund-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Twenty-one words in a narrow column reach well up the tile, so the
+   grade has to carry further than a caption's would. */
+.fund-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.9) 0%,
+    rgba(3, 9, 20, 0.78) 40%,
+    rgba(3, 9, 20, 0.54) 70%,
+    rgba(3, 9, 20, 0.38) 100%
+  );
+}
+
+.fund-shot .fund-n {
+  color: oklch(82% 0.115 245);
+  opacity: 0.5;
+}
+
+.fund-shot h3 {
+  color: oklch(82% 0.115 245);
+}
+
+.fund-shot p {
+  color: oklch(97% 0.006 250);
+}
+
+/* Texture only. No type, no padding, and nothing to announce. */
+.fund-plate {
+  padding: 0;
+  background: var(--color-paper-2);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.fund-plate:nth-of-type(even) {
+  aspect-ratio: 3 / 4;
+}
+
+/* ---------------------- partnership: the three, and what she is open to */
+
+/* On the homepage the marks stand alone in a row. Here each one carries
+   the line saying what that support actually is, so they stack. */
+.backers-stack {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .backers-stack {
+    gap: var(--space-xl);
+  }
+}
+
+.backer-row {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+  text-align: left;
+  padding: 0;
+  background: none;
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .backer-row {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+  }
+}
+
+.backer-row .backer-mark {
+  height: 3.4rem;
+  justify-content: flex-start;
+}
+
+.backer-row .backer-mark img {
+  max-width: 11rem;
+}
+
+.backer-row h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.backer-row p {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+  margin-top: var(--space-3xs);
+  max-width: 52ch;
+}
+
+.open-list {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2xs);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.open-list li {
+  font-family: var(--font-caption);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  padding: var(--space-xs) 0 var(--space-xs) var(--space-sm);
+  border-left: 3px solid var(--color-accent);
+}
+
+/* ---------------------- speaking cards carry a frame
+
+   The reference puts a photograph on every skill card. Six here, one a
+   card, each chosen against what the card actually says: her in a tuck
+   for resilience, a floodlit trail for endurance, the flag at Harbin for
+   representation, a roped line of climbers for the apprenticeship, a
+   group on their skis for persuasion, and a set of cut tracks running
+   away for pathways. All owned-rights, filtered at build time. */
+
+.skill {
+  overflow: hidden;
+}
+
+.skill-shot {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  margin-bottom: var(--space-sm);
+}
+
+.skill-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-out);
+}
+
+.skill:hover .skill-shot img {
+  transform: scale(1.04);
+}
+
+/* The numeral moves off the photograph and onto the rule above it. */
+.skill-n {
+  top: calc(-1 * var(--space-sm));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-shot img {
+    transition: none;
+  }
+}
+
+
+
 
 
 /* The grade follows the words: dark at the left where they sit, clear on

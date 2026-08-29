@@ -1263,12 +1263,31 @@ def partnership_page(c, img):
     homepage already carries in its own words, and the 2030 target block,
     which repeated the Journey page. Both stay in the content file."""
     p = c["partnership"]
-    areas = "".join(
-        f'<article class="fund" data-rise>'
-        f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
-        f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>'
-        for n, a in enumerate(p.get("areas", []), 1)
-    )
+    # A mosaic, to the client's reference: pale text tiles and photographic
+    # ones in one column flow, with the second area carrying its text over
+    # a frame. The photo-only tiles are texture and say nothing the text
+    # tiles do not, so they are hidden from screen readers.
+    def tile(n, a):
+        sl = a.get("image")
+        if sl and (img.get(sl) or {}).get("rights") == "owned":
+            return (f'<article class="fund fund-shot" data-rise>'
+                    f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
+                    f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
+                    f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>')
+        return (f'<article class="fund" data-rise>'
+                f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
+                f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>')
+
+    plain = [
+        f'<figure class="fund fund-plate" aria-hidden="true" data-rise>'
+        f'{img.tag(sl, TILE_SIZES)}</figure>'
+        for sl in p.get("tileShots", [])
+        if (img.get(sl) or {}).get("rights") == "owned"
+    ]
+    rows = [tile(n, a) for n, a in enumerate(p.get("areas", []), 1)]
+    # Interleaved so no column is all type or all photograph.
+    order = [rows[0]] + plain[:1] + rows[1:3] + plain[1:2] + rows[3:]
+    areas = "".join(order)
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
