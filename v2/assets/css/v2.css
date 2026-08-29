@@ -3325,3 +3325,72 @@ a {
     object-position: 52% 34% !important;
   }
 }
+
+
+/* --------------------------------- hero, the client's mock of 30 Aug */
+
+/* Black Rusher, the client-supplied face V1 carried on its wordmark,
+   now trialled on the hero name at her request. Script faces need no
+   negative tracking and a little more line room. */
+@font-face {
+  font-family: "Black Rusher";
+  src: url("../fonts/black-rusher.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-family: "Black Rusher", var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.02;
+  font-size: clamp(3.2rem, 6vw, 6.4rem);
+}
+
+/* The accent rule between name and statement, as drawn. */
+.panel[data-size="hero"] .panel-body h1::after {
+  content: "";
+  display: block;
+  width: 7rem;
+  height: 2px;
+  background: var(--color-accent);
+  margin-top: var(--space-sm);
+}
+
+/* The mock's eyebrow is plain tracked caps, no dash. */
+.panel[data-size="hero"] .panel-body .caption::before {
+  display: none;
+}
+
+/* Her figure rides the right side; the left is a navy ground the copy
+   owns. The image block starts at 26% and the gradient bridges the
+   seam, so the frame reads as one composition. Desktop only. */
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot {
+    background: rgb(5, 14, 30);
+  }
+
+  .panel-shot[data-slides="true"] img.slide {
+    left: 26%;
+    width: 74%;
+  }
+
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 14, 30, 0.98) 0%,
+        rgba(5, 14, 30, 0.9) 27%,
+        rgba(5, 14, 30, 0.52) 44%,
+        rgba(5, 14, 30, 0.12) 60%,
+        rgba(5, 14, 30, 0) 72%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(5, 14, 30, 0) 0%,
+        rgba(5, 14, 30, 0) 70%,
+        var(--color-paper) 100%
+      );
+  }
+}
