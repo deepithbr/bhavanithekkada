@@ -353,7 +353,8 @@ def hero_panel(c, img) -> str:
 <section class="panel" data-size="hero">
   <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
   <div class="wrap panel-body" data-rise>
-    <h1>Bhavani Thekkada</h1>
+    <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
+      <span>Thekkada</span></h1>
     <p class="sub hero-line">{e(c['hero']['line'])}</p>
   </div>
   <div class="scroll-cue" aria-hidden="true"><i></i></div>
