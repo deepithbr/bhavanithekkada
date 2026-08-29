@@ -353,9 +353,11 @@ def hero_panel(c, img) -> str:
 <section class="panel" data-size="hero">
   <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
   <div class="wrap panel-body" data-rise>
+    <p class="caption hero-eyebrow">Indian cross-country skier</p>
     <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
       <span>Thekkada</span></h1>
-    <p class="sub hero-line">{e(c['hero']['line'])}</p>
+    <p class="sub hero-line">{e(c['hero']['line']).replace(
+        'path in', 'path<br>in')}</p>
   </div>
   <div class="scroll-cue" aria-hidden="true"><i></i></div>
 </section>"""
