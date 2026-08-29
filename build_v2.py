@@ -79,7 +79,7 @@ ORIGIN = "https://bhavanithekkada.pages.dev"
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "hero-portrait",
+    "hero": "hero-portrait-cine",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "holmenkollen",
@@ -320,10 +320,13 @@ def sponsors(c: dict) -> str:
 # Three frames, face first: the Gulmarg portrait in the India suit
 # opens so a visitor meets her before the venues, then the Worlds
 # start, then the flag.
+# The -cine slots are the same frames under one baked film grade
+# (S-curve, navy shadows, unsharp, corner vignette), so the rotation
+# reads as one production instead of three phone exposures.
 HERO_SLIDES = [
-    ("hero-portrait", "50% 14%"),
-    ("race-worldcup", "50% 45%"),
-    ("flag-harbin", "50% 34%"),
+    ("hero-portrait-cine", "50% 14%"),
+    ("race-worldcup-cine", "50% 45%"),
+    ("flag-harbin-cine", "50% 34%"),
 ]
 
 

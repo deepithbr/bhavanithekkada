@@ -1195,6 +1195,78 @@
         0.42
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "hero-portrait-cine",
+      "file": "hero-portrait-cine",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2268,
+        4032
+      ],
+      "ratio": 0.5625,
+      "alt": "Bhavani Thekkada standing on skis in a blue India race suit on a groomed piste, snow-covered ridges behind her.",
+      "credit": "Client-supplied portfolio",
+      "year": null,
+      "location": null,
+      "category": "hero-grade",
+      "focal": [
+        0.53,
+        0.21
+      ],
+      "rights": "unconfirmed"
+    },
+    {
+      "slot": "race-worldcup-cine",
+      "file": "race-worldcup-cine",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        4032
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada in the blue India race suit on the stadium loop in front of a full grandstand, advertising boards and national flags along the barrier behind her.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Trondheim, Norway",
+      "category": "hero-grade",
+      "focal": [
+        0.42,
+        0.31
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "flag-harbin-cine",
+      "file": "flag-harbin-cine",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3000,
+        4000
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada holding the Indian flag open above her shoulders in her race bib at the Asian Winter Games.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Harbin, China",
+      "category": "hero-grade",
+      "focal": [
+        0.5,
+        0.34
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [
