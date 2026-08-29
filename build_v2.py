@@ -1316,7 +1316,11 @@ def partnership_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
-                   "What support pays for, and who backs her now.",
+                   # A banner line should set the horizon, not index the
+                   # page. Four seasons is the figure the site already
+                   # uses for the run to 2030.
+                   "Four seasons to the French Alps, and the people who "
+                   "get her there.",
                    body, shot="holmenkollen", current="partnership.html",
                    # Measured against the frame rather than guessed. The
                    # banner shows a 14% band of a portrait source, and
