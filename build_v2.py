@@ -1306,8 +1306,8 @@ def partnership_page(c, img):
     )
     body = f"""
 <section class="prose-fold">
-  <div class="wrap prose">
-    <h2>What support funds</h2>
+  <div class="wrap">
+    <div class="prose"><h2>What support funds</h2></div>
     <div class="funds">{areas}</div>
   </div>
 </section>

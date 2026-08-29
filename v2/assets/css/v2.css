@@ -5818,3 +5818,79 @@ body {
   margin-bottom: var(--space-lg);
   max-width: 52ch;
 }
+
+/* ---------------------- the bar goes to the page edges
+
+   The client's reference sets the name hard left and the link row hard
+   right, with the whole width between them. Ours were both inset by the
+   content column, about 105px a side at 1440, which read as a centred
+   block rather than a bar.
+
+   The bar gets its own measure now: a narrow gutter instead of the
+   column's. That also buys back roughly 140px of row, which is what the
+   900-to-1280 tightening was there to find, so the links can hold their
+   size further down. */
+
+.nav .nav-inner {
+  width: min(100% - 2 * clamp(1.25rem, 2.4vw, 3rem), 120rem);
+}
+
+@media (min-width: 900px) {
+  .nav .nav-inner {
+    width: min(100% - 2 * clamp(1.25rem, 2.4vw, 3rem), 120rem);
+  }
+}
+
+/* With the extra width the row no longer needs squeezing until 1080. */
+@media (min-width: 1081px) and (max-width: 1280px) {
+  .nav-links {
+    gap: var(--space-md);
+  }
+
+  .nav-links a {
+    font-size: 0.84rem;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.7rem 1.3rem;
+  }
+}
+
+/* The tiles were inside .prose, which caps at 62ch for reading comfort.
+   That is right for a paragraph and wrong for a mosaic: it left three
+   columns about 220px wide, which reads as elongated rather than spaced
+   across the page. The mosaic now sits outside that measure and holds
+   two columns until there is genuinely room for three. */
+.funds {
+  columns: 1;
+}
+
+@media (min-width: 640px) {
+  .funds {
+    columns: 2;
+    column-gap: var(--space-lg);
+  }
+}
+
+@media (min-width: 1240px) {
+  .funds {
+    columns: 3;
+    column-gap: var(--space-lg);
+  }
+}
+
+.fund {
+  margin-bottom: var(--space-lg);
+}
+
+/* The bar: the link row sits hard right, the way the reference does it.
+   Without this the row was ending 117px short of the gutter the wordmark
+   was using. */
+.nav .nav-inner {
+  justify-content: space-between;
+}
+
+.nav .nav-links {
+  margin-right: 0;
+}
