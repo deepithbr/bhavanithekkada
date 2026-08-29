@@ -4413,105 +4413,6 @@ body {
 }
 
 
-/* ==================== six seasons
-
-   One photograph a year, captioned with nothing but the year. The years
-   are the ones recorded against the photographs, so the row cannot claim
-   a season a picture does not belong to. */
-
-.seasons-band {
-  background: var(--color-paper-2);
-  padding-block: var(--space-3xl);
-}
-
-.seasons-head {
-  display: grid;
-  gap: var(--space-lg);
-  align-items: end;
-  margin-bottom: var(--space-xl);
-}
-
-@media (min-width: 900px) {
-  .seasons-head {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-2xl);
-  }
-}
-
-.seasons-head h2 {
-  font-size: var(--text-3xl);
-  margin-top: var(--space-2xs);
-}
-
-.seasons-say {
-  display: grid;
-  justify-items: start;
-  gap: var(--space-md);
-}
-
-.seasons-say p {
-  color: var(--color-ink-body);
-  max-width: 46ch;
-}
-
-.seasons-grid {
-  display: grid;
-  gap: var(--space-md);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (min-width: 900px) {
-  .seasons-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-lg);
-  }
-}
-
-.season {
-  display: grid;
-  gap: var(--space-2xs);
-  text-decoration: none;
-  color: inherit;
-}
-
-.season-shot {
-  display: block;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: var(--color-paper-3, var(--color-paper));
-}
-
-.season-shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 600ms var(--ease-out);
-}
-
-.season:hover .season-shot img,
-.season:focus-visible .season-shot img {
-  transform: scale(1.035);
-}
-
-.season-year {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  font-variant-numeric: tabular-nums;
-  color: var(--color-ink);
-  padding-top: var(--space-3xs);
-  border-top: 2px solid var(--color-accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .season-shot img {
-    transition: none;
-  }
-}
-
-
 /* ==================== the wrap-up: who backs the season
 
    This was a logo strip wedged between two sections. As the last thing on
@@ -4775,12 +4676,6 @@ body {
   .stack > :nth-child(7) { z-index: 7; }
 
   /* Each card needs an opaque ground or the one beneath shows through. */
-  .stack > .seasons-band {
-    background: var(--color-paper-2);
-    display: grid;
-    align-content: center;
-  }
-
   .stack > .backing {
     background: var(--color-paper-2);
     display: grid;
@@ -4844,7 +4739,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(0.4rem, 1.2vw, 1.1rem);
+  gap: clamp(0.6rem, 1.8vw, 1.6rem);
   /* The lean needs headroom or the tips clip against the section edge. */
   padding-block: var(--space-2xl);
 }
@@ -4860,14 +4755,16 @@ body {
   display: block;
   flex: 1 1 0;
   min-width: 0;
-  max-width: 9.5rem;
-  /* A ski, not a photo frame: long, narrow, pointed at the tip. */
-  aspect-ratio: 1 / 3.6;
+  max-width: 12.5rem;
+  /* A ski, not a photo frame: long, narrow, pointed at the tip. The
+     proportion is as slim as the photographs will carry; past this the
+     subject is a sliver and the section stops being about photographs. */
+  aspect-ratio: 1 / 2.9;
   overflow: hidden;
   background: var(--color-paper-2);
   clip-path: url(#ski);
   /* One lean for all four, stepped down the page so the set rises. */
-  transform: rotate(-15deg) translateY(calc(var(--i) * 1.6rem));
+  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem));
   transition: transform 420ms var(--ease-out), filter 420ms var(--ease-out);
 }
 
@@ -4885,7 +4782,7 @@ body {
 }
 
 .frame:hover {
-  transform: rotate(-15deg) translateY(calc(var(--i) * 1.6rem - 1.2rem));
+  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem - 1.2rem));
   filter: drop-shadow(0 26px 44px oklch(20% 0.03 255 / 0.3));
 }
 

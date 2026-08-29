@@ -93,8 +93,6 @@ MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "nordic-overlo
 
 TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 
-# Three across on a desktop, two on a phone.
-SEASON_SIZES = "(min-width:900px) 30vw, 45vw"
 
 
 def fingerprint() -> str:
@@ -310,54 +308,9 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
 </section>"""
 
 
-SEASONS = [
-    ("2020", "downhill-tuck"),
-    ("2021", "contingent-2021"),
-    ("2022", "nordic-overlook"),
-    ("2023", "podium-gulmarg-2023"),
-    ("2024", "khelo-medals"),
-    ("2025", "flag-harbin"),
-]
-
-
-def seasons(c, img) -> str:
-    """Six seasons, one photograph each.
-
-    The years are the ones recorded against the photographs in the image
-    library, not years written to fit a story. Nothing is captioned beyond
-    its year, because a caption this section cannot verify is worse than
-    no caption at all; the alt text carries the description."""
-    cards = "".join(
-        f'<a class="season" href="journey.html" data-rise>'
-        f'<span class="season-shot">{img.tag(slot, SEASON_SIZES)}</span>'
-        f'<span class="season-year">{e(year)}</span></a>'
-        for year, slot in SEASONS
-        if img.get(slot)
-    )
-    return f"""
-<section class="seasons-band" id="seasons">
-  <div class="wrap">
-    <div class="seasons-head" data-rise>
-      <div>
-        <p class="caption">The journey</p>
-        <h2>Six seasons</h2>
-      </div>
-      <div class="seasons-say">
-        <p>Fourteen race locations, both hemispheres. There was no route to
-        follow out of India in this sport, so it got built one start line at
-        a time.</p>
-        <a class="btn" href="journey.html">View journey</a>
-      </div>
-    </div>
-    <div class="seasons-grid">{cards}</div>
-  </div>
-</section>"""
-
-
-# The four frames in the media strip. Portrait sources only: they lean
-# better than landscape ones do.
-MEDIA_STRIP = ["race-worldcup", "chile-corralco", "night-training",
-               "nz-snowfarm"]
+# Three, not four. Four skis in the column left each one 137px wide and
+# the photographs unreadable; three at 192px carry a subject.
+MEDIA_STRIP = ["race-worldcup", "chile-corralco", "night-training"]
 
 
 def media_strip(c, img) -> str:
@@ -371,7 +324,7 @@ def media_strip(c, img) -> str:
     photograph and the photographs are the point of the section."""
     frames = "".join(
         f'<a class="frame" href="media.html" tabindex="-1" aria-hidden="true" '
-        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 16vw, 44vw")}</a>'
+        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 20vw, 44vw")}</a>'
         # Rights are settled before a photograph is published, here as
         # everywhere else on the site.
         for n, slot in enumerate(
@@ -398,9 +351,10 @@ def media_strip(c, img) -> str:
   <div class="wrap media-strip-inner">
     <div class="media-say" data-rise>
       <p class="caption">Media</p>
-      <h2>Photographs from the season</h2>
-      <p>Racing, training and the places in between, from her own archive.</p>
-      <a class="btn" href="media.html">View photos</a>
+      <h2>Press and photographs</h2>
+      <p>Coverage from Indian and international outlets, and the season&rsquo;s
+      photographs from her own archive.</p>
+      <a class="btn" href="media.html">View media</a>
     </div>
     <div class="media-lean" data-rise>{frames}</div>
   </div>
@@ -829,13 +783,12 @@ def page(c: dict, img: Img) -> str:
 {hero_panel(c, img)}
 {who_she_is(c, img)}
 {sport_fold(c, img)}
-{seasons(c, img)}
-{media_strip(c, img)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
        ('View journey', 'journey.html'), pos='50% 46%',
        size='closer', mark='Olympic Winter Games')}
+{media_strip(c, img)}
 {backing(c)}
 </div>
 </main>
