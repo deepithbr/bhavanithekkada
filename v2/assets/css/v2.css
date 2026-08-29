@@ -4327,3 +4327,71 @@ a {
     min-height: 100svh;
   }
 }
+
+/* ==================== body copy, sized to be read
+
+   The client's note: the paragraphs are too small and the right half of
+   the story column sits empty. Both are the same fault. Running text
+   scales with the viewport now instead of sitting at 16px, the measure
+   widens to use the column it was given, and body paragraphs take a
+   darker ink than the quiet grey used for labels. */
+
+:root {
+  --color-ink-body: oklch(34% 0.032 255);
+}
+
+body {
+  font-size: clamp(1.125rem, 0.3vw + 1.05rem, 1.28rem);
+}
+
+.prose p,
+.sport-lede,
+.split-body p:not(.split-quote) {
+  color: var(--color-ink-body);
+}
+
+.prose {
+  max-width: 62ch;
+}
+
+.split-body p:not(.split-quote) {
+  font-size: inherit;
+  max-width: 58ch;
+  line-height: 1.55;
+}
+
+.sport-lede {
+  font-size: inherit;
+  max-width: 48ch;
+}
+
+.sport-band .sport-bridge {
+  font-size: inherit;
+  max-width: 40ch;
+}
+
+/* The panel subtitle sits on a photograph; 300 is too fine to hold there. */
+.sub {
+  font-weight: 400;
+}
+
+/* The story column had room to spare on the right. Give the text the
+   width and keep the gutter honest. */
+@media (min-width: 900px) {
+  .split-body {
+    padding: var(--space-3xl) var(--space-lg) var(--space-3xl) var(--space-xl);
+  }
+}
+
+/* The four notes sit in narrow columns; running-text size crowds them, so
+   they hold just under it. */
+.fmt p:not(.fmt-kind) {
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.5;
+}
+
+@media (min-width: 860px) {
+  .sport-formats {
+    gap: var(--space-lg);
+  }
+}
