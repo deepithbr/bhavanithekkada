@@ -275,7 +275,21 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
     # then wrapped, so the marker can never smuggle markup through.
     marked = e(title)
     if mark:
-        marked = marked.replace(e(mark), f'<span class="u">{e(mark)}</span>', 1)
+        # The phrase takes its own line and a drawn stroke underneath: a
+        # path rather than a rule, because a ruled underline reads as a
+        # link and this is meant to look scratched into the snow. It draws
+        # itself when the panel comes into view; the script sets the flag.
+        marked = marked.replace(
+            e(mark),
+            f'<span class="mark-draw">{e(mark)}'
+            '<svg class="draw-line" viewBox="0 0 300 14" '
+            'preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+            '<path pathLength="1" fill="none" stroke="currentColor" '
+            'stroke-width="2.6" stroke-linecap="round" '
+            'd="M3,9.6 C38,4.4 74,11.4 112,7.1 C150,2.9 186,10.3 224,6.2 '
+            'C252,3.2 276,8.2 297,4.6"/></svg></span>',
+            1,
+        )
     shot = img.tag(slot, "100vw", eager=hero)
     if pos:
         # Steer the cover crop for this panel only. The library's focal point
@@ -336,6 +350,43 @@ def seasons(c, img) -> str:
       </div>
     </div>
     <div class="seasons-grid">{cards}</div>
+  </div>
+</section>"""
+
+
+# The four frames in the media strip. Portrait sources only: they lean
+# better than landscape ones do.
+MEDIA_STRIP = ["race-worldcup", "chile-corralco", "night-training",
+               "nz-snowfarm"]
+
+
+def media_strip(c, img) -> str:
+    """The way through to Media, after the journey.
+
+    The client's reference is a page of skis leaning across it at a steep
+    angle. Four photographs do the same here: each one tipped to the same
+    lean and stepped down the page, so the group reads as a set of skis
+    stood against a wall rather than a row of thumbnails."""
+    frames = "".join(
+        f'<a class="frame" href="media.html" tabindex="-1" aria-hidden="true" '
+        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 22vw, 44vw")}</a>'
+        # Rights are settled before a photograph is published, here as
+        # everywhere else on the site.
+        for n, slot in enumerate(
+            [x for x in MEDIA_STRIP
+             if (img.get(x) or {}).get("rights") == "owned"]
+        )
+    )
+    return f"""
+<section class="media-strip" id="media">
+  <div class="wrap media-strip-inner">
+    <div class="media-say" data-rise>
+      <p class="caption">Media</p>
+      <h2>Photographs from the season</h2>
+      <p>Racing, training and the places in between, from her own archive.</p>
+      <a class="btn" href="media.html">View photos</a>
+    </div>
+    <div class="media-lean" data-rise>{frames}</div>
   </div>
 </section>"""
 
@@ -769,6 +820,7 @@ def page(c: dict, img: Img) -> str:
 {who_she_is(c, img)}
 {sport_fold(c, img)}
 {seasons(c, img)}
+{media_strip(c, img)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',

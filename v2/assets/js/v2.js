@@ -147,7 +147,7 @@
       const TYPE = 46;
       const ERASE = 22;
       const HOLD = 2100;
-      const GAP = 320;
+      const GAP = 130;
       let li = 0;
 
       // A hidden tab should not burn through the cycle; wait and retry.
@@ -185,6 +185,27 @@
         cycle();
       });
     }
+  }
+
+  /* ---- the drawn stroke ------------------------------------------------ */
+
+  // The stroke under the destination draws itself once, when its panel
+  // arrives. Reduced motion gets it already drawn, from CSS, and this
+  // still marks it so nothing is left half-scratched.
+  const drawn = document.querySelectorAll(".mark-draw");
+  if (drawn.length) {
+    const pen = new IntersectionObserver(
+      (rows, obs) => {
+        rows.forEach((row) => {
+          if (row.isIntersecting) {
+            row.target.dataset.drawn = "true";
+            obs.unobserve(row.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -18% 0px" }
+    );
+    drawn.forEach((d) => pen.observe(d));
   }
 
   /* ---- the card stack -------------------------------------------------- */

@@ -4674,26 +4674,79 @@ body {
 /* Sized so sixty-six characters land on two lines across the full column,
    the shape the reference has. Measured: the face advances about 0.53em a
    character, so two lines need roughly column-width over 17.5. */
-.panel[data-size="closer"] h2 {
-  /* Two lines, never three. At the previous 4.4rem cap the sixty-six
-     characters needed 2462px of advance against a 1216px column, which is
-     2.02 lines and therefore three. 3.8rem brings that to 2127px, which
-     is 1.75 and therefore two. One line would need 35px type across the
-     whole page, which reads as a caption rather than a finish. */
-  font-size: clamp(1.9rem, 3.6vw, 3.8rem);
-  line-height: 1.06;
-  letter-spacing: -0.025em;
-  text-wrap: balance;
+/* The destination sits on its own line, so the first line has to hold
+   forty-five characters unbroken. That needs more room than the wrap's
+   128px inset leaves, so this panel takes the full content box and a
+   narrower gutter, and the type is sized against what is left:
+   45 chars x 0.53em, so the cap has to stay under content-width / 23.9.
+   At 1280 that is 48px and at 1900 it is 71px; 4.2rem and 3.5vw sit
+   comfortably under both. */
+.panel[data-size="closer"] {
+  padding-inline: clamp(1.5rem, 5vw, 6rem);
 }
 
-/* The destination carries a drawn underline, set clear of the descenders
-   and in the ice accent so it reads on the photograph. */
-.panel[data-size="closer"] h2 .u {
-  text-decoration: underline;
-  text-decoration-color: oklch(80% 0.105 245);
-  text-decoration-thickness: 0.055em;
-  text-underline-offset: 0.16em;
-  text-decoration-skip-ink: none;
+.panel[data-size="closer"] .panel-body {
+  width: 100%;
+  max-width: none;
+}
+
+.panel[data-size="closer"] h2 {
+  font-size: clamp(1.6rem, 3.5vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: nowrap;
+}
+
+/* display: table shrink-wraps to the words and still breaks the line, so
+   the stroke below spans the phrase and not the column. */
+.panel[data-size="closer"] h2 .mark-draw {
+  display: table;
+  position: relative;
+  margin: 0.1em auto 0;
+  color: oklch(82% 0.115 245);
+  text-wrap: nowrap;
+}
+
+.draw-line {
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  bottom: -0.30em;
+  width: calc(100% + 0.12em);
+  height: 0.34em;
+  overflow: visible;
+}
+
+/* Drawn by default and undrawn only once the script has confirmed it is
+   running, the same rule the reveal animations follow: a blocked or
+   broken script can never leave the stroke invisible. pathLength=1 makes
+   the dash maths independent of how long the path actually is. */
+.js .draw-line path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.mark-draw[data-drawn="true"] .draw-line path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.61, 0.36, 1) 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-line path {
+    stroke-dashoffset: 0;
+  }
+
+  .mark-draw[data-drawn="true"] .draw-line path {
+    transition: none;
+  }
+}
+
+/* On a phone the first line cannot hold forty-five characters at any
+   readable size, so it wraps and the phrase still takes its own line. */
+@media (max-width: 700px) {
+  .panel[data-size="closer"] h2 {
+    text-wrap: balance;
+  }
 }
 
 .panel[data-size="closer"] .sub {
@@ -4743,6 +4796,7 @@ body {
   .stack > :nth-child(4) { z-index: 4; }
   .stack > :nth-child(5) { z-index: 5; }
   .stack > :nth-child(6) { z-index: 6; }
+  .stack > :nth-child(7) { z-index: 7; }
 
   /* Each card needs an opaque ground or the one beneath shows through. */
   .stack > .seasons-band {
@@ -4763,5 +4817,121 @@ body {
   footer {
     position: relative;
     z-index: 10;
+  }
+}
+
+/* ==================== the way through to Media
+
+   The client's reference leans a pair of skis across the page at a steep
+   angle. Four photographs do the same job here: one lean, stepped down
+   the page, so the group reads as skis stood against a wall rather than a
+   row of thumbnails. The frames are decorative duplicates of the button
+   beside them, so they are out of the tab order and hidden from readers
+   who are being read to; the button is the real way through. */
+
+.media-strip {
+  background: var(--color-paper);
+  padding-block: var(--space-3xl);
+  overflow: hidden;
+}
+
+.media-strip-inner {
+  display: grid;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .media-strip-inner {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: var(--space-3xl);
+  }
+}
+
+.media-say {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-md);
+}
+
+.media-say h2 {
+  font-size: var(--text-3xl);
+  margin-top: var(--space-2xs);
+}
+
+.media-say p {
+  color: var(--color-ink-body);
+  max-width: 34ch;
+}
+
+.media-lean {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.6vw, 1.4rem);
+  padding-block: var(--space-xl);
+}
+
+.frame {
+  --i: 0;
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 13rem;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  /* One lean for all four, stepped down the page so the set rises. */
+  transform: rotate(-11deg) translateY(calc(var(--i) * 1.4rem));
+  box-shadow: 0 18px 40px oklch(20% 0.03 255 / 0.18);
+  transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.media-lean:hover .frame {
+  box-shadow: 0 10px 26px oklch(20% 0.03 255 / 0.14);
+}
+
+.frame:hover {
+  transform: rotate(-11deg) translateY(calc(var(--i) * 1.4rem - 1.1rem));
+  box-shadow: 0 26px 54px oklch(20% 0.03 255 / 0.26);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}
+
+/* Below the split the lean flattens: four tipped frames in a phone's
+   width leaves each one too narrow to read as a photograph. */
+@media (max-width: 899px) {
+  .media-lean {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
+    padding-block: 0;
+  }
+
+  .frame {
+    max-width: none;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .frame:hover {
+    transform: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .stack > .media-strip {
+    display: grid;
+    align-content: center;
   }
 }
