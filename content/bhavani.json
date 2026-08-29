@@ -1545,8 +1545,13 @@
       "Athlete partnerships"
     ],
     "tileShots": [
-      "nz-snowfarm",
-      "classic-tracks"
+      {
+        "slot": "nz-snowfarm",
+        "pos": "50% 68%"
+      },
+      {
+        "slot": "classic-tracks"
+      }
     ]
   },
   "contact": {

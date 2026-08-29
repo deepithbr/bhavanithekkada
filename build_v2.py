@@ -1278,11 +1278,18 @@ def partnership_page(c, img):
                 f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
                 f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>')
 
+    def plate(t):
+        sl = t["slot"]
+        tag = img.tag(sl, TILE_SIZES)
+        if t.get("pos"):
+            tag = tag.replace(f"object-position:{img.focal(sl)}",
+                              f"object-position:{t['pos']}")
+        return (f'<figure class="fund fund-plate" aria-hidden="true" '
+                f'data-rise>{tag}</figure>')
+
     plain = [
-        f'<figure class="fund fund-plate" aria-hidden="true" data-rise>'
-        f'{img.tag(sl, TILE_SIZES)}</figure>'
-        for sl in p.get("tileShots", [])
-        if (img.get(sl) or {}).get("rights") == "owned"
+        plate(t) for t in p.get("tileShots", [])
+        if (img.get(t["slot"]) or {}).get("rights") == "owned"
     ]
     rows = [tile(n, a) for n, a in enumerate(p.get("areas", []), 1)]
     # Interleaved so no column is all type or all photograph.
@@ -1328,8 +1335,9 @@ def partnership_page(c, img):
 <section class="prose-fold" data-ground="ice" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>A partnership here is not just a mark on a race suit. It is the
-    difference between a season that happens and one that does not.</p>
+    <p>Four seasons stand between here and the 2030 Games. A partnership
+    now is a share in the work that decides them, not a mark on a race
+    suit.</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Sponsorship">Start the conversation</a>
   </div>
