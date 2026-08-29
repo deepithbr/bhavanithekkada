@@ -4586,3 +4586,80 @@ body {
   padding-top: var(--space-md);
   border-top: var(--rule-hair) solid var(--color-line);
 }
+
+/* ------------------- the sport lockup, flipped
+
+   The reference could shout NORDIC over a small SKIING because both were
+   halves of one name. Here the borrowed word was covering the real one,
+   so the sport's actual name takes the display size and the category
+   drops to the small line. Nordic is the umbrella that also holds ski
+   jumping and nordic combined; she races cross-country. */
+
+.sport-word {
+  /* Thirteen tracked-out characters have to hold one line in a column
+     that is 57.5% of the wrap. Measured: the word needs 561px against a
+     589px column at 1280, and the cap keeps that true once the wrap
+     stops growing. */
+  font-size: clamp(1.7rem, 4.1vw, 3.3rem);
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+}
+
+.sport-word span {
+  display: block;
+}
+
+/* The lead sits directly under the name; it reads as a subtitle, not a
+   paragraph, so it carries a little more weight than the copy below. */
+.sport-say .sport-lede:first-of-type {
+  color: var(--color-ink);
+  margin-top: var(--space-sm);
+}
+
+/* ==================== the stack, for cards taller than the screen
+
+   A card pinned at top:0 that is taller than the viewport can never show
+   its own foot: it stops moving the moment its top hits zero, and every
+   line past the first screenful sits below the fold with nothing able to
+   scroll it up. That is what swallowed the Born / Mentored by / Trains
+   across rows at the end of Who she is.
+
+   The hero is exactly one viewport tall, so it still pins. The two cards
+   that follow are taller, so they ride over the hero and scroll through
+   in full. They keep their own ground and their cast shadow, so they
+   still read as cards stacking; only the pinning goes. Relative, not
+   static, or the pinned hero would paint over them. */
+
+@media (min-width: 900px) {
+  .stack > .split,
+  .stack > .sport-band {
+    position: relative;
+    top: auto;
+  }
+
+  .stack > .panel {
+    z-index: 1;
+  }
+
+  .stack > .split {
+    z-index: 2;
+  }
+
+  .stack > .sport-band {
+    z-index: 3;
+  }
+
+  /* The portrait still pins inside the card while the story scrolls past
+     it, which is the behaviour the client asked for and the reason the
+     text column carries the facts at all. */
+  .stack .split-shot {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+}
+
+/* The plate loses its label; the typed line says what it is. */
+.hero-chip {
+  padding-block: var(--space-xs);
+}

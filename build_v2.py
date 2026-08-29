@@ -440,7 +440,6 @@ def hero_panel(c, img) -> str:
     first = lv[0]
     chip = f"""<div class="hero-foot">
       <div class="hero-chip">
-        <p class="caption cred-kicker">Level of competition</p>
         <p class="hero-cred" data-type="true" aria-hidden="true">
           <span class="cred-live"><b class="cred-n">{int(first["n"]):02d}</b><span
             class="cred-t">{e(first["k"])}</span><i class="cred-caret"></i></span>
@@ -594,9 +593,8 @@ def sport_fold(c, img) -> str:
       </figure>
       <div class="sport-say" data-rise>
         <p class="caption sport-kicker">{e(sp.get('kicker') or 'The sport')}</p>
-        <p class="sport-word">Nordic</p>
-        <p class="sport-word-sub">{e(sp.get('nordicHeading')
-                                    or 'Cross-country skiing')}</p>
+        <h2 class="sport-word"><span>Cross-country</span><span>skiing</span></h2>
+        <p class="sport-word-sub">A Nordic discipline</p>
         <p class="sport-lede">{e(sp.get('nordicIntro') or '')}</p>
         <p class="sport-lede sport-lede-2">{e(sp.get('lede') or '')}</p>
         <p class="sport-bridge">{e(sp.get('context') or '')}</p>
