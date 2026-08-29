@@ -40,12 +40,22 @@ import html
 import json
 import re
 import pathlib
+import sys
 
 from markdown_it import MarkdownIt
 
 ROOT = pathlib.Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
-OUT = ROOT / "v2"
+# Where the pages land. V2 built into /v2 while it was under review; it is
+# the site now, so `--root` writes it to the deploy root instead and swings
+# the asset paths with it. Both modes still work: /v2 stays reachable for
+# anyone holding a review link.
+AT_ROOT = "--root" in sys.argv
+OUT = ROOT if AT_ROOT else ROOT / "v2"
+# `../assets/img` from a page one directory down, `assets/img` from the root.
+IMG_BASE = "assets/img" if AT_ROOT else "../assets/img"
+# The 404 needs absolute paths, because a 404 is served at any depth.
+ABS = "/assets" if AT_ROOT else "/v2/assets"
 
 FONTS = (
     "https://fonts.googleapis.com/css2"
@@ -133,7 +143,7 @@ class Img:
 
     def __init__(self, lib: dict):
         self.by_slot = {i["slot"]: i for i in lib["images"]}
-        self.base = "../assets/img"
+        self.base = IMG_BASE
 
     def get(self, slot):
         return self.by_slot.get(slot)
@@ -775,7 +785,7 @@ def page(c: dict, img: Img) -> str:
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Bhavani Thekkada | Indian cross-country skier">
 <meta property="og:description" content="{e(desc)}">
-<meta property="og:image" content="{ORIGIN}/v2/assets/og/index.jpg">
+<meta property="og:image" content="{ORIGIN}{ABS}/og/index.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -839,7 +849,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <meta property="og:type" content="article">
 <meta property="og:title" content="{e(title)} | Bhavani Thekkada">
 <meta property="og:description" content="{e(lede)}">
-<meta property="og:image" content="{ORIGIN}/v2/assets/og/{e(og or 'index')}.jpg">
+<meta property="og:image" content="{ORIGIN}{ABS}/og/{e(og or 'index')}.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1655,7 +1665,30 @@ def journal_post_page(c, img, post):
                    shot=hero or "classic-tracks", current="journal.html")
 
 
+def sync_assets() -> None:
+    """At the root the pages ask for `assets/css/v2.css`, and V2's stylesheet
+    lives under `v2/assets`. Mirror the parts V2 owns into the shared tree:
+    its CSS, its script, the display font and the share cards. `assets/img`
+    is already shared and is left alone."""
+    import shutil
+
+    src = ROOT / "v2" / "assets"
+    dst = ROOT / "assets"
+    for rel in ("css/tokens.css", "css/v2.css", "js/v2.js",
+                "fonts/black-rusher.woff2", "favicon.svg"):
+        f = src / rel
+        if f.exists():
+            (dst / rel).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dst / rel)
+    og = src / "og"
+    if og.exists():
+        shutil.copytree(og, dst / "og", dirs_exist_ok=True)
+
+
 def main() -> int:
+    if AT_ROOT:
+        # Before fingerprinting, or the hash is taken over the old files.
+        sync_assets()
     c = json.loads((CONTENT / "bhavani.json").read_text(encoding="utf-8"))
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
     img = Img(lib)
@@ -1681,9 +1714,9 @@ def main() -> int:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="only light">
 <title>Page not found | Bhavani Thekkada</title>
-<link rel="icon" href="/v2/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{ABS}/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="{e(FONTS)}">
-<link rel="stylesheet" href="/v2/assets/css/v2.css?v={fingerprint()}">
+<link rel="stylesheet" href="{ABS}/css/v2.css?v={fingerprint()}">
 </head>
 <body>
 <main id="main" class="panel" data-ground="paper" style="min-height:100svh">
@@ -1708,7 +1741,8 @@ def main() -> int:
             journal_post_page(c, img, post), encoding="utf-8")
 
     m = medals(c)
-    print(f"v2/  8 pages   index {out.stat().st_size / 1024:.1f} KB")
+    where = "root" if AT_ROOT else "v2/ "
+    print(f"{where}  8 pages   index {out.stat().st_size / 1024:.1f} KB")
     print("  benchmark  rogerfederer.com  ·  6 panels + sponsor band + split")
     print(f"  medals     international {sum(m['International'].values())}"
           f"  national {sum(m['National'].values())}")

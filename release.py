@@ -19,7 +19,11 @@ DIST = ROOT / "dist"
 
 # Everything the browser asks for, and nothing it does not. `journal/` is only
 # present when at least one post is published, so it is copied if it exists.
-SHIP_FILES = ["index.html", "journal.html"]
+# V2 is the site now and builds to the root, so every page it writes ships
+# from here. /v2 rides along unchanged for anyone holding a review link.
+SHIP_FILES = ["index.html", "journal.html", "achievements.html",
+              "journey.html", "media.html", "partnership.html",
+              "speaking.html", "contact.html", "404.html"]
 SHIP_DIRS = ["assets", "journal",
              # The journal editor and the V2 build ride along so both are
              # reachable on the deployed site: /admin for her writing room,

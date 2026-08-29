@@ -1,0 +1,6003 @@
+/* Hallmark · macrostructure: Photographic · H6 knobs: area=full-bleed, caption=centred, text=overlaid
+ * nav: N9 edge-aligned minimal · footer: Ft5 Statement
+ * theme: custom tuned · vibe: "white snow, India blue, quiet record"
+ * paper oklch(99% 0.003 250) · accent oklch(50% 0.17 252) · Archivo + Newsreader + IBM Plex Mono
+ * axes: light / grotesk-sans / cool
+ * enrichment: none — the photographs are the enrichment
+ * tone: austere · audience: sponsors, event bookers, press · use: one enquiry
+ *
+ * BENCHMARK: rogerfederer.com, the site the client named best.
+ *
+ * Not "inspired by". The skeleton is copied deliberately, because the first
+ * attempt at V2 improvised a shape and the client was right that it drifted.
+ * What Federer actually does, measured by scrolling the whole page:
+ *
+ *   1. a thin chrome bar, a wordmark, no link row
+ *   2. a full-bleed hero, type CENTRED over it, one outlined pill button
+ *   3. a sponsor band, one solid colour, logos only
+ *   4. repeated full-bleed panels: centred sans title, serif subtitle
+ *      underneath, one outlined button. Under forty words per panel.
+ *   5. one 50/50 split: photograph on one side, a pull quote with
+ *      attribution and two short paragraphs on the other
+ *   6. a dark footer, two rows of links, legal line
+ *
+ * The one thing changed from the benchmark is the palette, because the client
+ * asked for white and blue and Federer is near-black. Everything structural is
+ * held: centred panel type, the serif subtitle, outlined pills, the quote in
+ * the split, the dark footer.
+ *
+ * V2 is a parallel build. It shares content/*.json and assets/img with V1 and
+ * shares no CSS, no JavaScript and no markup with it.
+ */
+
+@import url("tokens.css");
+
+/* ------------------------------------------------------------------ reset */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  /* `clip`, never `hidden`. `hidden` on the root turns the viewport into a
+     scroll container and breaks position: sticky further down the page. */
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  /*
+   * This design is light on purpose: the brief is white and blue.
+   *
+   * Without this declaration a browser set to prefer dark, or one running an
+   * auto-darkening feature like Brave's, decides the page has no opinion and
+   * inverts it. Measured before this line existed: `--color-paper` resolved
+   * correctly to oklch(99% 0.003 250) and the computed `background-color` on
+   * body came back as rgb(25, 28, 29). The tokens were never the problem.
+   */
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  /*
+   * `height: auto` is load-bearing, not tidiness.
+   *
+   * Every <img> this build emits carries width and height attributes, which
+   * exist to reserve space and stop the page shifting as photographs arrive.
+   * Those attributes set a used height. With only `max-width: 100%` here, a
+   * tile that declared `width: 100%` and `aspect-ratio: 3 / 4` still rendered
+   * at the attribute's height: measured at 260x3060 for a 2448x3060 source,
+   * against the 260x347 the ratio asks for. `aspect-ratio` only governs when
+   * the other axis is auto.
+   *
+   * Everything that fills its box sets an explicit height of its own
+   * (`.panel-shot img`, `.split-shot img`, `.sponsors img`), so this default
+   * never fights the full-bleed photographs.
+   */
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  /* Roman only. An italicised display face, or an italic emphasis word inside
+     an upright heading, is the most reliable generated-design tell there is. */
+  font-style: normal;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.03;
+  margin: 0;
+  /* Long place names break inside themselves rather than pushing the page
+     sideways at 320px. */
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+p,
+figure,
+blockquote {
+  /* `figure` carries a default 40px inline margin in every browser. Inside a
+     grid track it does not shrink the track, it shrinks the card: the media
+     row measured 186px wide against the journey row's 266px, on identical
+     columns, purely because those tiles were figures and these were anchors. */
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  /* Never animated. A focus ring that fades in is one the keyboard user has
+     already moved past. */
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.wrap {
+  width: min(100% - 2 * var(--space-md), var(--col));
+  margin-inline: auto;
+}
+
+@media (min-width: 900px) {
+  .wrap {
+    width: min(100% - 2 * var(--space-xl), var(--col));
+  }
+}
+
+/* ------------------------------------------------------------------ shared */
+
+/* The benchmark's caption voice: a place and a year, tracked out, never a
+   sentence of marketing. */
+.caption {
+  /* Tracked capitals in the display face. These were IBM Plex Mono, and a
+     mono label on every photograph, form field and section head made the
+     whole site read as a technical document. The mono stays for numbers
+     only, where alignment is the point. */
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin: 0;
+}
+
+/* The serif line that sits under every panel title on the benchmark. It is
+   what stops a page of sans headlines reading like a deck. */
+.sub {
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  font-weight: 300;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+  margin: 0;
+}
+
+/* ------------------------------------------------------------------ button */
+
+/* Outlined pill. The benchmark has no filled buttons anywhere on its home
+   page; every call to action is an outline that fills on hover. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0.95rem 1.9rem;
+  border: var(--rule-hair) solid var(--color-ink);
+  border-radius: var(--radius-none);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: background var(--dur-mid) var(--ease-out),
+    color var(--dur-mid) var(--ease-out),
+    border-color var(--dur-mid) var(--ease-out);
+}
+
+.btn:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* On a photograph, the outline is white and fills white. */
+.btn[data-on="shot"] {
+  border-color: oklch(100% 0 0 / 0.72);
+  color: var(--color-ink-on-deep);
+}
+
+.btn[data-on="shot"]:hover {
+  background: var(--color-ink-on-deep);
+  color: var(--color-ink);
+  border-color: var(--color-ink-on-deep);
+}
+
+.btn[data-on="accent"] {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn[data-on="accent"]:hover {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+/* --------------------------------------------------------------------- nav */
+
+/* N9 edge-aligned minimal, which is what the benchmark runs: a wordmark and
+   nothing else competing with it. The five destinations live in the footer
+   and in the panels' own buttons, so the bar stays quiet. */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: 4rem;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep);
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: none;
+  gap: var(--space-lg);
+  align-items: center;
+  margin-inline: auto;
+}
+
+.nav-links a {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.nav-links a:hover {
+  color: var(--color-ink-on-deep);
+}
+
+@media (min-width: 900px) {
+  .nav-links {
+    display: flex;
+  }
+}
+
+/* ------------------------------------------------------------------ panels */
+
+/* One shape, used five times, exactly as the benchmark uses it. A photograph
+   fills the fold; the type sits centred over it; one button underneath. */
+.panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  /* The type block hangs on the site column's left edge. `.wrap` centres
+     itself with auto margins, which beat grid alignment and quietly centred
+     the whole body; the panel carries the column padding itself instead and
+     the body's margins are zeroed below. */
+  padding-inline: max(var(--space-md), calc((100% - var(--col)) / 2));
+  /* Bottom-left, not centre. Centred stacks read as slides in sequence, and
+     the client said the page felt like a document. A cover anchors its type
+     to a corner; five covers in a row read as a magazine. */
+  place-items: end start;
+  min-height: min(80svh, 46rem);
+  text-align: left;
+  padding-block: var(--space-2xl);
+}
+
+.panel[data-size="hero"] {
+  min-height: min(94svh, 56rem);
+}
+
+.panel-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+
+.panel-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.panel-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* The middle stop is the one that matters: the sub line and the button sit
+     at the centre of the frame, and 0.34 let a busy midtone eat them. The
+     photograph still reads; the words now always do. */
+  background: linear-gradient(
+      to right,
+      oklch(16% 0.03 255 / 0.42) 0%,
+      oklch(16% 0.03 255 / 0.08) 52%,
+      oklch(16% 0.03 255 / 0) 78%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(16% 0.03 255 / 0.12) 0%,
+      oklch(16% 0.03 255 / 0.1) 45%,
+      oklch(16% 0.03 255 / 0.62) 100%
+    );
+}
+
+.panel-body {
+  display: grid;
+  justify-items: start;
+  margin-inline: 0;
+  gap: var(--space-md);
+  max-width: 40rem;
+  color: var(--color-ink-on-deep);
+}
+
+.panel-body h1,
+.panel-body h2 {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: var(--text-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.94;
+}
+
+.panel-body .sub {
+  color: var(--color-ink-on-deep);
+  max-width: 32ch;
+}
+
+.panel-body .caption {
+  color: var(--color-ink-on-deep-2);
+}
+
+/* A light panel: same centred anatomy, no photograph behind it. The benchmark
+   alternates one of these in so the run of images has somewhere to breathe. */
+.panel[data-ground="paper"],
+.panel[data-ground="ice"] {
+  min-height: 0;
+  padding-block: var(--space-2xl);
+  color: var(--color-ink);
+}
+
+.panel[data-ground="paper"] {
+  background: var(--color-paper);
+}
+
+.panel[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.panel[data-ground="paper"] .panel-body,
+.panel[data-ground="ice"] .panel-body {
+  color: var(--color-ink);
+}
+
+.panel[data-ground="paper"] .panel-body .sub,
+.panel[data-ground="ice"] .panel-body .sub {
+  color: var(--color-ink-2);
+}
+
+/* ------------------------------------------------------------ sponsor band */
+
+/* The benchmark's Rolex strip. One solid colour, logos, nothing else. */
+.sponsors {
+  /* A light band, and the marks in their own colours. Forcing them to white
+     on navy flattened the Reliance lockup and turned the Karnataka crest
+     into a silhouette nobody could read. A logo is a thing you do not get to
+     recolour. */
+  background: var(--color-paper-2);
+  padding-block: var(--space-lg);
+  border-bottom: var(--rule-hair) solid var(--color-line);
+}
+
+.sponsors-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md) var(--space-2xl);
+}
+
+.sponsors img {
+  height: 2.4rem;
+  width: auto;
+}
+
+/* Shape, not importance: the crest is square where the lockup is wide. */
+.sponsors img[src*="karnataka"] {
+  height: 3.4rem;
+}
+
+/* ------------------------------------------------------------------- split */
+
+/* The benchmark's profile block: photograph one side, quote and two short
+   paragraphs the other. The only place on the home page with more than forty
+   words in it. */
+.split {
+  display: grid;
+  align-items: stretch;
+}
+
+@media (min-width: 900px) {
+  .split {
+    /* minmax(0, …) on both tracks. A bare `1fr` refuses to shrink below the
+       image's intrinsic width and pushes the page sideways. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.split-shot {
+  background: var(--color-paper-3);
+  overflow: hidden;
+}
+
+.split-shot img {
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  object-fit: cover;
+}
+
+.split-body {
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+  display: grid;
+  align-content: center;
+  gap: var(--space-md);
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .split-body {
+    padding: var(--space-3xl) var(--space-xl);
+  }
+}
+
+.split-body h2 {
+  font-size: var(--text-3xl);
+}
+
+.split-quote {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--color-ink-on-deep);
+  margin: 0;
+  max-width: 26ch;
+}
+
+.split-cite {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-on-deep-2);
+  font-style: normal;
+}
+
+.split-body p:not(.split-quote) {
+  color: var(--color-ink-on-deep-2);
+  font-size: var(--text-base);
+  max-width: 44ch;
+}
+
+.split-body .btn {
+  justify-self: start;
+  margin-top: var(--space-2xs);
+  border-color: oklch(100% 0 0 / 0.72);
+  color: var(--color-ink-on-deep);
+}
+
+.split-body .btn:hover {
+  background: var(--color-ink-on-deep);
+  color: var(--color-ink);
+  border-color: var(--color-ink-on-deep);
+}
+
+/* ----------------------------------------------------------------- records */
+
+/* Two divisions, medals only, which is the whole brief for this block. The
+   numbers are counted from the results rows at build time. */
+.tally {
+  display: grid;
+  gap: var(--space-lg);
+  width: 100%;
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 720px) {
+  .tally {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.tally-card {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: center;
+  padding: var(--space-lg) var(--space-md);
+  border: var(--rule-hair) solid var(--color-line);
+  background: var(--color-paper);
+}
+
+.tally-card h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+}
+
+.tally-total {
+  font-family: var(--font-display);
+  font-size: var(--text-display-s);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.tally-label {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink-2);
+}
+
+.tally-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  padding-top: var(--space-sm);
+  margin-top: var(--space-2xs);
+  border-top: var(--rule-hair) solid var(--color-line-soft);
+  width: 100%;
+}
+
+.medal {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.medal b {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.medal i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+}
+
+.medal[data-medal="gold"] i {
+  background: var(--color-gold);
+}
+.medal[data-medal="silver"] i {
+  background: var(--color-silver);
+}
+.medal[data-medal="bronze"] i {
+  background: var(--color-bronze);
+}
+
+/* ------------------------------------------------------------------ footer */
+
+/* Ft5 Statement, on the benchmark's dark ground. One line, two rows of links,
+   a legal line. No four columns of navigation nobody reads. */
+.foot {
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+  padding-block: var(--space-2xl) var(--space-lg);
+}
+
+.foot-statement {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  max-width: 15ch;
+  margin: 0;
+}
+
+.foot-rows {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid oklch(100% 0 0 / 0.14);
+}
+
+@media (min-width: 760px) {
+  .foot-rows {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.foot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.foot-links a {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.foot-links a:hover {
+  color: var(--color-ink-on-deep);
+}
+
+.foot-fine {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-ink-on-deep-2);
+}
+
+/* ------------------------------------------------------------------ reveal */
+
+/* The only motion on the page: a fade with 10px of lift, once, on entry.
+   Elements are visible by default and hidden only after JavaScript confirms
+   it is running, so a blocked script can never leave a blank page. */
+.js [data-rise] {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0);
+}
+
+.js [data-rise][data-shown="true"] {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .js [data-rise] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------------------------- tiles */
+
+/*
+ * The card row, taken from badosapaula.com, the client's second reference.
+ *
+ * Its whole section is four things: a title, one line, a "See more" link, and
+ * a row of four image cards. Nothing else. That is what makes a section land
+ * as a glance rather than as reading, and it is the shape the client asked
+ * for when they said the sections should arrive one after another, simplified.
+ *
+ * It alternates with the full-bleed panels above: photograph, tiles,
+ * photograph, tiles. The page never asks for two dense folds in a row.
+ */
+.tiles-section {
+  /*
+   * Asymmetric on purpose. Two neighbouring sections each padding
+   * `--space-3xl` top and bottom stacked to about 288px of empty page, which
+   * reads as something failing to load rather than as room to breathe. The
+   * head carries the space above it, so the section only needs a little
+   * underneath.
+   */
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+
+.tiles-section[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.tiles-head {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+  margin-bottom: var(--space-md);
+}
+
+/* Title and line on the left, the button closing the same row on the right.
+   The head used to cap at the measure and leave the right half of the band
+   empty, which the client read as a hole, correctly. */
+@media (min-width: 860px) {
+  .tiles-head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .tiles-head .btn {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+.tiles-head h2 {
+  font-size: var(--text-3xl);
+}
+
+.tiles-head .sub {
+  font-size: var(--text-lg);
+}
+
+.tiles {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 560px) {
+  .tiles {
+    /* minmax(0, …), never a bare 1fr. A bare 1fr refuses to shrink below the
+       image's intrinsic width and pushes the whole page sideways. */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1000px) {
+  .tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.tile {
+  display: grid;
+  gap: var(--space-xs);
+  align-content: start;
+  text-decoration: none;
+  color: inherit;
+}
+
+.tile-shot {
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.tile-shot img {
+  width: 100%;
+  /* 4:5, up from 3:4. The taller window keeps shoulders under every face in
+     the portrait frames; the client saw the top row cropping and was right. */
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.tile:hover .tile-shot img,
+.tile:focus-visible .tile-shot img {
+  transform: scale(1.04);
+}
+
+.tile h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.tile .caption {
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------- interior pages */
+
+/* A short photographic header. Same anatomy as a panel, half the height, so
+   an interior page states its name and gets on with it. */
+.panel[data-size="head"] {
+  min-height: min(46svh, 26rem);
+}
+
+.panel[data-size="head"] .panel-body h1 {
+  font-size: var(--text-4xl);
+}
+
+.prose-fold {
+  padding-block: var(--space-2xl);
+}
+
+.prose-fold[data-ground="ice"] {
+  background: var(--color-paper-2);
+}
+
+.prose {
+  max-width: var(--measure);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.prose h2 {
+  font-size: var(--text-2xl);
+}
+
+.prose p {
+  color: var(--color-ink-2);
+}
+
+/* Key–value facts: Born, Mentored by, Trains across. The benchmark carries
+   these as quiet rows, never as a table. */
+.facts {
+  margin: var(--space-sm) 0 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.fact {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-top: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.fact dd {
+  margin: 0;
+  color: var(--color-ink-2);
+}
+
+/* The journey: photograph beside copy, alternating sides, stacked plainly on
+   a phone. No rail, no pin, no travel. */
+.steps {
+  display: grid;
+  gap: var(--space-2xl);
+}
+
+.step {
+  display: grid;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+@media (min-width: 800px) {
+  .step {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
+
+  /* Alternate. The photograph swaps sides on every other chapter, which is
+     all the movement this page needs. */
+  .step:nth-child(even) .step-shot {
+    order: 2;
+  }
+}
+
+.step-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.step-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  height: auto;
+  object-fit: cover;
+}
+
+.step-copy {
+  display: grid;
+  gap: var(--space-xs);
+  max-width: var(--measure-tight);
+}
+
+.step-copy h2 {
+  font-size: var(--text-2xl);
+}
+
+.step-copy p:not(.caption) {
+  color: var(--color-ink-2);
+}
+
+/* The medal tables. Three columns, hairline rows, the dot carrying colour. */
+.medals {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-2xs);
+}
+
+.medals td {
+  padding: var(--space-sm) var(--space-sm) var(--space-sm) 0;
+  border-top: var(--rule-hair) solid var(--color-line);
+  vertical-align: baseline;
+}
+
+.medals td b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  display: block;
+}
+
+.medals td span {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+}
+
+.c-medal {
+  white-space: nowrap;
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  text-align: right;
+}
+
+.c-medal i {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  margin-right: 0.4rem;
+}
+
+.c-medal i[data-medal="gold"] { background: var(--color-gold); }
+.c-medal i[data-medal="silver"] { background: var(--color-silver); }
+.c-medal i[data-medal="bronze"] { background: var(--color-bronze); }
+
+/* The press list. Headline and outlet, one hairline per row, the whole row
+   the link. */
+.press {
+  list-style: none;
+  margin: var(--space-2xs) 0 0;
+  padding: 0;
+}
+
+.press li {
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.press a,
+.press li > p {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-block: var(--space-sm);
+  text-decoration: none;
+  margin: 0;
+}
+
+.press b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press a:hover b {
+  color: var(--color-accent);
+}
+
+
+/* --------------------------------------------------------------- the route */
+
+.route-map {
+  margin: var(--space-md) 0 0;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.route-map svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.route-map .land {
+  fill: var(--color-paper-3);
+  stroke: none;
+}
+
+.route-map .pin {
+  fill: var(--color-accent);
+}
+
+.route-map text {
+  font-family: var(--font-caption);
+  /* 2.8 svg units, roughly 11px rendered at the column width. The first
+     pass used 6.5 and the labels came out at 22px, larger than body copy. */
+  font-size: 2.8px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  fill: var(--color-ink-2);
+}
+
+.route-map .ring {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  stroke-dasharray: 1.6 1.1;
+}
+
+.route-map figcaption {
+  max-width: none;
+  line-height: 1.8;
+}
+
+/* ------------------------------------------------------------- the ladder */
+
+/* 2027 to 2030, one rung a year. An ordered list because it is one. */
+.road {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-md);
+}
+
+.road li {
+  display: grid;
+  gap: var(--space-3xs);
+  padding-top: var(--space-sm);
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.road b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+}
+
+.road p {
+  font-size: var(--text-base);
+}
+
+/* The count beside a records heading. A number, not a sentence. */
+.prose h2 .count {
+  font-family: var(--font-display);
+  color: var(--color-accent);
+  margin-left: var(--space-2xs);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ------------------------------------------------------------- press cards */
+
+.press-grid {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+}
+
+@media (min-width: 760px) {
+  .press-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.press-grid a,
+.press-grid li > p {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 0;
+  text-decoration: none;
+  align-content: start;
+}
+
+.press-shot {
+  display: block;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.press-shot img {
+  width: 100%;
+  /* 3:2, not 16:9. A cinema band across a tall source keeps a sliver and
+     throws the person away; two cards rendered as a blue field with a piece
+     of her face and read as duplicates of each other. 3:2 holds a face and
+     its context in every source the press list uses. */
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.press-grid a:hover .press-shot img {
+  transform: scale(1.03);
+}
+
+.press-body {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.press-body b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press-grid a:hover .press-body b {
+  color: var(--color-accent);
+}
+
+
+/* -------------------------------------------------------- page transitions */
+
+/*
+ * Cross-document view transitions, and nothing else.
+ *
+ * The question was whether navigation should animate. On a multi-page site
+ * the honest answer is: barely. A reader clicking VIEW JOURNEY wants the
+ * journey, and every hundred milliseconds of choreography between the click
+ * and the content is a cost they did not ask to pay. What a cut needs is not
+ * a performance, it is continuity: the browser cross-fades the two documents
+ * over a fifth of a second, the shared navy bar holds still because it looks
+ * identical on both sides, and the page never white-flashes.
+ *
+ * This is two rules of CSS, runs in the compositor, and degrades to an
+ * instant cut in browsers that do not know the at-rule. No JavaScript, no
+ * router, nothing to break.
+ */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 200ms;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+
+/* ---------------------------------------------------------- the hero, met */
+
+/*
+ * The hero introduces her, so she faces the reader, and the type keeps out
+ * of her face by height, not by side.
+ *
+ * A first pass tried to steer her to the right and set the name on the left.
+ * Geometry refused: the source is portrait and the hero is wide, so the crop
+ * is vertical and she is horizontally centred whatever object-position asks.
+ * The benchmark solves this the honest way on its own hero: face in the
+ * upper third, the name across the chest. So the crop holds her face high,
+ * the body anchors to the foot of the panel where the scrim is strongest,
+ * and the name crosses her jacket, never her face, at every width.
+ */
+.panel[data-size="hero"] {
+  min-height: min(94svh, 56rem);
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  /* Big enough to own the frame, small enough that the surname never breaks.
+     At the full display clamp "Thekkada" measured wider than the body column
+     and split mid-word. */
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  overflow-wrap: normal;
+}
+
+
+/* ------------------------------------------------------------ the cinema */
+
+/*
+ * The motion pass, and the discipline behind it.
+ *
+ * The one video in the archive is a vertical phone montage with a caption
+ * burned into every frame, so the hero stays photographic and the cinema is
+ * done with motion instead: a twenty-second drift on the hero crop, the kind
+ * a documentary holds on a still. Slow enough that nobody watches it happen;
+ * the frame simply feels alive rather than printed.
+ *
+ * Everything here animates transform and opacity only, runs once, and
+ * collapses under prefers-reduced-motion. Nothing loops except the hero
+ * drift, and nothing moves against the reader's scroll.
+ */
+@keyframes hero-drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.07); }
+}
+
+.panel[data-size="hero"] .panel-shot img {
+  animation: hero-drift 22s var(--ease-in-out) forwards;
+  transform-origin: 50% 30%;
+}
+
+/* The name arrives once, from below, ahead of the line and the button. A
+   landing, not a slideshow. */
+@keyframes hero-enter {
+  from { opacity: 0; transform: translate3d(0, 18px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.panel[data-size="hero"] .panel-body > * {
+  animation: hero-enter 700ms var(--ease-out) backwards;
+}
+
+.panel[data-size="hero"] .panel-body > :nth-child(2) { animation-delay: 120ms; }
+.panel[data-size="hero"] .panel-body > :nth-child(3) { animation-delay: 240ms; }
+.panel[data-size="hero"] .panel-body > :nth-child(4) { animation-delay: 340ms; }
+
+/* Tiles stagger by column, 70ms apart. One wave across the row, then still. */
+.js .tiles [data-rise]:nth-child(2)[data-shown="true"] { transition-delay: 70ms; }
+.js .tiles [data-rise]:nth-child(3)[data-shown="true"] { transition-delay: 140ms; }
+.js .tiles [data-rise]:nth-child(4)[data-shown="true"] { transition-delay: 210ms; }
+
+/* Sponsors rest quiet and answer the cursor. Grey is the resting state, so
+   the band never competes with the hero above it; colour is the reward. */
+.sponsors img {
+  filter: grayscale(1) opacity(0.72);
+  transition: filter var(--dur-mid) var(--ease-out);
+}
+
+.sponsors img:hover {
+  filter: none;
+}
+
+/* The record counts up when it enters. The number is set by JS text, so the
+   markup already holds the true value for anything that does not run it. */
+.tally-total {
+  font-kerning: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel[data-size="hero"] .panel-shot img,
+  .panel[data-size="hero"] .panel-body > * {
+    animation: none;
+  }
+
+  .sponsors img {
+    filter: none;
+  }
+}
+
+
+
+}
+
+
+/* The way back. Subpages open with a small crumb to the front page, so the
+   reader never depends on knowing the wordmark is a link. */
+.crumb {
+  text-decoration: none;
+  color: var(--color-ink-on-deep-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.crumb:hover {
+  color: var(--color-ink-on-deep);
+}
+
+/* The nav names where you are. */
+.nav-links a[aria-current="page"] {
+  color: var(--color-ink-on-deep);
+  border-bottom: 2px solid var(--color-accent-bright);
+  padding-bottom: 0.3rem;
+}
+
+
+/* ---------------------------------------------------------------- enquiry */
+
+.enquiry {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-sm);
+}
+
+@media (min-width: 700px) {
+  .enquiry {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+}
+
+.field {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.enquiry input,
+.enquiry select,
+.enquiry textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-radius: var(--radius-none);
+  padding: 0.7rem 0.85rem;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.enquiry input:hover,
+.enquiry select:hover,
+.enquiry textarea:hover {
+  border-color: var(--color-ink-3);
+}
+
+.enquiry input:focus-visible,
+.enquiry select:focus-visible,
+.enquiry textarea:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+
+.enquiry [data-invalid="true"] {
+  border-color: oklch(55% 0.19 25);
+}
+
+.enquiry button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+#enquiry-note {
+  margin-top: var(--space-2xs);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+
+/* ---------------------------------------------------------------- journal */
+
+.entry {
+  display: grid;
+  gap: var(--space-2xs);
+  padding-block: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-line);
+  text-decoration: none;
+}
+
+.entry h2 {
+  font-size: var(--text-2xl);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.entry:hover h2 {
+  color: var(--color-accent);
+}
+
+.post h2 {
+  font-size: var(--text-xl);
+  margin-top: var(--space-md);
+}
+
+.post p {
+  color: var(--color-ink-2);
+}
+
+/* --------------------------------------------------------------- lightbox */
+
+/* The full frame, on the page's own terms: the grid shows an ordered crop,
+   the lightbox shows the photograph as shot. Click anywhere or press Escape
+   to come back. Without JavaScript the same link opens the image file. */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--space-lg);
+  background: oklch(16% 0.03 255 / 0.92);
+  cursor: zoom-out;
+}
+
+.lightbox[hidden] {
+  display: none;
+}
+
+.lightbox img {
+  max-width: min(92vw, 70rem);
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  box-shadow: 0 30px 80px oklch(0% 0 0 / 0.5);
+}
+
+.lightbox .caption {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: var(--space-md);
+  color: var(--color-ink-on-deep);
+}
+
+.tile[data-full] {
+  cursor: zoom-in;
+}
+
+
+/* ------------------------------------------------------------ record band */
+
+/* Numbers left, podium right. The tallies used to sit in a 40rem column
+   with nothing beside them, and the empty half read as a mistake. */
+.record-band {
+  display: grid;
+  background: var(--color-paper-2);
+}
+
+@media (min-width: 900px) {
+  .record-band {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: stretch;
+  }
+}
+
+.record-copy {
+  display: grid;
+  gap: var(--space-md);
+  justify-items: start;
+  align-content: center;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .record-copy {
+    padding-left: max(var(--space-xl), calc((100vw - var(--col)) / 2));
+  }
+}
+
+.record-shot {
+  margin: 0;
+  overflow: hidden;
+  min-height: 20rem;
+}
+
+.record-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ------------------------------------------------- about split and facts */
+
+.about-split {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .about-split {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--space-xl);
+  }
+}
+
+.about-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.about-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+}
+
+/* The fact strip runs as a row of cards under the story, not a column
+   inside it. */
+.facts-row {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 720px) {
+  .facts-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Grouped medal lines: the campaign left, its medals as counted dots. */
+.c-meds {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* The tally card's .medal is a flex row sized for a card; inside a table
+   cell it stacked its own number over its own label. Inline here, and the
+   count sits beside its metal on one line. */
+.c-meds .medal {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-left: var(--space-sm);
+  white-space: nowrap;
+}
+
+.c-meds .medal i {
+  align-self: center;
+}
+
+/* Numbers keep the mono; that is where fixed width earns its place. */
+.medal b,
+.tally-total,
+.count {
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* -------------------------------------------------- the signature layer */
+
+/* Skip link: invisible until a keyboard asks for it. */
+.skip {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transform: translateY(-300%);
+}
+
+.skip:focus-visible {
+  transform: none;
+}
+
+/* The stat line: her career in four measured figures, one quiet row. */
+.statline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-lg);
+  padding-block: var(--space-md);
+  border-bottom: var(--rule-hair) solid var(--color-line);
+  color: var(--color-ink-2);
+}
+
+/*
+ * The latitude rail. Her life runs 12 degrees north to 66 degrees north,
+ * and this thin scale on the right edge ticks with scroll: the reader
+ * travels the page and the marker travels her map. It is the one ornament
+ * the site allows itself, because it is her fact and nobody else's.
+ * Desktop only; on a phone it would fight the thumb.
+ */
+.lat-rail {
+  position: fixed;
+  right: 1.1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: min(46vh, 22rem);
+  width: 1px;
+  background: var(--color-line);
+  z-index: 50;
+  display: none;
+}
+
+@media (min-width: 1100px) {
+  .lat-rail {
+    display: block;
+  }
+}
+
+.lat-rail i {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+}
+
+.lat-rail b {
+  position: absolute;
+  right: 0.8rem;
+  top: 0;
+  transform: translateY(-50%);
+  font-family: var(--font-caption);
+  font-weight: 500;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-3);
+  white-space: nowrap;
+}
+
+.lat-rail .lat-end {
+  position: absolute;
+  right: 0.8rem;
+  font-family: var(--font-caption);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--color-ink-3);
+  white-space: nowrap;
+}
+
+.lat-rail .lat-end[data-end="n"] { top: -1.1rem; }
+.lat-rail .lat-end[data-end="s"] { bottom: -1.1rem; }
+
+/* On the dark grounds the rail would vanish; it dims instead of lying. */
+
+/* The places arrive one at a time, in the order she reached them. Each pin
+   pops to size with a single halo pulse, then rests; no connecting line,
+   because her route doubles back on itself and drawn honestly it read as
+   string. */
+.route-map .pin[data-stop] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.route-map .pin[data-lit="false"] {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.route-map .pin[data-lit="true"] {
+  animation: pin-pop 500ms var(--ease-out) both;
+}
+
+@keyframes pin-pop {
+  0% { opacity: 0; transform: scale(0); }
+  60% { opacity: 1; transform: scale(1.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-map .pin[data-lit] {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Ghost year numerals behind the journey chapters. */
+.step-copy {
+  position: relative;
+}
+
+.ghost-year {
+  position: absolute;
+  top: -0.55em;
+  right: 0;
+  z-index: -1;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 9vw, 8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-paper-3);
+  user-select: none;
+}
+
+.prose-fold[data-ground="ice"] .ghost-year {
+  color: var(--color-paper);
+}
+
+/* The pull quote on About: the reported line at reading-aloud size. */
+.pull {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--color-ink);
+  border-left: 2px solid var(--color-accent);
+  padding-left: var(--space-md);
+}
+
+.pull-cite {
+  padding-left: calc(var(--space-md) + 2px);
+}
+
+/* Journal reading progress: one hairline, no chrome. */
+.read-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 90;
+  background: transparent;
+}
+
+.read-progress i {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--color-accent-bright);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--read, 0));
+}
+
+/* The 2030 ladder climbs left to right toward the Alps. */
+@media (min-width: 720px) {
+  .road li {
+    margin-left: calc(var(--rung, 0) * 3.5rem);
+    border-left: 2px solid var(--color-accent-wash);
+    border-top: none;
+    padding: 0 0 var(--space-2xs) var(--space-md);
+  }
+
+  .road li:last-child {
+    border-left-color: var(--color-accent);
+  }
+}
+
+/* The photograph wall: natural ratios in columns, nothing cropped at all. */
+.masonry {
+  columns: 2;
+  column-gap: var(--space-md);
+}
+
+@media (min-width: 1000px) {
+  .masonry {
+    columns: 3;
+  }
+}
+
+.masonry .tile {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: var(--space-md);
+}
+
+.masonry .tile-shot img {
+  aspect-ratio: auto;
+}
+
+/* Lightbox grows arrows and a counter. */
+.lightbox nav {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: var(--space-sm);
+  pointer-events: none;
+}
+
+.lightbox nav button {
+  pointer-events: auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  display: grid;
+  place-items: center;
+  border: var(--rule-hair) solid oklch(100% 0 0 / 0.5);
+  border-radius: var(--radius-pill);
+  background: oklch(16% 0.03 255 / 0.4);
+  color: var(--color-ink-on-deep);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+
+.lightbox nav button:hover {
+  background: oklch(16% 0.03 255 / 0.75);
+}
+
+.lightbox .count {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  letter-spacing: 0.12em;
+  color: var(--color-ink-on-deep-2);
+}
+
+
+/* ------------------------------------------------------------ the masthead */
+
+/*
+ * The typographic hero. Every full-bleed attempt fought its photograph;
+ * this one leads with the name at display size, staggered like Badosa's,
+ * and lets the photograph be a photograph in its own frame beside it.
+ * White ground, so the site opens in daylight.
+ */
+.masthead {
+  background: var(--color-paper);
+  padding-block: var(--space-xl) 0;
+}
+
+.masthead-grid {
+  display: grid;
+  gap: var(--space-lg);
+  align-items: center;
+  padding-bottom: var(--space-xl);
+}
+
+@media (min-width: 900px) {
+  .masthead-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-2xl);
+  }
+}
+
+.masthead-copy {
+  display: grid;
+  gap: var(--space-md);
+  justify-items: start;
+}
+
+.masthead h1 {
+  /* Sized so the surname always holds one line inside its seven columns:
+     at 9vw the first render broke Thekkada mid-word again. The global
+     overflow-wrap:anywhere is overridden here because a name never breaks. */
+  font-size: clamp(3rem, 7vw, 6.75rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  color: var(--color-ink);
+  display: grid;
+  overflow-wrap: normal;
+}
+
+.masthead h1 .shift {
+  margin-left: clamp(1.25rem, 4.5vw, 4.5rem);
+  color: var(--color-accent);
+}
+
+.masthead-line {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  color: var(--color-ink-2);
+}
+
+.masthead-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.masthead-shot {
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-3);
+}
+
+.masthead-shot img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: auto;
+  object-fit: cover;
+  animation: hero-drift 22s var(--ease-in-out) forwards;
+  transform-origin: 50% 30%;
+}
+
+.masthead-shot .caption {
+  position: absolute;
+  left: var(--space-sm);
+  bottom: var(--space-sm);
+  color: var(--color-ink-on-deep);
+  text-shadow: 0 0 10px oklch(16% 0.03 255 / 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .masthead-shot img {
+    animation: none;
+  }
+}
+
+/* --------------------------------------------------------------- the wire */
+
+/* Press as a wire service: numbered rows, the headline carrying the weight,
+   and on a cursor screen the photograph floats beside the pointer instead
+   of sitting in a grey box. */
+.press-wire {
+  list-style: none;
+  margin: var(--space-md) 0 0;
+  padding: 0;
+}
+
+.press-wire li {
+  border-top: var(--rule-hair) solid var(--color-line);
+}
+
+.press-wire li:last-child {
+  border-bottom: var(--rule-hair) solid var(--color-line);
+}
+
+.press-wire a,
+.press-wire li > p {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-sm);
+  padding-block: var(--space-md);
+  margin: 0;
+  text-decoration: none;
+}
+
+.wire-idx {
+  color: var(--color-ink-3);
+}
+
+.wire-main {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.wire-main b {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.press-wire a:hover .wire-main b {
+  color: var(--color-accent);
+}
+
+.wire-arrow {
+  font-size: var(--text-lg);
+  color: var(--color-ink-3);
+  transition: transform var(--dur-mid) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.press-wire a:hover .wire-arrow {
+  transform: translate(3px, -3px);
+  color: var(--color-accent);
+}
+
+.press-peek {
+  position: fixed;
+  z-index: 80;
+  width: 15rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+
+.press-peek img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 18px 50px oklch(0% 0 0 / 0.3);
+}
+
+.press-peek[data-on="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none), (max-width: 899px) {
+  .press-peek {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------- the talks */
+
+.talks {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .talks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+.talk {
+  position: relative;
+  border: var(--rule-hair) solid var(--color-line);
+  background: var(--color-paper);
+  padding: var(--space-lg);
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.talk-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-2xl);
+  color: var(--color-accent-wash);
+  -webkit-text-stroke: 1px var(--color-accent);
+  line-height: 1;
+}
+
+.talk h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+.talk p {
+  color: var(--color-ink-2);
+  font-size: var(--text-base);
+}
+
+/* -------------------------------------------------------------- the target */
+
+.target {
+  position: relative;
+  padding-block: var(--space-lg);
+}
+
+.target-year {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(6rem, 18vw, 16rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--color-paper-2);
+  z-index: -1;
+  user-select: none;
+}
+
+.funds .fact {
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-top: none;
+  padding: var(--space-lg);
+}
+
+.funds {
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .funds {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* ---------------------------------------------------- the blended opening */
+
+/*
+ * What makes the reference heroes read premium is not the photograph, it is
+ * that the photograph owns the entire frame: the navigation floats over it
+ * as glass, the image runs to every edge, and the frame hands over to the
+ * page through a graded fade rather than a hard seam. Three pieces below do
+ * exactly that, index only.
+ */
+
+/* The nav over the hero: transparent glass at the top of the page, its own
+   scrim guaranteeing the links, turning solid navy the moment the reader
+   scrolls. Interior pages never set data-glass and keep the solid bar. */
+.nav[data-glass="true"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(16% 0.03 255 / 0.55),
+    oklch(16% 0.03 255 / 0)
+  );
+  transition: background var(--dur-mid) var(--ease-out);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] {
+  background: var(--color-paper-deep);
+}
+
+/* The hero fills the viewport from the very top, under the glass nav. */
+.nav[data-glass="true"] + main .panel[data-size="hero"] {
+  min-height: 100svh;
+}
+
+/* The grade. One navy wash multiplied over the photograph pulls every frame
+   into the site's palette, which is what "blended" looks like in practice:
+   the image, the nav and the page reading as one material. */
+.panel[data-size="hero"] .panel-shot img {
+  filter: saturate(0.92) contrast(1.04);
+}
+
+.panel[data-size="hero"] .panel-shot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--color-paper-deep);
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+}
+
+/* The handover: the photograph fades into the page ground at its foot, so
+   the section ends as a gradient rather than a cut. */
+.panel[data-size="hero"] .panel-shot::after {
+  background: linear-gradient(
+      to right,
+      oklch(16% 0.03 255 / 0.48) 0%,
+      oklch(16% 0.03 255 / 0.1) 52%,
+      oklch(16% 0.03 255 / 0) 78%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(16% 0.03 255 / 0.35) 0%,
+      oklch(16% 0.03 255 / 0.08) 30%,
+      oklch(16% 0.03 255 / 0.55) 82%,
+      var(--color-paper) 100%
+    );
+}
+
+/* The name over a full-viewport frame earns more size than the panel default. */
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.2rem, 8vw, 7.75rem);
+}
+
+
+/* ----------------------------------------------------- the mobile menu */
+
+/*
+ * Below 900px the link row used to vanish entirely, which left phones with
+ * the wordmark and nothing else. The row now folds into a panel under the
+ * bar, opened by one plain word. Same links, same order, Work with me last.
+ */
+.nav-toggle {
+  display: none;
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-on-deep);
+  background: none;
+  border: none;
+  padding: 0.75rem 0;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+@media (max-width: 899px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  .nav-inner {
+    position: relative;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    margin-inline: calc(-1 * var(--space-md));
+    padding: var(--space-2xs) var(--space-md) var(--space-md);
+    background: var(--color-paper-deep);
+  }
+
+  .nav[data-open="true"] .nav-links {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding-block: 0.8rem;
+    border-top: var(--rule-hair) solid oklch(100% 0 0 / 0.12);
+  }
+}
+
+/* Work with me: the one action the brief asks the navigation to carry. */
+.nav-links .nav-work {
+  color: var(--color-ink-on-deep);
+}
+
+@media (min-width: 900px) {
+  .nav-links .nav-work {
+    margin-left: var(--space-sm);
+    padding: 0.5rem 1rem;
+    border: 1px solid oklch(100% 0 0 / 0.45);
+    transition: border-color var(--dur-fast) var(--ease-out),
+      background var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-links .nav-work:hover {
+    border-color: var(--color-ink-on-deep);
+    background: oklch(100% 0 0 / 0.08);
+  }
+}
+
+/* ---------------------------------------------------- the road, on Journey */
+
+/* The four target seasons continue the timeline without photographs: two
+   cards up on a wide screen, stacked on a phone, each with its ghost year. */
+.steps-future {
+  margin-top: var(--space-lg);
+  gap: var(--space-lg);
+}
+
+.steps-future .step {
+  grid-template-columns: minmax(0, 1fr);
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-md);
+}
+
+@media (min-width: 800px) {
+  .steps-future {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.steps-future h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-block: var(--space-3xs) var(--space-2xs);
+}
+
+.steps-future .ghost-year {
+  font-size: clamp(3.2rem, 7vw, 5.5rem);
+}
+
+/* The talk card's provenance line sits quiet under the body. */
+.talk .caption {
+  color: var(--color-ink-3);
+}
+
+/* -------------------------------------------------- field-level form errors */
+
+.field-err {
+  color: oklch(45% 0.17 25);
+  margin-top: var(--space-3xs);
+}
+
+.enquiry input[aria-invalid="true"],
+.enquiry textarea[aria-invalid="true"] {
+  border-color: oklch(45% 0.17 25);
+}
+
+.field .opt {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-ink-3);
+}
+
+/* --------------------------------------------------- the lightbox, closed */
+
+.lightbox .shut {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  font-size: var(--text-xl);
+  line-height: 1;
+  color: var(--color-ink-on-deep);
+  background: none;
+  border: none;
+  padding: 0.6rem;
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+/* -------------------------------------- decorative numerals, reined in */
+
+/* The oversized years are desktop furniture. On a phone they pressed the
+   copy toward the edge; smaller and they still read as altitude. */
+@media (max-width: 640px) {
+  .step-copy {
+    min-width: 0;
+  }
+
+  .ghost-year {
+    font-size: 3.2rem;
+  }
+
+  .target-year {
+    font-size: clamp(3.6rem, 24vw, 6rem);
+  }
+}
+
+
+/* On a phone the three-column medal rows ran 130px past the frame, the
+   nowrap medal chips doing the pushing. Below 640px each result stacks:
+   year, event, medals, one under the other, same hairline per row. */
+@media (max-width: 640px) {
+  .medals,
+  .medals tbody,
+  .medals tr,
+  .medals td {
+    display: block;
+  }
+
+  .medals td {
+    border-top: none;
+    padding: 0;
+  }
+
+  .medals tr {
+    border-top: var(--rule-hair) solid var(--color-line);
+    padding-block: var(--space-sm);
+  }
+
+  .c-meds {
+    text-align: left;
+    white-space: normal;
+    margin-top: var(--space-3xs);
+  }
+
+  .c-meds .medal {
+    margin-left: 0;
+    margin-right: var(--space-sm);
+  }
+}
+
+
+/* ----------------------------------------------- daylight, 26 Aug review */
+
+/*
+ * The client: blue and white rather than dark backgrounds. The navy keeps
+ * two jobs, the glass bar over the hero photograph and the type itself;
+ * the chrome that used to sit on navy, the bar and the footer, now sits
+ * on paper. Appended last so these win the cascade at equal specificity.
+ */
+.nav {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border-bottom: var(--rule-hair) solid var(--color-line);
+}
+
+.nav .wordmark {
+  color: var(--color-ink);
+}
+
+.nav .nav-links a {
+  color: var(--color-ink-2);
+}
+
+.nav .nav-links a:hover,
+.nav .nav-links a[aria-current="page"] {
+  color: var(--color-ink);
+}
+
+.nav .nav-toggle {
+  color: var(--color-ink);
+}
+
+.nav .nav-links .nav-work {
+  color: var(--color-accent);
+}
+
+@media (min-width: 900px) {
+  .nav .nav-links .nav-work {
+    border-color: var(--color-accent);
+  }
+
+  .nav .nav-links .nav-work:hover {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+}
+
+@media (max-width: 899px) {
+  .nav .nav-links {
+    background: var(--color-paper);
+    border-bottom: var(--rule-hair) solid var(--color-line);
+  }
+
+  .nav .nav-links a {
+    border-top-color: var(--color-line);
+  }
+}
+
+/* The glass bar over the hero keeps its light-on-photo type until the
+   reader scrolls, then joins the daylight chrome. */
+.nav[data-glass="true"]:not([data-scrolled="true"]) {
+  background: linear-gradient(
+    to bottom,
+    oklch(16% 0.03 255 / 0.55),
+    oklch(16% 0.03 255 / 0)
+  );
+  border-bottom: none;
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
+  color: var(--color-ink-on-deep);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+  color: var(--color-ink-on-deep-2);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a[aria-current="page"] {
+  color: var(--color-ink-on-deep);
+}
+
+.nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
+  color: var(--color-ink-on-deep);
+}
+
+@media (max-width: 899px) {
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links {
+    background: var(--color-paper);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+    color: var(--color-ink-2);
+  }
+}
+
+.nav[data-glass="true"][data-scrolled="true"] {
+  background: var(--color-paper);
+}
+
+/* The footer joins the daylight too: ice ground, ink type. */
+.foot {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.foot-rows {
+  border-top-color: var(--color-line);
+}
+
+.foot-links a {
+  color: var(--color-ink-2);
+}
+
+.foot-links a:hover {
+  color: var(--color-ink);
+}
+
+.foot-fine {
+  color: var(--color-ink-3);
+}
+
+/* --------------------------------------------------- level of competition */
+
+/* Her stat band: the number carries the section, everything else whispers. */
+.levels {
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  margin-top: var(--space-md);
+}
+
+.level-n {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.level h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-2xs);
+}
+
+.level .caption {
+  color: var(--color-ink-3);
+  margin-top: var(--space-3xs);
+}
+
+/* Four format cards for the sport: two up on a phone, four across wide. */
+.facts-quad {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 900px) {
+  .facts-quad {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* The who-she-is facts row sits directly under its split, quiet. */
+#who-facts {
+  padding-top: 0;
+}
+
+
+/* Who-she-is joins the daylight: the story panel sits on ice, not navy. */
+.split-body {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+
+.split-body .caption {
+  color: var(--color-ink-3);
+}
+
+.split-body p {
+  color: var(--color-ink-2);
+}
+
+.split-body h2 {
+  color: var(--color-ink);
+}
+
+
+/* ------------------------------------------------------ the hero rotation */
+
+/* Four frames crossfading the way stadium screens change: slow, no
+   controls, the photograph simply becomes another photograph. */
+.panel-shot[data-slides="true"] img.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1100ms var(--ease-out);
+}
+
+.panel-shot[data-slides="true"] img.slide[data-on="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel-shot[data-slides="true"] img.slide {
+    transition: none;
+  }
+}
+
+/* The merged who-she-is: her statement leads, the story follows under a
+   quieter subhead, and the facts close the section on the same ground. */
+.split-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  margin-top: var(--space-md);
+}
+
+#who-facts .statline {
+  margin-top: var(--space-md);
+}
+
+
+/* ------------------------------------------------------- the quote card */
+
+/* Her reference: Badosa's quote treatment. Accent bar, oversized mark,
+   the words in the reading face, her name beneath in caps. */
+.quote-card {
+  position: relative;
+  margin: 0;
+  background: var(--color-paper-2);
+  border-left: 3px solid var(--color-accent);
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  max-width: 62rem;
+  margin-inline: auto;
+}
+
+.qmark {
+  position: absolute;
+  top: 0.2rem;
+  left: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--color-accent);
+  opacity: 0.35;
+  user-select: none;
+}
+
+.quote-card blockquote {
+  margin: 0;
+}
+
+.quote-card blockquote p {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: var(--text-xl);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--color-ink);
+  text-align: center;
+}
+
+.quote-card figcaption {
+  margin-top: var(--space-md);
+  text-align: center;
+  color: var(--color-ink-3);
+}
+
+/* The hero's second line sits quieter under the tagline. */
+.panel[data-size="hero"] .sub-2 {
+  font-size: var(--text-base);
+  opacity: 0.85;
+}
+
+/* Sport group labels and prose h3 in general. */
+.prose h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-lg);
+}
+
+
+/* ------------------------------------------------ the homepage, composed */
+
+/* Generous vertical rhythm: sections breathe the way the benchmark's do. */
+.prose-fold {
+  padding-block: clamp(3.5rem, 8vw, 6.5rem);
+}
+
+/* The hero tagline: her sentence, set as an aside rather than a shout. */
+.panel[data-size="hero"] .hero-line {
+  font-style: italic;
+  font-size: var(--text-lg);
+  max-width: 40ch;
+  opacity: 0.92;
+}
+
+/* A quiet scroll cue where the button used to be: one thin line, falling. */
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: var(--space-md);
+  width: 1px;
+  height: 56px;
+  overflow: hidden;
+}
+
+.scroll-cue i {
+  position: absolute;
+  left: 0;
+  top: -100%;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--color-ink-2));
+  animation: cue-drop 2.2s var(--ease-in-out) infinite;
+}
+
+@keyframes cue-drop {
+  0% { top: -100%; }
+  60% { top: 100%; }
+  100% { top: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue { display: none; }
+}
+
+/* Levels: hairline left rules give the numbers a colonnade to stand in. */
+.levels .level {
+  border-left: var(--rule-hair) solid var(--color-line);
+  padding-left: var(--space-md);
+}
+
+/* The who-she-is facts sit in a ruled strip, not loose on the page. */
+#who-facts .facts-row {
+  border-block: var(--rule-hair) solid var(--color-line);
+  padding-block: var(--space-md);
+}
+
+/* Sport: editorial column left, the four format cards right. */
+.sport-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 960px) {
+  .sport-grid {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+}
+
+.sport-cards h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink-3);
+  margin-top: var(--space-lg);
+}
+
+.sport-cards h3:first-child {
+  margin-top: 0;
+}
+
+.facts-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Tile-band kickers share the caption voice of every other section. */
+.tiles-head .caption {
+  margin-bottom: var(--space-2xs);
+  color: var(--color-ink-3);
+}
+
+
+/* ---------------------------------------------------- the opening stack */
+
+/*
+ * The benchmark's signature move: the first folds pin at the top and the
+ * next one rides up over them, so the opening reads as cards being laid
+ * on a table. Pure sticky positioning, no scroll hijacking; a reader
+ * scrolling fast simply sees sections. Desktop only, because the story
+ * card cannot fit a phone viewport and a clipped sticky card is worse
+ * than an honest scroll.
+ */
+@media (min-width: 900px) {
+  .stack > * {
+    position: sticky;
+    top: 0;
+  }
+
+  /* Every card after the first casts back onto the one beneath it. */
+  .stack > * + * {
+    box-shadow: 0 -28px 70px oklch(20% 0.03 255 / 0.28);
+  }
+
+  /* The statement card: full viewport, her words centred, opaque ground
+     so the hero disappears completely beneath it. */
+  .stack .stack-card {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    background: var(--color-paper);
+  }
+
+  /* The story card: the split stretches to the full viewport. The
+     photograph pins inside it, holding the viewport while the story
+     scrolls through beside her, so she watches the reader read. */
+  .stack .split {
+    min-height: 100svh;
+    background: var(--color-paper-2);
+    align-items: start;
+  }
+
+  .stack .split-shot {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+
+  .stack .split-shot img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+
+/* The facts close the story column, spaced like a signature. */
+.split-body .facts {
+  margin-top: var(--space-lg);
+}
+
+.split-body .facts .fact {
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-2xs);
+}
+
+
+/* ------------------------------------------------- the hero, recomposed */
+
+/*
+ * The client: the hero felt odd, not premium. Two causes, both here.
+ * The grade was a flat grey veil that muted every frame equally; it
+ * becomes one cinematic treatment, richer image, a corner vignette
+ * where the type lives, and the same paper handover at the foot. And
+ * the type stack was three unrelated voices; it becomes one: a ruled
+ * caps kicker, a tighter 700-weight name, and the tagline upright at
+ * reading size, each a measured step from the last.
+ */
+.panel[data-size="hero"] .panel-shot img {
+  filter: saturate(1.02) contrast(1.07) brightness(0.99);
+}
+
+.panel[data-size="hero"] .panel-shot::before {
+  opacity: 0.10;
+}
+
+.panel[data-size="hero"] .panel-shot::after {
+  background: radial-gradient(
+      120% 90% at 18% 78%,
+      oklch(16% 0.03 255 / 0.52) 0%,
+      oklch(16% 0.03 255 / 0.18) 45%,
+      oklch(16% 0.03 255 / 0) 70%
+    ),
+    linear-gradient(
+      to bottom,
+      oklch(16% 0.03 255 / 0.30) 0%,
+      oklch(16% 0.03 255 / 0.05) 30%,
+      oklch(16% 0.03 255 / 0.38) 80%,
+      var(--color-paper) 100%
+    );
+}
+
+.panel[data-size="hero"] .panel-body {
+  gap: var(--space-sm);
+  max-width: 46rem;
+}
+
+.panel[data-size="hero"] .panel-body .caption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  letter-spacing: 0.22em;
+  color: oklch(100% 0 0 / 0.85);
+}
+
+.panel[data-size="hero"] .panel-body .caption::before {
+  content: "";
+  width: 2.2rem;
+  height: 1px;
+  background: var(--color-accent);
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3rem, 6.5vw, 6.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  text-shadow: 0 2px 40px oklch(16% 0.03 255 / 0.35);
+}
+
+.panel[data-size="hero"] .hero-line {
+  font-style: normal;
+  font-size: var(--text-xl);
+  line-height: 1.5;
+  max-width: 34ch;
+  color: oklch(100% 0 0 / 0.93);
+  opacity: 1;
+  margin-top: var(--space-2xs);
+}
+
+
+/* -------------------------------------- hero brief, 30 Aug: final pass */
+
+/*
+ * Implementation brief applied verbatim where it speaks, reconciled with
+ * the design system where it defers: Archivo is the strong sans the brief
+ * says to reuse; the paper handover at the foot stays because the page
+ * below is white and the brief leaves hero height and sections alone.
+ */
+.panel[data-size="hero"] .panel-shot::before {
+  opacity: 0.08;
+}
+
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(5, 12, 22, 0.72) 0%,
+      rgba(5, 12, 22, 0.42) 42%,
+      rgba(5, 12, 22, 0.08) 72%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(5, 12, 22, 0.2) 0%,
+      rgba(5, 12, 22, 0) 38%,
+      rgba(5, 12, 22, 0.24) 78%,
+      var(--color-paper) 100%
+    );
+}
+
+/* Lower-left third, with breathing room off the bottom edge. */
+.panel[data-size="hero"] {
+  padding-bottom: clamp(4rem, 11vh, 7rem);
+}
+
+/* The name: the strongest element, no effects, the overlay does the work. */
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.4rem, 7vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  text-shadow: none;
+  color: oklch(99% 0.002 250);
+}
+
+/* The eyebrow: secondary, tracked, firm. */
+.panel[data-size="hero"] .panel-body .caption {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+/* The sub-punchline: refined sans, short measure, quiet confidence. */
+.panel[data-size="hero"] .hero-line {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.4;
+  max-width: 32rem;
+  color: oklch(100% 0 0 / 0.92);
+}
+
+
+/* Hero, client round: the photograph leads. Lighter scrim, the name a
+   step smaller, the eyebrow gone since the title line now carries the
+   role. Name plus one line, nothing else. */
+.panel[data-size="hero"] .panel-shot::after {
+  /* The corner radial guarantees the copy zone on every frame: white
+     type never sits on bare snow, whatever the rotation shows. */
+  background:
+    radial-gradient(
+      85% 65% at 14% 86%,
+      rgba(5, 12, 22, 0.58) 0%,
+      rgba(5, 12, 22, 0.22) 45%,
+      rgba(5, 12, 22, 0) 68%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 12, 22, 0.5) 0%,
+      rgba(5, 12, 22, 0.22) 44%,
+      rgba(5, 12, 22, 0) 70%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(5, 12, 22, 0.14) 0%,
+      rgba(5, 12, 22, 0) 38%,
+      rgba(5, 12, 22, 0.18) 78%,
+      var(--color-paper) 100%
+    );
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.2rem, 6vw, 6.5rem);
+}
+
+.panel[data-size="hero"] .hero-line {
+  font-size: clamp(1.15rem, 1.6vw, 1.6rem);
+  color: oklch(100% 0 0 / 0.95);
+}
+
+
+/* The name is a two-line lockup at every width; a wide window was
+   setting it as one line that ran out of the protected corner and
+   across the subject. The reinforcement also grows taller for short
+   windows where the copy rides higher. */
+.panel[data-size="hero"] .panel-body h1 span {
+  display: block;
+}
+
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    radial-gradient(
+      90% 85% at 16% 80%,
+      rgba(5, 12, 22, 0.6) 0%,
+      rgba(5, 12, 22, 0.24) 48%,
+      rgba(5, 12, 22, 0) 70%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(5, 12, 22, 0.5) 0%,
+      rgba(5, 12, 22, 0.22) 44%,
+      rgba(5, 12, 22, 0) 70%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(5, 12, 22, 0.14) 0%,
+      rgba(5, 12, 22, 0) 38%,
+      rgba(5, 12, 22, 0.18) 78%,
+      var(--color-paper) 100%
+    );
+}
+
+
+/* --------------------------------------- the sport, redesigned (UI brief) */
+
+/* Visual first: heading and two short serif lines, then the two technique
+   blocks doing the explaining, then the formats pair, then her line as a
+   ruled close. No repeated hairlines, no data-sheet columns. */
+.sport-head {
+  max-width: 60ch;
+  display: grid;
+  gap: var(--space-2xs);
+}
+
+.sport-head h2 {
+  margin-bottom: var(--space-2xs);
+}
+
+.sport-intro {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+}
+
+.tech-blocks {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+@media (min-width: 760px) {
+  .tech-blocks {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-lg);
+  }
+}
+
+.tech {
+  position: relative;
+  background: var(--color-paper-2);
+  padding: var(--space-lg) var(--space-lg) var(--space-md);
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+}
+
+.tech-n {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 4.5vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-accent);
+  opacity: 0.16;
+  user-select: none;
+}
+
+.tech h3 {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.tech svg {
+  width: min(15rem, 100%);
+  height: auto;
+  color: var(--color-ink-2);
+  margin-block: var(--space-2xs);
+}
+
+.tech p {
+  font-family: var(--font-body);
+  color: var(--color-ink-2);
+}
+
+.formats {
+  margin-top: var(--space-xl);
+}
+
+.formats-row {
+  display: grid;
+  gap: var(--space-md) var(--space-2xl);
+  margin-top: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .formats-row {
+    grid-template-columns: repeat(2, minmax(0, 22rem));
+  }
+}
+
+.format h4 {
+  font-family: var(--font-caption);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.format p {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--color-ink-2);
+  margin-top: var(--space-3xs);
+}
+
+.sport-bridge {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-line);
+  color: var(--color-ink-2);
+  letter-spacing: 0.14em;
+}
+
+.sport-bridge::before {
+  content: "";
+  display: block;
+  width: 2.4rem;
+  height: 2px;
+  background: var(--color-accent);
+  margin-bottom: var(--space-2xs);
+  margin-top: calc(-1 * var(--space-md) - 1px);
+}
+
+
+/* ----------------------------------------- hero UI/UX brief, final pass */
+
+/* The image leads, the name anchors, everything else supports. */
+
+/* Copy block lifts off the bottom edge into the lower-left third. */
+.panel[data-size="hero"] {
+  padding-bottom: clamp(6.5rem, 15vh, 10rem);
+}
+
+.panel[data-size="hero"] .panel-body {
+  gap: var(--space-xs);
+}
+
+/* Eyebrow above the name, secondary. */
+.panel[data-size="hero"] .hero-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: oklch(100% 0 0 / 0.85);
+}
+
+/* Name at the brief's scale, tight, never cropped. */
+.panel[data-size="hero"] .panel-body h1 {
+  font-size: clamp(3.4rem, 6.5vw, 7rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+
+/* Supporting statement, not a caption. */
+.panel[data-size="hero"] .hero-line {
+  font-size: clamp(1.25rem, 1.5vw, 1.6rem);
+  font-weight: 400;
+  line-height: 1.35;
+  max-width: 26rem;
+  margin-top: var(--space-2xs);
+}
+
+/* Text-zone gradient only; the image keeps its light. The foot fades to
+   paper because the page below is white. */
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 11, 24, 0.62) 0%,
+      rgba(3, 11, 24, 0.36) 32%,
+      rgba(3, 11, 24, 0.08) 58%,
+      rgba(3, 11, 24, 0) 72%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(3, 11, 24, 0.18) 0%,
+      rgba(3, 11, 24, 0) 30%,
+      rgba(3, 11, 24, 0) 68%,
+      var(--color-paper) 100%
+    );
+}
+
+/* Photographic calm: a touch less saturation and contrast, per brief. */
+.panel[data-size="hero"] .panel-shot img {
+  filter: saturate(0.94) contrast(1.02);
+}
+
+/* Crossfade inside the brief's 700-1000ms window. */
+.panel-shot[data-slides="true"] img.slide {
+  transition-duration: 1000ms;
+}
+
+/* Nav: quieter tracking, glass-blur only once scrolled on the hero page. */
+.nav-links a {
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.nav[data-glass="true"][data-scrolled="true"] {
+  background: rgba(4, 12, 25, 0.66);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] .wordmark,
+.nav[data-glass="true"][data-scrolled="true"] .nav-toggle,
+.nav[data-glass="true"][data-scrolled="true"] .nav-links a:hover,
+.nav[data-glass="true"][data-scrolled="true"] .nav-links a[aria-current="page"] {
+  color: var(--color-ink-on-deep);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] .nav-links a {
+  color: var(--color-ink-on-deep-2);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] .nav-links .nav-work {
+  color: var(--color-ink-on-deep);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.nav[data-glass="true"][data-scrolled="true"] .nav-links .nav-work:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Contact pill, less boxy. */
+@media (min-width: 900px) {
+  .nav-links .nav-work {
+    padding: 0.7rem 1.3rem;
+    border-width: 1px;
+  }
+}
+
+/* The coordinate rail stays as sitewide language, quieter. */
+.lat-rail {
+  opacity: 0.55;
+}
+
+/* Mobile: its own composition. Focal points per frame, name scale held,
+   copy off the bottom edge with safe-area padding. */
+@media (max-width: 768px) {
+  .panel[data-size="hero"] {
+    padding-bottom: max(4rem, env(safe-area-inset-bottom, 0px) + 3.5rem);
+  }
+
+  .panel[data-size="hero"] .panel-body h1 {
+    font-size: clamp(3.25rem, 15vw, 4rem);
+  }
+
+  .panel-shot[data-slides="true"] img.slide[data-i="1"] {
+    object-position: 58% 45% !important;
+  }
+
+  .panel-shot[data-slides="true"] img.slide[data-i="2"] {
+    object-position: 52% 34% !important;
+  }
+}
+
+
+/* --------------------------------- hero, the client's mock of 30 Aug */
+
+/* Black Rusher, the client-supplied face V1 carried on its wordmark,
+   now trialled on the hero name at her request. Script faces need no
+   negative tracking and a little more line room. */
+@font-face {
+  font-family: "Black Rusher";
+  src: url("../fonts/black-rusher.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.panel[data-size="hero"] .panel-body h1 {
+  font-family: "Black Rusher", var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.02;
+  font-size: clamp(3.2rem, 6vw, 6.4rem);
+}
+
+/* The accent rule between name and statement, as drawn. */
+.panel[data-size="hero"] .panel-body h1::after {
+  content: "";
+  display: block;
+  width: 7rem;
+  height: 2px;
+  background: var(--color-accent);
+  margin-top: var(--space-sm);
+}
+
+/* The mock's eyebrow is plain tracked caps, no dash. */
+.panel[data-size="hero"] .panel-body .caption::before {
+  display: none;
+}
+
+/* Her figure rides the right side; the left is a navy ground the copy
+   owns. The image block starts at 26% and the gradient bridges the
+   seam, so the frame reads as one composition. Desktop only. */
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot {
+    background: rgb(5, 14, 30);
+  }
+
+  .panel-shot[data-slides="true"] img.slide {
+    left: 26%;
+    width: 74%;
+  }
+
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 14, 30, 0.98) 0%,
+        rgba(5, 14, 30, 0.9) 27%,
+        rgba(5, 14, 30, 0.52) 44%,
+        rgba(5, 14, 30, 0.12) 60%,
+        rgba(5, 14, 30, 0) 72%
+      );
+    /* No bottom fade: the photograph runs to the section's edge as in
+       the mock, and the statement card covers the seam as it rides up. */
+  }
+}
+
+
+/* ------------------------------- hero, minimal one-frame (Badosa ref) */
+
+/* One photograph end to end, one name across it. The script face moves
+   to the BT monogram, where a signature belongs; the name returns to
+   the grotesk at display scale, staggered like the reference. */
+.wordmark-mono {
+  font-family: "Black Rusher", var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.panel[data-size="hero"] {
+  place-items: center stretch;
+  padding-bottom: 0;
+}
+
+.panel[data-size="hero"] .hero-min {
+  max-width: none;
+  justify-items: stretch;
+}
+
+.panel[data-size="hero"] .hero-min h1 {
+  font-family: "Black Rusher", var(--font-display);
+  font-size: clamp(3.4rem, 8.5vw, 8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.01em;
+  color: oklch(99% 0.002 250);
+  /* The name crosses bright bib and snow; the strokes carry their own
+     edge: one tight shadow for definition, two soft ones for ground. */
+  text-shadow:
+    0 1px 2px rgba(3, 9, 20, 0.6),
+    0 4px 16px rgba(3, 9, 20, 0.55),
+    0 12px 44px rgba(3, 9, 20, 0.5);
+}
+
+.panel[data-size="hero"] .hero-min h1::after {
+  display: none;
+}
+
+.panel[data-size="hero"] .hero-min h1 .stagger {
+  margin-left: clamp(5rem, 24vw, 26rem);
+}
+
+/* One even veil so the name reads on any exposure; no zones, no fades. */
+.panel[data-size="hero"] .panel-shot::after {
+  background: linear-gradient(
+    rgba(3, 9, 20, 0.42),
+    rgba(3, 9, 20, 0.42)
+  );
+}
+
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background: linear-gradient(
+      rgba(3, 9, 20, 0.42),
+      rgba(3, 9, 20, 0.42)
+    );
+  }
+}
+
+/* The image is full-bleed again; the right-block composition retires. */
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot img {
+    left: 0;
+    width: 100%;
+  }
+}
+
+
+/* -------------------------------------- hero tagline and credential line */
+
+.panel[data-size="hero"] .hero-tag {
+  margin-top: var(--space-sm);
+  color: oklch(100% 0 0 / 0.88);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+}
+
+/* One fixed line; credentials fade through it. No layout shift, ever. */
+.hero-cred {
+  position: relative;
+  height: 1.6em;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  color: oklch(100% 0 0 / 0.95);
+}
+
+.hero-cred span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+  text-shadow: 0 1px 2px rgba(3, 9, 20, 0.6), 0 4px 16px rgba(3, 9, 20, 0.5);
+}
+
+.hero-cred span[data-on="true"] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cred span {
+    transition: none;
+  }
+}
+
+
+/* The lower-third chip: the quote card's language translated for sitting
+   on a photograph. Frosted dark plate, accent bar, tagline over the
+   rotating credential. */
+.hero-chip {
+  display: inline-grid;
+  gap: var(--space-3xs);
+  justify-self: start;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md) var(--space-xs);
+  background: rgba(10, 22, 40, 0.26);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-left: 3px solid var(--color-accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.panel[data-size="hero"] .hero-chip .hero-tag {
+  margin-top: 0;
+}
+
+.hero-chip .hero-cred span {
+  text-shadow: none;
+}
+
+
+/* Inside the chip: the credential cycles as a stat, oversized numeral in
+   the light accent with a caps label beside it, the same voice as the
+   Level of competition band further down the page. */
+.hero-chip .hero-tag {
+  color: oklch(78% 0.1 245);
+  letter-spacing: 0.22em;
+  font-size: 0.72rem;
+}
+
+.hero-chip .hero-cred {
+  height: 2.6rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(100% 0 0 / 0.92);
+}
+
+.hero-chip .hero-cred span {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+}
+
+.hero-chip .hero-cred b {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: oklch(78% 0.1 245);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* The chip must be as wide as its widest credential. Absolute spans do
+   not size their parent, so the lines stack as grid layers instead: same
+   crossfade, honest width. */
+.hero-chip .hero-cred {
+  display: grid;
+  height: auto;
+  min-height: 2.6rem;
+}
+
+.hero-chip .hero-cred span {
+  position: static;
+  grid-area: 1 / 1;
+}
+
+
+/* ------------------------------ the name moves to the wordmark (Runciman
+   reference). Her name is the first thing read on every page, set in the
+   V1 display face; the photograph then carries a punchline, not a
+   repeat of the name. */
+
+.wordmark-name {
+  font-family: "Black Rusher", var(--font-display);
+  font-size: clamp(1.15rem, 2.1vw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Four words, three lines, lower-left. Uppercase grotesk so it never
+   competes with the script wordmark above it. */
+.panel[data-size="hero"] .hero-min .hero-punch {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.2vw, 5.4rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: oklch(99% 0.002 250);
+  text-shadow:
+    0 1px 2px rgba(3, 9, 20, 0.6),
+    0 4px 16px rgba(3, 9, 20, 0.55),
+    0 12px 44px rgba(3, 9, 20, 0.5);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch > span {
+  display: block;
+}
+
+/* The second line steps in, the way the reference steps its middle line. */
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2) {
+  margin-left: clamp(1.5rem, 5vw, 4.5rem);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+  margin-left: clamp(3rem, 10vw, 9rem);
+}
+
+.hero-punch .hl {
+  color: oklch(80% 0.105 245);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch::after {
+  display: none;
+}
+
+/* The chip sits closer now that the display block is shorter. */
+.panel[data-size="hero"] .hero-chip {
+  margin-top: var(--space-lg);
+}
+
+@media (max-width: 620px) {
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2) {
+    margin-left: 1rem;
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+    margin-left: 2rem;
+  }
+}
+
+/* Below the menu breakpoint the wordmark shares the bar with the toggle;
+   it stays legible rather than large. */
+@media (max-width: 520px) {
+  .wordmark-name {
+    font-size: 1.05rem;
+  }
+}
+
+/* The sitewide h1 span rule turns every span into a block; the accent
+   word inside a line is an exception and stays inline. */
+.panel[data-size="hero"] .panel-body .hero-punch span .hl,
+.panel[data-size="hero"] .panel-body .hero-punch .hl {
+  display: inline;
+}
+
+
+/* ------------------------------------- hero composition, punchline pass
+
+   The reference keeps its copy in the lower-left quadrant, clear of the
+   rider, over a gradient that darkens only that corner. Ours has to do
+   the same or the words run across her. Three moves: drop the block to
+   the lower third, set it flush left inside a narrow measure, and grade
+   the left edge down while she keeps her light. */
+
+.panel[data-size="hero"] {
+  align-content: end;
+  padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+}
+
+.panel[data-size="hero"] .hero-min {
+  justify-items: start;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch {
+  font-size: clamp(2rem, 4.6vw, 3.9rem);
+  line-height: 0.98;
+  max-width: 13ch;
+}
+
+/* Flush left. The staggered indent pushed the middle line into her body;
+   a clean left edge reads more assured anyway. */
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2),
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+  margin-left: 0;
+}
+
+@media (max-width: 620px) {
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2),
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+    margin-left: 0;
+  }
+}
+
+/* A corner grade, not a flat veil: dark where the words are, clear where
+   she is, a touch of weight along the foot so the chip has ground. */
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    linear-gradient(
+      95deg,
+      rgba(3, 9, 20, 0.84) 0%,
+      rgba(3, 9, 20, 0.78) 14%,
+      rgba(3, 9, 20, 0.62) 30%,
+      rgba(3, 9, 20, 0.34) 46%,
+      rgba(3, 9, 20, 0.14) 64%,
+      rgba(3, 9, 20, 0.22) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.55) 0%,
+      rgba(3, 9, 20, 0.12) 34%,
+      rgba(3, 9, 20, 0) 60%
+    );
+}
+
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        95deg,
+        rgba(3, 9, 20, 0.84) 0%,
+        rgba(3, 9, 20, 0.78) 14%,
+        rgba(3, 9, 20, 0.62) 30%,
+        rgba(3, 9, 20, 0.34) 46%,
+        rgba(3, 9, 20, 0.14) 64%,
+        rgba(3, 9, 20, 0.22) 100%
+      ),
+      linear-gradient(
+        to top,
+        rgba(3, 9, 20, 0.55) 0%,
+        rgba(3, 9, 20, 0.12) 34%,
+        rgba(3, 9, 20, 0) 60%
+      );
+  }
+}
+
+/* On the darker ground the chip can lose its frost and simply sit. */
+.hero-chip {
+  background: rgba(6, 16, 32, 0.4);
+}
+
+.panel[data-size="hero"] .hero-chip {
+  margin-top: var(--space-md);
+}
+
+/* ---------------------------- the bar, now that the name sits in it
+
+   Her full name is 167px of wordmark where the monogram was 26. Between
+   the menu breakpoint and 1200 the row no longer fits, so the links
+   tighten rather than the name shrinking away. */
+
+@media (min-width: 900px) and (max-width: 1200px) {
+  .wordmark-name {
+    font-size: 1.05rem;
+  }
+
+  .nav-links {
+    gap: 1.35rem;
+  }
+
+  .nav-links a {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* On a tall phone frame the corner grade does almost nothing, because the
+   copy sits over the middle of the picture rather than its left edge. The
+   foot carries the weight there instead. */
+@media (max-width: 700px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        to top,
+        rgba(3, 9, 20, 0.86) 0%,
+        rgba(3, 9, 20, 0.7) 22%,
+        rgba(3, 9, 20, 0.34) 42%,
+        rgba(3, 9, 20, 0.08) 62%,
+        rgba(3, 9, 20, 0.24) 100%
+      );
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch {
+    font-size: clamp(2rem, 9.2vw, 2.9rem);
+  }
+}
+
+/* ------------------------------- the level of competition, typed
+
+   The client's note: she is rewriting the record, so the hero should
+   look like it is being written. One plate, one caret, five figures
+   cycling through it, and the way to the full record at the far right
+   of the same line. */
+
+.hero-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+  justify-self: stretch;
+  margin-top: var(--space-md);
+}
+
+.hero-chip {
+  margin-top: 0;
+}
+
+.cred-kicker {
+  color: oklch(80% 0.105 245);
+  letter-spacing: 0.22em;
+  font-size: 0.7rem;
+  margin: 0;
+}
+
+/* The live line and the ghosts share one grid cell. The ghosts are there
+   only to hold the plate at its widest, so the caret never shifts it. */
+.hero-chip .hero-cred > .cred-live,
+.hero-chip .hero-cred > .cred-ghost {
+  position: static;
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  white-space: nowrap;
+  opacity: 1;
+  transition: none;
+}
+
+.hero-chip .hero-cred > .cred-ghost {
+  visibility: hidden;
+}
+
+.hero-chip .hero-cred .cred-t {
+  position: static;
+  display: inline;
+  opacity: 1;
+  transition: none;
+  font-variant-numeric: normal;
+}
+
+/* Tabular figures so 03 and 20 occupy the same width as they swap. */
+.hero-chip .hero-cred .cred-n {
+  min-width: 2ch;
+}
+
+.cred-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 0.1em;
+  background: oklch(80% 0.105 245);
+  animation: credCaret 1.05s step-end infinite;
+}
+
+@keyframes credCaret {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The way to the record, at the far right of the hero foot. */
+.hero-record {
+  font-family: var(--font-caption);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: oklch(100% 0 0 / 0.9);
+  text-decoration: none;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid oklch(100% 0 0 / 0.3);
+  white-space: nowrap;
+  transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+.hero-record span {
+  display: inline-block;
+  margin-left: 0.4em;
+  transition: transform 200ms var(--ease-out);
+}
+
+.hero-record:hover,
+.hero-record:focus-visible {
+  color: oklch(84% 0.105 245);
+  border-color: oklch(84% 0.105 245);
+}
+
+.hero-record:hover span {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cred-caret {
+    animation: none;
+  }
+
+  .hero-record span {
+    transition: none;
+  }
+}
+
+/* On a phone the two stack; the record link keeps its own line so it
+   stays a comfortable tap target and never wraps mid-phrase. */
+@media (max-width: 700px) {
+  .hero-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  /* A 25px link is not a tap target; the underline drops with the padding. */
+  .hero-record {
+    padding-block: 0.7rem;
+  }
+}
+
+/* The record link goes to the true right edge of the panel, not the right
+   edge of the text column: the column stops 200px short to leave the
+   coordinate rail its air, and the client asked for the far extreme. It
+   sits on the panel's own bottom inset, so it lines up with the plate. */
+@media (min-width: 900px) {
+  .hero-foot {
+    width: calc(100% + 2 * var(--space-xl));
+  }
+}
+
+
+/* =========================== the sport, as one horizontal band
+
+   The client's reference is a ski poster: the athlete set inside a
+   geometric shape on a near-white ground, a wide-tracked display word
+   under her, small caps everywhere else. Borrowed here as two devices
+   only, the cut plate and the type lockup. Everything else stays site
+   language, because pastiche reads as pastiche. */
+
+.sport-band {
+  padding-block: var(--space-3xl) var(--space-2xl);
+  overflow: hidden;
+}
+
+.sport-top {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .sport-top {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: var(--space-3xl);
+  }
+}
+
+/* The plate: her photograph cut on a slant, with a pale wedge behind it
+   offset up and left, the way the poster sets its subject in a shape. */
+.sport-cut {
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+}
+
+/* One pale wedge sits behind, its slant parallel to the plate's, so it
+   reads as part of the composition rather than a stray shard. */
+.sport-cut::before {
+  content: "";
+  position: absolute;
+  inset: 4% 58% 4% -9%;
+  background: oklch(90% 0.038 245);
+  clip-path: polygon(0 14%, 100% 0, 100% 86%, 0 100%);
+  z-index: 0;
+}
+
+.cut-plate {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 3 / 4;
+}
+
+.cut-plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Poster grade: near-monochrome, cool, snow held bright. */
+  filter: saturate(0.34) contrast(1.09) brightness(1.05);
+}
+
+/* Inside the wedge she is fully exposed; outside it she falls away to a
+   ghost on the ice ground. The two layers share a focal point, so the
+   edge cuts cleanly through one continuous frame. */
+.cut-main {
+  z-index: 2;
+  clip-path: polygon(19% 0, 100% 8%, 100% 100%, 19% 92%);
+}
+
+.cut-ghost {
+  z-index: 1;
+  opacity: 0.16;
+  filter: saturate(0.12) contrast(0.82) brightness(1.22);
+}
+
+/* The lockup, the poster's own: one wide-tracked word, a rule, a line of
+   small caps under it. */
+.sport-kicker {
+  color: var(--color-ink-2);
+}
+
+.sport-word {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 8vw, 6.4rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: var(--space-2xs) 0 0;
+  /* The tracking adds a trailing space the eye reads as a left indent. */
+  text-indent: 0.16em;
+}
+
+.sport-word-sub {
+  font-family: var(--font-caption);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  margin-top: var(--space-2xs);
+  padding-top: var(--space-2xs);
+  border-top: var(--rule-hair) solid var(--color-line);
+  display: inline-block;
+}
+
+.sport-lede {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 42ch;
+  margin-top: var(--space-md);
+}
+
+.sport-lede-2 {
+  margin-top: var(--space-2xs);
+}
+
+.sport-band .sport-bridge {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 2px solid var(--color-accent);
+  border-image: none;
+  color: var(--color-ink);
+  max-width: 34ch;
+  display: inline-block;
+}
+
+/* The four ways she races, one horizontal row. Big thin numeral, the kind
+   above the name so technique and format stay distinguishable. */
+.sport-formats {
+  list-style: none;
+  margin: var(--space-2xl) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 860px) {
+  .sport-formats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.fmt {
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-sm);
+}
+
+.fmt-n {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.4vw, 3.1rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+.fmt-kind {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-3, var(--color-ink-2));
+  letter-spacing: 0.2em;
+  font-size: 0.66rem;
+}
+
+.fmt h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin-top: var(--space-3xs);
+}
+
+.fmt p {
+  font-family: var(--font-body);
+  color: var(--color-ink-2);
+  margin-top: var(--space-3xs);
+}
+
+@media (max-width: 899px) {
+  .sport-cut {
+    max-width: 26rem;
+  }
+}
+
+
+/* ==================== hero typography, second pass
+
+   Three lines at one size read flat, however large they are. The impact
+   comes from scale contrast: a tracked-out overline, then two lines at
+   full display weight with the point of difference in accent. Her name
+   grows in the bar to match, since it is now the wordmark. */
+
+/* Her name is the first thing on the page and the punchline sits under
+   it on the same left edge, so the two read as one move down the screen.
+   That only works if the name is big enough to start it. */
+.wordmark-name {
+  font-size: clamp(1.6rem, 3.4vw, 3.2rem);
+}
+
+/* The link row tightens so her name can hold its size down to a laptop.
+   Below 1080 the row genuinely runs out of width, so the name gives way
+   there and only there. */
+@media (min-width: 900px) and (max-width: 1080px) {
+  .wordmark-name {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1280px) {
+  .nav-links {
+    gap: 1.35rem;
+  }
+
+  .nav-links a {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* The overline: small, wide, with a drawn rule leading into it. */
+.panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+  font-size: clamp(0.72rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.36em;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+  color: oklch(100% 0 0 / 0.92);
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
+  content: "";
+  width: clamp(1.6rem, 4vw, 3.2rem);
+  height: 2px;
+  background: oklch(80% 0.105 245);
+  flex: none;
+}
+
+/* The two lines that carry it. */
+.panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch {
+  max-width: none;
+}
+
+@media (max-width: 700px) {
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+    font-size: clamp(2.2rem, 10.5vw, 3.2rem);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+    letter-spacing: 0.28em;
+  }
+}
+
+/* ---------------------- a panel whose copy sits on the right
+
+   The journey panel: she stands left of frame, so the words go right and
+   the grade follows them. One column at reading width, pushed to the end
+   of the grid, with the text itself still ranged left inside it. */
+
+.panel[data-align="right"] .panel-body {
+  display: grid;
+  grid-template-columns: min(34rem, 100%);
+  justify-content: end;
+  /* The body is capped for centred panels; here the cap becomes the inner
+     column instead, so the block can actually reach the right edge. */
+  max-width: none;
+}
+
+.panel[data-align="right"] .panel-shot::after {
+  background:
+    linear-gradient(
+      265deg,
+      rgba(3, 9, 20, 0.8) 0%,
+      rgba(3, 9, 20, 0.66) 20%,
+      rgba(3, 9, 20, 0.38) 42%,
+      rgba(3, 9, 20, 0.16) 62%,
+      rgba(3, 9, 20, 0.28) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.4) 0%,
+      rgba(3, 9, 20, 0) 46%
+    );
+}
+
+@media (max-width: 899px) {
+  .panel[data-align="right"] .panel-body {
+    grid-template-columns: 100%;
+    justify-content: start;
+    max-width: 40rem;
+  }
+
+  .panel[data-align="right"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.82) 0%,
+      rgba(3, 9, 20, 0.58) 30%,
+      rgba(3, 9, 20, 0.2) 58%,
+      rgba(3, 9, 20, 0.3) 100%
+    );
+  }
+}
+
+/* A photographic panel inside the stack has to fill the card, or the one
+   beneath shows through as it slides up. */
+@media (min-width: 900px) {
+  .stack > .panel {
+    min-height: 100svh;
+  }
+}
+
+/* ---------------------- a panel whose copy sits on the right
+
+   The journey panel: she stands left of frame, so the words go right and
+   the grade follows them. One column at reading width, pushed to the end
+   of the grid, with the text itself still ranged left inside it. */
+
+.panel[data-align="right"] .panel-body {
+  display: grid;
+  grid-template-columns: min(34rem, 100%);
+  justify-content: end;
+}
+
+.panel[data-align="right"] .panel-shot::after {
+  background:
+    linear-gradient(
+      265deg,
+      rgba(3, 9, 20, 0.8) 0%,
+      rgba(3, 9, 20, 0.66) 20%,
+      rgba(3, 9, 20, 0.38) 42%,
+      rgba(3, 9, 20, 0.16) 62%,
+      rgba(3, 9, 20, 0.28) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.4) 0%,
+      rgba(3, 9, 20, 0) 46%
+    );
+}
+
+@media (max-width: 899px) {
+  .panel[data-align="right"] .panel-body {
+    grid-template-columns: 100%;
+    justify-content: start;
+  }
+
+  .panel[data-align="right"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.82) 0%,
+      rgba(3, 9, 20, 0.58) 30%,
+      rgba(3, 9, 20, 0.2) 58%,
+      rgba(3, 9, 20, 0.3) 100%
+    );
+  }
+}
+
+/* A photographic panel inside the stack has to fill the card, or the one
+   beneath shows through as it slides up. */
+@media (min-width: 900px) {
+  .stack > .panel {
+    min-height: 100svh;
+  }
+}
+
+/* ==================== body copy, sized to be read
+
+   The client's note: the paragraphs are too small and the right half of
+   the story column sits empty. Both are the same fault. Running text
+   scales with the viewport now instead of sitting at 16px, the measure
+   widens to use the column it was given, and body paragraphs take a
+   darker ink than the quiet grey used for labels. */
+
+:root {
+  --color-ink-body: oklch(34% 0.032 255);
+}
+
+body {
+  font-size: clamp(1.125rem, 0.3vw + 1.05rem, 1.28rem);
+}
+
+.prose p,
+.sport-lede,
+.split-body p:not(.split-quote) {
+  color: var(--color-ink-body);
+}
+
+.prose {
+  max-width: 62ch;
+}
+
+.split-body p:not(.split-quote) {
+  font-size: inherit;
+  max-width: 58ch;
+  line-height: 1.55;
+}
+
+.sport-lede {
+  font-size: inherit;
+  max-width: 48ch;
+}
+
+.sport-band .sport-bridge {
+  font-size: inherit;
+  max-width: 40ch;
+}
+
+/* The panel subtitle sits on a photograph; 300 is too fine to hold there. */
+.sub {
+  font-weight: 400;
+}
+
+/* The story column had room to spare on the right. Give the text the
+   width and keep the gutter honest. */
+@media (min-width: 900px) {
+  .split-body {
+    padding: var(--space-3xl) var(--space-lg) var(--space-3xl) var(--space-xl);
+  }
+}
+
+/* The four notes sit in narrow columns; running-text size crowds them, so
+   they hold just under it. */
+.fmt p:not(.fmt-kind) {
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.5;
+}
+
+@media (min-width: 860px) {
+  .sport-formats {
+    gap: var(--space-lg);
+  }
+}
+
+/* ==================== the sport as the third card
+
+   The client's section order: hero, Who she is, then the sport, all three
+   sliding up as cards. The band needs to fill the card and paint its own
+   ground, or the one beneath shows through as it rises. */
+
+@media (min-width: 900px) {
+  .stack > .sport-band {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
+    background: var(--color-paper);
+    padding-block: var(--space-2xl);
+  }
+}
+
+
+/* ==================== the wrap-up: who backs the season
+
+   This was a logo strip wedged between two sections. As the last thing on
+   the page it says what each supporter provides, which is the part a
+   visiting sponsor is reading for. The marks keep a light ground. */
+
+.backing {
+  padding-block: var(--space-2xl) var(--space-lg);
+}
+
+.backing-head {
+  font-size: var(--text-3xl);
+  text-align: center;
+  margin: 0;
+}
+
+.backers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(2rem, 6vw, 5.5rem);
+  margin-top: var(--space-xl);
+}
+
+/* One box, one optical size, whatever shape the artwork arrives in. The
+   marks keep a light ground; forcing them white flattened the Reliance
+   lockup and lost the Karnataka crest. */
+.backer-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  flex: 0 1 auto;
+}
+
+.backer-mark img {
+  max-height: 100%;
+  max-width: 14rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* The only commercial ask on the homepage, so it is a button rather
+   than a caption link. A tiny underlined line in the last inch of a page
+   is a footnote, and this is the whole reason a sponsor is reading. */
+.backing-more {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: var(--rule-hair) solid var(--color-line);
+  text-align: center;
+}
+
+.backing-more .btn {
+  display: inline-flex;
+}
+
+/* ------------------- the sport lockup, flipped
+
+   The reference could shout NORDIC over a small SKIING because both were
+   halves of one name. Here the borrowed word was covering the real one,
+   so the sport's actual name takes the display size and the category
+   drops to the small line. Nordic is the umbrella that also holds ski
+   jumping and nordic combined; she races cross-country. */
+
+.sport-word {
+  /* Thirteen tracked-out characters have to hold one line in a column
+     that is 57.5% of the wrap. Measured: the word needs 561px against a
+     589px column at 1280, and the cap keeps that true once the wrap
+     stops growing. */
+  font-size: clamp(1.7rem, 4.1vw, 3.3rem);
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+}
+
+.sport-word span {
+  display: block;
+}
+
+/* The lead sits directly under the name; it reads as a subtitle, not a
+   paragraph, so it carries a little more weight than the copy below. */
+.sport-say .sport-lede:first-of-type {
+  color: var(--color-ink);
+  margin-top: var(--space-sm);
+}
+
+/* ==================== the stack, for cards taller than the screen
+
+   A card pinned at top:0 that is taller than the viewport can never show
+   its own foot: it stops moving the moment its top hits zero, and every
+   line past the first screenful sits below the fold with nothing able to
+   scroll it up. That is what swallowed the Born / Mentored by / Trains
+   across rows at the end of Who she is.
+
+   The hero is exactly one viewport tall, so it still pins. The two cards
+   that follow are taller, so they ride over the hero and scroll through
+   in full. They keep their own ground and their cast shadow, so they
+   still read as cards stacking; only the pinning goes. Relative, not
+   static, or the pinned hero would paint over them. */
+
+@media (min-width: 900px) {
+  /* Superseded: tall cards now pin their bottom edge instead of opting
+     out of pinning altogether. See 'every section is a card' below. */
+
+  /* The portrait still pins inside the card while the story scrolls past
+     it, which is the behaviour the client asked for and the reason the
+     text column carries the facts at all. */
+  .stack .split-shot {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+}
+
+/* The plate loses its label; the typed line says what it is. */
+.hero-chip {
+  padding-block: var(--space-xs);
+}
+
+/* ---------------------- the closing panel, to the client's reference
+
+   The reference sets one long first-person line at display size with the
+   discipline alone beneath it. A sixty-six character sentence needs a
+   wider measure than a four-word title did, so this panel gets one. */
+
+/* The reference runs its line across the page and centres it; ours was
+   boxed into a 46rem column on the left, which is why it read as another
+   section rather than the finish. Every other panel on the site anchors
+   its type to the bottom-left corner. This one deliberately does not. */
+/* Centred was right when the frame had nobody in it. This photograph
+   puts the climber at 62 to 74 percent of the width, so the words move
+   to the lower left and stop before he starts: the copy column caps at
+   46rem, which is 60 percent of the site column, and the block sits on
+   the panel's bottom inset like every other cover on the site. */
+.panel[data-size="closer"] {
+  place-items: end start;
+  text-align: left;
+  padding-bottom: clamp(3rem, 8vh, 6rem);
+}
+
+.panel[data-size="closer"] .panel-body {
+  max-width: min(100%, 46rem);
+  justify-items: start;
+  text-align: left;
+}
+
+/* Sized so sixty-six characters land on two lines across the full column,
+   the shape the reference has. Measured: the face advances about 0.53em a
+   character, so two lines need roughly column-width over 17.5. */
+/* The destination sits on its own line, so the first line has to hold
+   forty-five characters unbroken. That needs more room than the wrap's
+   128px inset leaves, so this panel takes the full content box and a
+   narrower gutter, and the type is sized against what is left:
+   45 chars x 0.53em, so the cap has to stay under content-width / 23.9.
+   At 1280 that is 48px and at 1900 it is 71px; 4.2rem and 3.5vw sit
+   comfortably under both. */
+.panel[data-size="closer"] {
+  padding-inline: clamp(1.5rem, 5vw, 6rem);
+}
+
+.panel[data-size="closer"] .panel-body {
+  width: 100%;
+  max-width: none;
+}
+
+.panel[data-size="closer"] h2 {
+  font-size: clamp(1.55rem, 3.1vw, 3.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: nowrap;
+}
+
+/* display: table shrink-wraps to the words and still breaks the line, so
+   the stroke below spans the phrase and not the column. */
+.panel[data-size="closer"] h2 .mark-draw {
+  display: table;
+  position: relative;
+  margin: 0.1em auto 0 0;
+  color: oklch(82% 0.115 245);
+  text-wrap: nowrap;
+}
+
+.draw-line {
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  bottom: -0.30em;
+  width: calc(100% + 0.12em);
+  height: 0.34em;
+  overflow: visible;
+}
+
+/* Drawn by default and undrawn only once the script has confirmed it is
+   running, the same rule the reveal animations follow: a blocked or
+   broken script can never leave the stroke invisible. pathLength=1 makes
+   the dash maths independent of how long the path actually is. */
+.js .draw-line path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.mark-draw[data-drawn="true"] .draw-line path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.61, 0.36, 1) 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-line path {
+    stroke-dashoffset: 0;
+  }
+
+  .mark-draw[data-drawn="true"] .draw-line path {
+    transition: none;
+  }
+}
+
+/* On a phone the first line cannot hold forty-five characters at any
+   readable size, so it wraps and the phrase still takes its own line. */
+@media (max-width: 700px) {
+  .panel[data-size="closer"] h2 {
+    text-wrap: balance;
+  }
+}
+
+.panel[data-size="closer"] .sub {
+  font-family: var(--font-caption);
+  margin-inline: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-top: var(--space-xs);
+  color: oklch(100% 0 0 / 0.86);
+}
+
+/* ==================== every section is a card, and tall cards still work
+
+   The client wants the whole homepage stacking, not just the first two.
+   The blocker was that a card pinned at top:0 which is taller than the
+   viewport stops moving the moment its top hits zero, so its own foot can
+   never be scrolled to. That is what swallowed the Born / Mentored by
+   rows.
+
+   Pinning the bottom edge instead solves it. A card scrolls normally
+   until its last screenful is in view, then holds there while the next
+   card rises over it. Everything above was read on the way past, and a
+   card exactly one viewport tall behaves the same as it did before. */
+
+@media (min-width: 900px) {
+  /* Relative is the floor, not the effect: without JavaScript every card
+     scrolls normally and nothing is unreachable. The script promotes each
+     one to sticky and gives it the offset it needs, because a card taller
+     than the viewport has to pin at a NEGATIVE top to hold its last
+     screenful, and that value is the element's own height, which CSS
+     cannot read. `bottom: 0` is not the answer: it pins on the way up,
+     not the way down. Measured before this line: at 1500px of scroll a
+     bottom-pinned card had already travelled to -780. */
+  .stack > * {
+    position: relative;
+    min-height: 100svh;
+  }
+
+  /* Later cards paint over earlier ones. Sibling order already does this,
+     but the stack now mixes image panels and painted grounds, so the
+     order is written down rather than inferred. */
+  .stack > :nth-child(1) { z-index: 1; }
+  .stack > :nth-child(2) { z-index: 2; }
+  .stack > :nth-child(3) { z-index: 3; }
+  .stack > :nth-child(4) { z-index: 4; }
+  .stack > :nth-child(5) { z-index: 5; }
+  .stack > :nth-child(6) { z-index: 6; }
+  .stack > :nth-child(7) { z-index: 7; }
+
+  /* Each card needs an opaque ground or the one beneath shows through. */
+  /* The last card is a footer plate, not a fold. Holding it to a full
+     viewport left a screenful of nothing between the marks and the site
+     footer, so it is only as tall as what it carries. */
+  .stack > .backing {
+    background: var(--color-paper-2);
+    display: block;
+    min-height: 0;
+  }
+
+  /* The footer is not a card; without a stacking order of its own the
+     pinned cards would paint over it. */
+  .site-footer,
+  footer {
+    position: relative;
+    z-index: 10;
+  }
+}
+
+/* ==================== the way through to Media
+
+   The client's reference leans a pair of skis across the page at a steep
+   angle. Four photographs do the same job here: one lean, stepped down
+   the page, so the group reads as skis stood against a wall rather than a
+   row of thumbnails. The frames are decorative duplicates of the button
+   beside them, so they are out of the tab order and hidden from readers
+   who are being read to; the button is the real way through. */
+
+.media-strip {
+  background: var(--color-paper);
+  padding-block: var(--space-3xl);
+  overflow: hidden;
+}
+
+.media-strip-inner {
+  display: grid;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .media-strip-inner {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: var(--space-3xl);
+  }
+}
+
+.media-say {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-md);
+}
+
+.media-say h2 {
+  font-size: var(--text-3xl);
+  margin-top: var(--space-2xs);
+}
+
+.media-say p {
+  color: var(--color-ink-body);
+  max-width: 34ch;
+}
+
+.media-lean {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(0.6rem, 1.8vw, 1.6rem);
+  /* The lean needs headroom or the tips clip against the section edge. */
+  padding-block: var(--space-2xl);
+}
+
+.ski-def {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.frame {
+  --i: 0;
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 12.5rem;
+  /* A ski, not a photo frame: long, narrow, pointed at the tip. The
+     proportion is as slim as the photographs will carry; past this the
+     subject is a sliver and the section stops being about photographs. */
+  aspect-ratio: 1 / 2.9;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  clip-path: url(#ski);
+  /* One lean for all four, stepped down the page so the set rises. */
+  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem));
+  transition: transform 420ms var(--ease-out), filter 420ms var(--ease-out);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* clip-path cuts a box shadow off with the shape, so the lift is carried
+   by a drop-shadow filter on the frame instead. */
+.frame {
+  filter: drop-shadow(0 16px 30px oklch(20% 0.03 255 / 0.22));
+}
+
+.frame:hover {
+  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem - 1.2rem));
+  filter: drop-shadow(0 26px 44px oklch(20% 0.03 255 / 0.3));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame {
+    transition: none;
+  }
+}
+
+/* Below the split the lean flattens: four tipped frames in a phone's
+   width leaves each one too narrow to read as a photograph. */
+@media (max-width: 899px) {
+  .media-lean {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
+    padding-block: 0;
+  }
+
+  /* On a phone the skis flatten back to photographs: four tipped slivers
+     in 390px is a pattern, not a picture. */
+  .frame {
+    max-width: none;
+    aspect-ratio: 3 / 4;
+    clip-path: none;
+    transform: none;
+    filter: none;
+  }
+
+  .frame:hover {
+    transform: none;
+  }
+}
+
+@media (min-width: 900px) {
+  .stack > .media-strip {
+    display: grid;
+    align-content: center;
+  }
+}
+
+/* ---------------------- the note that closes the story column
+
+   Not a quote: these are the site's words about what she is trying to do,
+   not hers, so it takes a marked plate rather than quotation marks. An
+   accent rule down the left, a tint the ice ground can carry, and body
+   type a step up from the paragraphs above it. */
+
+.split-note {
+  margin: var(--space-sm) 0 0;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-sm);
+  border-left: 3px solid var(--color-accent);
+  background: oklch(94% 0.018 245 / 0.55);
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 0.35vw + 1rem, 1.32rem);
+  line-height: 1.5;
+  color: var(--color-ink);
+  max-width: 46ch;
+}
+
+/* The rule above the facts was doing the separating; the plate does it
+   now, so the facts sit closer to it. */
+.split-body .split-note + .facts {
+  margin-top: var(--space-lg);
+}
+
+/* ---------------------- the road, staged
+
+   The client's order, and it matters: every dot she will stand on comes
+   up first, and La Clusaz arrives last, on its own. Five stages on one
+   attribute, each one waiting for the last to finish rather than racing
+   it, because the first pass had the destination land while the lines
+   were still drawing and it read as noise.
+
+     pins   her fourteen venues, in racing order
+     plan   the three stops before the Games
+     lines  every one of them running to the Alps
+     dest   La Clusaz, alone
+     rest   everything else steps back
+
+   Grouped fades, not per-element: the pins and lines overlap around La
+   Clusaz, and fading them one by one composites back to solid, which was
+   the clutter the client pointed at. */
+
+/* Hollow, because she has not raced these yet. */
+.plan-pin {
+  fill: var(--color-paper-2);
+  stroke: var(--color-accent);
+  stroke-width: 0.7;
+}
+
+.plan-label {
+  font-weight: 600;
+  fill: var(--color-ink);
+}
+
+/* Her record running to the Alps: thin, so fourteen of them read as a
+   convergence rather than a web. Without fill:none an SVG path fills
+   itself, and these came out as black wedges across the map. */
+.route-arc {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.34;
+  stroke-linecap: round;
+  opacity: 0.42;
+}
+
+/* The three stops before the Games: heavier, because they are the road. */
+.road-arc {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.5;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+
+/* Everything after the pins starts hidden and arrives on cue. */
+.js .route-map .plan-pin,
+.js .route-map .plan-label,
+.js .route-map .dest-halo,
+.js .route-map .dest-dot,
+.js .route-map .dest-lead,
+.js .route-map .dest-label {
+  opacity: 0;
+  transition: opacity 800ms var(--ease-out);
+}
+
+.js .route-arc,
+.js .road-arc {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+/* plan */
+.route-map:is([data-stage="plan"], [data-stage="lines"], [data-stage="dest"],
+  [data-stage="rest"]) :is(.plan-pin, .plan-label) {
+  opacity: 1;
+}
+
+.route-map[data-stage="plan"] .plan-pin[data-step="1"],
+.route-map[data-stage="plan"] .plan-label[data-step="1"] {
+  transition-delay: 200ms;
+}
+
+.route-map[data-stage="plan"] .plan-pin[data-step="2"],
+.route-map[data-stage="plan"] .plan-label[data-step="2"] {
+  transition-delay: 400ms;
+}
+
+/* lines */
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  :is(.route-arc, .road-arc) {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  .road-arc[data-step="1"] {
+  transition-delay: 160ms;
+}
+
+.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
+  .road-arc[data-step="2"] {
+  transition-delay: 320ms;
+}
+
+/* dest */
+.route-map:is([data-stage="dest"], [data-stage="rest"])
+  :is(.dest-dot, .dest-lead, .dest-label) {
+  opacity: 1;
+}
+
+.route-map:is([data-stage="dest"], [data-stage="rest"]) .dest-halo {
+  opacity: 0.55;
+}
+
+/* rest */
+.route-map .past,
+.route-map .past-lines,
+.route-map .plan {
+  transition: opacity 900ms var(--ease-out);
+}
+
+.route-map[data-stage="rest"] .past {
+  opacity: 0.26;
+}
+
+.route-map[data-stage="rest"] .past-lines {
+  opacity: 0.3;
+}
+
+.route-map[data-stage="rest"] .plan {
+  opacity: 0.45;
+}
+
+.dest-halo {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 0.6;
+}
+
+/* Her European venues sit directly under La Clusaz, so even faded they
+   touch it. A paper-coloured ring cuts the destination out of them. */
+.dest-dot {
+  fill: var(--color-accent);
+  stroke: var(--color-paper-2);
+  stroke-width: 0.9;
+}
+
+.dest-lead {
+  stroke: var(--color-ink-3);
+  stroke-width: 0.28;
+  fill: none;
+}
+
+.dest-label {
+  font-family: var(--font-caption);
+  font-size: 3.1px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  fill: var(--color-ink);
+}
+
+/* The map sits inside the road section, so it needs its own air. */
+#road .route-map {
+  margin-block: var(--space-lg) 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .route-arc,
+  .js .road-arc {
+    stroke-dashoffset: 0;
+  }
+
+  .js .route-map :is(.plan-pin, .plan-label, .dest-dot, .dest-lead,
+    .dest-label) {
+    opacity: 1;
+  }
+
+  .js .route-map .dest-halo {
+    opacity: 0.55;
+  }
+
+  .route-map :is(.past, .past-lines, .plan, .route-arc, text) {
+    transition: none;
+  }
+}
+
+/* ---------------------- the record, with photographs either side
+
+   The client's reference runs its story down a centre column with photos
+   held in the margins, arriving as you scroll. The same here, with two
+   rules: the rails only exist where there is genuine margin to put them
+   in, and they carry nothing the tables do not, so they are hidden from
+   screen readers and out of the tab order. */
+
+.rail {
+  display: none;
+}
+
+@media (min-width: 1240px) {
+  .rail-layout {
+    display: grid;
+    /* 62rem down the middle left the rails at 207px, which is a thumbnail
+       rather than a photograph. The tables do not need that width. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 54rem) minmax(0, 1fr);
+    /* Stretch, so the rails can spread their frames down the whole run of
+       the tables instead of bunching at the top. */
+    align-items: stretch;
+    column-gap: var(--space-lg);
+  }
+
+  /* Spread across the whole run of the tables left gaps the length of a
+     screen between frames. They follow each other now: one arrives, the
+     next is already on its way in. */
+  .rail {
+    display: grid;
+    align-content: start;
+    gap: var(--space-lg);
+    padding-block: var(--space-xl);
+  }
+
+  .rail-left {
+    justify-items: end;
+  }
+
+  .rail-right {
+    justify-items: start;
+  }
+
+  /* Staggered, so the two sides do not read as a pair of columns. */
+  .rail-right {
+    padding-top: calc(var(--space-xl) + 9rem);
+  }
+
+  .rail-shot {
+    margin: 0;
+    width: min(100%, 19rem);
+  }
+
+
+
+  .rail-shot img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* The sections inside keep their own wrap; it just fills the middle
+     column now instead of centring against the viewport. */
+  .rail-main .wrap {
+    width: 100%;
+  }
+}
+
+/* ---------------------- section labels take the lockup face
+
+   The client liked the cross-country skiing lockup and asked for it on
+   the headings. Applied by what a heading is, not where it sits: a short
+   noun phrase that NAMES a block of the page gets it, and a heading you
+   read as a sentence does not. Wide tracking at light weight is a label
+   treatment; it works on two words the eye takes in as one shape and it
+   pulls a sentence apart.
+
+   So this covers the section labels, which all live in .prose or carry
+   their own class. It deliberately does not cover the story beats on
+   Journey, which are chapter titles inside .step-copy, or the medal
+   table headers, which carry a count. */
+
+.prose > h2,
+.media-say h2,
+.backing-head {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.1vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+/* The Journey heading is six words rather than two, so it takes a step
+   down to hold two lines rather than four. */
+#road .prose > h2 {
+  font-size: clamp(1.15rem, 1.8vw, 1.85rem);
+  max-width: 22ch;
+}
+
+/* ---------------------- what she speaks to
+
+   The client's reference runs six one-word cards down its speaking page,
+   each with a paragraph. Six here too, but the paragraph is a sentence or
+   two: they asked for simple words, not a wall. The numeral is the only
+   ornament, set large and faint the way the sport formats row does it, so
+   the cards have structure without needing six photographs the archive
+   would have to stretch to supply. */
+
+.skills {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+@media (min-width: 900px) {
+  .skills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-xl) var(--space-lg);
+  }
+}
+
+.skill {
+  position: relative;
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-sm);
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+}
+
+.skill-n {
+  position: absolute;
+  top: var(--space-xs);
+  right: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-accent);
+  opacity: 0.14;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.skill h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.skill p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.55;
+  color: var(--color-ink-body);
+  max-width: 32ch;
+}
+
+/* ---------------------- partnership: the three, and what she is open to */
+
+/* On the homepage the marks stand alone in a row. Here each one carries
+   the line saying what that support actually is, so they stack. */
+.backers-stack {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .backers-stack {
+    gap: var(--space-xl);
+  }
+}
+
+.backer-row {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+  text-align: left;
+  padding: 0;
+  background: none;
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .backer-row {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+  }
+}
+
+.backer-row .backer-mark {
+  height: 3.4rem;
+  justify-content: flex-start;
+}
+
+.backer-row .backer-mark img {
+  max-width: 11rem;
+}
+
+.backer-row h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.backer-row p {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+  margin-top: var(--space-3xs);
+  max-width: 52ch;
+}
+
+/* ---------------------- speaking cards carry a frame
+
+   The reference puts a photograph on every skill card. Six here, one a
+   card, each chosen against what the card actually says: her in a tuck
+   for resilience, a floodlit trail for endurance, the flag at Harbin for
+   representation, a roped line of climbers for the apprenticeship, a
+   group on their skis for persuasion, and a set of cut tracks running
+   away for pathways. All owned-rights, filtered at build time. */
+
+.skill {
+  overflow: hidden;
+}
+
+.skill-shot {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  margin-bottom: var(--space-sm);
+}
+
+.skill-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-out);
+}
+
+.skill:hover .skill-shot img {
+  transform: scale(1.04);
+}
+
+/* The numeral moves off the photograph and onto the rule above it. */
+.skill-n {
+  top: calc(-1 * var(--space-sm));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-shot img {
+    transition: none;
+  }
+}
+
+
+/* ---------------------- what support funds, as a mosaic
+
+   The client's reference lays its proof out as a bento of mixed tiles:
+   pale plates carrying type, photographic ones carrying none, and one
+   tall frame with its text over the picture. Same here.
+
+   Columns rather than a grid, because the tiles are genuinely different
+   heights and a grid would either stretch them or leave holes. The
+   photo-only tiles are texture: they say nothing the type tiles do not,
+   so they are hidden from screen readers. */
+
+.funds {
+  margin-top: var(--space-lg);
+  columns: 1;
+  column-gap: var(--space-md);
+}
+
+@media (min-width: 700px) {
+  .funds {
+    columns: 2;
+  }
+}
+
+@media (min-width: 1040px) {
+  .funds {
+    columns: 3;
+  }
+}
+
+.fund {
+  break-inside: avoid;
+  margin: 0 0 var(--space-md);
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+  position: relative;
+  background: var(--color-paper-2);
+  padding: var(--space-md);
+}
+
+.fund-n {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-accent);
+  opacity: 0.16;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.fund h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  max-width: 15ch;
+}
+
+.fund p {
+  font-family: var(--font-body);
+  font-size: clamp(0.98rem, 0.2vw + 0.92rem, 1.06rem);
+  line-height: 1.55;
+  color: var(--color-ink-body);
+}
+
+/* The tall one: its type sits on the photograph, so the photograph has
+   to give it a ground. */
+.fund-shot {
+  min-height: clamp(20rem, 34vw, 27rem);
+  align-content: end;
+  padding: var(--space-lg);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--color-ink-on-deep);
+}
+
+.fund-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+}
+
+.fund-img img,
+.fund-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Twenty-one words in a narrow column reach well up the tile, so the
+   grade has to carry further than a caption's would. */
+.fund-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.9) 0%,
+    rgba(3, 9, 20, 0.78) 40%,
+    rgba(3, 9, 20, 0.54) 70%,
+    rgba(3, 9, 20, 0.38) 100%
+  );
+}
+
+.fund-shot .fund-n {
+  color: oklch(82% 0.115 245);
+  opacity: 0.5;
+}
+
+.fund-shot h3 {
+  color: oklch(82% 0.115 245);
+}
+
+.fund-shot p {
+  color: oklch(97% 0.006 250);
+}
+
+/* Texture only. No type, no padding, and nothing to announce.
+
+   Block, not the grid .fund sets, and the image pinned to the box. As a
+   grid item the image's height:100% had no definite height to resolve
+   against, so object-fit had nothing to crop to and the plate rendered
+   the whole portrait frame: all sky, the group along the bottom edge.
+   Absolute inside a relative box gives it a real one. */
+.fund-plate {
+  padding: 0;
+  background: var(--color-paper-2);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+.fund-plate img {
+  position: absolute;
+  inset: 0;
+}
+
+.fund-plate:nth-of-type(even) {
+  aspect-ratio: 3 / 4;
+}
+
+/* ---------------------- partnership: the three, and what she is open to */
+
+/* On the homepage the marks stand alone in a row. Here each one carries
+   the line saying what that support actually is, so they stack. */
+.backers-stack {
+  display: grid;
+  gap: var(--space-lg);
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 760px) {
+  .backers-stack {
+    gap: var(--space-xl);
+  }
+}
+
+.backer-row {
+  display: grid;
+  gap: var(--space-sm);
+  justify-items: start;
+  text-align: left;
+  padding: 0;
+  background: none;
+  border-top: var(--rule-hair) solid var(--color-line);
+  padding-top: var(--space-md);
+}
+
+@media (min-width: 640px) {
+  .backer-row {
+    grid-template-columns: 12rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+  }
+}
+
+.backer-row .backer-mark {
+  height: 3.4rem;
+  justify-content: flex-start;
+}
+
+.backer-row .backer-mark img {
+  max-width: 11rem;
+}
+
+.backer-row h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.backer-row p {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+  margin-top: var(--space-3xs);
+  max-width: 52ch;
+}
+
+/* ---------------------- speaking cards carry a frame
+
+   The reference puts a photograph on every skill card. Six here, one a
+   card, each chosen against what the card actually says: her in a tuck
+   for resilience, a floodlit trail for endurance, the flag at Harbin for
+   representation, a roped line of climbers for the apprenticeship, a
+   group on their skis for persuasion, and a set of cut tracks running
+   away for pathways. All owned-rights, filtered at build time. */
+
+.skill {
+  overflow: hidden;
+}
+
+.skill-shot {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  margin-bottom: var(--space-sm);
+}
+
+.skill-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-out);
+}
+
+.skill:hover .skill-shot img {
+  transform: scale(1.04);
+}
+
+/* The numeral moves off the photograph and onto the rule above it. */
+.skill-n {
+  top: calc(-1 * var(--space-sm));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-shot img {
+    transition: none;
+  }
+}
+
+
+
+
+
+/* The grade follows the words: dark at the left where they sit, clear on
+   the right where he stands. */
+.panel[data-size="closer"] .panel-shot::after {
+  background:
+    linear-gradient(
+      95deg,
+      rgba(3, 9, 20, 0.72) 0%,
+      rgba(3, 9, 20, 0.56) 26%,
+      rgba(3, 9, 20, 0.3) 50%,
+      rgba(3, 9, 20, 0.1) 70%,
+      rgba(3, 9, 20, 0.18) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.5) 0%,
+      rgba(3, 9, 20, 0.12) 34%,
+      rgba(3, 9, 20, 0) 62%
+    );
+}
+
+@media (max-width: 700px) {
+  .panel[data-size="closer"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.84) 0%,
+      rgba(3, 9, 20, 0.6) 30%,
+      rgba(3, 9, 20, 0.22) 58%,
+      rgba(3, 9, 20, 0.3) 100%
+    );
+  }
+}
+
+/* ==================== speaking, to the client's reference
+
+   That page opens with an outlined phrase over a solid one, then runs
+   photographic cards in two staggered columns with the word set over the
+   frame in accent. Both borrowed here. What is not borrowed is the
+   density: their cards carry sixty to ninety words, hers carry twenty. */
+
+/* The statement band, in the site's own registers.
+
+   The first pass drew the phrase in outlined type because the client's
+   reference does. Nothing else here is outlined, so it read as borrowed.
+   This is the shape the homepage hero already uses for a two-part
+   statement: a tracked-out overline with a drawn accent rule, then the
+   line itself in the heavy display weight. Same two registers the rest
+   of the site runs on, no sixth one invented for one band. */
+.statement-band {
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+
+.head-stack {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-sm);
+  margin: 0;
+}
+
+.head-out {
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+  font-family: var(--font-caption);
+  font-size: clamp(0.72rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.36em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+}
+
+.head-out::before {
+  content: "";
+  width: clamp(1.6rem, 4vw, 3.2rem);
+  height: 2px;
+  background: var(--color-accent);
+  flex: none;
+}
+
+.head-in {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4.2vw, 3.7rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--color-ink);
+  max-width: 19ch;
+}
+
+.head-in i {
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+/* Two columns, the right one dropped, so the set reads as a mosaic
+   rather than a table. */
+.says {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .says {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .says > :nth-child(even) {
+    margin-top: var(--space-3xl);
+  }
+
+  /* The stagger would leave a hole at the foot of the left column, so
+     the columns pull back level at the end. */
+  .says > :nth-child(odd):last-child {
+    margin-bottom: var(--space-3xl);
+  }
+}
+
+.say {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: end;
+  min-height: clamp(22rem, 44vw, 33rem);
+  padding: var(--space-lg);
+  overflow: hidden;
+  color: var(--color-ink-on-deep);
+}
+
+.say-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+}
+
+.say-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 900ms var(--ease-out);
+}
+
+/* The word and the sentence sit on the photograph, so the photograph has
+   to give them a ground to sit on. */
+.say::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.86) 0%,
+    rgba(3, 9, 20, 0.66) 34%,
+    rgba(3, 9, 20, 0.28) 62%,
+    rgba(3, 9, 20, 0.14) 100%
+  );
+}
+
+.say:hover .say-shot img {
+  transform: scale(1.04);
+}
+
+.say-body {
+  display: grid;
+  gap: var(--space-2xs);
+  max-width: 40ch;
+}
+
+.say h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: oklch(82% 0.115 245);
+}
+
+.say p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.55;
+  color: oklch(97% 0.006 250);
+}
+
+.say-for {
+  color: oklch(100% 0 0 / 0.72);
+  letter-spacing: 0.16em;
+  margin-top: var(--space-2xs);
+  padding-top: var(--space-2xs);
+  border-top: 1px solid oklch(100% 0 0 / 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .say-shot img {
+    transition: none;
+  }
+}
+
+.book-body {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-lg);
+  max-width: 52ch;
+}
+
+/* ---------------------- the bar goes to the page edges
+
+   The client's reference sets the name hard left and the link row hard
+   right, with the whole width between them. Ours were both inset by the
+   content column, about 105px a side at 1440, which read as a centred
+   block rather than a bar.
+
+   The bar gets its own measure now: a narrow gutter instead of the
+   column's. That also buys back roughly 140px of row, which is what the
+   900-to-1280 tightening was there to find, so the links can hold their
+   size further down. */
+
+.nav .nav-inner {
+  width: min(100% - 2 * clamp(1.25rem, 2.4vw, 3rem), 120rem);
+}
+
+@media (min-width: 900px) {
+  .nav .nav-inner {
+    width: min(100% - 2 * clamp(1.25rem, 2.4vw, 3rem), 120rem);
+  }
+}
+
+/* With the extra width the row no longer needs squeezing until 1080. */
+@media (min-width: 1081px) and (max-width: 1280px) {
+  .nav-links {
+    gap: var(--space-md);
+  }
+
+  .nav-links a {
+    font-size: 0.84rem;
+    letter-spacing: 0.1em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.7rem 1.3rem;
+  }
+}
+
+/* The tiles were inside .prose, which caps at 62ch for reading comfort.
+   That is right for a paragraph and wrong for a mosaic: it left three
+   columns about 220px wide, which reads as elongated rather than spaced
+   across the page. The mosaic now sits outside that measure and holds
+   two columns until there is genuinely room for three. */
+.funds {
+  columns: 1;
+}
+
+@media (min-width: 640px) {
+  .funds {
+    columns: 2;
+    column-gap: var(--space-lg);
+  }
+}
+
+@media (min-width: 1240px) {
+  .funds {
+    columns: 3;
+    column-gap: var(--space-lg);
+  }
+}
+
+.fund {
+  margin-bottom: var(--space-lg);
+}
+
+/* The bar: the link row sits hard right, the way the reference does it.
+   Without this the row was ending 117px short of the gutter the wordmark
+   was using. */
+.nav .nav-inner {
+  justify-content: space-between;
+}
+
+.nav .nav-links {
+  margin-right: 0;
+}
+
+/* ---------------------- open to, in the same tile language
+
+   The client asked for these to read like the funded areas, only
+   simpler. Same pale plate, same numeral, same label face, and no body
+   at all: each of the five is a two-word category and needs no more.
+   The numeral comes from a counter, so the markup stays a plain list.
+   No body at all: each of the five is a two-word category. */
+
+.open-tiles {
+  list-style: none;
+  counter-reset: opt;
+  margin: var(--space-lg) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+}
+
+/* Five pale plates in a row read as a form field, not a page about
+   working with an athlete. Each carries a frame chosen against its own
+   category, with the label over it, which is the language the sport
+   cards and the funded tiles already use. */
+.open-tiles li {
+  counter-increment: opt;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-paper-2);
+  padding: var(--space-md);
+  min-height: clamp(9rem, 14vw, 12rem);
+  display: grid;
+  align-content: end;
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.opt-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+}
+
+.opt-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 700ms var(--ease-out);
+}
+
+.open-tiles li.opt-shot-tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.9) 0%,
+    rgba(3, 9, 20, 0.68) 40%,
+    rgba(3, 9, 20, 0.36) 72%,
+    rgba(3, 9, 20, 0.24) 100%
+  );
+}
+
+.open-tiles li.opt-shot-tile {
+  color: var(--color-ink-on-deep);
+}
+
+.open-tiles li.opt-shot-tile:hover .opt-shot img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opt-shot img {
+    transition: none;
+  }
+}
+
+.open-tiles li::before {
+  content: counter(opt, decimal-leading-zero);
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  text-indent: 0;
+  color: var(--color-accent);
+  opacity: 0.16;
+  font-variant-numeric: tabular-nums;
+}
+
+.open-tiles li.opt-shot-tile::before {
+  color: oklch(88% 0.09 245);
+  opacity: 0.85;
+}
+
+/* ---------------------- touch targets
+
+   Audited across nine pages at 390, 768 and 1024. No horizontal scroll
+   anywhere and no clickable text wrapping to two lines, but a set of
+   text links sit at their own line height: the wordmark at 26px, the
+   Home crumb and the footer links at 19px, Partnership options at 14px,
+   Full record at 25px above the 700px breakpoint that was padding it.
+
+   A finger is not a cursor. On a coarse pointer these take enough
+   padding to clear 44px, which changes nothing on a mouse. */
+
+@media (pointer: coarse) {
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .crumb,
+  .foot-links a,
+  .backing-more a,
+  .hero-record,
+  .split-body .btn,
+  .prose > p > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The record link is padded below 700 already; this carries it up
+     through tablet widths, where a finger is still the pointer. */
+  .hero-record {
+    padding-block: 0.7rem;
+  }
+}

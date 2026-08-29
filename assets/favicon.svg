@@ -1,8 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#06090f"/>
-  <!-- The two classic grooves, opening the way they do on the rail. -->
-  <path d="M16 4 V13 L11 17 V28" fill="none" stroke="#9dccf3" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
-  <path d="M16 4 V13 L21 17 V28" fill="none" stroke="#9dccf3" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
-  <path d="M11 20 V26" fill="none" stroke="#d7f25e" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M21 17 V23" fill="none" stroke="#d7f25e" stroke-width="2.5" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Interim monogram: her initials on the site's navy, the accent blue as
+       the counter-stroke. Replaced by her vectorised signature the day she
+       supplies it on paper; the head links here so only this file changes. -->
+  <rect width="64" height="64" rx="8" fill="#131c2e"/>
+  <text x="32" y="42" font-family="Archivo, Arial, sans-serif" font-size="28"
+        font-weight="800" text-anchor="middle" fill="#f7f9fc"
+        letter-spacing="1">B<tspan fill="#2f6fdb">T</tspan></text>
 </svg>
