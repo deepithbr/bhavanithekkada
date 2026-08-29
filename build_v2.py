@@ -1318,10 +1318,15 @@ def partnership_page(c, img):
     return subpage(c, img, "Partnership",
                    "What support pays for, and who backs her now.",
                    body, shot="holmenkollen", current="partnership.html",
-                   # Portrait source in a wide banner shows about a fifth
-                   # of its height, so the anchor sits on her rather than
-                   # on the stadium above her.
-                   pos="52% 38%", og="partnership")
+                   # Measured against the frame rather than guessed. The
+                   # banner shows a 14% band of a portrait source, and
+                   # with object-position p the band starts at 0.858p. Her
+                   # head top is at 38%, shoulders 45%, the INDIA wordmark
+                   # 52%. An anchor of 38% put the band ON her head and
+                   # showed nothing else; 44% starts it at 0.377, so her
+                   # head sits at the top edge and the band runs down her
+                   # back to the wordmark.
+                   pos="52% 44%", og="partnership")
 
 
 def enquiry_block(c, heading="Work with Bhavani") -> str:
