@@ -1520,19 +1520,20 @@ def speaking_page(c, img):
         for t in sp.get("skills", [])
         if (img.get(t.get("image")) or {}).get("rights") == "owned"
     )
-    # The reference's outlined phrase over a solid one, as a band of its
-    # own between the header and the cards rather than inside the header.
-    # Hers is the distance, which is the reason anyone books her: no snow
-    # where she is from, a World Cup start line at the other end.
+    # The band sits between the header and the cards, so its job is to set
+    # the cards up. The first pass restated her journey, which the
+    # homepage hero already says and which tells a booker nothing about
+    # what they are buying. This names the trade instead: her decade, and
+    # what it is worth to the room she is standing in.
     inv = sp.get("invite") or {}
     formats = "".join(f'<li>{e(x)}</li>' for x in inv.get("formats", []))
     body = f"""
 <section class="statement-band">
   <div class="wrap">
     <p class="head-stack" data-rise>
-      <span class="head-out">From no snow to</span>
-      <span class="head-in">A World Cup start line<i
-        aria-hidden="true">.</i></span></p>
+      <span class="head-out">What she brings</span>
+      <span class="head-in">Six things a decade on snow is worth to a
+        room<i aria-hidden="true">.</i></span></p>
   </div>
 </section>
 <section class="prose-fold">
