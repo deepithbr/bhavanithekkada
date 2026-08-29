@@ -770,7 +770,7 @@ def page(c: dict, img: Img) -> str:
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
-       ('Partner with me', 'partnership.html'), pos='50% 46%',
+       ('View journey', 'journey.html'), pos='50% 46%',
        size='closer')}
 {backing(c)}
 </div>
