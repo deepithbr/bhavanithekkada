@@ -347,6 +347,7 @@ def hero_panel(c, img) -> str:
   <div class="wrap panel-body hero-min" data-rise>
     <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
       <span class="stagger">Thekkada</span></h1>
+    <div class="hero-chip">
     <p class="caption hero-tag">Indian cross-country skier</p>
     <p class="hero-cred" aria-live="off">
       <span data-on="true">Three World Cup starts</span>
@@ -354,6 +355,7 @@ def hero_panel(c, img) -> str:
       <span data-on="false">Asian Winter Games flagbearer</span>
       <span data-on="false">Twenty national medals</span>
     </p>
+    </div>
   </div>
 </section>"""
 

@@ -3502,3 +3502,27 @@ a {
     transition: none;
   }
 }
+
+
+/* The lower-third chip: the quote card's language translated for sitting
+   on a photograph. Frosted dark plate, accent bar, tagline over the
+   rotating credential. */
+.hero-chip {
+  display: inline-grid;
+  gap: var(--space-2xs);
+  justify-self: start;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(4, 12, 25, 0.48);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-left: 3px solid var(--color-accent);
+}
+
+.panel[data-size="hero"] .hero-chip .hero-tag {
+  margin-top: 0;
+}
+
+.hero-chip .hero-cred span {
+  text-shadow: none;
+}
