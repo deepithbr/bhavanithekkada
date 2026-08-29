@@ -505,6 +505,8 @@ def who_she_is(c, img) -> str:
     <p>{e(h['profileBody'])}</p>
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
+    {f'<p class="split-note">{e(h["profileMission"])}</p>'
+     if h.get('profileMission') else ''}
     <dl class="facts">{facts}</dl>
   </div>
 </section>"""

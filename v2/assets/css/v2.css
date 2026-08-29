@@ -4826,3 +4826,28 @@ body {
     align-content: center;
   }
 }
+
+/* ---------------------- the note that closes the story column
+
+   Not a quote: these are the site's words about what she is trying to do,
+   not hers, so it takes a marked plate rather than quotation marks. An
+   accent rule down the left, a tint the ice ground can carry, and body
+   type a step up from the paragraphs above it. */
+
+.split-note {
+  margin: var(--space-sm) 0 0;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-sm);
+  border-left: 3px solid var(--color-accent);
+  background: oklch(94% 0.018 245 / 0.55);
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 0.35vw + 1rem, 1.32rem);
+  line-height: 1.5;
+  color: var(--color-ink);
+  max-width: 46ch;
+}
+
+/* The rule above the facts was doing the separating; the plate does it
+   now, so the facts sit closer to it. */
+.split-body .split-note + .facts {
+  margin-top: var(--space-lg);
+}
