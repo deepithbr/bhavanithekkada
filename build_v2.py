@@ -59,7 +59,7 @@ FONTS = (
 # not a destination of its own; it is where the journey lands.
 # Her eight destinations, 26 Aug: Home is the wordmark, Contact is the
 # pill at the end of the row.
-# Home leaves the row: the BT monogram is the way back, as on the
+# Home leaves the row: her name in the bar is the way back, as on the
 # reference. Contact stays the pill at the row's end.
 NAV = [
     ("Story", "journey.html"),
@@ -218,7 +218,7 @@ def nav_block(current=None, glass=False) -> str:
     return f"""
 <header class="nav" id="nav"{g}>
   <div class="wrap nav-inner">
-    <a class="wordmark wordmark-mono" href="index.html" aria-label="Bhavani Thekkada, home">BT</a>
+    <a class="wordmark wordmark-name" href="index.html">Bhavani Thekkada</a>
     <nav class="nav-links" id="nav-links" aria-label="Primary">{items}</nav>
     <button class="nav-toggle" type="button" aria-expanded="false"
       aria-controls="nav-links">Menu</button>
@@ -332,10 +332,11 @@ HERO_SLIDES = [
 
 
 def hero_panel(c, img) -> str:
-    """The Badosa pattern, at the client's request: one full-bleed
-    photograph end to end, the name staggered across it at display
-    size, and nothing else. The rotation is retired; one superb frame
-    beats three adequate ones."""
+    """The reference composition: her name holds the top-left as the
+    wordmark, and the display slot on the photograph carries the
+    punchline instead. Three short lines, the point of difference in
+    accent, the credential chip beneath. The name is gone from here
+    because it is already the first thing on the page."""
     slot = "hero-race-pro"
     tag = img.tag(slot, "100vw", eager=True)
     tag = tag.replace(
@@ -345,10 +346,9 @@ def hero_panel(c, img) -> str:
 <section class="panel" data-size="hero">
   <div class="panel-shot">{tag}</div>
   <div class="wrap panel-body hero-min" data-rise>
-    <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
-      <span class="stagger">Thekkada</span></h1>
+    <h1 class="hero-punch"><span>Pioneering</span><span><span
+      class="hl">India&rsquo;s</span> path</span><span>on snow</span></h1>
     <div class="hero-chip">
-    <p class="caption hero-tag">Indian cross-country skier</p>
     <p class="hero-cred" aria-live="off">
       <span data-on="true"><b>03</b> World Cup starts</span>
       <span data-on="false"><b>02</b> World Championships</span>
@@ -774,7 +774,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <main id="main">
 <section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
-    <a class="crumb caption" href="index.html">&larr; Bhavani Thekkada</a>
+    <a class="crumb caption" href="index.html">&larr; Home</a>
     <h1>{e(title)}</h1>
     <p class="sub">{e(lede)}</p>
   </div>

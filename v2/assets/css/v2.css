@@ -3578,3 +3578,221 @@ a {
   position: static;
   grid-area: 1 / 1;
 }
+
+
+/* ------------------------------ the name moves to the wordmark (Runciman
+   reference). Her name is the first thing read on every page, set in the
+   V1 display face; the photograph then carries a punchline, not a
+   repeat of the name. */
+
+.wordmark-name {
+  font-family: "Black Rusher", var(--font-display);
+  font-size: clamp(1.15rem, 2.1vw, 1.65rem);
+  font-weight: 400;
+  letter-spacing: 0.015em;
+  text-transform: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Four words, three lines, lower-left. Uppercase grotesk so it never
+   competes with the script wordmark above it. */
+.panel[data-size="hero"] .hero-min .hero-punch {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6.2vw, 5.4rem);
+  font-weight: 800;
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+  color: oklch(99% 0.002 250);
+  text-shadow:
+    0 1px 2px rgba(3, 9, 20, 0.6),
+    0 4px 16px rgba(3, 9, 20, 0.55),
+    0 12px 44px rgba(3, 9, 20, 0.5);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch > span {
+  display: block;
+}
+
+/* The second line steps in, the way the reference steps its middle line. */
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2) {
+  margin-left: clamp(1.5rem, 5vw, 4.5rem);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+  margin-left: clamp(3rem, 10vw, 9rem);
+}
+
+.hero-punch .hl {
+  color: oklch(80% 0.105 245);
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch::after {
+  display: none;
+}
+
+/* The chip sits closer now that the display block is shorter. */
+.panel[data-size="hero"] .hero-chip {
+  margin-top: var(--space-lg);
+}
+
+@media (max-width: 620px) {
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2) {
+    margin-left: 1rem;
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+    margin-left: 2rem;
+  }
+}
+
+/* Below the menu breakpoint the wordmark shares the bar with the toggle;
+   it stays legible rather than large. */
+@media (max-width: 520px) {
+  .wordmark-name {
+    font-size: 1.05rem;
+  }
+}
+
+/* The sitewide h1 span rule turns every span into a block; the accent
+   word inside a line is an exception and stays inline. */
+.panel[data-size="hero"] .panel-body .hero-punch span .hl,
+.panel[data-size="hero"] .panel-body .hero-punch .hl {
+  display: inline;
+}
+
+
+/* ------------------------------------- hero composition, punchline pass
+
+   The reference keeps its copy in the lower-left quadrant, clear of the
+   rider, over a gradient that darkens only that corner. Ours has to do
+   the same or the words run across her. Three moves: drop the block to
+   the lower third, set it flush left inside a narrow measure, and grade
+   the left edge down while she keeps her light. */
+
+.panel[data-size="hero"] {
+  align-content: end;
+  padding-bottom: clamp(3.5rem, 9vh, 6.5rem);
+}
+
+.panel[data-size="hero"] .hero-min {
+  justify-items: start;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch {
+  font-size: clamp(2rem, 4.6vw, 3.9rem);
+  line-height: 0.98;
+  max-width: 13ch;
+}
+
+/* Flush left. The staggered indent pushed the middle line into her body;
+   a clean left edge reads more assured anyway. */
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2),
+.panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+  margin-left: 0;
+}
+
+@media (max-width: 620px) {
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(2),
+  .panel[data-size="hero"] .hero-min .hero-punch > span:nth-child(3) {
+    margin-left: 0;
+  }
+}
+
+/* A corner grade, not a flat veil: dark where the words are, clear where
+   she is, a touch of weight along the foot so the chip has ground. */
+.panel[data-size="hero"] .panel-shot::after {
+  background:
+    linear-gradient(
+      95deg,
+      rgba(3, 9, 20, 0.84) 0%,
+      rgba(3, 9, 20, 0.78) 14%,
+      rgba(3, 9, 20, 0.62) 30%,
+      rgba(3, 9, 20, 0.34) 46%,
+      rgba(3, 9, 20, 0.14) 64%,
+      rgba(3, 9, 20, 0.22) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.55) 0%,
+      rgba(3, 9, 20, 0.12) 34%,
+      rgba(3, 9, 20, 0) 60%
+    );
+}
+
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        95deg,
+        rgba(3, 9, 20, 0.84) 0%,
+        rgba(3, 9, 20, 0.78) 14%,
+        rgba(3, 9, 20, 0.62) 30%,
+        rgba(3, 9, 20, 0.34) 46%,
+        rgba(3, 9, 20, 0.14) 64%,
+        rgba(3, 9, 20, 0.22) 100%
+      ),
+      linear-gradient(
+        to top,
+        rgba(3, 9, 20, 0.55) 0%,
+        rgba(3, 9, 20, 0.12) 34%,
+        rgba(3, 9, 20, 0) 60%
+      );
+  }
+}
+
+/* On the darker ground the chip can lose its frost and simply sit. */
+.hero-chip {
+  background: rgba(6, 16, 32, 0.4);
+}
+
+.panel[data-size="hero"] .hero-chip {
+  margin-top: var(--space-md);
+}
+
+/* ---------------------------- the bar, now that the name sits in it
+
+   Her full name is 167px of wordmark where the monogram was 26. Between
+   the menu breakpoint and 1200 the row no longer fits, so the links
+   tighten rather than the name shrinking away. */
+
+@media (min-width: 900px) and (max-width: 1200px) {
+  .wordmark-name {
+    font-size: 1.05rem;
+  }
+
+  .nav-links {
+    gap: 1.35rem;
+  }
+
+  .nav-links a {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* On a tall phone frame the corner grade does almost nothing, because the
+   copy sits over the middle of the picture rather than its left edge. The
+   foot carries the weight there instead. */
+@media (max-width: 700px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      linear-gradient(
+        to top,
+        rgba(3, 9, 20, 0.86) 0%,
+        rgba(3, 9, 20, 0.7) 22%,
+        rgba(3, 9, 20, 0.34) 42%,
+        rgba(3, 9, 20, 0.08) 62%,
+        rgba(3, 9, 20, 0.24) 100%
+      );
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch {
+    font-size: clamp(2rem, 9.2vw, 2.9rem);
+  }
+}

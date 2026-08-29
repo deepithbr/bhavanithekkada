@@ -29,7 +29,7 @@
   },
   "hero": {
     "eyebrow": "Cross-Country Skier · India",
-    "line": "Pioneering India’s path in cross-country skiing.",
+    "line": "Pioneering India’s path on snow",
     "standfirst": "She grew up on a coffee farm in Karnataka and did not see snow until she was twenty. At thirty she took a World Cup start at 66°N in northern Finland.",
     "standfirstSource": {
       "sourceType": "public-secondary",
@@ -93,7 +93,8 @@
       "note": "The first-woman claim is hers, supplied in her own homepage copy. Presented in her voice, attributed to her."
     },
     "profileKicker": "Who she is",
-    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it."
+    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple: if it makes you happy, do it.",
+    "lineAccent": "India’s"
   },
   "proofOfLevel": [
     {
