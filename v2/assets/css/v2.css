@@ -4524,13 +4524,13 @@ body {
 
 .backing-head h2 {
   font-size: var(--text-3xl);
-  margin-top: var(--space-2xs);
+  margin-top: 0;
 }
 
 .backers {
   display: grid;
-  gap: var(--space-xl);
-  margin-top: var(--space-2xl);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
 }
 
 @media (min-width: 820px) {
@@ -4539,46 +4539,46 @@ body {
   }
 }
 
+/* A sponsor board: the mark leads, one fragment under it says what the
+   support is. No headings repeating what the logo already says, and no
+   paragraph where a phrase will do. */
 .backer {
   display: grid;
   align-content: start;
-  gap: var(--space-2xs);
-  border-top: 2px solid var(--color-ink);
-  padding-top: var(--space-md);
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-md);
+  background: var(--color-paper);
+  border-top: 3px solid var(--color-accent);
 }
 
 /* One box, one optical size, whatever shape the artwork arrives in. */
 .backer-mark {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  height: 3.6rem;
-  margin-bottom: var(--space-2xs);
+  justify-content: center;
+  height: 5rem;
 }
 
 .backer-mark img {
   max-height: 100%;
-  max-width: 11rem;
+  max-width: 14rem;
   width: auto;
   height: auto;
   object-fit: contain;
 }
 
-.backer-kind {
-  color: var(--color-ink-3);
-}
-
-.backer h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-}
-
-.backer-role {
-  color: var(--color-ink-body);
-  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
-  line-height: 1.55;
+.backer-line {
+  font-family: var(--font-caption);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.6;
+  color: var(--color-ink-2);
+  max-width: 28ch;
+  text-wrap: balance;
 }
 
 .backing-more {
@@ -4675,10 +4675,25 @@ body {
    the shape the reference has. Measured: the face advances about 0.53em a
    character, so two lines need roughly column-width over 17.5. */
 .panel[data-size="closer"] h2 {
-  font-size: clamp(2rem, 4.6vw, 4.4rem);
-  line-height: 1.04;
+  /* Two lines, never three. At the previous 4.4rem cap the sixty-six
+     characters needed 2462px of advance against a 1216px column, which is
+     2.02 lines and therefore three. 3.8rem brings that to 2127px, which
+     is 1.75 and therefore two. One line would need 35px type across the
+     whole page, which reads as a caption rather than a finish. */
+  font-size: clamp(1.9rem, 3.6vw, 3.8rem);
+  line-height: 1.06;
   letter-spacing: -0.025em;
   text-wrap: balance;
+}
+
+/* The destination carries a drawn underline, set clear of the descenders
+   and in the ice accent so it reads on the photograph. */
+.panel[data-size="closer"] h2 .u {
+  text-decoration: underline;
+  text-decoration-color: oklch(80% 0.105 245);
+  text-decoration-thickness: 0.055em;
+  text-underline-offset: 0.16em;
+  text-decoration-skip-ink: none;
 }
 
 .panel[data-size="closer"] .sub {

@@ -255,7 +255,7 @@ def statline(c) -> str:
 
 
 def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
-          pos=None, kicker=None, align=None) -> str:
+          pos=None, kicker=None, align=None, mark=None) -> str:
     """The benchmark's one repeated shape.
 
     Photograph fills the fold, type centred over it, one outlined button
@@ -271,6 +271,11 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
         btn = f'<a class="btn" data-on="shot" href="{e(href)}">{e(label)}</a>'
     # Her 27 Aug design list: no place-and-date captions on photographs.
     cap = ""
+    # One phrase in the title can carry a drawn underline. Escaped first,
+    # then wrapped, so the marker can never smuggle markup through.
+    marked = e(title)
+    if mark:
+        marked = marked.replace(e(mark), f'<span class="u">{e(mark)}</span>', 1)
     shot = img.tag(slot, "100vw", eager=hero)
     if pos:
         # Steer the cover crop for this panel only. The library's focal point
@@ -283,7 +288,7 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
   <div class="panel-shot">{shot}</div>
   <div class="wrap panel-body" data-rise>
     {f'<p class="caption">{e(kicker)}</p>' if kicker else ''}
-    <{level}>{e(title)}</{level}>
+    <{level}>{marked}</{level}>
     <p class="sub">{e(sub)}</p>
     {btn}
     {cap}
@@ -336,12 +341,12 @@ def seasons(c, img) -> str:
 
 
 def backing(c) -> str:
-    """The wrap-up: who actually stands behind the season.
+    """The wrap-up: who stands behind the season.
 
-    This was a logo strip wedged between two sections. As the last thing on
-    the page it can say what each one provides, which is the part a visiting
-    sponsor is reading for. The marks stay on a light ground; forcing them
-    white flattened the Reliance lockup and lost the Karnataka crest.
+    A sponsor board, not a page of prose. The mark carries the name, so
+    the card under it is one fragment saying what that support actually
+    is. The full sentences stay on the Partnerships page, where someone
+    has asked to read them.
 
     Only marks with written permission on file appear. Permission was
     confirmed on 11 Aug 2026 and is recorded in the content file."""
@@ -354,9 +359,7 @@ def backing(c) -> str:
         f'<span class="backer-mark">'
         f'<img src="../assets/img/partners/{e(p["logo"])}" '
         f'alt="{e(p["name"])}" loading="lazy" decoding="async"></span>'
-        f'<p class="caption backer-kind">{e(p.get("kind") or "")}</p>'
-        f'<h3>{e(p["name"])}</h3>'
-        f'<p class="backer-role">{e(p.get("role") or "")}</p>'
+        f'<p class="backer-line">{e(p.get("short") or p.get("kind") or "")}</p>'
         f'</article>'
         for p in rows
     )
@@ -364,8 +367,7 @@ def backing(c) -> str:
 <section class="backing" id="backing" data-ground="ice">
   <div class="wrap">
     <div class="backing-head" data-rise>
-      <p class="caption">{e(cur.get('note') or 'Current support')}</p>
-      <h2>Backed by</h2>
+      <h2>{e(cur.get('note') or 'Current support')}</h2>
     </div>
     <div class="backers">{cards}</div>
     <p class="backing-more caption" data-rise>
@@ -771,7 +773,7 @@ def page(c: dict, img: Img) -> str:
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
        ('View journey', 'journey.html'), pos='50% 46%',
-       size='closer')}
+       size='closer', mark='Olympic Winter Games')}
 {backing(c)}
 </div>
 </main>

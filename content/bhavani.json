@@ -1511,14 +1511,16 @@
           "kind": "Athlete support",
           "logo": "reliance-foundation.svg",
           "logoSource": "reliancefoundation.org",
-          "role": "Athlete support through their sports programme: sports psychologist, nutritionist and strength coach, and conditioning blocks in Mumbai through the Indian summer."
+          "role": "Athlete support through their sports programme: sports psychologist, nutritionist and strength coach, and conditioning blocks in Mumbai through the Indian summer.",
+          "short": "Psychologist, nutritionist, strength coach"
         },
         {
           "name": "Government of Karnataka",
           "kind": "State support",
           "logo": "government-of-karnataka.png",
           "logoSource": "karnataka.gov.in",
-          "role": "State backing from her home state, the department that has recognised her results and carried her through domestic selection and the Khelo India programme."
+          "role": "State backing from her home state, the department that has recognised her results and carried her through domestic selection and the Khelo India programme.",
+          "short": "Home state and Khelo India"
         },
         {
           "name": "Government of India",
@@ -1526,7 +1528,8 @@
           "logo": "government-of-india.png",
           "logoSource": "Client-supplied via her existing portfolio (bt-portfolio-ddd16.web.app), 25 Aug 2026",
           "role": "National backing for her international programme, recognising her results and her representation of India abroad.",
-          "provenance": "Named by Bhavani as a current supporter in the client review of 25 Aug 2026. Recorded on her instruction; an earlier review had held this back pending confirmation, and her naming it directly is that confirmation."
+          "provenance": "Named by Bhavani as a current supporter in the client review of 25 Aug 2026. Recorded on her instruction; an earlier review had held this back pending confirmation, and her naming it directly is that confirmation.",
+          "short": "Backing for racing abroad"
         }
       ],
       "logoNote": "Permission to use both marks confirmed by the athlete, 11 Aug 2026. Each entry falls back to the name set in type until its artwork is present.",
