@@ -1264,8 +1264,14 @@ def media_page(c, img):
 </section>"""
     return subpage(c, img, "Media",
                    "The papers that told her story, and the archive that shows it.",
-                   body, shot="podium-gulmarg-2023", current="media.html",
-                   pos="50% 26%", og="media")
+                   # A podium snapshot read as an amateur frame at banner
+                   # size. This is the one cinematic photograph in the
+                   # archive: floodlit night training, dark and lit from
+                   # below, and the only banner on the site that is not
+                   # daylight on snow. The band lands on the lit group,
+                   # which sits at 0.45 to 0.85 of a portrait frame.
+                   body, shot="night-training", current="media.html",
+                   pos="50% 60%", og="media")
 
 
 def partnership_page(c, img):
