@@ -1358,9 +1358,11 @@ def partnership_page(c, img):
     return subpage(c, img, "Partnership",
                    # A banner line should set the horizon, not index the
                    # page. Four seasons is the figure the site already
-                   # uses for the run to 2030.
-                   "Four seasons to the French Alps, and the people who "
-                   "get her there.",
+                   # uses for the run to 2030. The second clause is gone:
+                   # 'the people who get her there' was a dangling
+                   # fragment, and 'get her there' quietly promised an
+                   # arrival that is not settled.
+                   "The four seasons between here and the 2030 Games.",
                    body, shot="holmenkollen", current="partnership.html",
                    # Measured against the frame rather than guessed. The
                    # banner shows a 14% band of a portrait source, and
