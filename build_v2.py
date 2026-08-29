@@ -317,10 +317,11 @@ def sponsors(c: dict) -> str:
 # Three frames, not four: the Worlds start, the flag, the motion. The
 # Holmenkollen frame left the rotation because it closes the page and a
 # hero should not preview its own ending.
+# Two frames. The training shot left on client review: black kit and a
+# bandana read casual against the race frames.
 HERO_SLIDES = [
     ("race-worldcup", "50% 45%"),
     ("flag-harbin", "50% 34%"),
-    ("double-pole", "48% 22%"),
 ]
 
 
@@ -347,7 +348,6 @@ def hero_panel(c, img) -> str:
 <section class="panel" data-size="hero">
   <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
   <div class="wrap panel-body" data-rise>
-    <p class="caption">Indian cross-country skier</p>
     <h1>Bhavani Thekkada</h1>
     <p class="sub hero-line">{e(c['hero']['line'])}</p>
   </div>
