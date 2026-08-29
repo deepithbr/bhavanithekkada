@@ -1291,6 +1291,30 @@
         0.4
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "hero-race-pro",
+      "file": "hero-race-pro",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        1672,
+        810
+      ],
+      "ratio": 2.0642,
+      "alt": "Bhavani Thekkada mid-race in the India suit and bib 16, poling through a classic stride on a snow course.",
+      "credit": "Client-supplied, 29 Aug 2026",
+      "year": null,
+      "location": null,
+      "category": "hero-grade",
+      "focal": [
+        0.48,
+        0.35
+      ],
+      "rights": "client-supplied"
     }
   ],
   "excluded": [

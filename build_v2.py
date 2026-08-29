@@ -79,7 +79,7 @@ ORIGIN = "https://bhavanithekkada.pages.dev"
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "nordic-overlook-cine",
+    "hero": "hero-race-pro",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "holmenkollen",
@@ -335,10 +335,10 @@ def hero_panel(c, img) -> str:
     photograph end to end, the name staggered across it at display
     size, and nothing else. The rotation is retired; one superb frame
     beats three adequate ones."""
-    slot = "nordic-overlook-cine"
+    slot = "hero-race-pro"
     tag = img.tag(slot, "100vw", eager=True)
     tag = tag.replace(
-        f"object-position:{img.focal(slot)}", "object-position:50% 30%"
+        f"object-position:{img.focal(slot)}", "object-position:48% 30%"
     )
     return f"""
 <section class="panel" data-size="hero">
