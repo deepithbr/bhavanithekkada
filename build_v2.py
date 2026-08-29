@@ -392,7 +392,7 @@ def quote_card(c) -> str:
       <blockquote>
         <p>{e(h.get('glanceHeadline') or '')} {e(h.get('glanceBody') or '')}</p>
       </blockquote>
-      <figcaption class="caption">Bhavani, in her own words</figcaption>
+      <figcaption class="caption">Bhavani Thekkada</figcaption>
     </figure>
   </div>
 </section>"""
