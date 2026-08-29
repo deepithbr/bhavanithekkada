@@ -805,7 +805,7 @@ def page(c: dict, img: Img) -> str:
 
 
 def subpage(c, img, title, lede, body_html, shot=None, current=None,
-            pos=None, og=None, title_html=None):
+            pos=None, og=None):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -850,7 +850,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
     <a class="crumb caption" href="index.html">&larr; Home</a>
-    {title_html or f"<h1>{e(title)}</h1>"}
+    <h1>{e(title)}</h1>
     <p class="sub">{e(lede)}</p>
   </div>
 </section>
@@ -1520,14 +1520,19 @@ def speaking_page(c, img):
         for t in sp.get("skills", [])
         if (img.get(t.get("image")) or {}).get("rights") == "owned"
     )
-    # The reference opens with an outlined phrase over a solid one. Hers is
-    # the distance, which is the whole reason anyone books her: no snow
+    # The reference's outlined phrase over a solid one, as a band of its
+    # own between the header and the cards rather than inside the header.
+    # Hers is the distance, which is the reason anyone books her: no snow
     # where she is from, a World Cup start line at the other end.
-    head = ('<h1 class="head-stack">'
-            '<span class="head-out">From no snow to</span>'
-            '<span class="head-in">a World Cup start line'
-            '<i aria-hidden="true">.</i></span></h1>')
     body = f"""
+<section class="statement-band">
+  <div class="wrap">
+    <p class="head-stack" data-rise>
+      <span class="head-out">From no snow to</span>
+      <span class="head-in">a World Cup start line<i
+        aria-hidden="true">.</i></span></p>
+  </div>
+</section>
 <section class="prose-fold">
   <div class="wrap">
     <div class="says">{cards}</div>
@@ -1543,7 +1548,7 @@ def speaking_page(c, img):
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,
                    shot="flag-almaty", current="speaking.html", og="speaking",
-                   pos="58% 44%", title_html=head)
+                   pos="58% 44%")
 
 
 def contact_page(c, img):

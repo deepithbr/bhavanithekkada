@@ -5431,34 +5431,42 @@ body {
    frame in accent. Both borrowed here. What is not borrowed is the
    density: their cards carry sixty to ninety words, hers carry twenty. */
 
+/* The statement band: the reference's outlined phrase over a solid one,
+   standing between the page header and the cards rather than inside the
+   header. On the light ground the outline is drawn in ink, not white. */
+.statement-band {
+  padding-block: var(--space-2xl) var(--space-xl);
+}
+
 .head-stack {
   display: grid;
   gap: 0.04em;
+  margin: 0;
 }
 
 .head-out {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 7vw, 6.4rem);
+  font-size: clamp(2.1rem, 6.4vw, 5.8rem);
   font-weight: 800;
   line-height: 0.92;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: transparent;
-  -webkit-text-stroke: 1.5px oklch(100% 0 0 / 0.92);
+  -webkit-text-stroke: 1.4px var(--color-ink);
 }
 
 .head-in {
   font-family: var(--font-display);
-  font-size: clamp(1.6rem, 4.4vw, 3.9rem);
+  font-size: clamp(1.5rem, 4vw, 3.5rem);
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
-  color: oklch(99% 0.002 250);
+  color: var(--color-ink);
 }
 
 .head-in i {
   font-style: normal;
-  color: oklch(80% 0.105 245);
+  color: var(--color-accent);
 }
 
 /* Two columns, the right one dropped, so the set reads as a mosaic
@@ -5490,7 +5498,7 @@ body {
   isolation: isolate;
   display: grid;
   align-content: end;
-  min-height: clamp(20rem, 42vw, 30rem);
+  min-height: clamp(22rem, 44vw, 33rem);
   padding: var(--space-lg);
   overflow: hidden;
   color: var(--color-ink-on-deep);
@@ -5534,7 +5542,7 @@ body {
 .say-body {
   display: grid;
   gap: var(--space-2xs);
-  max-width: 34ch;
+  max-width: 40ch;
 }
 
 .say h2 {
