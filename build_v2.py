@@ -1456,14 +1456,19 @@ def achievements_page(c, img):
         )
         return f'<aside class="rail rail-{side}" aria-hidden="true">{shots}</aside>'
 
+    # The summary band runs clean across the page: the client does not want
+    # photographs beside the figures. The rails start at the tables, so
+    # nothing is in the margins until you have scrolled past the summary,
+    # and each frame is lazy-loaded and revealed on arrival rather than
+    # fetched with the page.
     body = (
-        '<div class="rail-layout">'
-        + rail(["nordic-podium", "contingent-2021"], "left")
+        levels_band(c, link=False, head=False)
+        + '<div class="rail-layout">'
+        + rail(["nordic-podium", "contingent-2021", "team-gulmarg"], "left")
         + '<div class="rail-main">'
-        + levels_band(c, link=False, head=False)
         + record_fold(c)
         + "</div>"
-        + rail(["podium-gulmarg-2023", "flag-harbin"], "right")
+        + rail(["podium-gulmarg-2023", "flag-harbin", "race-worldcup"], "right")
         + "</div>"
     ) + f"""
 <section class="prose-fold" id="official">

@@ -5053,14 +5053,17 @@ body {
     /* 62rem down the middle left the rails at 207px, which is a thumbnail
        rather than a photograph. The tables do not need that width. */
     grid-template-columns: minmax(0, 1fr) minmax(0, 54rem) minmax(0, 1fr);
-    align-items: start;
+    /* Stretch, so the rails can spread their frames down the whole run of
+       the tables instead of bunching at the top. */
+    align-items: stretch;
     column-gap: var(--space-lg);
   }
 
   .rail {
     display: grid;
-    gap: var(--space-3xl);
-    padding-block: var(--space-3xl);
+    align-content: space-between;
+    gap: var(--space-2xl);
+    padding-block: var(--space-2xl);
   }
 
   .rail-left {
@@ -5073,7 +5076,7 @@ body {
 
   /* Staggered, so the two sides do not read as a pair of columns. */
   .rail-right {
-    padding-top: calc(var(--space-3xl) * 2);
+    padding-top: calc(var(--space-2xl) * 2.4);
   }
 
   .rail-shot {
