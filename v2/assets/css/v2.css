@@ -3390,3 +3390,70 @@ a {
        the mock, and the statement card covers the seam as it rides up. */
   }
 }
+
+
+/* ------------------------------- hero, minimal one-frame (Badosa ref) */
+
+/* One photograph end to end, one name across it. The script face moves
+   to the BT monogram, where a signature belongs; the name returns to
+   the grotesk at display scale, staggered like the reference. */
+.wordmark-mono {
+  font-family: "Black Rusher", var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.panel[data-size="hero"] {
+  place-items: center stretch;
+  padding-bottom: 0;
+}
+
+.panel[data-size="hero"] .hero-min {
+  max-width: none;
+  justify-items: stretch;
+}
+
+.panel[data-size="hero"] .hero-min h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.8rem, 9.5vw, 9rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: oklch(99% 0.002 250);
+  text-shadow: 0 2px 60px oklch(5% 0.02 255 / 0.45);
+}
+
+.panel[data-size="hero"] .hero-min h1::after {
+  display: none;
+}
+
+.panel[data-size="hero"] .hero-min h1 .stagger {
+  margin-left: clamp(5rem, 24vw, 26rem);
+}
+
+/* One even veil so the name reads on any exposure; no zones, no fades. */
+.panel[data-size="hero"] .panel-shot::after {
+  background: linear-gradient(
+    rgba(3, 9, 20, 0.32),
+    rgba(3, 9, 20, 0.32)
+  );
+}
+
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background: linear-gradient(
+      rgba(3, 9, 20, 0.32),
+      rgba(3, 9, 20, 0.32)
+    );
+  }
+}
+
+/* The image is full-bleed again; the right-block composition retires. */
+@media (min-width: 900px) {
+  .panel[data-size="hero"] .panel-shot img {
+    left: 0;
+    width: 100%;
+  }
+}

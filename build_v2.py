@@ -217,7 +217,7 @@ def nav_block(current=None, glass=False) -> str:
     return f"""
 <header class="nav" id="nav"{g}>
   <div class="wrap nav-inner">
-    <a class="wordmark" href="index.html">Bhavani Thekkada</a>
+    <a class="wordmark wordmark-mono" href="index.html" aria-label="Bhavani Thekkada, home">BT</a>
     <nav class="nav-links" id="nav-links" aria-label="Primary">{items}</nav>
     <button class="nav-toggle" type="button" aria-expanded="false"
       aria-controls="nav-links">Menu</button>
@@ -331,35 +331,22 @@ HERO_SLIDES = [
 
 
 def hero_panel(c, img) -> str:
-    shots = []
-    for n, (slot, pos) in enumerate(HERO_SLIDES):
-        tag = img.tag(slot, "100vw", eager=(n == 0))
-        tag = tag.replace(
-            f"object-position:{img.focal(slot)}", f"object-position:{pos}"
-        )
-        # The caption already carries entities (&middot;); e() would
-        # double-escape them into visible text. Quote-escape only.
-        cap = (img.caption(slot) or "").replace('"', "&quot;")
-        tag = tag.replace(
-            "<img ",
-            f'<img class="slide" data-i="{n}" data-on='
-            f'"{str(n == 0).lower()}" data-cap="{cap}" ',
-            1,
-        )
-        if n > 0:
-            tag = tag.replace(' loading="eager"', ' loading="lazy"')
-        shots.append(tag)
+    """The Badosa pattern, at the client's request: one full-bleed
+    photograph end to end, the name staggered across it at display
+    size, and nothing else. The rotation is retired; one superb frame
+    beats three adequate ones."""
+    slot = "hero-portrait-cine"
+    tag = img.tag(slot, "100vw", eager=True)
+    tag = tag.replace(
+        f"object-position:{img.focal(slot)}", "object-position:50% 16%"
+    )
     return f"""
 <section class="panel" data-size="hero">
-  <div class="panel-shot" data-slides="true">{''.join(shots)}</div>
-  <div class="wrap panel-body" data-rise>
-    <p class="caption hero-eyebrow">Indian cross-country skier</p>
+  <div class="panel-shot">{tag}</div>
+  <div class="wrap panel-body hero-min" data-rise>
     <h1 aria-label="Bhavani Thekkada"><span>Bhavani</span>
-      <span>Thekkada</span></h1>
-    <p class="sub hero-line">{e(c['hero']['line']).replace(
-        'path in', 'path<br>in')}</p>
+      <span class="stagger">Thekkada</span></h1>
   </div>
-  <div class="scroll-cue" aria-hidden="true"><i></i></div>
 </section>"""
 
 
