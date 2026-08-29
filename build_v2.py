@@ -93,6 +93,9 @@ MEDIA_TILES = ["khelo-medals", "chile-corralco", "race-worldcup", "nordic-overlo
 
 TILE_SIZES = "(min-width:1000px) 22vw, (min-width:560px) 45vw, 92vw"
 
+# Three across on a desktop, two on a tablet, one on a phone.
+SKILL_SIZES = "(min-width:900px) 30vw, (min-width:600px) 45vw, 92vw"
+
 
 
 def fingerprint() -> str:
@@ -1250,75 +1253,68 @@ def media_page(c, img):
 
 
 def partnership_page(c, img):
+    """Four things and nothing else, to the client's brief of 30 Aug 2026:
+    what support funds, who supports her now, a line on each of them, and
+    what she is open to. Work with Bhavani closes it.
+
+    Removed with that brief: the coffee-estates standfirst, which the
+    homepage already carries in its own words, and the 2030 target block,
+    which repeated the Journey page. Both stay in the content file."""
     p = c["partnership"]
     areas = "".join(
-        f'<div class="fact"><dt class="caption">{e(a["title"])}</dt>'
-        f'<dd>{e(a["body"])}</dd></div>'
-        for a in p.get("areas", [])
+        f'<article class="fund" data-rise>'
+        f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
+        f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>'
+        for n, a in enumerate(p.get("areas", []), 1)
     )
-    t = c.get("targets", {}).get("finale", {})
-    # The season-by-season road lives on Journey only; printing it here
-    # too made the two pages repeat each other word for word, which the
-    # client flagged. Partnership keeps the target and points across.
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
     support = "".join(
-        f'<div class="fact"><dt class="caption">{e(p["name"])}</dt>'
-        f'<dd>{e(p.get("role") or p.get("kind") or "")}</dd></div>'
-        for p in (c["partnership"].get("current") or {}).get("list", [])
+        f'<article class="backer backer-row" data-rise>'
+        f'<span class="backer-mark">'
+        f'<img src="../assets/img/partners/{e(x["logo"])}" '
+        f'alt="{e(x["name"])}" loading="lazy" decoding="async"></span>'
+        f'<div><h3>{e(x["name"])}</h3>'
+        f'<p>{e(x.get("role") or x.get("kind") or "")}</p></div></article>'
+        for x in (p.get("current") or {}).get("list", [])
+        if x.get("logo")
+    )
+    open_to = "".join(
+        f'<li>{e(x)}</li>' for x in p.get("openTo", [])
     )
     body = f"""
 <section class="prose-fold">
   <div class="wrap prose">
-    <p class="pull">From the coffee estates of Kodagu to international
-    start lines, this journey has been built across continents and
-    seasons. In a sport with limited pathways in India, I became the
-    country&rsquo;s first woman to win an international cross-country
-    skiing medal &mdash; and I&rsquo;m still building towards what comes
-    next.</p>
-    <p class="pull-cite caption">Bhavani Thekkada</p>
-  </div>
-</section>
-<section class="prose-fold" data-ground="ice">
-  <div class="wrap">
-    <div class="target" data-rise>
-      <span class="target-year" aria-hidden="true">2030</span>
-      <div class="prose">
-        <h2>{e(t.get('title', 'Winter Olympics'))}</h2>
-        <p class="pull">{e(t.get('line') or '')}</p>
-        <p class="caption">{e(t.get('host') or '')} &middot; {e(t.get('dates') or '')}</p>
-      </div>
-    </div>
-    <p class="caption" style="margin-top:var(--space-md)">
-      <a href="journey.html#road">The season-by-season road, on My journey &rarr;</a></p>
-  </div>
-</section>
-<section class="prose-fold" data-ground="ice">
-  <div class="wrap prose">
     <h2>What support funds</h2>
-    <dl class="facts">{areas}</dl>
+    <div class="funds">{areas}</div>
   </div>
 </section>
-<section class="prose-fold" id="current">
+<section class="prose-fold" data-ground="ice" id="current">
   <div class="wrap prose">
     <h2>Current support</h2>
-    <dl class="facts">{support}</dl>
-    <h3 style="margin-top:var(--space-lg)">Open to</h3>
-    <p>{" &middot; ".join(e(x) for x in c["partnership"].get("openTo", []))}.</p>
+    <div class="backers backers-stack">{support}</div>
+  </div>
+</section>
+<section class="prose-fold" id="open">
+  <div class="wrap prose">
+    <h2>Open to</h2>
+    <p>She is actively looking for partners in these areas for the seasons
+    between here and 2030.</p>
+    <ul class="open-list">{open_to}</ul>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>The case is on this page. The conversation starts on one, whatever
-    shape the partnership takes.</p>
+    <p>The conversation starts on one, whatever shape the partnership
+    takes.</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Sponsorship">Start the conversation</a>
   </div>
 </section>"""
     return subpage(c, img, "Partnership",
-                   "The plan to 2030, and what support pays for.",
+                   "What support pays for, and who backs her now.",
                    body, shot="summit-solo", current="partnership.html",
                    pos="50% 46%", og="partnership")
 
@@ -1499,11 +1495,18 @@ def speaking_page(c, img):
     """Athlete, speaker, storyteller: her brief promotes this from a footnote
     on About to a section of its own, with one clear way to book her."""
     sp = c.get("speaking") or {}
+    # The client's reference runs six one-word cards. Hers say what she can
+    # actually speak to, in one or two sentences each; the longer themes
+    # stay in the content file, unused, in case the fuller version is
+    # wanted for a booker's pack. The line copy is already escaped in the
+    # content file so an apostrophe survives, so it is not escaped again.
     talks = "".join(
-        f'<article class="talk" data-rise><span class="talk-n">{n:02d}</span>'
-        f'<h3>{e(t["title"])}</h3><p>{e(t.get("body") or "")}</p>'
-        f'<p class="caption">{e(t.get("from") or "")}</p></article>'
-        for n, t in enumerate(sp.get("themes", []), 1)
+        f'<article class="skill" data-rise>'
+        f'<span class="skill-shot">{img.tag(t["image"], SKILL_SIZES)}</span>'
+        f'<span class="skill-n" aria-hidden="true">{n:02d}</span>'
+        f'<h3>{e(t["word"])}</h3><p>{t.get("line") or ""}</p></article>'
+        for n, t in enumerate(sp.get("skills", []), 1)
+        if (img.get(t.get("image")) or {}).get("rights") == "owned"
     )
     aud = " &middot; ".join(e(a) for a in sp.get("audiences", []))
     body = f"""
@@ -1511,7 +1514,7 @@ def speaking_page(c, img):
   <div class="wrap">
     <div class="prose">
       <p class="caption">Athlete &middot; Speaker &middot; Storyteller</p>
-      <h2>The talks</h2>
+      <h2>What she speaks to</h2>
       <p>{e(sp.get('close') or '')}</p>
     </div>
     <dl class="facts facts-row" style="margin-block:var(--space-lg)">
@@ -1522,7 +1525,7 @@ def speaking_page(c, img):
       <div class="fact"><dt class="caption">Three World Cup starts</dt>
         <dd>Ruka, Trondheim and Davos, all inside one season.</dd></div>
     </dl>
-    <div class="talks">{talks}</div>
+    <div class="skills">{talks}</div>
   </div>
 </section>
 <section class="prose-fold" data-ground="ice">

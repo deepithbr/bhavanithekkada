@@ -1902,7 +1902,39 @@
     },
     "sourceRef": "athlete-brief",
     "close": "The athlete is on the FIS record. The storyteller is the reason there were seasons to race at all. Almost every trip had to be paid for by somebody she talked into it first.",
-    "availability": "Her race season runs from late November to March. Dates inside it are limited."
+    "availability": "Her race season runs from late November to March. Dates inside it are limited.",
+    "skills": [
+      {
+        "word": "Resilience",
+        "line": "She grew up two thousand kilometres from snow and reached a World Cup start line anyway. It took ten years.",
+        "image": "downhill-tuck"
+      },
+      {
+        "word": "Endurance",
+        "line": "A 10 km race planned to the heartbeat. What the invisible hours cost, and why they are the whole point.",
+        "image": "night-training"
+      },
+      {
+        "word": "Representation",
+        "line": "She carried India&rsquo;s flag into an Asian Winter Games. On being the only one in the room, and leaving the door open.",
+        "image": "flag-harbin"
+      },
+      {
+        "word": "Apprenticeship",
+        "line": "Glaciers, rope work and instructing jobs came first. What an unglamorous start builds that talent alone does not.",
+        "image": "ridge-sunrise"
+      },
+      {
+        "word": "Persuasion",
+        "line": "Almost every season was paid for by somebody she talked into it. Ten years explaining a sport nobody had heard of.",
+        "image": "nz-snowfarm"
+      },
+      {
+        "word": "Pathways",
+        "line": "There was no route out of India in this sport, so she built one. Making it clear enough that the next person can follow.",
+        "image": "classic-tracks"
+      }
+    ]
   },
   "sport": {
     "kicker": "The sport",
