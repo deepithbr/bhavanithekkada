@@ -805,7 +805,7 @@ def page(c: dict, img: Img) -> str:
 
 
 def subpage(c, img, title, lede, body_html, shot=None, current=None,
-            pos=None, og=None):
+            pos=None, og=None, title_html=None):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -850,7 +850,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
     <a class="crumb caption" href="index.html">&larr; Home</a>
-    <h1>{e(title)}</h1>
+    {title_html or f"<h1>{e(title)}</h1>"}
     <p class="sub">{e(lede)}</p>
   </div>
 </section>
@@ -1502,53 +1502,48 @@ def achievements_page(c, img):
 
 
 def speaking_page(c, img):
-    """Athlete, speaker, storyteller: her brief promotes this from a footnote
-    on About to a section of its own, with one clear way to book her."""
+    """Built to the client's reference: an outlined headline over the
+    photograph, then six photographic cards staggered in two columns with
+    the word set over the frame, and one call to action at the end.
+
+    Her eight audiences are folded into the cards rather than listed on
+    their own, so each card says what it is about and who it is for."""
     sp = c.get("speaking") or {}
-    # The client's reference runs six one-word cards. Hers say what she can
-    # actually speak to, in one or two sentences each; the longer themes
-    # stay in the content file, unused, in case the fuller version is
-    # wanted for a booker's pack. The line copy is already escaped in the
-    # content file so an apostrophe survives, so it is not escaped again.
-    talks = "".join(
-        f'<article class="skill" data-rise>'
-        f'<span class="skill-shot">{img.tag(t["image"], SKILL_SIZES)}</span>'
-        f'<span class="skill-n" aria-hidden="true">{n:02d}</span>'
-        f'<h3>{e(t["word"])}</h3><p>{t.get("line") or ""}</p></article>'
-        for n, t in enumerate(sp.get("skills", []), 1)
+    cards = "".join(
+        f'<article class="say" data-rise>'
+        f'<span class="say-shot">{img.tag(t["image"], SKILL_SIZES)}</span>'
+        f'<div class="say-body">'
+        f'<h2>{e(t["word"])}</h2>'
+        f'<p>{t.get("line") or ""}</p>'
+        f'<p class="say-for caption">{e(t.get("audience") or "")}</p>'
+        f'</div></article>'
+        for t in sp.get("skills", [])
         if (img.get(t.get("image")) or {}).get("rights") == "owned"
     )
-    aud = " &middot; ".join(e(a) for a in sp.get("audiences", []))
+    # The reference opens with an outlined phrase over a solid one. Hers is
+    # the distance, which is the whole reason anyone books her: no snow
+    # where she is from, a World Cup start line at the other end.
+    head = ('<h1 class="head-stack">'
+            '<span class="head-out">From no snow to</span>'
+            '<span class="head-in">a World Cup start line'
+            '<i aria-hidden="true">.</i></span></h1>')
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
-    <div class="prose">
-      <p class="caption">Athlete &middot; Speaker &middot; Storyteller</p>
-      <h2>What she speaks to</h2>
-      <p>{e(sp.get('close') or '')}</p>
-    </div>
-    <dl class="facts facts-row" style="margin-block:var(--space-lg)">
-      <div class="fact"><dt class="caption">Flagbearer</dt>
-        <dd>Led India in at the Asian Winter Games, Harbin 2025.</dd></div>
-      <div class="fact"><dt class="caption">Two World Championships</dt>
-        <dd>Planica 2023 and Trondheim 2025, on the FIS record.</dd></div>
-      <div class="fact"><dt class="caption">Three World Cup starts</dt>
-        <dd>Ruka, Trondheim and Davos, all inside one season.</dd></div>
-    </dl>
-    <div class="skills">{talks}</div>
+    <div class="says">{cards}</div>
   </div>
 </section>
-<section class="prose-fold" data-ground="ice">
+<section class="prose-fold" data-ground="ice" id="book">
   <div class="wrap prose">
-    <h2>Audiences</h2>
-    <p>{aud}.</p>
+    <h2>Availability</h2>
     <p>{e(sp.get('availability') or '')}</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
   </div>
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,
-                   shot="flag-almaty", current="speaking.html", og="speaking")
+                   shot="flag-almaty", current="speaking.html", og="speaking",
+                   pos="58% 44%", title_html=head)
 
 
 def contact_page(c, img):

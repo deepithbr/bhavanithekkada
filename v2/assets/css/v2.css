@@ -5423,3 +5423,148 @@ body {
     );
   }
 }
+
+/* ==================== speaking, to the client's reference
+
+   That page opens with an outlined phrase over a solid one, then runs
+   photographic cards in two staggered columns with the word set over the
+   frame in accent. Both borrowed here. What is not borrowed is the
+   density: their cards carry sixty to ninety words, hers carry twenty. */
+
+.head-stack {
+  display: grid;
+  gap: 0.04em;
+}
+
+.head-out {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 7vw, 6.4rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px oklch(100% 0 0 / 0.92);
+}
+
+.head-in {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4.4vw, 3.9rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: oklch(99% 0.002 250);
+}
+
+.head-in i {
+  font-style: normal;
+  color: oklch(80% 0.105 245);
+}
+
+/* Two columns, the right one dropped, so the set reads as a mosaic
+   rather than a table. */
+.says {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 900px) {
+  .says {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .says > :nth-child(even) {
+    margin-top: var(--space-3xl);
+  }
+
+  /* The stagger would leave a hole at the foot of the left column, so
+     the columns pull back level at the end. */
+  .says > :nth-child(odd):last-child {
+    margin-bottom: var(--space-3xl);
+  }
+}
+
+.say {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-content: end;
+  min-height: clamp(20rem, 42vw, 30rem);
+  padding: var(--space-lg);
+  overflow: hidden;
+  color: var(--color-ink-on-deep);
+}
+
+.say-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+}
+
+.say-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 900ms var(--ease-out);
+}
+
+/* The word and the sentence sit on the photograph, so the photograph has
+   to give them a ground to sit on. */
+.say::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.86) 0%,
+    rgba(3, 9, 20, 0.66) 34%,
+    rgba(3, 9, 20, 0.28) 62%,
+    rgba(3, 9, 20, 0.14) 100%
+  );
+}
+
+.say:hover .say-shot img {
+  transform: scale(1.04);
+}
+
+.say-body {
+  display: grid;
+  gap: var(--space-2xs);
+  max-width: 34ch;
+}
+
+.say h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: oklch(82% 0.115 245);
+}
+
+.say p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
+  line-height: 1.55;
+  color: oklch(97% 0.006 250);
+}
+
+.say-for {
+  color: oklch(100% 0 0 / 0.72);
+  letter-spacing: 0.16em;
+  margin-top: var(--space-2xs);
+  padding-top: var(--space-2xs);
+  border-top: 1px solid oklch(100% 0 0 / 0.24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .say-shot img {
+    transition: none;
+  }
+}
