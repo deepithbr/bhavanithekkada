@@ -1939,7 +1939,17 @@
         "image": "classic-tracks",
         "audience": "Federations and sports bodies"
       }
-    ]
+    ],
+    "invite": {
+      "heading": "What to invite her for",
+      "body": "Keynotes, talks, panels and fireside conversations. She speaks about starting with nothing confirmed, building a route where none exists, and what a decade of unglamorous work actually buys a person.",
+      "formats": [
+        "Keynotes",
+        "Talks and workshops",
+        "Panels",
+        "Fireside conversations"
+      ]
+    }
   },
   "sport": {
     "kicker": "The sport",

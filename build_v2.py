@@ -1524,6 +1524,8 @@ def speaking_page(c, img):
     # own between the header and the cards rather than inside the header.
     # Hers is the distance, which is the reason anyone books her: no snow
     # where she is from, a World Cup start line at the other end.
+    inv = sp.get("invite") or {}
+    formats = "".join(f'<li>{e(x)}</li>' for x in inv.get("formats", []))
     body = f"""
 <section class="statement-band">
   <div class="wrap">
@@ -1540,10 +1542,12 @@ def speaking_page(c, img):
 </section>
 <section class="prose-fold" data-ground="ice" id="book">
   <div class="wrap prose">
-    <h2>Availability</h2>
-    <p>{e(sp.get('availability') or '')}</p>
+    <h2>{e(inv.get('heading') or 'What to invite her for')}</h2>
+    <p>{e(inv.get('body') or '')}</p>
+    <ul class="open-list">{formats}</ul>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
+    <p class="caption book-note">{e(sp.get('availability') or '')}</p>
   </div>
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,

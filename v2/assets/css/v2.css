@@ -5593,3 +5593,14 @@ body {
     transition: none;
   }
 }
+
+/* The practical note sits under the ask, not above it: a page like this
+   should close by inviting, and a season's dates are a footnote. */
+.book-note {
+  margin-top: var(--space-md);
+  color: var(--color-ink-3);
+}
+
+#book .open-list {
+  margin-bottom: var(--space-lg);
+}
