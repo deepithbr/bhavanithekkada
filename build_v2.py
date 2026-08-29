@@ -1544,8 +1544,8 @@ def speaking_page(c, img):
 <section class="prose-fold" data-ground="ice" id="book">
   <div class="wrap prose">
     <h2>{e(inv.get('heading') or 'What to invite her for')}</h2>
-    <p>{e(inv.get('body') or '')}</p>
     <ul class="open-list">{formats}</ul>
+    <p class="book-body">{e(inv.get('body') or '')}</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Speaking">Invite Bhavani to speak</a>
     <p class="caption book-note">{e(sp.get('availability') or '')}</p>

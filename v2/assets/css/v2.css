@@ -5601,6 +5601,14 @@ body {
   color: var(--color-ink-3);
 }
 
+/* The list answers the heading, so it sits directly under it; the
+   paragraph then explains, and the button closes. */
 #book .open-list {
+  margin-top: var(--space-lg);
+}
+
+.book-body {
+  margin-top: var(--space-lg);
   margin-bottom: var(--space-lg);
+  max-width: 52ch;
 }
