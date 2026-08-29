@@ -1881,31 +1881,31 @@
   },
   "sport": {
     "kicker": "The sport",
-    "lede": "Two techniques, two race formats, endless ways to race. Cross-country skiing combines two techniques — Classic and Freestyle — across race formats that run from high-speed Sprint events to demanding Distance races. Bhavani competes across both techniques and both formats, in races from 5 km to 21 km so far.",
+    "lede": "Athletes move across long stretches of snow using skis and poles, climbing, descending and pushing themselves forward entirely under their own power.",
     "disciplines": [
       {
         "name": "Classic",
-        "note": "Traditional diagonal-stride technique."
+        "note": "Skis move mostly forward in parallel tracks, using a running-like stride."
       },
       {
         "name": "Freestyle",
-        "note": "Skating technique."
+        "note": "Skiers push outward in a skating motion to generate more speed."
       },
       {
         "name": "Sprint",
-        "note": "Approximately 1 to 1.6 km."
+        "note": "Short, fast races where speed and acceleration matter."
       },
       {
         "name": "Distance",
-        "note": "5 to 50 km and beyond."
+        "note": "Longer races where endurance, pacing and technique become critical."
       }
     ],
     "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September.",
     "headline": "Two techniques. Two race formats. Endless ways to race.",
-    "winterHeading": "Following winter around the world.",
-    "winterBody": "With limited snow infrastructure in India, training and competition follow the seasons: from the Indian Himalayas to Europe, South America, New Zealand and across Asia.",
-    "nordicHeading": "Nordic Skiing",
-    "nordicIntro": "Known as cross-country skiing, this is the ultimate test of human endurance. Athletes navigate snow-covered terrain using only their own power, combining explosive strength with cardiovascular excellence."
+    "nordicHeading": "Cross-Country Skiing",
+    "nordicIntro": "Cross-country skiing is endurance racing on snow.",
+    "contrast": "Unlike alpine skiing, where the focus is mainly on racing downhill, cross-country skiers race across changing terrain. It demands endurance, strength, balance and technique.",
+    "context": "Bhavani competes in both Classic and Freestyle events, across sprint and distance racing."
   },
   "headline": {
     "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",

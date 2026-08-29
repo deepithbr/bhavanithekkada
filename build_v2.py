@@ -487,20 +487,20 @@ def sport_fold(c) -> str:
   <div class="wrap sport-grid">
     <div class="prose" data-rise>
       <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
-      <h2>{e(sp.get('nordicHeading') or 'Nordic Skiing')}</h2>
+      <h2>{e(sp.get('nordicHeading') or 'Cross-Country Skiing')}</h2>
       <p>{e(sp.get('nordicIntro') or '')}</p>
       <p>{e(sp.get('lede') or '')}</p>
+      <p>{e(sp.get('contrast') or '')}</p>
     </div>
     <div class="sport-cards" data-rise>
-      <h3>Techniques</h3>
+      <h3>Two ways to ski</h3>
       <dl class="facts facts-pair">{group(ds[:2])}</dl>
-      <h3>Formats</h3>
+      <h3>Two types of racing</h3>
       <dl class="facts facts-pair">{group(ds[2:4])}</dl>
     </div>
   </div>
-  <div class="wrap prose" id="winter" style="margin-top:var(--space-lg)">
-    <h3>{e(sp.get('winterHeading') or '')}</h3>
-    <p>{e(sp.get('winterBody') or '')}</p>
+  <div class="wrap prose" style="margin-top:var(--space-lg)">
+    <p>{e(sp.get('context') or '')}</p>
   </div>
 </section>"""
 
