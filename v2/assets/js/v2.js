@@ -105,13 +105,25 @@
   // rotates, and a hidden tab pauses so the fade is never wasted offscreen.
   const slides = document.querySelectorAll('[data-slides="true"] .slide');
   if (slides.length > 1 && !reduce.matches) {
-    const cap = document.getElementById("hero-cap");
+    // The incoming frame fades in ON TOP of the old one, which stays fully
+    // opaque beneath until it is covered. Fading both at once let the white
+    // page ground bleed through mid-fade, a milky flash every rotation.
     let at = 0;
+    let z = 1;
     setInterval(() => {
       if (document.hidden) return;
       at = (at + 1) % slides.length;
-      slides.forEach((s2, i) => (s2.dataset.on = String(i === at)));
-      if (cap) cap.textContent = slides[at].dataset.cap || "";
+      const next = slides[at];
+      next.style.zIndex = String(++z);
+      next.dataset.on = "true";
+      setTimeout(() => {
+        slides.forEach((s2, i) => {
+          if (i !== at) {
+            s2.dataset.on = "false";
+            s2.style.zIndex = "0";
+          }
+        });
+      }, 1300);
     }, 7000);
   }
 
