@@ -917,9 +917,11 @@ def about_page(c, img):
 
 def road_ahead(c) -> str:
     """The timeline keeps going. Her brief asks Journey to run past the
-    present into the targets, and to close on the section she titled
-    Beyond the Finish Line, so both live here rather than only on the
-    partnership page."""
+    present into the targets, so the page closes on those.
+
+    Beyond the finish line used to close this page as well. Removed at the
+    client's instruction, 30 Aug 2026; the copy stays in the content file
+    against the day they want it back."""
     t = c.get("targets") or {}
     cards = "".join(
         f'<article class="step step-future" data-rise>'
@@ -929,7 +931,6 @@ def road_ahead(c) -> str:
         f'<h3>{e(i["title"])}</h3><p>{e(i["line"])}</p></div></article>'
         for i in t.get("items", [])
     )
-    bf = c.get("beyondFinishLine") or {}
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
@@ -938,13 +939,6 @@ def road_ahead(c) -> str:
       <p>{e(t.get('note') or '')}</p>
     </div>
     <div class="steps steps-future">{cards}</div>
-  </div>
-</section>
-<section class="prose-fold" data-ground="ice" id="beyond">
-  <div class="wrap prose">
-    <h2>{e(bf.get('kicker') or 'Beyond the finish line')}</h2>
-    <p class="pull">{e(bf.get('lede') or '')}</p>
-    <p>{e(bf.get('line') or '')}</p>
   </div>
 </section>"""
 
