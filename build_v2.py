@@ -59,12 +59,13 @@ FONTS = (
 # not a destination of its own; it is where the journey lands.
 # Her eight destinations, 26 Aug: Home is the wordmark, Contact is the
 # pill at the end of the row.
+# Home leaves the row: the BT monogram is the way back, as on the
+# reference. Contact stays the pill at the row's end.
 NAV = [
-    ("Home", "index.html"),
-    ("My journey", "journey.html"),
-    ("Achievements", "achievements.html"),
+    ("Story", "journey.html"),
+    ("Career", "achievements.html"),
     ("Speaking", "speaking.html"),
-    ("Partner with me", "partnership.html"),
+    ("Partnerships", "partnership.html"),
     ("Media", "media.html"),
     ("Journal", "journal.html"),
 ]
