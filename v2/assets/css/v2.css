@@ -4655,18 +4655,35 @@ body {
    discipline alone beneath it. A sixty-six character sentence needs a
    wider measure than a four-word title did, so this panel gets one. */
 
-.panel[data-size="closer"] .panel-body {
-  max-width: 46rem;
+/* The reference runs its line across the page and centres it; ours was
+   boxed into a 46rem column on the left, which is why it read as another
+   section rather than the finish. Every other panel on the site anchors
+   its type to the bottom-left corner. This one deliberately does not. */
+.panel[data-size="closer"] {
+  place-items: center;
+  text-align: center;
+  padding-bottom: var(--space-2xl);
 }
 
+.panel[data-size="closer"] .panel-body {
+  max-width: none;
+  justify-items: center;
+  text-align: center;
+}
+
+/* Sized so sixty-six characters land on two lines across the full column,
+   the shape the reference has. Measured: the face advances about 0.53em a
+   character, so two lines need roughly column-width over 17.5. */
 .panel[data-size="closer"] h2 {
-  font-size: clamp(1.75rem, 3.1vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 4.6vw, 4.4rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
 }
 
 .panel[data-size="closer"] .sub {
   font-family: var(--font-caption);
+  margin-inline: auto;
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.22em;
