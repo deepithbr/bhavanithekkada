@@ -1479,7 +1479,7 @@ def achievements_page(c, img):
   <div class="wrap prose">
     <h2>The official record</h2>
     <p>Every FIS-scored start she has taken is published on her athlete
-    page, independent of this site.</p>
+    page.</p>
     <a class="btn" data-on="accent" href="{e(fis)}" rel="noopener"
        target="_blank">Open her FIS profile</a>
   </div>
