@@ -1348,8 +1348,8 @@ def partnership_page(c, img):
 <section class="prose-fold" data-ground="ice" id="contact">
   <div class="wrap prose">
     <h2>Work with Bhavani</h2>
-    <p>Partner with Bhavani across sport, storytelling and long-term
-    impact.</p>
+    <p>Partner with Bhavani across sport, storytelling and the pathway
+    she is building in India.</p>
     <a class="btn" data-on="accent"
        href="contact.html?topic=Sponsorship">Start the conversation</a>
   </div>

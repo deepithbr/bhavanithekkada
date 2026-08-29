@@ -5440,12 +5440,25 @@ body {
   color: oklch(97% 0.006 250);
 }
 
-/* Texture only. No type, no padding, and nothing to announce. */
+/* Texture only. No type, no padding, and nothing to announce.
+
+   Block, not the grid .fund sets, and the image pinned to the box. As a
+   grid item the image's height:100% had no definite height to resolve
+   against, so object-fit had nothing to crop to and the plate rendered
+   the whole portrait frame: all sky, the group along the bottom edge.
+   Absolute inside a relative box gives it a real one. */
 .fund-plate {
   padding: 0;
   background: var(--color-paper-2);
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  display: block;
+  position: relative;
+}
+
+.fund-plate img {
+  position: absolute;
+  inset: 0;
 }
 
 .fund-plate:nth-of-type(even) {
@@ -5944,4 +5957,40 @@ body {
 .open-tiles li.opt-shot-tile::before {
   color: oklch(88% 0.09 245);
   opacity: 0.85;
+}
+
+/* ---------------------- touch targets
+
+   Audited across nine pages at 390, 768 and 1024. No horizontal scroll
+   anywhere and no clickable text wrapping to two lines, but a set of
+   text links sit at their own line height: the wordmark at 26px, the
+   Home crumb and the footer links at 19px, Partnership options at 14px,
+   Full record at 25px above the 700px breakpoint that was padding it.
+
+   A finger is not a cursor. On a coarse pointer these take enough
+   padding to clear 44px, which changes nothing on a mouse. */
+
+@media (pointer: coarse) {
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .crumb,
+  .foot-links a,
+  .backing-more a,
+  .hero-record,
+  .split-body .btn,
+  .prose > p > a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* The record link is padded below 700 already; this carries it up
+     through tablet widths, where a finger is still the pointer. */
+  .hero-record {
+    padding-block: 0.7rem;
+  }
 }
