@@ -1886,19 +1886,23 @@
     "disciplines": [
       {
         "name": "Classic",
-        "note": "Forward, parallel movement similar to running on skis."
+        "note": "Forward, parallel movement similar to running on skis.",
+        "kind": "Technique"
       },
       {
         "name": "Freestyle",
-        "note": "Outward skating movement designed for greater speed."
+        "note": "Outward skating movement designed for greater speed.",
+        "kind": "Technique"
       },
       {
         "name": "Sprint",
-        "note": "Short. Fast. Explosive."
+        "note": "Short. Fast. Explosive.",
+        "kind": "Race format"
       },
       {
         "name": "Distance",
-        "note": "Longer. Tactical. Endurance-led."
+        "note": "Longer. Tactical. Endurance-led.",
+        "kind": "Race format"
       }
     ],
     "yearNote": "India has no permanent snow in her discipline, so her year follows it across both hemispheres: Kashmir and Europe from December to March, conditioning on the coast through the Indian summer, then South America or New Zealand in August and September.",

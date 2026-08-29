@@ -3940,3 +3940,390 @@ a {
     width: calc(100% + 2 * var(--space-xl));
   }
 }
+
+
+/* =========================== the sport, as one horizontal band
+
+   The client's reference is a ski poster: the athlete set inside a
+   geometric shape on a near-white ground, a wide-tracked display word
+   under her, small caps everywhere else. Borrowed here as two devices
+   only, the cut plate and the type lockup. Everything else stays site
+   language, because pastiche reads as pastiche. */
+
+.sport-band {
+  padding-block: var(--space-3xl) var(--space-2xl);
+  overflow: hidden;
+}
+
+.sport-top {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .sport-top {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: var(--space-3xl);
+  }
+}
+
+/* The plate: her photograph cut on a slant, with a pale wedge behind it
+   offset up and left, the way the poster sets its subject in a shape. */
+.sport-cut {
+  position: relative;
+  margin: 0;
+  isolation: isolate;
+}
+
+/* One pale wedge sits behind, its slant parallel to the plate's, so it
+   reads as part of the composition rather than a stray shard. */
+.sport-cut::before {
+  content: "";
+  position: absolute;
+  inset: 4% 58% 4% -9%;
+  background: oklch(90% 0.038 245);
+  clip-path: polygon(0 14%, 100% 0, 100% 86%, 0 100%);
+  z-index: 0;
+}
+
+.cut-plate {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 3 / 4;
+}
+
+.cut-plate img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* Poster grade: near-monochrome, cool, snow held bright. */
+  filter: saturate(0.34) contrast(1.09) brightness(1.05);
+}
+
+/* Inside the wedge she is fully exposed; outside it she falls away to a
+   ghost on the ice ground. The two layers share a focal point, so the
+   edge cuts cleanly through one continuous frame. */
+.cut-main {
+  z-index: 2;
+  clip-path: polygon(19% 0, 100% 8%, 100% 100%, 19% 92%);
+}
+
+.cut-ghost {
+  z-index: 1;
+  opacity: 0.16;
+  filter: saturate(0.12) contrast(0.82) brightness(1.22);
+}
+
+/* The lockup, the poster's own: one wide-tracked word, a rule, a line of
+   small caps under it. */
+.sport-kicker {
+  color: var(--color-ink-2);
+}
+
+.sport-word {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 8vw, 6.4rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  margin: var(--space-2xs) 0 0;
+  /* The tracking adds a trailing space the eye reads as a left indent. */
+  text-indent: 0.16em;
+}
+
+.sport-word-sub {
+  font-family: var(--font-caption);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-ink-2);
+  margin-top: var(--space-2xs);
+  padding-top: var(--space-2xs);
+  border-top: var(--rule-hair) solid var(--color-line);
+  display: inline-block;
+}
+
+.sport-lede {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 42ch;
+  margin-top: var(--space-md);
+}
+
+.sport-lede-2 {
+  margin-top: var(--space-2xs);
+}
+
+.sport-band .sport-bridge {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  text-transform: none;
+  letter-spacing: 0;
+  margin-top: var(--space-lg);
+  padding-top: var(--space-sm);
+  border-top: 2px solid var(--color-accent);
+  border-image: none;
+  color: var(--color-ink);
+  max-width: 34ch;
+  display: inline-block;
+}
+
+/* The four ways she races, one horizontal row. Big thin numeral, the kind
+   above the name so technique and format stay distinguishable. */
+.sport-formats {
+  list-style: none;
+  margin: var(--space-2xl) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-lg) var(--space-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 860px) {
+  .sport-formats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.fmt {
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-sm);
+}
+
+.fmt-n {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.4vw, 3.1rem);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+
+.fmt-kind {
+  margin-top: var(--space-sm);
+  color: var(--color-ink-3, var(--color-ink-2));
+  letter-spacing: 0.2em;
+  font-size: 0.66rem;
+}
+
+.fmt h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin-top: var(--space-3xs);
+}
+
+.fmt p {
+  font-family: var(--font-body);
+  color: var(--color-ink-2);
+  margin-top: var(--space-3xs);
+}
+
+@media (max-width: 899px) {
+  .sport-cut {
+    max-width: 26rem;
+  }
+}
+
+
+/* ==================== hero typography, second pass
+
+   Three lines at one size read flat, however large they are. The impact
+   comes from scale contrast: a tracked-out overline, then two lines at
+   full display weight with the point of difference in accent. Her name
+   grows in the bar to match, since it is now the wordmark. */
+
+.wordmark-name {
+  font-size: clamp(1.35rem, 2.7vw, 2.4rem);
+}
+
+/* The link row tightens so her name can hold its size down to a laptop.
+   Below 1080 the row genuinely runs out of width, so the name gives way
+   there and only there. */
+@media (min-width: 900px) and (max-width: 1080px) {
+  .wordmark-name {
+    font-size: 1.45rem;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1280px) {
+  .nav-links {
+    gap: 1.35rem;
+  }
+
+  .nav-links a {
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links .nav-work {
+    padding: 0.6rem 1rem;
+  }
+}
+
+/* The overline: small, wide, with a drawn rule leading into it. */
+.panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+  font-size: clamp(0.72rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.36em;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+  color: oklch(100% 0 0 / 0.92);
+  display: flex;
+  align-items: center;
+  gap: 0.9em;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
+  content: "";
+  width: clamp(1.6rem, 4vw, 3.2rem);
+  height: 2px;
+  background: oklch(80% 0.105 245);
+  flex: none;
+}
+
+/* The two lines that carry it. */
+.panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+  font-size: clamp(2.4rem, 5.6vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+}
+
+.panel[data-size="hero"] .hero-min .hero-punch {
+  max-width: none;
+}
+
+@media (max-width: 700px) {
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+    font-size: clamp(2.2rem, 10.5vw, 3.2rem);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+    letter-spacing: 0.28em;
+  }
+}
+
+/* ---------------------- a panel whose copy sits on the right
+
+   The journey panel: she stands left of frame, so the words go right and
+   the grade follows them. One column at reading width, pushed to the end
+   of the grid, with the text itself still ranged left inside it. */
+
+.panel[data-align="right"] .panel-body {
+  display: grid;
+  grid-template-columns: min(34rem, 100%);
+  justify-content: end;
+  /* The body is capped for centred panels; here the cap becomes the inner
+     column instead, so the block can actually reach the right edge. */
+  max-width: none;
+}
+
+.panel[data-align="right"] .panel-shot::after {
+  background:
+    linear-gradient(
+      265deg,
+      rgba(3, 9, 20, 0.8) 0%,
+      rgba(3, 9, 20, 0.66) 20%,
+      rgba(3, 9, 20, 0.38) 42%,
+      rgba(3, 9, 20, 0.16) 62%,
+      rgba(3, 9, 20, 0.28) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.4) 0%,
+      rgba(3, 9, 20, 0) 46%
+    );
+}
+
+@media (max-width: 899px) {
+  .panel[data-align="right"] .panel-body {
+    grid-template-columns: 100%;
+    justify-content: start;
+    max-width: 40rem;
+  }
+
+  .panel[data-align="right"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.82) 0%,
+      rgba(3, 9, 20, 0.58) 30%,
+      rgba(3, 9, 20, 0.2) 58%,
+      rgba(3, 9, 20, 0.3) 100%
+    );
+  }
+}
+
+/* A photographic panel inside the stack has to fill the card, or the one
+   beneath shows through as it slides up. */
+@media (min-width: 900px) {
+  .stack > .panel {
+    min-height: 100svh;
+  }
+}
+
+/* ---------------------- a panel whose copy sits on the right
+
+   The journey panel: she stands left of frame, so the words go right and
+   the grade follows them. One column at reading width, pushed to the end
+   of the grid, with the text itself still ranged left inside it. */
+
+.panel[data-align="right"] .panel-body {
+  display: grid;
+  grid-template-columns: min(34rem, 100%);
+  justify-content: end;
+}
+
+.panel[data-align="right"] .panel-shot::after {
+  background:
+    linear-gradient(
+      265deg,
+      rgba(3, 9, 20, 0.8) 0%,
+      rgba(3, 9, 20, 0.66) 20%,
+      rgba(3, 9, 20, 0.38) 42%,
+      rgba(3, 9, 20, 0.16) 62%,
+      rgba(3, 9, 20, 0.28) 100%
+    ),
+    linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.4) 0%,
+      rgba(3, 9, 20, 0) 46%
+    );
+}
+
+@media (max-width: 899px) {
+  .panel[data-align="right"] .panel-body {
+    grid-template-columns: 100%;
+    justify-content: start;
+  }
+
+  .panel[data-align="right"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      rgba(3, 9, 20, 0.82) 0%,
+      rgba(3, 9, 20, 0.58) 30%,
+      rgba(3, 9, 20, 0.2) 58%,
+      rgba(3, 9, 20, 0.3) 100%
+    );
+  }
+}
+
+/* A photographic panel inside the stack has to fill the card, or the one
+   beneath shows through as it slides up. */
+@media (min-width: 900px) {
+  .stack > .panel {
+    min-height: 100svh;
+  }
+}

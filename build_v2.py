@@ -38,6 +38,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import re
 import pathlib
 
 from markdown_it import MarkdownIt
@@ -251,13 +252,15 @@ def statline(c) -> str:
 
 
 def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
-          pos=None, kicker=None) -> str:
+          pos=None, kicker=None, align=None) -> str:
     """The benchmark's one repeated shape.
 
     Photograph fills the fold, type centred over it, one outlined button
     underneath, a place-and-year caption last.
     """
     attrs = f' data-size="{size}"' if size else ""
+    if align:
+        attrs += f' data-align="{align}"'
     hero = size == "hero"
     btn = ""
     if cta:
@@ -372,47 +375,10 @@ def hero_panel(c, img) -> str:
 <section class="panel" data-size="hero">
   <div class="panel-shot">{tag}</div>
   <div class="wrap panel-body hero-min" data-rise>
-    <h1 class="hero-punch"><span>Pioneering</span><span><span
-      class="hl">India&rsquo;s</span> path</span><span>on snow</span></h1>
+    <h1 class="hero-punch"><span class="punch-eyebrow">Pioneering</span><span
+      class="punch-big"><span class="hl">India&rsquo;s</span> path</span><span
+      class="punch-big">on snow</span></h1>
     {chip}
-  </div>
-</section>"""
-
-
-def glance(c) -> str:
-    """Career at a glance, her homepage copy of 26 Aug. The paragraph is
-    hers, first person, and stands attributed as her own words; the
-    latitude statline sits under it as the quiet numeric version."""
-    h = c["hero"]
-    return f"""
-<section class="prose-fold" id="glance">
-  <div class="wrap">
-    <div class="prose" data-rise>
-      <p class="caption">{e(h.get('glanceKicker') or 'Career at a glance')}</p>
-      <h2>{e(h.get('glanceHeadline') or '')}</h2>
-      <p class="pull">{e(h.get('glanceBody') or '')}</p>
-      <p class="pull-cite caption">Bhavani, in her own words</p>
-    </div>
-    {statline(c)}
-  </div>
-</section>"""
-
-
-def quote_card(c) -> str:
-    """Her design reference for the statement: a quote card, oversized
-    marks, the words in the reading face, her name beneath. The card
-    replaces the bare pull quote that read as an empty stretch."""
-    h = c["hero"]
-    return f"""
-<section class="prose-fold stack-card" id="glance">
-  <div class="wrap">
-    <figure class="quote-card" data-rise>
-      <span class="qmark" aria-hidden="true">&ldquo;</span>
-      <blockquote>
-        <p>{e(h.get('glanceHeadline') or '')}</p>
-      </blockquote>
-      <figcaption class="caption">Bhavani Thekkada</figcaption>
-    </figure>
   </div>
 </section>"""
 
@@ -500,62 +466,57 @@ def levels_band(c, link=True) -> str:
 </section>"""
 
 
-def sport_fold(c) -> str:
-    """The sport, redesigned to the UI brief: visual first. Two feature
-    blocks with oversized numerals and line-drawn movement diagrams carry
-    Classic and Freestyle; Sprint and Distance sit beneath as a compact
-    pair; her connection closes the section as a ruled strip. The old
-    two-column data-sheet composition is gone."""
+def sport_fold(c, img) -> str:
+    """The sport, rebuilt to the client's poster reference: one horizontal
+    band rather than a stack of cards.
+
+    A photograph of her cut into an angled slab on the left, with a pale
+    wedge offset behind it the way the poster sets its subject inside a
+    shape. The name of the sport is the poster's own lockup, a wide-tracked
+    display word over a small-caps line. Her four ways of racing run as a
+    single row beneath, each tagged with what it actually is, so the
+    technique-and-format distinction from her earlier brief survives inside
+    one row of four."""
     sp = c["sport"]
     ds = sp.get("disciplines", [])
-
-    # Minimal monochrome movement diagrams. Classic: parallel tracks and
-    # parallel skis, forward. Freestyle: skis angled outward, pushing wide.
-    classic_svg = """<svg viewBox="0 0 220 110" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <line x1="12" y1="72" x2="208" y2="72" opacity="0.35"/>
-      <line x1="12" y1="82" x2="208" y2="82" opacity="0.35"/>
-      <line x1="12" y1="94" x2="208" y2="94" opacity="0.35"/>
-      <line x1="12" y1="104" x2="208" y2="104" opacity="0.35"/>
-      <rect x="52" y="73" width="92" height="5" rx="2.5"/>
-      <rect x="88" y="95" width="92" height="5" rx="2.5"/>
-      <path d="M150 38h44m0 0-10-8m10 8-10 8" stroke-width="2.4"/>
-    </svg>"""
-    freestyle_svg = """<svg viewBox="0 0 220 110" fill="none" stroke="currentColor"
-      stroke-width="2" stroke-linecap="round" aria-hidden="true">
-      <line x1="104" y1="98" x2="48" y2="34" stroke-width="5"/>
-      <line x1="116" y1="98" x2="172" y2="34" stroke-width="5"/>
-      <path d="M60 62 38 44m0 0 2 12m-2-12 12-2" stroke-width="2.2"/>
-      <path d="M160 62l22-18m0 0-2 12m2-12-12-2" stroke-width="2.2"/>
-    </svg>"""
-    art = [classic_svg, freestyle_svg]
-    techs = "".join(
-        f'<article class="tech" data-rise>'
-        f'<span class="tech-n" aria-hidden="true">0{n + 1}</span>'
-        f'<h3>{e(d["name"])}</h3>{art[n]}'
-        f'<p>{e(d.get("note") or "")}</p></article>'
-        for n, d in enumerate(ds[:2])
+    # The poster's signature move: the wedge cuts through the athlete, so
+    # the part inside it is fully exposed and the part outside falls away
+    # to a ghost on the ice ground. Two copies of one frame, aligned on the
+    # same focal point; the browser decodes the file once.
+    slot = "double-pole"
+    base = img.tag(slot, "(min-width: 900px) 42vw, 100vw").replace(
+        f"object-position:{img.focal(slot)}", "object-position:54% 30%"
     )
-    formats = "".join(
-        f'<div class="format"><h4>{e(d["name"])}</h4>'
-        f'<p>{e(d.get("note") or "")}</p></div>'
-        for d in ds[2:4]
+    ghost = base.replace("<img ", '<img class="cut-ghost" aria-hidden="true" ', 1)
+    ghost = re.sub(r'alt="[^"]*"', 'alt=""', ghost, count=1)
+    main = base.replace("<img ", '<img class="cut-main" ', 1)
+    shot = ghost + main
+    fmts = "".join(
+        f'<li class="fmt" data-rise>'
+        f'<span class="fmt-n">{n + 1:02d}</span>'
+        f'<p class="fmt-kind caption">{e(d.get("kind") or "")}</p>'
+        f'<h3>{e(d["name"])}</h3>'
+        f'<p>{e(d.get("note") or "")}</p></li>'
+        for n, d in enumerate(ds[:4])
     )
     return f"""
-<section class="prose-fold" id="sport">
+<section class="sport-band" id="sport" data-ground="ice">
   <div class="wrap">
-    <div class="sport-head" data-rise>
-      <p class="caption">{e(sp.get('kicker') or 'The sport')}</p>
-      <h2>{e(sp.get('nordicHeading') or 'Cross-Country Skiing')}</h2>
-      <p class="sport-intro">{e(sp.get('nordicIntro') or '')}</p>
-      <p class="sport-intro">{e(sp.get('lede') or '')}</p>
+    <div class="sport-top">
+      <figure class="sport-cut" data-rise>
+        <div class="cut-plate">{shot}</div>
+      </figure>
+      <div class="sport-say" data-rise>
+        <p class="caption sport-kicker">{e(sp.get('kicker') or 'The sport')}</p>
+        <p class="sport-word">Nordic</p>
+        <p class="sport-word-sub">{e(sp.get('nordicHeading')
+                                    or 'Cross-country skiing')}</p>
+        <p class="sport-lede">{e(sp.get('nordicIntro') or '')}</p>
+        <p class="sport-lede sport-lede-2">{e(sp.get('lede') or '')}</p>
+        <p class="sport-bridge">{e(sp.get('context') or '')}</p>
+      </div>
     </div>
-    <div class="tech-blocks">{techs}</div>
-    <div class="formats" data-rise>
-      <p class="caption">Race formats</p>
-      <div class="formats-row">{formats}</div>
-    </div>
-    <p class="sport-bridge caption" data-rise>{e(sp.get('context') or '')}</p>
+    <ol class="sport-formats">{fmts}</ol>
   </div>
 </section>"""
 
@@ -649,28 +610,6 @@ def tiles(title, sub, cta, items, ground=None, kicker=None) -> str:
 </section>"""
 
 
-def journey_tiles(c: dict, img: Img) -> str:
-    beats = [
-        b for b in c["story"]["beats"]
-        if b.get("image") and (img.get(b["image"]) or {}).get("rights") == "owned"
-    ][:4]
-    items = [
-        f"""<a class="tile" href="journey.html#beat-{e(b['id'])}" data-rise>
-      <span class="tile-shot">{img.tag(b['image'], TILE_SIZES)}</span>
-      <p class="caption">{e(b['year'])}</p>
-      <h3>{e(b['heading'])}</h3>
-    </a>"""
-        for b in beats
-    ]
-    return tiles(
-        "My journey",
-        "Six seasons, fourteen race locations, both hemispheres.",
-        ("View journey", "journey.html"),
-        items,
-        kicker="The journey",
-    )
-
-
 def media_tiles(c: dict, img: Img) -> str:
     items = [
         f"""<figure class="tile" data-rise>
@@ -741,12 +680,16 @@ def page(c: dict, img: Img) -> str:
 <main id="main">
 <div class="stack">
 {hero_panel(c, img)}
-{quote_card(c)}
 {who_she_is(c, img)}
+{panel(img, 'chile-lake', 'My journey',
+       'Six seasons, fourteen race locations, both hemispheres. There was '
+       'no route to follow out of India in this sport, so it got built one '
+       'start line at a time.',
+       ('View journey', 'journey.html'), kicker='The journey',
+       pos='38% 44%', align='right')}
 </div>
 {sponsors(c)}
-{sport_fold(c)}
-{journey_tiles(c, img)}
+{sport_fold(c, img)}
 {media_tiles(c, img)}
 {panel(img, SHOTS['closer'], 'The road to 2030',
        'Four seasons between here and a start list in the French Alps.',
