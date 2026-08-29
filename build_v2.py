@@ -79,7 +79,7 @@ ORIGIN = "https://bhavanithekkada.pages.dev"
 # the home page is visible in one place and can be swapped without reading any
 # markup. Every one is from her own archive, rights settled.
 SHOTS = {
-    "hero": "race-worldcup",
+    "hero": "hero-portrait",
     "sport": "classic-tracks",
     "about": "portrait-studio",
     "closer": "holmenkollen",
@@ -317,9 +317,11 @@ def sponsors(c: dict) -> str:
 # Three frames, not four: the Worlds start, the flag, the motion. The
 # Holmenkollen frame left the rotation because it closes the page and a
 # hero should not preview its own ending.
-# Two frames. The training shot left on client review: black kit and a
-# bandana read casual against the race frames.
+# Three frames, face first: the Gulmarg portrait in the India suit
+# opens so a visitor meets her before the venues, then the Worlds
+# start, then the flag.
 HERO_SLIDES = [
+    ("hero-portrait", "50% 25%"),
     ("race-worldcup", "50% 45%"),
     ("flag-harbin", "50% 34%"),
 ]
