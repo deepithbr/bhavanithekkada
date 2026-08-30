@@ -5982,7 +5982,7 @@ body {
   /* Capitals, at her request of 30 Aug. Uppercase runs about a seventh
      wider than mixed case at the same size and needs tracking opened
      rather than closed, so the size comes down to hold the bar. */
-  font-size: clamp(1.05rem, 1.9vw, 1.7rem);
+  font-size: clamp(1.25rem, 2.4vw, 2.15rem);
   letter-spacing: 0.02em;
   text-transform: uppercase;
   line-height: 1;
@@ -5994,19 +5994,22 @@ body {
    overlap. */
 @media (min-width: 900px) and (max-width: 1200px) {
   .wordmark-name {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
   }
 }
 
-@media (min-width: 900px) and (max-width: 1080px) {
+@media (min-width: 900px) and (max-width: 1000px) {
+  /* Measured: at 905 the link row genuinely runs out of bar, and Contact
+     clips off the right edge above this. By 1000 there is room again, so
+     the band stops there rather than holding the name small to 1080. */
   .wordmark-name {
-    font-size: 1.02rem;
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 520px) {
   .wordmark-name {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
   }
 }
 
@@ -6404,5 +6407,178 @@ body {
     min-height: 100svh;
     display: grid;
     align-content: center;
+  }
+}
+
+
+/* ==================== 30 August, second pass
+
+   Her father's line closes the story column instead of sitting on a
+   plate beside it, and the sport card takes her copy and closes on
+   where the season goes.
+   ==================================================================== */
+
+/* ------------------------------------------- the line that ends the story
+
+   Not a plate. The marked block read as a pull quote pinned to the side
+   of the column, which made her father's advice look like commentary on
+   the story rather than the end of it. It sits in the column now, at the
+   end, in bold and a step up from the paragraphs above it. Newsreader is
+   asked for at 300..700 so this is a real weight, not a synthesised one. */
+.split-close {
+  margin: var(--space-md) 0 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 0.4vw + 1.05rem, 1.4rem);
+  line-height: 1.45;
+  color: var(--color-ink);
+  max-width: 42ch;
+}
+
+.split-body .split-close + .facts {
+  margin-top: var(--space-xl);
+}
+
+
+/* --------------------------------------------- where the season goes
+
+   The closing band on the sport card. Two columns of grey text under a
+   hairline was the quietest thing on the page, and it carries the single
+   fact that explains her whole year: no permanent snow at home, so the
+   season travels. It goes full width on a dark ground with an open ridge
+   behind it, and closes the card rather than trailing off the end of it.
+
+   The places along the foot are the ones her own paragraph names, in her
+   order. Nothing there is a claim the sentence above does not make. */
+.sport-season {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: var(--space-3xl);
+  padding-block: var(--space-2xl);
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+}
+
+.season-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.season-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.55;
+}
+
+/* Heaviest under the heading, clearing to the right where the ridge is
+   worth seeing. It also carries the ground if the frame never arrives. */
+.season-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      100deg,
+      oklch(17% 0.035 255 / 0.9) 0%,
+      oklch(17% 0.035 255 / 0.74) 40%,
+      oklch(17% 0.035 255 / 0.42) 100%
+    ),
+    linear-gradient(
+      to top,
+      oklch(17% 0.035 255 / 0.55) 0%,
+      oklch(17% 0.035 255 / 0) 40%
+    );
+}
+
+.season-inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 860px) {
+  .season-inner {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr);
+    column-gap: var(--space-2xl);
+    row-gap: var(--space-xl);
+  }
+
+  .season-places {
+    grid-column: 1 / -1;
+  }
+}
+
+.season-head {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-transform: none;
+  color: var(--color-ink-on-deep);
+  max-width: 14ch;
+  margin: 0;
+}
+
+.season-say {
+  display: grid;
+  gap: var(--space-sm);
+  max-width: 62ch;
+}
+
+.season-say p {
+  font-family: var(--font-body);
+  font-size: clamp(1.02rem, 0.3vw + 0.96rem, 1.18rem);
+  line-height: 1.6;
+  color: var(--color-ink-on-deep-2);
+  margin: 0;
+  text-shadow: 0 1px 10px oklch(14% 0.03 255 / 0.5);
+}
+
+/* Where the winter takes her, along the foot. A ruled strip rather than a
+   list, so it reads as a route across the band. */
+.season-places {
+  list-style: none;
+  margin: 0;
+  /* The list keeps a UA indent unless the inline padding is named, and it
+     was pushing the row 40px clear of the heading above it. */
+  padding-inline: 0;
+  padding-bottom: 0;
+  padding-top: var(--space-md);
+  border-top: var(--rule-hair) solid oklch(80% 0.02 250 / 0.28);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs) var(--space-md);
+}
+
+.season-places li {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent-bright);
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* A hairline between the places, never after the last one. */
+.season-places li:not(:last-child)::after {
+  content: "";
+  width: 1.6rem;
+  height: var(--rule-hair);
+  background: oklch(80% 0.02 250 / 0.4);
+}
+
+/* Inside the card stack the sport section pads its own block, which left
+   the band floating clear of the foot. It reaches the edge instead, so
+   the card ends dark and the white record card after it lands clean. */
+@media (min-width: 900px) {
+  .stack > .sport-band .sport-season {
+    margin-bottom: calc(var(--space-2xl) * -1);
   }
 }

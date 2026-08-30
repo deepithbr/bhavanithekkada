@@ -61,7 +61,7 @@ FONTS = (
     "https://fonts.googleapis.com/css2"
     "?family=Archivo:wght@400;500;600;700;800"
     "&family=IBM+Plex+Mono:wght@400;500"
-    "&family=Newsreader:opsz,wght@6..72,300..500"
+    "&family=Newsreader:opsz,wght@6..72,300..700"
     "&display=swap"
 )
 
@@ -598,7 +598,7 @@ def who_she_is(c, img) -> str:
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
     <p>{e(h.get('profileBody4') or '')}</p>
-    {f'<p class="split-note">{e(h["profileClose"])}</p>'
+    {f'<p class="split-close">{e(h["profileClose"])}</p>'
      if h.get('profileClose') else ''}
     <dl class="facts">{facts}</dl>
   </div>
@@ -671,6 +671,10 @@ SLAB_SHOTS = ["race-worldcup", "holmenkollen", "flag-harbin",
 
 SLAB_SIZES = "(min-width:900px) 16vw, 44vw"
 
+# Behind the season band: a long line of skiers spread across an open
+# ridge, which is the nearest owned frame to what the band is about.
+SEASON_SHOT = "snow-ridge-line"
+
 
 def record_slabs(c, img) -> str:
     """The level of competition, as the client's slab reference.
@@ -703,12 +707,12 @@ def record_slabs(c, img) -> str:
 <section class="slabs" id="record">
   <div class="wrap">
     <div class="slabs-head" data-rise>
-      <p class="caption">The record</p>
-      <h2>Level of competition</h2>
+      <p class="caption">Level of competition</p>
+      <h2>The record</h2>
     </div>
     <ol class="slab-row">{lis}</ol>
-    <p class="caption slabs-more"><a href="achievements.html">The full
-      record, race by race &rarr;</a></p>
+    <p class="caption slabs-more"><a href="achievements.html">Every
+      start, race by race &rarr;</a></p>
   </div>
 </section>"""
 
@@ -761,6 +765,31 @@ def sport_fold(c, img) -> str:
         + "</div>"
         for k in order
     )
+    # Where her season goes, and why it has to. It closes the card
+    # because it is the consequence of everything above it: two
+    # techniques and two formats, raced in a country with a short
+    # season, which is what puts her on four continents a year.
+    season = ""
+    if sp.get("seasonHeading"):
+        ridge = img.tag(SEASON_SHOT, "100vw").replace(
+            f'object-position:{img.focal(SEASON_SHOT)}',
+            "object-position:50% 46%")
+        ridge = re.sub(r'alt="[^"]*"', 'alt=""', ridge, count=1)
+        ridge = ridge.replace("<img ", '<img aria-hidden="true" ', 1)
+        places = "".join(
+            f'<li>{e(x)}</li>' for x in sp.get("seasonPlaces", []))
+        season = f"""
+<aside class="sport-season" data-rise>
+  <div class="season-shot">{ridge}</div>
+  <div class="wrap season-inner">
+    <h3 class="season-head">{e(sp['seasonHeading'])}</h3>
+    <div class="season-say">
+      <p>{e(sp.get('seasonBody') or '')}</p>
+      <p>{e(sp.get('seasonBody2') or '')}</p>
+    </div>
+    {f'<ol class="season-places">{places}</ol>' if places else ''}
+  </div>
+</aside>"""
     return f"""
 <section class="sport-band" id="sport" data-ground="ice">
   <div class="wrap">
@@ -779,6 +808,7 @@ def sport_fold(c, img) -> str:
     </div>
     <div class="sport-ways">{ways}</div>
   </div>
+  {season}
 </section>"""
 
 

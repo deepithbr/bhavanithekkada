@@ -1989,26 +1989,26 @@
   },
   "sport": {
     "kicker": "The sport",
-    "lede": "Athletes use skis and poles to race across changing terrain, climbing and descending entirely under their own power.",
+    "lede": "Cross-country skiing is built around two techniques, Classic and Freestyle, raced across formats ranging from explosive sprints to demanding distance events.",
     "disciplines": [
       {
         "name": "Classic",
-        "note": "Forward, parallel movement similar to running on skis.",
+        "note": "Traditional diagonal-stride technique.",
         "kind": "Technique"
       },
       {
         "name": "Freestyle",
-        "note": "Outward skating movement designed for greater speed.",
+        "note": "A faster, skating-based technique.",
         "kind": "Technique"
       },
       {
         "name": "Sprint",
-        "note": "Short. Fast. Explosive.",
+        "note": "Short, high-intensity racing, typically around 1–1.6 km.",
         "kind": "Race format"
       },
       {
         "name": "Distance",
-        "note": "Longer. Tactical. Endurance-led.",
+        "note": "Endurance racing across longer courses, from 5 km to 50 km and beyond.",
         "kind": "Race format"
       }
     ],
@@ -2016,7 +2016,18 @@
     "headline": "Two techniques. Two race formats. Endless ways to race.",
     "nordicHeading": "Cross-Country Skiing",
     "nordicIntro": "Endurance racing on snow.",
-    "context": "Bhavani races both techniques across sprint and distance events."
+    "context": "Bhavani competes across both techniques and formats, with her competitive experience so far spanning races from 5 km to 21 km.",
+    "seasonHeading": "Following winter around the world.",
+    "seasonBody": "Cross-country skiing depends on snow, and India offers only a limited training season. For Bhavani, preparation and competition therefore move with winter itself.",
+    "seasonBody2": "From the Indian Himalayas to Europe, South America, New Zealand and across Asia, each season means travelling to where the snow, training and races are.",
+    "sourceNote": "Sport copy supplied by the client, 30 Aug 2026. yearNote is left in place: the About page still reads it.",
+    "seasonPlaces": [
+      "Indian Himalayas",
+      "Europe",
+      "South America",
+      "New Zealand",
+      "Asia"
+    ]
   },
   "headline": {
     "claim": "The first Indian woman to win a medal in a FIS-scored cross-country race.",
