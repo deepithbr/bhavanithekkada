@@ -5979,9 +5979,12 @@ body {
 .wordmark-name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.3rem, 2.3vw, 2rem);
-  letter-spacing: -0.02em;
-  text-transform: none;
+  /* Capitals, at her request of 30 Aug. Uppercase runs about a seventh
+     wider than mixed case at the same size and needs tracking opened
+     rather than closed, so the size comes down to hold the bar. */
+  font-size: clamp(1.05rem, 1.9vw, 1.7rem);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
   line-height: 1;
   white-space: nowrap;
 }
@@ -5991,19 +5994,19 @@ body {
    overlap. */
 @media (min-width: 900px) and (max-width: 1200px) {
   .wordmark-name {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
   }
 }
 
 @media (min-width: 900px) and (max-width: 1080px) {
   .wordmark-name {
-    font-size: 1.2rem;
+    font-size: 1.02rem;
   }
 }
 
 @media (max-width: 520px) {
   .wordmark-name {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
 }
 
