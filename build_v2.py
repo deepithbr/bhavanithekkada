@@ -1863,6 +1863,31 @@ def sync_assets() -> None:
     if og.exists():
         shutil.copytree(og, dst / "og", dirs_exist_ok=True)
 
+    # The stylesheet pulls tokens.css in with a bare `@import url(...)`,
+    # and that URL carries no version. The page link does: v2.css?v=HASH
+    # changes whenever any of the three files change. So a token edit
+    # refetched the stylesheet and then reused the cached tokens, and
+    # `_headers` caches /assets/* for a year as immutable, which means a
+    # colour or a type-scale change could sit invisible on a returning
+    # visitor's machine until the cache expired.
+    #
+    # Measured: after darkening --color-ink-3 and raising --text-xs the
+    # rebuilt page still reported 12px at 3.87:1 in the browser while the
+    # file on disk said otherwise.
+    #
+    # Inlining it at the root fixes the versioning and drops a serialised
+    # round trip: an @import cannot start until the file importing it has
+    # arrived.
+    css = dst / "css" / "v2.css"
+    tok = dst / "css" / "tokens.css"
+    if css.exists() and tok.exists():
+        text = css.read_text(encoding="utf-8")
+        line = '@import url("tokens.css");'
+        if line in text:
+            css.write_text(
+                text.replace(line, tok.read_text(encoding="utf-8"), 1),
+                encoding="utf-8")
+
 
 def main() -> int:
     if AT_ROOT:

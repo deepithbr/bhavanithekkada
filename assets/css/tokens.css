@@ -22,7 +22,11 @@
   /* ---- ink ------------------------------------------------------------ */
   --color-ink: oklch(24% 0.035 255);
   --color-ink-2: oklch(43% 0.028 255);
-  --color-ink-3: oklch(58% 0.022 255);
+  /* Was 58%. Measured against paper that gave 3.87:1, under the 4.5:1
+     WCAG AA floor for text this size, and every caption on the site sits
+     in it. At 49% the same pairing measures about 5.4:1. Every use of
+     this token is on a light ground, so nothing loses by the change. */
+  --color-ink-3: oklch(49% 0.022 255);
   --color-ink-on-deep: oklch(97% 0.006 250);
   --color-ink-on-deep-2: oklch(76% 0.018 250);
 
@@ -49,7 +53,11 @@
   --font-body: "Newsreader", Georgia, "Times New Roman", serif;
   --font-caption: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
 
-  --text-xs: 0.75rem;
+  /* Was 0.75rem. 12px carried the section kickers, the fact labels,
+     the footer fine print, the buttons and several links at once, which
+     is one size too many jobs. 13px lifts all of them; the tracked caps
+     it is mostly used for read a further point larger again. */
+  --text-xs: 0.8125rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;

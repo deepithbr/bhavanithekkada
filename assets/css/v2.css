@@ -30,7 +30,110 @@
  * shares no CSS, no JavaScript and no markup with it.
  */
 
-@import url("tokens.css");
+/* Hallmark · tokens · Bhavani Thekkada V2
+ * theme: custom (tuned) · vibe: "white snow, India blue, quiet record"
+ * paper oklch(99% 0.003 250) light  ·  accent oklch(50% 0.17 252) cool
+ * display Archivo · body Newsreader · caption IBM Plex Mono
+ * axes: paper-band=light / display-style=grotesk-sans / accent-hue=cool
+ *
+ * V1 lives at the repository root and is untouched. This file is the whole
+ * colour and spacing vocabulary for V2; every rule in v2.css references a
+ * token by name and never an inline value.
+ */
+
+:root {
+  /* ---- paper ---------------------------------------------------------- */
+  /* Three grounds, not one. White carries the photographs, the ice band
+     separates a section without needing a rule, and the deep band is used
+     once, in the footer, so it reads as an ending. */
+  --color-paper: oklch(99% 0.003 250);
+  --color-paper-2: oklch(96.5% 0.008 245);
+  --color-paper-3: oklch(93% 0.012 245);
+  --color-paper-deep: oklch(22% 0.035 255);
+
+  /* ---- ink ------------------------------------------------------------ */
+  --color-ink: oklch(24% 0.035 255);
+  --color-ink-2: oklch(43% 0.028 255);
+  /* Was 58%. Measured against paper that gave 3.87:1, under the 4.5:1
+     WCAG AA floor for text this size, and every caption on the site sits
+     in it. At 49% the same pairing measures about 5.4:1. Every use of
+     this token is on a light ground, so nothing loses by the change. */
+  --color-ink-3: oklch(49% 0.022 255);
+  --color-ink-on-deep: oklch(97% 0.006 250);
+  --color-ink-on-deep-2: oklch(76% 0.018 250);
+
+  /* ---- accent --------------------------------------------------------- */
+  /* One blue. It is the blue of her race suit, and it is the only chromatic
+     colour in the interface. Every other colour on the page arrives inside a
+     photograph. */
+  --color-accent: oklch(50% 0.17 252);
+  --color-accent-bright: oklch(59% 0.18 250);
+  --color-accent-wash: oklch(95% 0.03 250);
+
+  /* ---- medal ---------------------------------------------------------- */
+  --color-gold: oklch(72% 0.13 82);
+  --color-silver: oklch(72% 0.012 250);
+  --color-bronze: oklch(62% 0.10 55);
+
+  /* ---- lines and focus ------------------------------------------------ */
+  --color-line: oklch(89% 0.012 245);
+  --color-line-soft: oklch(93.5% 0.008 245);
+  --color-focus: oklch(50% 0.17 252);
+
+  /* ---- type ----------------------------------------------------------- */
+  --font-display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-caption: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  /* Was 0.75rem. 12px carried the section kickers, the fact labels,
+     the footer fine print, the buttons and several links at once, which
+     is one size too many jobs. 13px lifts all of them; the tracked caps
+     it is mostly used for read a further point larger again. */
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 0.6vw + 1.1rem, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.1vw + 1.25rem, 2rem);
+  --text-3xl: clamp(1.9rem, 1.9vw + 1.4rem, 2.75rem);
+  --text-4xl: clamp(2.3rem, 3.2vw + 1.5rem, 4rem);
+  --text-display-s: clamp(2.6rem, 5vw + 1rem, 5rem);
+  --text-display: clamp(3rem, 8vw + 0.5rem, 7.5rem);
+
+  /* ---- space (4pt) ----------------------------------------------------- */
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: clamp(5rem, 10vw, 9rem);
+
+  /* ---- rules and radii -------------------------------------------------- */
+  --rule-hair: 1px;
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-pill: 999px;
+
+  /* ---- motion ---------------------------------------------------------- */
+  /* Three easings, no browser default. Durations are short on purpose: the
+     Photographic macrostructure asks for no spatial motion, so the only
+     movement here is a short fade and a slow image scale on hover. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 140ms;
+  --dur-mid: 320ms;
+  --dur-slow: 700ms;
+
+  /* ---- measure --------------------------------------------------------- */
+  --measure: 58ch;
+  --measure-tight: 42ch;
+  --col: 76rem;
+}
+
 
 /* ------------------------------------------------------------------ reset */
 
@@ -1663,6 +1766,9 @@ a {
   transform: translate(-50%, -50%);
 }
 
+/* The readout takes the accent, because it is the thing that moves and it
+   pairs with the dot. It was 9.92px, which is smaller than anything else
+   on the site and the only element on the page changing as you scroll. */
 .lat-rail b {
   position: absolute;
   right: 0.8rem;
@@ -1670,24 +1776,30 @@ a {
   transform: translateY(-50%);
   font-family: var(--font-caption);
   font-weight: 500;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--color-ink-3);
+  /* Accent measured 4.33:1 against the rail track, just under the floor,
+     and this is the one number on the rail a reader might actually use.
+     The dot keeps the accent; the figure takes full ink. */
+  color: var(--color-ink);
   white-space: nowrap;
 }
 
+/* The ends are the scale the readout runs between. At 0.58rem they were
+   9.28px on the rail track at 3.09:1, which is not a label, it is a
+   texture that happens to be made of numbers. */
 .lat-rail .lat-end {
   position: absolute;
   right: 0.8rem;
   font-family: var(--font-caption);
-  font-size: 0.58rem;
+  font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: var(--color-ink-3);
+  color: var(--color-ink-2);
   white-space: nowrap;
 }
 
-.lat-rail .lat-end[data-end="n"] { top: -1.1rem; }
-.lat-rail .lat-end[data-end="s"] { bottom: -1.1rem; }
+.lat-rail .lat-end[data-end="n"] { top: -1.35rem; }
+.lat-rail .lat-end[data-end="s"] { bottom: -1.35rem; }
 
 /* On the dark grounds the rail would vanish; it dims instead of lying. */
 
@@ -3878,7 +3990,9 @@ a {
 /* The way to the record, at the far right of the hero foot. */
 .hero-record {
   font-family: var(--font-caption);
-  font-size: 0.72rem;
+  /* Was 0.72rem. It is a link, sitting over a photograph, and it was the
+     smallest interactive text on the site. */
+  font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
