@@ -536,7 +536,8 @@ def glance_fold(c, img) -> str:
     photograph. The line is a quotation and is signed rather than filed
     under a section label, and the stroke stays under the half that is
     about her. The two paragraphs sit in a pair of columns underneath at
-    a size meant to be read rather than scanned.
+    a size meant to be read rather than scanned, in one column on the left
+    so the photograph keeps the half of the frame worth looking at.
     """
     h = c["hero"]
     shot = img.tag(GLANCE_SHOT, "100vw").replace(
@@ -544,14 +545,26 @@ def glance_fold(c, img) -> str:
     )
     shot = re.sub(r'alt="[^"]*"', 'alt=""', shot, count=1)
     shot = shot.replace("<img ", '<img aria-hidden="true" ', 1)
+    # The quotation breaks where she breaks it, at the comma, so the
+    # marked phrase starts its own line. Left inline it sat against the
+    # comma and the two read as one word. If the phrase is ever absent
+    # from the line the whole thing falls back to a single block.
+    line = h.get("glanceHeadline") or ""
+    mark = h.get("glanceMark")
+    if mark and mark in line:
+        lead, rest = line.split(mark, 1)
+        quote = (f'<span class="q-a">&ldquo;{e(lead.rstrip())}</span>'
+                 f'<span class="q-b">{draw_mark(mark + rest, mark)}'
+                 f'&rdquo;</span>')
+    else:
+        quote = f'<span class="q-a">&ldquo;{draw_mark(line, mark)}&rdquo;</span>'
     return f"""
 <section class="glance" id="glance">
   <div class="glance-shot">{shot}</div>
   <div class="wrap glance-body">
     <figure class="glance-quote" data-rise>
       <blockquote>
-        <p class="glance-head">&ldquo;{draw_mark(
-          h.get('glanceHeadline') or '', h.get('glanceMark'))}&rdquo;</p>
+        <p class="glance-head">{quote}</p>
       </blockquote>
       <figcaption class="caption glance-by">{e(h.get(
         'glanceAttrib') or '')}</figcaption>

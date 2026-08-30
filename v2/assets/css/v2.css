@@ -6085,11 +6085,23 @@ body {
   line-height: 1.03;
   letter-spacing: -0.03em;
   color: var(--color-ink-on-deep);
-  max-width: 20ch;
+  max-width: 34ch;
   margin: 0;
-  /* The opening quote mark hangs into the margin, so the first letter
-     still lines up with the paragraphs underneath rather than sitting a
-     mark's width to the right of them. */
+}
+
+/* Two deliberate lines, broken at her own comma. The marked phrase was
+   an inline-block landing straight after it, and a bold b at display
+   size against a comma reads as one word whatever the measured space
+   between them says. */
+.q-a,
+.q-b {
+  display: block;
+}
+
+/* The opening quote mark hangs into the margin, so the W still lines up
+   with the second line and with the paragraphs underneath rather than
+   sitting a mark's width to the right of them. */
+.q-a {
   text-indent: -0.42em;
 }
 
@@ -6141,18 +6153,17 @@ body {
   stroke: var(--color-accent-bright);
 }
 
+/* Her note of 30 Aug: one below the other, not side by side. Two columns
+   spanning the card put a block of text across the middle of the frame,
+   which is where the climbers are. Stacked in one measure on the left,
+   the photograph keeps the rest of it. */
 .glance-cols {
   display: grid;
   gap: var(--space-md);
-  max-width: 64rem;
+  /* Around 64 characters. Wider and the serif lines get hard to track
+     back, and the block starts reaching the climbers in the frame. */
+  max-width: 36rem;
   margin-top: var(--space-xl);
-}
-
-@media (min-width: 820px) {
-  .glance-cols {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xl);
-  }
 }
 
 .glance-cols p {
