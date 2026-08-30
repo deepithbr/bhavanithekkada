@@ -29,7 +29,7 @@
   },
   "hero": {
     "eyebrow": "Cross-Country Skier · India",
-    "line": "Pioneering India’s path on snow",
+    "line": "The long way to snow",
     "standfirst": "She grew up on a coffee farm in Karnataka and did not see snow until she was twenty. At thirty she took a World Cup start at 66°N in northern Finland.",
     "standfirstSource": {
       "sourceType": "public-secondary",
@@ -67,8 +67,8 @@
       ]
     },
     "profileHeading": "It started with a film, and a race on television.",
-    "profileBody": "In 2013, a Bollywood film sparked her curiosity about the mountains. What began with an NCC mountaineering camp in Manali led her into mountaineering, eventually to a career as a mountaineering instructor in Darjeeling, and later to Kashmir, where she first discovered skiing.",
-    "profileBody2": "In 2018, while training in alpine skiing in Kashmir, she came across the Norwegian legend Marit Bjørgen racing cross-country at the Winter Olympics. It was her first glimpse of the sport, and it stayed with her. Two years later she finally had the chance to try it herself, and what began as a chance to try something new became a passion. In 2021 she decided to pursue cross-country skiing full time.",
+    "profileBody": "In 2013, a Bollywood film sparked Bhavani’s curiosity about the mountains. An NCC mountaineering camp in Manali followed, leading her into mountaineering, then to work as an instructor in Darjeeling, and eventually to Kashmir, where she first discovered skiing.",
+    "profileBody2": "In 2018, while training in alpine skiing in Kashmir, she watched Norwegian legend Marit Bjørgen race cross-country at the Winter Olympics. It was her first glimpse of the sport, and the idea stayed with her.",
     "profileFacts": [
       {
         "k": "Born",
@@ -84,18 +84,26 @@
       }
     ],
     "glanceKicker": "Career at a glance",
-    "glanceHeadline": "When the path doesn’t exist, you build one.",
-    "glanceBody": "From the coffee estates of Kodagu to international start lines, Bhavani Thekkada has forged a journey across continents, climates and seasons. In a sport with few pathways in India, she became the country’s first woman to win an international cross-country skiing medal. And she is still moving forward.",
+    "glanceHeadline": "When the path doesn’t exist, build one.",
+    "glanceBody": "From the coffee estates of Kodagu to international start lines, Bhavani Thekkada has built a career across mountains, continents and seasons.",
     "glanceSource": {
       "sourceType": "client-supplied",
-      "sourceName": "web26bt.pdf, homepage copy, 26 Aug 2026",
+      "sourceName": "Client message, homepage copy, 30 Aug 2026",
       "verified": false,
-      "note": "The first-woman claim is hers, supplied in her own homepage copy. Presented in her voice, attributed to her."
+      "note": "Supplied verbatim by her. The first-Indian-woman claim is hers and is still awaiting a citation; see withheld."
     },
     "profileKicker": "Who she is",
-    "profileBody3": "Her father, Thekkada Nanjunda, has spent his life on the coffee farm. He never asked her to choose the conventional path. His advice was simple. If it makes you happy, do it.",
+    "profileBody3": "Two years later, Bhavani finally had the chance to try cross-country skiing herself. What began as curiosity quickly became something more. In 2021, she made the decision to pursue the sport full-time.",
     "lineAccent": "India’s",
-    "profileMission": "Cross-country skiing still has little visibility in India. Bhavani wants to change that by making the sport easier to understand at home and creating a pathway others can follow."
+    "profileMission": "Cross-country skiing still has little visibility in India. Bhavani wants to change that by making the sport easier to understand at home and creating a pathway others can follow.",
+    "punchEyebrow": "Indian cross-country skier",
+    "punchLine1": "The long way",
+    "punchAccent": "long way",
+    "punchLine2": "to snow",
+    "glanceMark": "build one",
+    "glanceBody2": "In a sport with few established pathways in India, she became the country’s first woman to win an international cross-country skiing medal. Now, she is building towards what comes next.",
+    "profileBody4": "Behind that decision was a simple philosophy she had grown up with. Her father, Thekkada Nanjunda, who has spent his life on the family coffee farm, never asked her to follow the conventional path.",
+    "profileClose": "His advice was simple: if it makes you happy, do it."
   },
   "proofOfLevel": [
     {

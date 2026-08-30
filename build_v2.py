@@ -270,6 +270,31 @@ def statline(c) -> str:
     return f'<p class="statline caption" data-rise>{inner}</p>'
 
 
+def draw_mark(title, mark=None) -> str:
+    """A headline with one phrase struck through with a drawn stroke.
+
+    A path rather than a rule, because a ruled underline reads as a link
+    and this is meant to look scratched into the snow. It draws itself
+    when the section comes into view; the script sets the flag. The title
+    is escaped first and the marker matched against the escaped text, so
+    the phrase can never smuggle markup through.
+    """
+    out = e(title)
+    if not mark:
+        return out
+    return out.replace(
+        e(mark),
+        f'<span class="mark-draw">{e(mark)}'
+        '<svg class="draw-line" viewBox="0 0 300 14" '
+        'preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+        '<path pathLength="1" fill="none" stroke="currentColor" '
+        'stroke-width="2.6" stroke-linecap="round" '
+        'd="M3,9.6 C38,4.4 74,11.4 112,7.1 C150,2.9 186,10.3 224,6.2 '
+        'C252,3.2 276,8.2 297,4.6"/></svg></span>',
+        1,
+    )
+
+
 def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
           pos=None, kicker=None, align=None, mark=None) -> str:
     """The benchmark's one repeated shape.
@@ -287,25 +312,7 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
         btn = f'<a class="btn" data-on="shot" href="{e(href)}">{e(label)}</a>'
     # Her 27 Aug design list: no place-and-date captions on photographs.
     cap = ""
-    # One phrase in the title can carry a drawn underline. Escaped first,
-    # then wrapped, so the marker can never smuggle markup through.
-    marked = e(title)
-    if mark:
-        # The phrase takes its own line and a drawn stroke underneath: a
-        # path rather than a rule, because a ruled underline reads as a
-        # link and this is meant to look scratched into the snow. It draws
-        # itself when the panel comes into view; the script sets the flag.
-        marked = marked.replace(
-            e(mark),
-            f'<span class="mark-draw">{e(mark)}'
-            '<svg class="draw-line" viewBox="0 0 300 14" '
-            'preserveAspectRatio="none" aria-hidden="true" focusable="false">'
-            '<path pathLength="1" fill="none" stroke="currentColor" '
-            'stroke-width="2.6" stroke-linecap="round" '
-            'd="M3,9.6 C38,4.4 74,11.4 112,7.1 C150,2.9 186,10.3 224,6.2 '
-            'C252,3.2 276,8.2 297,4.6"/></svg></span>',
-            1,
-        )
+    marked = draw_mark(title, mark)
     shot = img.tag(slot, "100vw", eager=hero)
     if pos:
         # Steer the cover crop for this panel only. The library's focal point
@@ -492,14 +499,62 @@ def hero_panel(c, img) -> str:
     tag = tag.replace(
         f"object-position:{img.focal(slot)}", "object-position:48% 30%"
     )
+    # Her copy, so it lives in the content file. The accent falls on one
+    # phrase inside the first line; it is matched against the escaped text
+    # and never against raw input.
+    h = c["hero"]
+    l1 = e(h.get("punchLine1") or "")
+    acc = h.get("punchAccent")
+    if acc:
+        l1 = l1.replace(e(acc), f'<span class="hl">{e(acc)}</span>', 1)
     return f"""
 <section class="panel" data-size="hero">
   <div class="panel-shot">{tag}</div>
   <div class="wrap panel-body hero-min" data-rise>
-    <h1 class="hero-punch"><span class="punch-eyebrow">Pioneering</span><span
-      class="punch-big"><span class="hl">India&rsquo;s</span> path</span><span
-      class="punch-big">on snow</span></h1>
+    <h1 class="hero-punch"><span class="punch-eyebrow">{e(h.get(
+      'punchEyebrow') or '')}</span><span
+      class="punch-big">{l1}</span><span
+      class="punch-big">{e(h.get('punchLine2') or '')}</span></h1>
     {chip}
+  </div>
+</section>"""
+
+
+# The ground under Career at a glance. Not a picture to look at: a roped
+# line working up a slope with no path on it, dropped almost to black, so
+# the card reads as depth behind the type rather than a second photograph
+# competing with the hero one card above it.
+GLANCE_SHOT = "ridge-sunrise"
+
+
+def glance_fold(c, img) -> str:
+    """The second card: her career stated before it is told.
+
+    The hero is a photograph carrying four words. The story card after
+    this one is a portrait beside running text. Between them the page
+    needs a card that is neither, so this one is type on a dark ground
+    with the photograph pushed back to a texture. Her headline takes the
+    drawn stroke; the two paragraphs sit in a pair of columns underneath
+    at a size meant to be read rather than scanned.
+    """
+    h = c["hero"]
+    shot = img.tag(GLANCE_SHOT, "100vw").replace(
+        f'object-position:{img.focal(GLANCE_SHOT)}', "object-position:50% 42%"
+    )
+    shot = re.sub(r'alt="[^"]*"', 'alt=""', shot, count=1)
+    shot = shot.replace("<img ", '<img aria-hidden="true" ', 1)
+    return f"""
+<section class="glance" id="glance">
+  <div class="glance-shot">{shot}</div>
+  <div class="wrap glance-body">
+    <p class="caption glance-kicker" data-rise>{e(h.get(
+      'glanceKicker') or 'Career at a glance')}</p>
+    <h2 class="glance-head" data-rise>{draw_mark(
+      h.get('glanceHeadline') or '', h.get('glanceMark'))}</h2>
+    <div class="glance-cols" data-rise>
+      <p>{e(h.get('glanceBody') or '')}</p>
+      <p>{e(h.get('glanceBody2') or '')}</p>
+    </div>
   </div>
 </section>"""
 
@@ -524,8 +579,9 @@ def who_she_is(c, img) -> str:
     <p>{e(h['profileBody'])}</p>
     <p>{e(h['profileBody2'])}</p>
     <p>{e(h.get('profileBody3') or '')}</p>
-    {f'<p class="split-note">{e(h["profileMission"])}</p>'
-     if h.get('profileMission') else ''}
+    <p>{e(h.get('profileBody4') or '')}</p>
+    {f'<p class="split-note">{e(h["profileClose"])}</p>'
+     if h.get('profileClose') else ''}
     <dl class="facts">{facts}</dl>
   </div>
 </section>"""
@@ -587,6 +643,44 @@ def levels_band(c, link=True, head=True) -> str:
 </section>"""
 
 
+def record_slabs(c) -> str:
+    """The level of competition, as the client's slab reference.
+
+    Five leaning plates alternating navy and race-suit blue, each
+    holding one figure reversed out of it, the label set underneath the
+    way the reference sets its athletes' names. Same figures as the
+    Career page, from the same helper, so the two can never disagree;
+    the medal counts are still computed from the results rows.
+
+    The lean is a skew on the plate with the figure counter-skewed
+    inside it, so the type stays upright while the shape leans. Below
+    the row breakpoint the skew and the stagger both come off: five
+    leaning plates on a phone are unreadable, and a plain two-up grid
+    keeps the alternating fills, which is the part of the reference
+    that carries the idea.
+    """
+    cards = levels_data(c)
+    lis = "".join(
+        f'<li class="slab" data-fill="{"accent" if n % 2 else "deep"}"'
+        f' data-rise><span class="slab-plate">'
+        f'<b class="slab-n tally-total">{e(x["n"])}</b></span>'
+        f'<span class="slab-k">{e(x["k"])}</span>'
+        f'<span class="slab-s caption">{e(x["s"])}</span></li>'
+        for n, x in enumerate(cards)
+    )
+    return f"""
+<section class="slabs" id="record">
+  <div class="wrap">
+    <div class="slabs-head" data-rise>
+      <p class="caption">The record</p>
+      <h2>Level of competition</h2>
+    </div>
+    <ol class="slab-row">{lis}</ol>
+    <p class="caption slabs-more"><a href="achievements.html">The full
+      record, race by race &rarr;</a></p>
+  </div>
+</section>"""
+
 def sport_fold(c, img) -> str:
     """The sport, rebuilt to the client's poster reference: one horizontal
     band rather than a stack of cards.
@@ -612,13 +706,29 @@ def sport_fold(c, img) -> str:
     ghost = re.sub(r'alt="[^"]*"', 'alt=""', ghost, count=1)
     main = base.replace("<img ", '<img class="cut-main" ', 1)
     shot = ghost + main
-    fmts = "".join(
-        f'<li class="fmt" data-rise>'
-        f'<span class="fmt-n">{n + 1:02d}</span>'
-        f'<p class="fmt-kind caption">{e(d.get("kind") or "")}</p>'
-        f'<h3>{e(d["name"])}</h3>'
-        f'<p>{e(d.get("note") or "")}</p></li>'
-        for n, d in enumerate(ds[:4])
+    # Her note of 30 Aug: the numbering goes. Without it the four cards
+    # repeated TECHNIQUE, TECHNIQUE, RACE FORMAT, RACE FORMAT down the row,
+    # which the numerals had been masking. So they group instead: one label
+    # per pair, which is the section's own headline said as a layout.
+    order, groups = [], {}
+    for d in ds[:4]:
+        k = d.get("kind") or "Way of racing"
+        if k not in groups:
+            order.append(k)
+            groups[k] = []
+        groups[k].append(d)
+    count = {1: "One", 2: "Two", 3: "Three", 4: "Four"}
+    ways = "".join(
+        f'<div class="way" data-rise>'
+        f'<p class="caption way-label">{e(count.get(len(groups[k]), len(groups[k])))} '
+        f'{e(k.lower())}{"s" if len(groups[k]) != 1 else ""}</p>'
+        + "".join(
+            f'<div class="fmt"><h3>{e(d["name"])}</h3>'
+            f'<p>{e(d.get("note") or "")}</p></div>'
+            for d in groups[k]
+        )
+        + "</div>"
+        for k in order
     )
     return f"""
 <section class="sport-band" id="sport" data-ground="ice">
@@ -636,7 +746,7 @@ def sport_fold(c, img) -> str:
         <p class="sport-bridge">{e(sp.get('context') or '')}</p>
       </div>
     </div>
-    <ol class="sport-formats">{fmts}</ol>
+    <div class="sport-ways">{ways}</div>
   </div>
 </section>"""
 
@@ -800,8 +910,10 @@ def page(c: dict, img: Img) -> str:
 <main id="main">
 <div class="stack">
 {hero_panel(c, img)}
+{glance_fold(c, img)}
 {who_she_is(c, img)}
 {sport_fold(c, img)}
+{record_slabs(c)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',

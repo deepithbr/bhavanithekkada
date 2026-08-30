@@ -4076,45 +4076,9 @@ a {
   display: inline-block;
 }
 
-/* The four ways she races, one horizontal row. Big thin numeral, the kind
-   above the name so technique and format stay distinguishable. */
-.sport-formats {
-  list-style: none;
-  margin: var(--space-2xl) 0 0;
-  padding: 0;
-  display: grid;
-  gap: var(--space-lg) var(--space-md);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-@media (min-width: 860px) {
-  .sport-formats {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-xl);
-  }
-}
-
 .fmt {
   border-top: 2px solid var(--color-ink);
   padding-top: var(--space-sm);
-}
-
-.fmt-n {
-  font-family: var(--font-display);
-  font-size: clamp(2.2rem, 3.4vw, 3.1rem);
-  font-weight: 300;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-  display: block;
-}
-
-.fmt-kind {
-  margin-top: var(--space-sm);
-  color: var(--color-ink-3, var(--color-ink-2));
-  letter-spacing: 0.2em;
-  font-size: 0.66rem;
 }
 
 .fmt h3 {
@@ -4123,7 +4087,7 @@ a {
   font-weight: 700;
   letter-spacing: -0.01em;
   text-transform: none;
-  margin-top: var(--space-3xs);
+  margin-top: 0;
 }
 
 .fmt p {
@@ -4388,15 +4352,9 @@ body {
 
 /* The four notes sit in narrow columns; running-text size crowds them, so
    they hold just under it. */
-.fmt p:not(.fmt-kind) {
+.fmt p {
   font-size: clamp(1rem, 0.2vw + 0.95rem, 1.1rem);
   line-height: 1.5;
-}
-
-@media (min-width: 860px) {
-  .sport-formats {
-    gap: var(--space-lg);
-  }
 }
 
 /* ==================== the sport as the third card
@@ -5999,5 +5957,324 @@ body {
      through tablet widths, where a finger is still the pointer. */
   .hero-record {
     padding-block: 0.7rem;
+  }
+}
+
+
+/* ====================================================================
+ * 30 August: the name in the bar, Career at a glance, the sport's four
+ * ways without their numbering, and the record as leaning slabs.
+ *
+ * Appended, so these win at equal specificity against the passes above.
+ * ==================================================================== */
+
+/* ---------------------------------------------------- the name in the bar
+
+   The script face was carrying her name and reading as a texture rather
+   than a word. It goes back to the display grotesk at bold, which is the
+   face the sport lockup uses, and stays mixed case so it never competes
+   with the uppercase punchline directly beneath it. Smaller than the
+   script was: a bold grotesk sits far heavier on the bar at the same
+   size. */
+.wordmark-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.3vw, 2rem);
+  letter-spacing: -0.02em;
+  text-transform: none;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* The two tightening bands from the earlier pass, restated at the new
+   weight. Narrower first, so the tighter one still wins where they
+   overlap. */
+@media (min-width: 900px) and (max-width: 1200px) {
+  .wordmark-name {
+    font-size: 1.35rem;
+  }
+}
+
+@media (min-width: 900px) and (max-width: 1080px) {
+  .wordmark-name {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .wordmark-name {
+    font-size: 1.1rem;
+  }
+}
+
+
+/* ------------------------------------------------- Career at a glance
+
+   The second card, and it has to be neither of its neighbours: the hero
+   is a photograph carrying four words, the story card after it is a
+   portrait beside running text. So this one is type on a dark ground
+   with the photograph pushed back to a texture. */
+.glance {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+  display: grid;
+  align-content: center;
+  padding-block: var(--space-3xl);
+}
+
+.glance-shot {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.glance-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* The wash carries the ground when the photograph has not arrived, and
+   keeps the headline off the bright half of the frame. */
+.glance-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    104deg,
+    oklch(19% 0.035 255 / 0.95) 0%,
+    oklch(19% 0.035 255 / 0.84) 44%,
+    oklch(19% 0.035 255 / 0.52) 100%
+  );
+}
+
+.glance-body {
+  position: relative;
+}
+
+.glance-kicker {
+  color: var(--color-accent-bright);
+}
+
+.glance-head {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.03;
+  letter-spacing: -0.03em;
+  color: var(--color-ink-on-deep);
+  max-width: 19ch;
+  margin: var(--space-xs) 0 0;
+}
+
+/* The stroke under her imperative takes the accent rather than the ink,
+   which is the one place on this card the blue appears. The path carries
+   stroke="currentColor"; a CSS property outranks a presentation
+   attribute, so this is all it takes. */
+/* The stroke was only ever positioned inside the closer panel, so
+   anywhere else the absolutely-placed line resolved against the nearest
+   positioned ancestor and drew itself across the foot of the card. The
+   phrase carries its own containing block now. The closer's own rule is
+   more specific and still wins there. */
+.mark-draw {
+  position: relative;
+  display: inline-block;
+}
+
+/* The path carries stroke="currentColor" as a presentation attribute, so
+   the colour has to be set on the path itself: an inherited value from
+   the svg loses to an attribute on the element. */
+.glance-head .draw-line path {
+  stroke: var(--color-accent-bright);
+}
+
+.glance-cols {
+  display: grid;
+  gap: var(--space-md);
+  max-width: 64rem;
+  margin-top: var(--space-lg);
+}
+
+@media (min-width: 820px) {
+  .glance-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-xl);
+  }
+}
+
+.glance-cols p {
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 0.4vw + 0.98rem, 1.28rem);
+  line-height: 1.6;
+  color: var(--color-ink-on-deep-2);
+  margin: 0;
+}
+
+
+/* --------------------------------------------- the sport's four ways
+
+   Her note of 30 Aug: the numbering goes. With the numerals gone the row
+   was left repeating TECHNIQUE, TECHNIQUE, RACE FORMAT, RACE FORMAT down
+   its four cards, which the numerals had been masking. So they group into
+   two pairs under one label each, which is this section's own headline
+   said as a layout. The cards keep .fmt, so the rule, the name and the
+   note are unchanged. */
+.sport-ways {
+  margin-top: var(--space-2xl);
+  display: grid;
+  gap: var(--space-xl);
+}
+
+@media (min-width: 760px) {
+  .sport-ways {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2xl);
+  }
+}
+
+.way {
+  display: grid;
+  gap: var(--space-md);
+  align-content: start;
+}
+
+.way-label {
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+  margin: 0;
+}
+
+
+/* ---------------------------------------------- the record, as slabs
+
+   Her reference of 30 Aug: leaning plates in alternating fills, the
+   subject reversed out of each and its name set underneath. There the
+   subject is a cut-out athlete; here it is the figure, which is what
+   this section is about. Navy and race-suit blue rather than the
+   reference's green: the site carries exactly one chromatic colour and
+   it is the blue of her suit. */
+.slabs {
+  background: var(--color-paper);
+  padding-block: var(--space-3xl);
+  overflow: hidden;
+}
+
+.slabs-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: var(--space-2xs);
+}
+
+.slab-row {
+  list-style: none;
+  margin: var(--space-xl) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-lg) var(--space-sm);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.slab {
+  display: grid;
+  gap: var(--space-3xs);
+  align-content: start;
+}
+
+.slab-plate {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  background: var(--color-paper-deep);
+}
+
+.slab[data-fill="accent"] .slab-plate {
+  background: var(--color-accent);
+}
+
+.slab-n {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.8rem, 7vw, 5.4rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: var(--color-ink-on-deep);
+  font-variant-numeric: tabular-nums;
+}
+
+.slab-k {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-2xs);
+}
+
+.slab-s {
+  color: var(--color-ink-3);
+}
+
+.slabs-more {
+  margin-top: var(--space-xl);
+}
+
+/* Five across, and the lean. The plate skews and the numeral counter-
+   skews inside it, so the shape leans while the figure stays upright.
+   Every second plate steps up, as the reference does; the row takes
+   padding to carry the step. Eight degrees rather than the reference's
+   twelve, because the overhang is height x tan(angle) and five plates
+   across a 1400px wrap have only a gutter to spend on it. */
+@media (min-width: 900px) {
+  .slab-row {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    /* A leaning plate is wider than its track by height x tan(8deg). At
+       this row that is 39px, so a 40px gutter left the plates touching.
+       The gutter carries the lean and still shows daylight. */
+    gap: var(--space-xl);
+    padding-bottom: var(--space-lg);
+  }
+
+  .slab-plate {
+    aspect-ratio: 5 / 7;
+    transform: skewX(-8deg);
+  }
+
+  .slab-n {
+    transform: skewX(8deg);
+  }
+
+  /* The step is a margin, not a transform. The reveal owns transform on
+     these elements, and a transform here would either lose the step or
+     leave the stepped plates out of the reveal. */
+  .slab:nth-child(odd) {
+    margin-top: 2.4rem;
+  }
+}
+
+
+/* --------------------------------------- the two new cards in the stack
+
+   Eight cards now, not six. Each has to fill its card and paint its own
+   ground, or the one beneath shows through as it rises. */
+@media (min-width: 900px) {
+  .stack > :nth-child(8) {
+    z-index: 8;
+  }
+
+  .stack > :nth-child(9) {
+    z-index: 9;
+  }
+
+  .stack > .glance,
+  .stack > .slabs {
+    min-height: 100svh;
+    display: grid;
+    align-content: center;
   }
 }
