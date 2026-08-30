@@ -6031,33 +6031,48 @@ body {
   z-index: -1;
 }
 
+/* Her note of 30 Aug: the ground was so far back it had stopped being a
+   photograph. It comes forward, and the wash comes off with it. What is
+   left is enough to hold white type at display weight over the brightest
+   part of the frame, and no more. */
 .glance-shot img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.3;
+  opacity: 0.72;
 }
 
 /* The wash carries the ground when the photograph has not arrived, and
-   keeps the headline off the bright half of the frame. */
+   keeps the quotation off the lit half of the frame. Heaviest at the
+   left, where the type sits, clearing by the right edge. */
 .glance-shot::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    104deg,
-    oklch(19% 0.035 255 / 0.95) 0%,
-    oklch(19% 0.035 255 / 0.84) 44%,
-    oklch(19% 0.035 255 / 0.52) 100%
-  );
+  background:
+    linear-gradient(
+      104deg,
+      oklch(16% 0.035 255 / 0.78) 0%,
+      oklch(16% 0.035 255 / 0.6) 46%,
+      oklch(16% 0.035 255 / 0.22) 100%
+    ),
+    linear-gradient(
+      to top,
+      oklch(16% 0.035 255 / 0.42) 0%,
+      oklch(16% 0.035 255 / 0) 44%
+    );
 }
 
 .glance-body {
   position: relative;
 }
 
-.glance-kicker {
-  color: var(--color-accent-bright);
+/* The line is hers, so the section label gave way to a signature. The
+   attribution belongs to the figure rather than inside the quotation,
+   which is what the spec asks for and what a screen reader wants. */
+.glance-quote,
+.glance-quote blockquote {
+  margin: 0;
 }
 
 .glance-head {
@@ -6067,8 +6082,33 @@ body {
   line-height: 1.03;
   letter-spacing: -0.03em;
   color: var(--color-ink-on-deep);
-  max-width: 19ch;
-  margin: var(--space-xs) 0 0;
+  max-width: 20ch;
+  margin: 0;
+  /* The opening quote mark hangs into the margin, so the first letter
+     still lines up with the paragraphs underneath rather than sitting a
+     mark's width to the right of them. */
+  text-indent: -0.42em;
+}
+
+.glance-by {
+  display: block;
+  /* Clear of the drawn stroke, which hangs below the line box it sits
+     under and was crowding the signature. */
+  margin-top: var(--space-lg);
+  color: var(--color-accent-bright);
+  font-style: normal;
+}
+
+/* A short rule ahead of the name, the way a signature sits under a
+   quotation rather than butting straight against it. */
+.glance-by::before {
+  content: "";
+  display: inline-block;
+  width: 2.2rem;
+  height: var(--rule-hair);
+  background: currentColor;
+  vertical-align: 0.28em;
+  margin-right: 0.7rem;
 }
 
 /* The stroke under her imperative takes the accent rather than the ink,
@@ -6088,6 +6128,12 @@ body {
 /* The path carries stroke="currentColor" as a presentation attribute, so
    the colour has to be set on the path itself: an inherited value from
    the svg loses to an attribute on the element. */
+.glance-head {
+  text-shadow:
+    0 1px 2px oklch(14% 0.03 255 / 0.45),
+    0 6px 26px oklch(14% 0.03 255 / 0.5);
+}
+
 .glance-head .draw-line path {
   stroke: var(--color-accent-bright);
 }
@@ -6096,7 +6142,7 @@ body {
   display: grid;
   gap: var(--space-md);
   max-width: 64rem;
-  margin-top: var(--space-lg);
+  margin-top: var(--space-xl);
 }
 
 @media (min-width: 820px) {
@@ -6110,8 +6156,9 @@ body {
   font-family: var(--font-body);
   font-size: clamp(1.05rem, 0.4vw + 0.98rem, 1.28rem);
   line-height: 1.6;
-  color: var(--color-ink-on-deep-2);
+  color: var(--color-ink-on-deep);
   margin: 0;
+  text-shadow: 0 1px 12px oklch(14% 0.03 255 / 0.55);
 }
 
 
@@ -6187,6 +6234,9 @@ body {
 }
 
 .slab-plate {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   place-items: center;
   aspect-ratio: 3 / 4;
@@ -6195,6 +6245,60 @@ body {
 
 .slab[data-fill="accent"] .slab-plate {
   background: var(--color-accent);
+}
+
+/* The photograph inside the plate, as her reference sets an athlete
+   inside its slab. Luminosity blending takes the light from the frame
+   and the colour from the plate underneath, so the navy plates read as
+   monochrome and the blue ones as a duotone, and the alternating rhythm
+   holds whatever the photograph happens to contain. */
+/* The blend goes on the wrapper, not the image. The wrapper carries the
+   counter-skew, and a transform makes a stacking context, so a blend mode
+   set on the image inside it would have had nothing but transparency to
+   blend against and the photograph came through in full colour. */
+.slab-shot {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: luminosity;
+  opacity: 0.55;
+}
+
+.slab[data-fill="accent"] .slab-shot {
+  /* The blue plate is far lighter than the navy one, so the same frame at
+     the same strength buries the numeral on it. */
+  opacity: 0.4;
+}
+
+.slab-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A foot-to-head grade, so the figure always has ground under it however
+   bright the photograph is at that point. Outside the blend group, on
+   the plate itself, so it grades the result rather than joining it. */
+.slab-plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    oklch(14% 0.03 255 / 0.5) 0%,
+    oklch(14% 0.03 255 / 0.12) 52%,
+    oklch(14% 0.03 255 / 0.3) 100%
+  );
+}
+
+/* The figure is the subject of the plate, and it is now standing on a
+   photograph rather than a flat fill. It carries its own shadow so a
+   busy frame underneath can never take it. */
+.slab-n {
+  position: relative;
+  z-index: 1;
+  text-shadow:
+    0 2px 6px oklch(12% 0.03 255 / 0.55),
+    0 8px 30px oklch(12% 0.03 255 / 0.6);
 }
 
 .slab-n {
@@ -6243,6 +6347,16 @@ body {
   .slab-plate {
     aspect-ratio: 5 / 7;
     transform: skewX(-8deg);
+  }
+
+  /* The plate leans, the photograph inside it does not. Counter-skewing
+     the frame cancels the plate's transform and leaves an upright
+     rectangle; it then has to widen to cover the parallelogram it is
+     clipped to, which is the plate's width plus height x tan(8deg). */
+  .slab-shot {
+    left: -12%;
+    right: -12%;
+    transform: skewX(8deg);
   }
 
   .slab-n {

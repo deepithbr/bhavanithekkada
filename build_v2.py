@@ -532,10 +532,11 @@ def glance_fold(c, img) -> str:
 
     The hero is a photograph carrying four words. The story card after
     this one is a portrait beside running text. Between them the page
-    needs a card that is neither, so this one is type on a dark ground
-    with the photograph pushed back to a texture. Her headline takes the
-    drawn stroke; the two paragraphs sit in a pair of columns underneath
-    at a size meant to be read rather than scanned.
+    needs a card that is neither, so this one is a line of hers set over a
+    photograph. The line is a quotation and is signed rather than filed
+    under a section label, and the stroke stays under the half that is
+    about her. The two paragraphs sit in a pair of columns underneath at
+    a size meant to be read rather than scanned.
     """
     h = c["hero"]
     shot = img.tag(GLANCE_SHOT, "100vw").replace(
@@ -547,10 +548,14 @@ def glance_fold(c, img) -> str:
 <section class="glance" id="glance">
   <div class="glance-shot">{shot}</div>
   <div class="wrap glance-body">
-    <p class="caption glance-kicker" data-rise>{e(h.get(
-      'glanceKicker') or 'Career at a glance')}</p>
-    <h2 class="glance-head" data-rise>{draw_mark(
-      h.get('glanceHeadline') or '', h.get('glanceMark'))}</h2>
+    <figure class="glance-quote" data-rise>
+      <blockquote>
+        <p class="glance-head">&ldquo;{draw_mark(
+          h.get('glanceHeadline') or '', h.get('glanceMark'))}&rdquo;</p>
+      </blockquote>
+      <figcaption class="caption glance-by">{e(h.get(
+        'glanceAttrib') or '')}</figcaption>
+    </figure>
     <div class="glance-cols" data-rise>
       <p>{e(h.get('glanceBody') or '')}</p>
       <p>{e(h.get('glanceBody2') or '')}</p>
@@ -643,7 +648,18 @@ def levels_band(c, link=True, head=True) -> str:
 </section>"""
 
 
-def record_slabs(c) -> str:
+# One photograph per figure, in the order levels_data returns them:
+# her three start-level cards from the content file, then the two medal
+# counts computed from the results rows. Every one of them is owned, and
+# each answers the figure it sits under. Holmenkollen stands in for the
+# World Championships rows, which have no owned frame of their own.
+SLAB_SHOTS = ["race-worldcup", "holmenkollen", "flag-harbin",
+              "nordic-podium", "contingent-2021"]
+
+SLAB_SIZES = "(min-width:900px) 16vw, 44vw"
+
+
+def record_slabs(c, img) -> str:
     """The level of competition, as the client's slab reference.
 
     Five leaning plates alternating navy and race-suit blue, each
@@ -663,10 +679,12 @@ def record_slabs(c) -> str:
     lis = "".join(
         f'<li class="slab" data-fill="{"accent" if n % 2 else "deep"}"'
         f' data-rise><span class="slab-plate">'
+        f'<span class="slab-shot">{img.tag(SLAB_SHOTS[n], SLAB_SIZES)}</span>'
         f'<b class="slab-n tally-total">{e(x["n"])}</b></span>'
         f'<span class="slab-k">{e(x["k"])}</span>'
         f'<span class="slab-s caption">{e(x["s"])}</span></li>'
         for n, x in enumerate(cards)
+        if n < len(SLAB_SHOTS)
     )
     return f"""
 <section class="slabs" id="record">
@@ -913,7 +931,7 @@ def page(c: dict, img: Img) -> str:
 {glance_fold(c, img)}
 {who_she_is(c, img)}
 {sport_fold(c, img)}
-{record_slabs(c)}
+{record_slabs(c, img)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
