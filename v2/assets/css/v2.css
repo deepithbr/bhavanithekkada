@@ -6466,11 +6466,6 @@ body {
    is the only thing on the page that uses the distorted viewBox.
    ==================================================================== */
 
-.jr-hint {
-  color: var(--color-ink-3);
-  margin-top: var(--space-2xs);
-}
-
 .jr {
   position: relative;
   margin-top: var(--space-xl);

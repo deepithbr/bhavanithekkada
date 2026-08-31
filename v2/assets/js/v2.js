@@ -612,18 +612,6 @@
       shut(null);
       if (open) open.focus();
     });
-
-    // The hint says tap on anything that cannot hover, and on any window
-    // narrow enough to be running the rail layout, where hovering opens
-    // nothing whatever the pointer is capable of.
-    const hint = document.querySelector(".jr-hint");
-    const sayTap = () => {
-      if (!hint || !hint.dataset.touch || !hint.dataset.hover) return;
-      const tap = !matchMedia("(hover: hover)").matches || innerWidth < 900;
-      hint.textContent = tap ? hint.dataset.touch : hint.dataset.hover;
-    };
-    sayTap();
-    addEventListener("resize", sayTap);
   }
 
   /* ---- journal reading progress ---------------------------------------- */

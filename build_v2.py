@@ -1310,8 +1310,6 @@ def journey_line(c, img) -> str:
     <div class="prose">
       <h2>{e(t.get('heading') or '')}</h2>
       <p>{e(t.get('lede') or '')}</p>
-      <p class="caption jr-hint" data-hover="{e(t.get('hint') or '')}"
-         data-touch="{e(t.get('hintTouch') or '')}">{e(t.get('hint') or '')}</p>
     </div>
     <div class="jr" style="--jr-n:{n}">
       <div class="jr-scenery" aria-hidden="true">{scenery}</div>

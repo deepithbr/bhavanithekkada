@@ -166,8 +166,8 @@
   "sections": {
     "journey": {
       "index": "01",
-      "title": "Kodagu to Davos",
-      "lede": "It begins in a district that has never had snow and ends on a World Cup start list at Davos.",
+      "title": "Kodagu to France",
+      "lede": "It begins in a district that has never had snow and is pointed at a start line in the French Alps.",
       "hinge": "All the records, on the record",
       "hingeNote": "Eleven starts, every one of them scored and published by FIS."
     },
@@ -290,9 +290,7 @@
     ],
     "timeline": {
       "heading": "One line a year",
-      "lede": "Thirty-one years from a district with no snow to a World Cup start list, a year at a time. Everything to 2026 happened. The dotted part is the plan.",
-      "hint": "Hover a year for the rest of it.",
-      "hintTouch": "Tap a year for the rest of it.",
+      "lede": "Thirty-one years from a district with no snow to a World Cup start list, a year at a time.",
       "aheadNote": "Still to come",
       "sourceNote": "Assembled 31 Aug 2026 from the story beats, career milestones, certification phases and results rows already in this file. Client copy replaces `line` and `detail` when it arrives; the structure does not move.",
       "years": [
