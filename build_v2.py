@@ -1316,6 +1316,16 @@ def journey_line(c, img) -> str:
     last_past = max((i for i, y in enumerate(ys)
                      if y.get("kind") != "ahead"), default=n - 1)
 
+    # Where the ground changes, read off the figures rather than typed,
+    # so inserting a year cannot leave the line and the figure arguing.
+    def first(fig, fallback):
+        return next((i for i, y in enumerate(ys)
+                     if y.get("figure") == fig), fallback)
+
+    i_trail = first("climb", 0)      # she takes to the mountains
+    i_snow = first("alpine", n - 1)  # there are skis, but no track yet
+    i_track = first("ski", n - 1)    # cross-country: the grooves are cut
+
     # The fallback geometry, in viewBox units. Script rebuilds all of it
     # in pixels; this is what a reader without script sees.
     #
@@ -1326,9 +1336,13 @@ def journey_line(c, img) -> str:
     tail_d = (f'M{tx:.1f},{ty:.1f} C{tx:.1f},{ty + 34:.1f} '
               f'50,{ty + 28:.1f} 50,{ty + JR_PAD:.1f}')
     o = JR_GROOVE
-    paths = (f'<path class="jr-piste" d="{run(0, n - 1)} {tail_d}"/>'
-             f'<path class="jr-run" data-o="-1" d="{run(0, last_past, -o)}"/>'
-             f'<path class="jr-run" data-o="1" d="{run(0, last_past, o)}"/>')
+    paths = (
+        f'<path class="jr-lane" d="{run(0, i_trail)}"/>'
+        f'<path class="jr-trailband" d="{run(i_trail, i_snow)}"/>'
+        f'<path class="jr-trail" d="{run(i_trail, i_snow)}"/>'
+        f'<path class="jr-piste" d="{run(i_snow, n - 1)} {tail_d}"/>'
+        f'<path class="jr-run" data-o="-1" d="{run(i_track, last_past, -o)}"/>'
+        f'<path class="jr-run" data-o="1" d="{run(i_track, last_past, o)}"/>')
     if last_past < n - 1:
         # The dashes start at the last year that happened, so the change
         # of line lands on 2026 and not in the gap after it.
@@ -1342,8 +1356,9 @@ def journey_line(c, img) -> str:
     # the band it is transparent and below it the clip has already
     # stopped the route at the drawing front.
     paths += (f'<path class="jr-fresh" data-o="-1" '
-              f'd="{run(0, n - 1, -o)}"/>'
-              f'<path class="jr-fresh" data-o="1" d="{run(0, n - 1, o)}"/>')
+              f'd="{run(i_track, n - 1, -o)}"/>'
+              f'<path class="jr-fresh" data-o="1" '
+              f'd="{run(i_track, n - 1, o)}"/>')
     paths += f'<path class="jr-tail" d="{tail_d}"/>'
     # Not drawn. One continuous copy of the route for the script to
     # measure against when it puts the skier at the drawing front.
@@ -1376,6 +1391,9 @@ def journey_line(c, img) -> str:
         items.append(f"""
       <li class="jr-node" data-vpos="{vpos}"
           data-kind="{'ahead' if ahead else 'past'}" data-lit="false"
+          data-fig="{e(y.get('figure') or 'ski')}"
+          data-kit="{e(y.get('kit') or '')}"
+          data-pace="{e(y.get('pace') or '')}"
           style="--x:{px(i):.2f}%;--y:{py(i) / total * 100:.3f}%">
         <button class="jr-hit" type="button" aria-expanded="false"
                 aria-controls="{pid}">
@@ -1436,26 +1454,14 @@ def journey_line(c, img) -> str:
              how far down the track she is, which is what makes the
              poling read as the thing moving her rather than a loop
              playing over the top. Far side first, near side last. -->
-        <g class="jr-skier" aria-hidden="true">
-          <path class="jr-ski" d="M-24,17 L-4,17"/>
-          <path class="jr-ski" d="M0,15 L20,15"/>
-          <g class="jr-leg" data-leg="back">
-            <path class="jr-limb" d="M-2,-2 L-12,8 L-16,16"/>
-          </g>
-          <g class="jr-side" data-side="back">
-            <path class="jr-pole" d="M-6,-8 L-14,12"/>
-            <path class="jr-limb jr-arm" d="M3,-12 L-6,-8"/>
-          </g>
-          <g class="jr-leg" data-leg="front">
-            <path class="jr-limb" d="M-2,-2 L6,4 L8,14"/>
-          </g>
-          <path class="jr-limb jr-torso" d="M-2,-2 L4,-14"/>
-          <g class="jr-side" data-side="front">
-            <path class="jr-pole" d="M12,-14 L2,10"/>
-            <path class="jr-limb jr-arm" d="M3,-12 L12,-14"/>
-          </g>
-          <circle class="jr-head" cx="7" cy="-18" r="4.6"/>
-        </g>
+        <!-- Five of her, side on, facing the way she is going. Each is
+             the same skeleton with different kit: a hip, a shoulder,
+             feet on a common ground line, limbs radiating from real
+             joints. Drawn back to front so the near half covers the far
+             half and each reads as one figure rather than a diagram of
+             one. Script shows one at a time and turns the legs and the
+             arm-and-pole groups from distance travelled. -->
+        <g class="jr-cast" aria-hidden="true"><g class="jr-fig" data-fig="walk" data-hip="0,0" data-shoulder="1,-13"><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L-5,9 L-8,18"/></g><g class="jr-side" data-side="back"><path class="jr-limb jr-arm" d="M1,-13 L-5,-6"/></g><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L4,9 L6,18"/></g><path class="jr-limb jr-torso" d="M0,0 L1,-13"/><g class="jr-side" data-side="front"><path class="jr-limb jr-arm" d="M1,-13 L7,-6"/></g><circle class="jr-head" cx="2" cy="-18" r="4.4"/></g><g class="jr-fig" data-fig="cadet" data-hip="0,0" data-shoulder="1,-13"><g class="jr-rank" transform="translate(-27,3)"><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L-3,9 L-6,18"/></g><g class="jr-side" data-side="back"><path class="jr-limb jr-arm" d="M1,-13 L-6.4,-10.6"/></g><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L3,9 L5,18"/></g><path class="jr-limb jr-torso" d="M0,0 L1,-13"/><g class="jr-side" data-side="front"><path class="jr-limb jr-arm" d="M1,-13 L8.4,-15.2"/></g><circle class="jr-head" cx="2" cy="-18" r="4.4"/><path class="jr-cap" d="M-2.1,-19.7 A5,5 0 0 1 6.1,-19.7"/><path class="jr-peak" d="M4.5,-19.5 L10.4,-18.8"/></g><g class="jr-rank" transform="translate(27,3)"><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L-3,9 L-6,18"/></g><g class="jr-side" data-side="back"><path class="jr-limb jr-arm" d="M1,-13 L-6.4,-10.6"/></g><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L3,9 L5,18"/></g><path class="jr-limb jr-torso" d="M0,0 L1,-13"/><g class="jr-side" data-side="front"><path class="jr-limb jr-arm" d="M1,-13 L8.4,-15.2"/></g><circle class="jr-head" cx="2" cy="-18" r="4.4"/><path class="jr-cap" d="M-2.1,-19.7 A5,5 0 0 1 6.1,-19.7"/><path class="jr-peak" d="M4.5,-19.5 L10.4,-18.8"/></g><g><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L-3,9 L-6,18"/></g><g class="jr-side" data-side="back"><path class="jr-limb jr-arm" d="M1,-13 L-6.4,-10.6"/></g><ellipse class="jr-kit" cx="-3" cy="-6.4" rx="2.9" ry="4.4"/><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L3,9 L5,18"/></g><path class="jr-limb jr-torso" d="M0,0 L1,-13"/><g class="jr-side" data-side="front"><path class="jr-limb jr-arm" d="M1,-13 L8.4,-15.2"/></g><circle class="jr-head" cx="2" cy="-18" r="4.4"/><path class="jr-cap" d="M-2.1,-19.7 A5,5 0 0 1 6.1,-19.7"/><path class="jr-peak" d="M4.5,-19.5 L10.4,-18.8"/></g></g><g class="jr-fig" data-fig="climb" data-hip="0,0" data-shoulder="2,-12"><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L-6,9 L-9,18"/></g><g class="jr-side" data-side="back"><path class="jr-limb jr-arm" d="M2,-12 L-4,-5"/></g><ellipse class="jr-pack" cx="-2.6" cy="-7" rx="3.6" ry="5.2"/><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L5,9 L7,18"/></g><path class="jr-limb jr-torso" d="M0,0 L3,-12"/><g class="jr-side" data-side="front"><path class="jr-pole" d="M9,-7 L12,11"/><path class="jr-pole jr-qual" d="M5.8,-8.8 L12.2,-5.2"/><path class="jr-limb jr-arm" d="M2,-12 L9,-7"/></g><circle class="jr-coil jr-qual" cx="4.4" cy="-8.6" r="2.3"/><circle class="jr-head" cx="5" cy="-17" r="4.4"/><path class="jr-shell jr-qual" d="M1.1,-17.4 A4.2,4.2 0 0 1 8.9,-17.4"/></g><g class="jr-fig" data-fig="alpine" data-hip="0,0" data-shoulder="4,-12"><path class="jr-ski" d="M-10,16.6 L14,16.6"/><path class="jr-ski" d="M-7,19.2 L17,19.2"/><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M0,0 L3.5,8 L-0.5,16.6"/></g><g class="jr-side" data-side="back"><path class="jr-pole" d="M9.6,-9.6 L-7,8.4"/><path class="jr-limb jr-arm" d="M4,-12 L9.6,-9.6"/></g><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M0,0 L7,8 L5.5,19.2"/></g><path class="jr-limb jr-torso" d="M0,0 L4,-12"/><g class="jr-side" data-side="front"><path class="jr-pole" d="M11.2,-10.4 L-5.2,10.4"/><path class="jr-limb jr-arm" d="M4,-12 L11.2,-10.4"/></g><circle class="jr-head" cx="7.4" cy="-15.6" r="4.4"/><path class="jr-shell" d="M3.6,-15.8 A4.2,4.2 0 0 1 11.2,-15.8"/></g><g class="jr-fig" data-fig="ski" data-hip="-2,-2" data-shoulder="3,-12"><path class="jr-ski" data-ski="back" d="M-24,17 L-4,17"/><path class="jr-ski" data-ski="front" d="M0,15 L20,15"/><g class="jr-leg" data-leg="back"><path class="jr-limb" d="M-2,-2 L-12,8 L-16,16"/></g><g class="jr-side" data-side="back"><path class="jr-pole" d="M-6,-8 L-14,12"/><path class="jr-limb jr-arm" d="M3,-12 L-6,-8"/></g><g class="jr-leg" data-leg="front"><path class="jr-limb" d="M-2,-2 L6,4 L8,14"/></g><path class="jr-limb jr-torso" d="M-2,-2 L4,-14"/><rect class="jr-bib" x="-1.4" y="-10.6" width="5.8" height="5.4" rx="0.9"/><g class="jr-side" data-side="front"><path class="jr-pole" d="M12,-14 L2,10"/><path class="jr-limb jr-arm" d="M3,-12 L12,-14"/></g><circle class="jr-head" cx="7" cy="-18" r="4.6"/></g></g>
       </svg>
       <ol class="jr-nodes">{''.join(items)}</ol>
       {f'<p class="jr-tail-note caption">{e(t["tailNote"])}</p>'

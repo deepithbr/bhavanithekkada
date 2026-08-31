@@ -6765,9 +6765,35 @@ body {
   }
 
   .jr-run,
-  .jr-tail {
+  .jr-tail,
+  .jr-lane,
+  .jr-trail,
+  .jr-trailband {
     fill: none;
     stroke-linecap: round;
+  }
+
+  /* Before the mountains: a single faint line, no corridor and no
+     grooves, because a child in Kodagu is not on a ski track. */
+  .jr-lane {
+    stroke: var(--color-accent);
+    stroke-width: 1.4;
+    opacity: 0.4;
+  }
+
+  /* The trekking years. A trodden path reads as a broken line and the
+     ground either side of it is disturbed, not groomed, so the band
+     under it is far narrower and fainter than the piste that follows. */
+  .jr-trailband {
+    stroke: oklch(72% 0.055 250 / 0.14);
+    stroke-width: 18;
+  }
+
+  .jr-trail {
+    stroke: var(--color-accent);
+    stroke-width: 2.2;
+    stroke-dasharray: 1 6;
+    opacity: 0.75;
   }
 
   /* The groomed corridor the grooves are cut into. Translucent, so it
@@ -6811,11 +6837,14 @@ body {
      passes of a paper drop-shadow cut the whole group out of the track
      it is standing on, so the parts share a silhouette instead of each
      one sitting on the grooves separately. */
-  .jr-skier {
+  /* No transition: the script fades each figure out before a marker and
+     the next one in after it, frame by frame. A CSS transition on top of
+     that lags the dip and puts two of them on the track at once, which
+     is what the first cross-fade did. */
+  .jr-fig {
     opacity: 0;
     filter: drop-shadow(0 0 2px var(--color-paper))
       drop-shadow(0 0 4px var(--color-paper));
-    transition: opacity var(--dur-fast) var(--ease-out);
   }
 
   /* Two tones, the way her reference gets its legibility: the suit in
@@ -6847,6 +6876,69 @@ body {
     stroke: var(--color-paper);
     stroke-width: 1.6;
   }
+
+  /* The cadet cap. The crown follows the skull and the peak projects
+     forward and nowhere else; a bar overhanging both sides is a
+     mortarboard, which is what the first one read as. */
+  .jr-cap {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+  }
+
+  .jr-peak {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 1.9;
+    stroke-linecap: round;
+  }
+
+  /* The pack she carries from the first mountaineering year, and the
+     helmet from the first year she is on a slope. Both stay on once
+     they arrive, so neither is switched by the script. */
+  .jr-pack {
+    fill: var(--color-ink-2);
+    stroke: var(--color-paper);
+    stroke-width: 1.2;
+  }
+
+  .jr-shell {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+
+  /* Parts that belong to one year rather than to a figure: the camp
+     bedroll, the rope and axe of the qualified year, the race bib. The
+     script raises each on the year that earns it. */
+  .jr-kit {
+    fill: var(--color-ink-2);
+    stroke: var(--color-paper);
+    stroke-width: 1.1;
+    opacity: 0;
+  }
+
+  .jr-coil {
+    fill: none;
+    stroke: var(--color-ink-2);
+    stroke-width: 1.5;
+  }
+
+  .jr-qual { opacity: 0; }
+
+  .jr-bib {
+    fill: var(--color-paper);
+    stroke: var(--color-ink-2);
+    stroke-width: 1.1;
+    opacity: 0;
+  }
+
+  /* The two either side of her. The script raises them on the approach
+     to the parade and drops them after it, and never above 0.42, so she
+     stays the subject rather than one of three. */
+  .jr-rank { opacity: 0; }
 
   /* Lifted snow, so a cool pale grey rather than white: white on this
      paper is invisible, and accent blue would read as part of the

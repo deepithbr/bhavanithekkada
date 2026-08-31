@@ -302,7 +302,8 @@
           "place": "Kodagu, Karnataka",
           "detail": "Born 14 May 1995 in the coffee-growing hills of Kodagu. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
           "image": "family-kodava",
-          "kind": "past"
+          "kind": "past",
+          "figure": "walk"
         },
         {
           "year": "2013",
@@ -311,7 +312,8 @@
           "place": null,
           "detail": "The National Cadet Corps, two years before the All India camp and three before the Republic Day contingent.",
           "image": null,
-          "kind": "past"
+          "kind": "past",
+          "figure": "cadet"
         },
         {
           "year": "2014",
@@ -320,7 +322,8 @@
           "place": "Manali and Darjeeling",
           "detail": "There was no ski club to come up through, so the mountains did that job. A Grade A adventure course at ABVIMAS, then Special Basic Mountaineering at the Himalayan Mountaineering Institute in Darjeeling.",
           "image": "course-glacier",
-          "kind": "past"
+          "kind": "past",
+          "figure": "climb"
         },
         {
           "year": "2015",
@@ -329,7 +332,9 @@
           "place": "India",
           "detail": "The camp that put her in front of the selectors for the Republic Day contingent the following January.",
           "image": null,
-          "kind": "past"
+          "kind": "past",
+          "figure": "cadet",
+          "kit": "camp"
         },
         {
           "year": "2016",
@@ -338,7 +343,9 @@
           "place": "Rajpath, New Delhi",
           "detail": "Selected for the NCC contingent at the Republic Day Parade, a year after the All India camp.",
           "image": "republic-day-2016",
-          "kind": "past"
+          "kind": "past",
+          "figure": "cadet",
+          "kit": "parade"
         },
         {
           "year": "2017",
@@ -347,7 +354,9 @@
           "place": "Himalayan Mountaineering Institute, Darjeeling",
           "detail": "Method of Instruction at HMI Darjeeling, then a year there as a guest instructor. Three years after her first course she was teaching the same ground.",
           "image": "summit-solo",
-          "kind": "past"
+          "kind": "past",
+          "figure": "climb",
+          "kit": "qualified"
         },
         {
           "year": "2018",
@@ -356,7 +365,8 @@
           "place": "Kashmir and the Caucasus",
           "detail": "Basic and intermediate skiing at the Jawaharlal Institute of Mountaineering, advanced skiing at the Indian Institute of Skiing and Mountaineering in Kashmir. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
           "image": "first-skis-2018",
-          "kind": "past"
+          "kind": "past",
+          "figure": "alpine"
         },
         {
           "year": "2019",
@@ -365,7 +375,8 @@
           "place": "Mt. Ruapehu, New Zealand",
           "detail": "An international snowsports instructor certification taken on an active volcano with a ski field on it, and the first qualification she earned outside India. A season skiing abroad followed.",
           "image": "ruapehu",
-          "kind": "past"
+          "kind": "past",
+          "figure": "alpine"
         },
         {
           "year": "2020",
@@ -374,7 +385,8 @@
           "place": "Gulmarg, Jammu and Kashmir",
           "detail": "Cross-country replaced alpine. Two bronzes at the Khelo India Winter Games that season, over 5 km and 10 km.",
           "image": "double-pole",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski"
         },
         {
           "year": "2021",
@@ -383,7 +395,8 @@
           "place": "Gulmarg, Jammu and Kashmir",
           "detail": "Gold over 1.4 km and bronze over 5 km at the Khelo India Winter Games, in her second season on cross-country skis.",
           "image": "contingent-2021",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski"
         },
         {
           "year": "2022",
@@ -392,7 +405,9 @@
           "place": "Akureyri, Iceland",
           "detail": "Her first internationally scored starts, in the sprint and the 10 km interval start, in January. Seventh in sprint qualification and sixth over the distance. At home the same season: golds and silvers across the national cross-country and biathlon championships.",
           "image": "nordic-podium",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski",
+          "kit": "bib"
         },
         {
           "year": "2023",
@@ -401,7 +416,9 @@
           "place": "Planica, Slovenia",
           "detail": "A first Worlds, in the 10 km interval start. Earlier that season she returned to Akureyri and finished fourth in both the sprint and the interval start.",
           "image": "race-planica-elbrus",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski",
+          "kit": "bib"
         },
         {
           "year": "2024",
@@ -410,7 +427,9 @@
           "place": "Schuchinsk, Idre, Seefeld, Lygna",
           "detail": "Continental cup racing at Schuchinsk in March, then three FIS meetings across Sweden, Austria and Norway in December: the first sustained block of racing on European snow. Three golds at the Khelo India Winter Games at home.",
           "image": "khelo-ladakh-skis",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski",
+          "kit": "bib"
         },
         {
           "year": "2025",
@@ -419,7 +438,10 @@
           "place": "Harbin, Trondheim, Corralco, Ruka",
           "detail": "India's flag bearer at the Asian Winter Games opening ceremony in Harbin, and a sprint quarter-finalist there. Two bronzes on consecutive days at Corralco in Chile, reported in India as the first international cross-country medals won by an Indian woman. Then a first World Cup start at Ruka, forty kilometres short of the Arctic Circle.",
           "image": "chile-corralco",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         },
         {
           "year": "2026",
@@ -428,7 +450,10 @@
           "place": "Gulmarg, Jammu and Kashmir",
           "detail": "Her first season on the Worldloppet marathon circuit. At home the same season: gold in the 1.5 km sprint at the Khelo India Winter Games in 4:13.91, with bronzes over 10 km and 15 km.",
           "image": "start-line-gulmarg",
-          "kind": "past"
+          "kind": "past",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         },
         {
           "year": "2027",
@@ -437,7 +462,10 @@
           "place": "Falun, Sweden",
           "detail": "A third start at the Worlds, with two editions already behind her.",
           "image": null,
-          "kind": "ahead"
+          "kind": "ahead",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         },
         {
           "year": "2028",
@@ -446,7 +474,10 @@
           "place": null,
           "detail": "Race starts and FIS points under the qualification rules, the season that sets up everything after it.",
           "image": null,
-          "kind": "ahead"
+          "kind": "ahead",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         },
         {
           "year": "2029",
@@ -455,7 +486,10 @@
           "place": "Almaty and Lahti",
           "detail": "Almaty, then Lahti, and the points that decide 2030.",
           "image": null,
-          "kind": "ahead"
+          "kind": "ahead",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         },
         {
           "year": "2030",
@@ -464,10 +498,14 @@
           "place": "La Clusaz, Haute-Savoie",
           "detail": "The reason the rest of it is planned the way it is. Cross-country at the 2030 Games is held at La Clusaz, on the Confins plateau, 1 to 17 February.",
           "image": null,
-          "kind": "ahead"
+          "kind": "ahead",
+          "figure": "ski",
+          "kit": "bib",
+          "pace": "race"
         }
       ],
-      "tailNote": "The journey continues"
+      "tailNote": "The journey continues",
+      "castNote": "figure/kit/pace drive the drawn figure on the journey track. figure is one of walk, cadet, climb, alpine, ski; kit is camp, parade, qualified or bib; pace race is the harder cadence from her World Cup season. The line under her follows from the figures: a faint lane until the first climb year, a walked trail until the first alpine year, open snow from there, and the classic grooves from the first ski year. Set 31 Aug 2026."
     },
     "beatsNote": "Superseded on the journey page by story.timeline, 31 Aug 2026. Kept: build_v1 still renders them."
   },

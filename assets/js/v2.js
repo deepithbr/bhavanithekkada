@@ -446,20 +446,36 @@
     const runs = Array.from(svg.querySelectorAll("path[data-o]"));
     const tail = svg.querySelector(".jr-tail");
     const piste = svg.querySelector(".jr-piste");
+    const lane = svg.querySelector(".jr-lane");
+    const trail = svg.querySelector(".jr-trail");
+    const trailband = svg.querySelector(".jr-trailband");
     const full = svg.querySelector(".jr-full");
-    const skier = svg.querySelector(".jr-skier");
+    const figs = {};
+    for (const g of svg.querySelectorAll(".jr-fig")) figs[g.dataset.fig] = g;
+    const skier = figs.ski;
     const cut = svg.querySelector("#jr-cut");
-    const legs = svg.querySelectorAll(".jr-leg");
-    const sides = svg.querySelectorAll(".jr-side");
     const GROOVE = 5;
-    // One full diagonal stride per hundred pixels of track, and how far
-    // the legs and the arms swing through it. The hip and the shoulder
-    // are the two points everything turns about.
-    const STRIDE = 100;
-    const LEG_SWING = 14;
-    const ARM_SWING = 18;
-    const HIP = "-2,-2";
-    const SHOULDER = "3,-12";
+    // Cycle length in pixels of track, then how far the legs and the
+    // arms swing through it. A walk is not a march is not a poling
+    // stride; running all three off one set of numbers is what made the
+    // walking look wrong.
+    const GAIT = {
+      walk:   { stride: 128, leg: 12, arm: 13 },
+      cadet:  { stride: 112, leg: 10, arm: 27 },
+      climb:  { stride: 146, leg: 13, arm: 10 },
+      alpine: { stride: 150, leg: 5, arm: 4 },
+      ski:    { stride: 100, leg: 14, arm: 18 },
+      // A seasoned racer works at a higher cadence and a longer reach.
+      race:   { stride: 86, leg: 17, arm: 22 }
+    };
+    const SCALE = { walk: 0.72, cadet: 0.94 };
+    // Where each foot sits relative to the hip, so the ski under it can
+    // be moved by the same amount the foot moves.
+    const FOOT = { front: [10, 16], back: [-14, 18] };
+    // Half the transition window, and how far either side of the parade
+    // marker the two companions are up.
+    const HALF = 22;
+    const PARADE_REACH = 105;
     // How far back the fresh cut reads before it fades into the settled
     // track.
     const CUT = 190;
@@ -467,6 +483,8 @@
     // Where she is and which way she is pointing, kept from the last
     // frame so the spray knows where the ski tails are.
     let heading = null;
+    // Snow only comes off skis, so the spray asks before it throws.
+    let onSkis = false;
     const clip = svg.querySelector(".jr-clip-r");
     // Where the record stops and the plan starts.
     const lastPast =
@@ -474,6 +492,17 @@
 
     let pts = [];
     let H = 0;
+
+    // Where each stage of the line starts, taken off the figures the
+    // years ask for. Nothing here names a year, so the content file
+    // stays the only place the story is told.
+    const firstFig = (fig, fallback) => {
+      const i = nodes.findIndex((nd) => nd.dataset.fig === fig);
+      return i < 0 ? fallback : i;
+    };
+    const iTrail = firstFig("climb", 0);
+    const iSnow = firstFig("alpine", nodes.length - 1);
+    const iTrack = firstFig("ski", nodes.length - 1);
 
     // The route, rebuilt in the track's own pixels. The markup's path is
     // only the no-script fallback; its viewBox is stretched about eight
@@ -508,16 +537,26 @@
         return d;
       };
 
+      // The grooves start where cross-country does, not at 1995. Her own
+      // taglines put alpine in 2018 and cross-country in 2020, so two
+      // years of classic tracks under a downhill skier would be a claim
+      // about her that is not true.
       for (const p of runs) {
         const o = Number(p.dataset.o || 0) * GROOVE;
-        // The fresh pair runs the whole route: the gradient decides
-        // where it shows, not the geometry.
+        // The fresh pair runs the whole groomed stretch: the gradient
+        // decides where it shows, not the geometry.
         p.setAttribute("d",
-          p.classList.contains("jr-fresh") ? seg(0, pts.length - 1, o)
+          p.classList.contains("jr-fresh")
+            ? seg(iTrack, pts.length - 1, o)
           : p.classList.contains("jr-ahead")
             ? seg(lastPast, pts.length - 1, o)
-            : seg(0, lastPast, o));
+            : seg(iTrack, lastPast, o));
       }
+
+      if (lane) lane.setAttribute("d", seg(0, iTrail));
+      const walked = seg(iTrail, iSnow);
+      if (trail) trail.setAttribute("d", walked);
+      if (trailband) trailband.setAttribute("d", walked);
 
       // And it does not stop at the last year. A short tail, in a stroke
       // that fades to nothing, because the target is the point of the
@@ -542,7 +581,13 @@
       // becomes a lineto and the two join into one continuous path.
       const whole = seg(0, pts.length - 1) +
         (tailD ? " " + tailD.replace(/^M/, "L") : "");
-      if (piste) piste.setAttribute("d", whole);
+      // The corridor only covers the snow years; the measuring copy runs
+      // the whole route end to end, so the figure travels one continuous
+      // line whatever is drawn beneath it.
+      if (piste) {
+        piste.setAttribute("d", seg(iSnow, pts.length - 1) +
+          (tailD ? " " + tailD.replace(/^M/, "L") : ""));
+      }
       if (full) full.setAttribute("d", whole);
 
       clip.setAttribute("x", "-20");
@@ -588,11 +633,10 @@
       }
 
       const moved = lastAt < 0 ? 0 : Math.abs(at - lastAt);
-      pole(at);
       // Scroll hard and she throws a lot; ease down and she throws
       // almost none. Capped so a flick of the wheel does not empty the
       // pool in one frame.
-      if (moved > 4) puff(Math.min(3, Math.round(moved / 14) + 1));
+      if (onSkis && moved > 4) puff(Math.min(3, Math.round(moved / 14) + 1));
       lastAt = at;
     };
 
@@ -615,24 +659,46 @@
     // the rear leg back, so the pair scissors; the arms take the
     // opposite pairing, which is what makes it a diagonal stride and
     // not a hop.
-    const pole = (y) => {
-      if (reduce.matches || !legs.length) return;
-      const t = Math.sin((y / STRIDE) * Math.PI * 2);
-      const l = (LEG_SWING * t).toFixed(1);
-      const a = (ARM_SWING * t).toFixed(1);
-      for (const g of legs) {
-        const d = g.dataset.leg === "front" ? -l : l;
-        g.setAttribute("transform", `rotate(${d} ${HIP})`);
+    const pole = (fig, paced, y) => {
+      const g = figs[fig];
+      if (reduce.matches || !g) return;
+      const G = GAIT[paced] || GAIT[fig] || GAIT.ski;
+      const t = Math.sin((y / G.stride) * Math.PI * 2);
+      const hip = g.dataset.hip, sh = g.dataset.shoulder;
+      for (const el of g.querySelectorAll(".jr-leg")) {
+        const d = (el.dataset.leg === "front" ? -G.leg : G.leg) * t;
+        el.setAttribute("transform", `rotate(${d.toFixed(1)} ${hip})`);
       }
-      for (const g of sides) {
-        const d = g.dataset.side === "front" ? a : -a;
-        g.setAttribute("transform", `rotate(${d} ${SHOULDER})`);
+      for (const el of g.querySelectorAll(".jr-side")) {
+        const d = (el.dataset.side === "front" ? G.arm : -G.arm) * t;
+        el.setAttribute("transform", `rotate(${d.toFixed(1)} ${sh})`);
+      }
+      // A ski slides along the track rather than pivoting at the hip, so
+      // it takes the horizontal part of its own foot's swing and stays
+      // flat. Rotating it with the leg would tip it off the snow.
+      for (const el of g.querySelectorAll(".jr-ski[data-ski]")) {
+        const f = FOOT[el.dataset.ski];
+        if (!f) continue;
+        const d = (el.dataset.ski === "front" ? -G.leg : G.leg) * t
+          * Math.PI / 180;
+        const dx = f[0] * Math.cos(d) - f[1] * Math.sin(d) - f[0];
+        el.setAttribute("transform", `translate(${dx.toFixed(2)},0)`);
       }
     };
 
+    // Which year the front is in, and therefore who she is there. A year
+    // takes over one window before its own marker, so the figure it asks
+    // for has finished arriving by the time the reader reaches it.
+    const yearAt = (y) => {
+      let i = 0;
+      for (let k = 0; k < pts.length; k++) if (y >= pts[k][1] - HALF) i = k;
+      return i;
+    };
+
     const ride = (y) => {
-      if (!skier || !full) return;
-      if (y <= 2 || y >= H - 2) { skier.style.opacity = "0"; return; }
+      if (!full || !pts.length) return;
+      for (const k in figs) figs[k].style.opacity = "0";
+      if (y <= 2 || y >= H - 2) return;
       const len = at2len(y);
       const p = full.getPointAtLength(len);
       // A second sample a little further on gives the direction of
@@ -648,9 +714,53 @@
       const dx = q.x - p.x, dy = q.y - p.y;
       const m = Math.hypot(dx, dy) || 1;
       heading = { x: p.x, y: p.y, tx: dx / m, ty: dy / m };
-      skier.style.opacity = "1";
-      skier.setAttribute("transform",
-        `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
+
+      const i = yearAt(y);
+      const nd = nodes[i];
+      const fig = (nd && nd.dataset.fig) || "ski";
+      const g = figs[fig];
+      if (!g) return;
+
+      // One out, then the other in: never both. The outgoing figure
+      // reaches zero exactly where the incoming one leaves it, and the
+      // incoming one is whole by its own marker. The kit that goes with a
+      // year switches inside that gap, so a rope or a bib is never seen
+      // arriving.
+      const clamp = (v) => (v < 0 ? 0 : v > 1 ? 1 : v);
+      let k = 1;
+      const prev = i > 0 ? nodes[i - 1].dataset.fig : fig;
+      const next = i + 1 < nodes.length ? nodes[i + 1].dataset.fig : fig;
+      // Where this year took over, and where the next one will.
+      const from = pts[i][1] - HALF;
+      const upto = i + 1 < pts.length ? pts[i + 1][1] - HALF : Infinity;
+      if (next !== fig && upto - y < HALF) k = clamp((upto - y) / HALF);
+      else if (prev !== fig && y - from < HALF) k = clamp((y - from) / HALF);
+
+      const kit = (nd && nd.dataset.kit) || "";
+      for (const el of g.querySelectorAll(".jr-kit")) {
+        el.style.opacity = kit === "camp" ? "1" : "0";
+      }
+      for (const el of g.querySelectorAll(".jr-qual")) {
+        el.style.opacity = kit === "qualified" ? "1" : "0";
+      }
+      for (const el of g.querySelectorAll(".jr-bib")) {
+        el.style.opacity = kit === "bib" ? "1" : "0";
+      }
+      // The two either side form up for the parade and fall away after
+      // it, so she is alone at the camp and in rank on Rajpath.
+      const ranks = g.querySelectorAll(".jr-rank");
+      if (ranks.length) {
+        const near = kit === "parade"
+          ? Math.max(0, 1 - Math.abs(y - pts[i][1]) / PARADE_REACH) : 0;
+        for (const el of ranks) el.style.opacity = (near * 0.42).toFixed(3);
+      }
+
+      const sc = SCALE[fig] ? ` scale(${SCALE[fig]})` : "";
+      g.style.opacity = k.toFixed(2);
+      g.setAttribute("transform",
+        `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})${sc}`);
+      pole(fig, (nd && nd.dataset.pace) || fig, y);
+      onSkis = fig === "ski";
     };
 
     /* ---- snow off the tails ---------------------------------------- */
@@ -738,7 +848,7 @@
       }
       for (const nd of nodes) nd.dataset.lit = "true";
       // Nothing is moving, so nobody is skiing and nothing is freshly cut.
-      if (skier) skier.style.opacity = "0";
+      for (const k in figs) figs[k].style.opacity = "0";
       if (cut) { cut.setAttribute("y1", "0"); cut.setAttribute("y2", "0"); }
     };
 
