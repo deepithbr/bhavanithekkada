@@ -399,8 +399,9 @@
   /* ---- the places arrive ----------------------------------------------- */
 
   // When the map enters, the fourteen pins appear one at a time in racing
-  // order, 340ms apart: Kodagu first, the Chilean pair near the end. Runs
-  // once. Reduced motion, or no observer, sees the finished map.
+  // order: Kodagu first, the Chilean pair near the end. Runs once. Reduced
+  // motion, or no observer, sees the finished map. The lines stage went out
+  // with the lines on 31 Aug; three stages are left.
   const routeFig = document.querySelector(".route-map");
   if (routeFig) {
     const pins = Array.from(routeFig.querySelectorAll(".pin[data-stop]"))
@@ -420,9 +421,8 @@
       const at = (ms, stage) =>
         setTimeout(() => (routeFig.dataset.stage = stage), ms);
       at(lit + 250, "plan");        // the three stops before the Games
-      at(lit + 1550, "lines");      // all of it running to the Alps
-      at(lit + 3550, "dest");       // La Clusaz, alone
-      at(lit + 5000, "rest");       // and the rest steps back
+      at(lit + 1500, "dest");       // La Clusaz, alone
+      at(lit + 2800, "rest");       // and the rest steps back
     };
 
     if (reduce.matches || !("IntersectionObserver" in window)) {
@@ -439,6 +439,189 @@
       }, { threshold: 0.3 });
       arrive.observe(routeFig);
     }
+  }
+
+  /* ---- the journey draws itself ---------------------------------------- */
+
+  const jr = document.querySelector(".jr");
+  if (jr) {
+    const svg = jr.querySelector(".jr-path");
+    const nodes = Array.from(jr.querySelectorAll(".jr-node"));
+    const runs = Array.from(svg.querySelectorAll(".jr-run"));
+    const tail = svg.querySelector(".jr-tail");
+    const clip = svg.querySelector(".jr-clip-r");
+    // Where the record stops and the plan starts.
+    const lastPast =
+      nodes.filter((nd) => nd.dataset.kind !== "ahead").length - 1;
+
+    let pts = [];
+    let H = 0;
+
+    // The route, rebuilt in the track's own pixels. The markup's path is
+    // only the no-script fallback; its viewBox is stretched about eight
+    // times harder across than down, and a stroke under a transform that
+    // lopsided renders wrong or not at all.
+    const draw = () => {
+      if (getComputedStyle(svg).display === "none") { H = 0; return; }
+      const box = jr.getBoundingClientRect();
+      if (!box.width || !box.height) { H = 0; return; }
+      H = box.height;
+      const W = box.width;
+      svg.setAttribute("viewBox", `0 0 ${W.toFixed(0)} ${H.toFixed(0)}`);
+      svg.setAttribute("preserveAspectRatio", "none");
+      pts = nodes.map((nd) => {
+        const d = nd.querySelector(".jr-dot").getBoundingClientRect();
+        return [d.left - box.left + d.width / 2,
+                d.top - box.top + d.height / 2];
+      });
+
+      // Vertical handles half the gap long: the curve leaves one marker
+      // straight down and meets the next straight down, so both halves
+      // of every bend match and the join does not show.
+      const seg = (a, z) => {
+        let d = `M${pts[a][0].toFixed(1)},${pts[a][1].toFixed(1)}`;
+        for (let i = a; i < z; i++) {
+          const h = (pts[i + 1][1] - pts[i][1]) * 0.5;
+          d += ` C${pts[i][0].toFixed(1)},${(pts[i][1] + h).toFixed(1)}` +
+               ` ${pts[i + 1][0].toFixed(1)},${(pts[i + 1][1] - h).toFixed(1)}` +
+               ` ${pts[i + 1][0].toFixed(1)},${pts[i + 1][1].toFixed(1)}`;
+        }
+        return d;
+      };
+
+      runs[0].setAttribute("d", seg(0, lastPast));
+      if (runs[1]) runs[1].setAttribute("d", seg(lastPast, pts.length - 1));
+
+      // And it does not stop at the last year. A short tail, in a stroke
+      // that fades to nothing, because the target is the point of the
+      // plan rather than the end of anything.
+      const end = pts[pts.length - 1];
+      const drop = Math.min(H - end[1] - 4, 150);
+      if (tail && drop > 20) {
+        tail.setAttribute("d",
+          `M${end[0].toFixed(1)},${end[1].toFixed(1)}` +
+          ` C${end[0].toFixed(1)},${(end[1] + drop * 0.6).toFixed(1)}` +
+          ` ${(W / 2).toFixed(1)},${(end[1] + drop * 0.5).toFixed(1)}` +
+          ` ${(W / 2).toFixed(1)},${(end[1] + drop).toFixed(1)}`);
+      }
+      clip.setAttribute("x", "-20");
+      clip.setAttribute("width", (W + 40).toFixed(0));
+    };
+
+    // The drawing front sits about three quarters of the way down the
+    // screen, so a year lights just after it comes into view rather than
+    // at the moment it clips the bottom edge.
+    const FRONT = 0.76;
+
+    const sync = () => {
+      if (!H) {
+        // The rail layout. No route to draw, so each year lights on its
+        // own rectangle as it comes up the screen, and never unlights.
+        for (const nd of nodes) {
+          if (nd.dataset.lit === "true") continue;
+          if (nd.getBoundingClientRect().top < innerHeight * 0.92) {
+            nd.dataset.lit = "true";
+          }
+        }
+        return;
+      }
+      const top = jr.getBoundingClientRect().top;
+      const at = Math.max(0, Math.min(H, innerHeight * FRONT - top));
+      clip.setAttribute("y", "0");
+      clip.setAttribute("height", (at + 6).toFixed(1));
+      for (let i = 0; i < nodes.length; i++) {
+        nodes[i].dataset.lit = at >= pts[i][1] - 8 ? "true" : "false";
+      }
+    };
+
+    const all = () => {
+      draw();
+      if (H) {
+        clip.setAttribute("height", (H + 40).toFixed(0));
+      }
+      for (const nd of nodes) nd.dataset.lit = "true";
+    };
+
+    if (reduce.matches) {
+      // Nothing animates, so nothing is staged: the whole route at once.
+      all();
+      addEventListener("resize", () => { draw(); if (H) clip.setAttribute("height", (H + 40).toFixed(0)); });
+    } else {
+      draw();
+      sync();
+      let tick = false;
+      const onScroll = () => {
+        // A background tab never runs the frame, so the latch would be
+        // set once and the route frozen from then on. Nothing is being
+        // painted there anyway, so keep the state right and skip it.
+        if (document.hidden) { tick = false; sync(); return; }
+        if (tick) return;
+        tick = true;
+        requestAnimationFrame(() => { tick = false; sync(); });
+      };
+      addEventListener("scroll", onScroll, { passive: true });
+      document.addEventListener("visibilitychange", () => {
+        tick = false;
+        sync();
+      });
+      let rt;
+      addEventListener("resize", () => {
+        clearTimeout(rt);
+        rt = setTimeout(() => { draw(); sync(); }, 120);
+      });
+      // The photographs settle the track's height after they load, and
+      // the markers move with it.
+      addEventListener("load", () => { draw(); sync(); });
+    }
+
+    /* ---- and a year opens ---------------------------------------------- */
+
+    // Hover and :focus-visible are CSS. This is the tap, the click, and
+    // keeping aria-expanded true to what is on screen. One open at a
+    // time: the panels overlap their neighbours by design.
+    const shut = (except) => {
+      for (const nd of nodes) {
+        if (nd === except || !nd.hasAttribute("data-open")) continue;
+        nd.removeAttribute("data-open");
+        nd.querySelector(".jr-hit").setAttribute("aria-expanded", "false");
+      }
+    };
+
+    for (const nd of nodes) {
+      const hit = nd.querySelector(".jr-hit");
+      hit.addEventListener("click", () => {
+        const open = nd.hasAttribute("data-open");
+        shut(nd);
+        if (open) nd.removeAttribute("data-open");
+        else nd.setAttribute("data-open", "");
+        hit.setAttribute("aria-expanded", open ? "false" : "true");
+      });
+    }
+
+    // Anywhere else closes it, which is the only way off a panel on a
+    // touch screen.
+    document.addEventListener("click", (ev) => {
+      if (!ev.target.closest(".jr-node")) shut(null);
+    });
+
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key !== "Escape") return;
+      const open = jr.querySelector(".jr-node[data-open] .jr-hit");
+      shut(null);
+      if (open) open.focus();
+    });
+
+    // The hint says tap on anything that cannot hover, and on any window
+    // narrow enough to be running the rail layout, where hovering opens
+    // nothing whatever the pointer is capable of.
+    const hint = document.querySelector(".jr-hint");
+    const sayTap = () => {
+      if (!hint || !hint.dataset.touch || !hint.dataset.hover) return;
+      const tap = !matchMedia("(hover: hover)").matches || innerWidth < 900;
+      hint.textContent = tap ? hint.dataset.touch : hint.dataset.hover;
+    };
+    sayTap();
+    addEventListener("resize", sayTap);
   }
 
   /* ---- journal reading progress ---------------------------------------- */

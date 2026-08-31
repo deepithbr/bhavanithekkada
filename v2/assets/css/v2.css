@@ -900,59 +900,6 @@ a {
   color: var(--color-ink-2);
 }
 
-/* The journey: photograph beside copy, alternating sides, stacked plainly on
-   a phone. No rail, no pin, no travel. */
-.steps {
-  display: grid;
-  gap: var(--space-2xl);
-}
-
-.step {
-  display: grid;
-  gap: var(--space-md);
-  align-items: center;
-}
-
-@media (min-width: 800px) {
-  .step {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-xl);
-  }
-
-  /* Alternate. The photograph swaps sides on every other chapter, which is
-     all the movement this page needs. */
-  .step:nth-child(even) .step-shot {
-    order: 2;
-  }
-}
-
-.step-shot {
-  margin: 0;
-  overflow: hidden;
-  background: var(--color-paper-3);
-}
-
-.step-shot img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  height: auto;
-  object-fit: cover;
-}
-
-.step-copy {
-  display: grid;
-  gap: var(--space-xs);
-  max-width: var(--measure-tight);
-}
-
-.step-copy h2 {
-  font-size: var(--text-2xl);
-}
-
-.step-copy p:not(.caption) {
-  color: var(--color-ink-2);
-}
-
 /* The medal tables. Three columns, hairline rows, the dot carrying colour. */
 .medals {
   width: 100%;
@@ -1732,29 +1679,6 @@ a {
   }
 }
 
-/* Ghost year numerals behind the journey chapters. */
-.step-copy {
-  position: relative;
-}
-
-.ghost-year {
-  position: absolute;
-  top: -0.55em;
-  right: 0;
-  z-index: -1;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(4rem, 9vw, 8rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--color-paper-3);
-  user-select: none;
-}
-
-.prose-fold[data-ground="ice"] .ghost-year {
-  color: var(--color-paper);
-}
-
 /* The pull quote on About: the reported line at reading-aloud size. */
 .pull {
   font-family: var(--font-body);
@@ -2289,40 +2213,6 @@ a {
   }
 }
 
-/* ---------------------------------------------------- the road, on Journey */
-
-/* The four target seasons continue the timeline without photographs: two
-   cards up on a wide screen, stacked on a phone, each with its ghost year. */
-.steps-future {
-  margin-top: var(--space-lg);
-  gap: var(--space-lg);
-}
-
-.steps-future .step {
-  grid-template-columns: minmax(0, 1fr);
-  border-top: var(--rule-hair) solid var(--color-line);
-  padding-top: var(--space-md);
-}
-
-@media (min-width: 800px) {
-  .steps-future {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-xl);
-  }
-}
-
-.steps-future h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  margin-block: var(--space-3xs) var(--space-2xs);
-}
-
-.steps-future .ghost-year {
-  font-size: clamp(3.2rem, 7vw, 5.5rem);
-}
-
 /* The talk card's provenance line sits quiet under the body. */
 .talk .caption {
   color: var(--color-ink-3);
@@ -2365,17 +2255,9 @@ a {
 
 /* -------------------------------------- decorative numerals, reined in */
 
-/* The oversized years are desktop furniture. On a phone they pressed the
-   copy toward the edge; smaller and they still read as altitude. */
+/* The oversized year is desktop furniture. On a phone it pressed the copy
+   toward the edge; smaller and it still reads as altitude. */
 @media (max-width: 640px) {
-  .step-copy {
-    min-width: 0;
-  }
-
-  .ghost-year {
-    font-size: 3.2rem;
-  }
-
   .target-year {
     font-size: clamp(3.6rem, 24vw, 6rem);
   }
@@ -5096,9 +4978,8 @@ body {
    pulls a sentence apart.
 
    So this covers the section labels, which all live in .prose or carry
-   their own class. It deliberately does not cover the story beats on
-   Journey, which are chapter titles inside .step-copy, or the medal
-   table headers, which carry a count. */
+   their own class. It deliberately does not cover the medal table
+   headers, which carry a count. */
 
 .prose > h2,
 .media-say h2,
@@ -6599,5 +6480,479 @@ body {
 @media (min-width: 900px) {
   .stack > .sport-band .sport-season {
     margin-bottom: calc(var(--space-2xl) * -1);
+  }
+}
+
+
+/* ==================== 31 August: the journey, drawn
+
+   The six alternating photo cards became one route winding down the
+   page with a stop on it every year, which is the shape of her
+   reference. The photograph sits on the outside of each bend; the year
+   and its one line sit under it; the write-up waits for a hover, a tap
+   or a tab. Past 2026 the same route carries on dashed and fades out,
+   because that stretch is a plan and not a record.
+
+   The route is drawn by script, in pixels, from where the markers
+   actually landed. The path in the markup is the no-script fallback and
+   is the only thing on the page that uses the distorted viewBox.
+   ==================================================================== */
+
+.jr-hint {
+  color: var(--color-ink-3);
+  margin-top: var(--space-2xs);
+}
+
+.jr {
+  position: relative;
+  margin-top: var(--space-xl);
+}
+
+.jr-nodes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* --------------------------------------------------------- the year card */
+
+.jr-hit {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.jr-card {
+  display: block;
+}
+
+.jr-shot {
+  display: block;
+  margin-bottom: var(--space-sm);
+  background: var(--color-paper-3);
+  overflow: hidden;
+}
+
+.jr-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.jr-hit:hover .jr-shot img,
+.jr-hit:focus-visible .jr-shot img {
+  transform: scale(1.04);
+}
+
+.jr-year {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.4vw + 0.9rem, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--color-ink);
+}
+
+.jr-line {
+  display: block;
+  margin-top: var(--space-3xs);
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 0.2vw + 0.9rem, 1.05rem);
+  line-height: 1.45;
+  color: var(--color-ink-2);
+}
+
+/* The years that have not happened read a shade back from the ones that
+   have, so the change is carried by more than the dashes on the line. */
+.jr-node[data-kind="ahead"] .jr-year {
+  color: var(--color-ink-2);
+  font-weight: 600;
+}
+
+.jr-node[data-kind="ahead"] .jr-line {
+  color: var(--color-ink-3);
+}
+
+.jr-ahead-note {
+  display: block;
+  margin-bottom: var(--space-3xs);
+  font-family: var(--font-caption);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.jr-dot {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 0.3rem var(--color-paper);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+/* Hollow, the same convention the map uses for a start line she has not
+   stood on yet. */
+.jr-node[data-kind="ahead"] .jr-dot {
+  background: var(--color-paper);
+  box-shadow: inset 0 0 0 2px var(--color-accent),
+    0 0 0 0.3rem var(--color-paper);
+}
+
+.jr-hit:hover ~ .jr-dot,
+.jr-hit:focus-visible ~ .jr-dot,
+.jr-node[data-open] .jr-dot {
+  transform: scale(1.35);
+}
+
+.jr-hit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+}
+
+/* ------------------------------------------------------------- the panel
+
+   Text only. The photograph is on the page now, so a panel carrying it
+   again would be the same picture twice, one on top of the other. */
+
+.jr-pop {
+  padding: var(--space-md);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-left: 3px solid var(--color-accent);
+  box-shadow: 0 18px 46px oklch(20% 0.03 255 / 0.16);
+}
+
+.jr-pop-where {
+  color: var(--color-ink-3);
+  margin: 0;
+}
+
+.jr-pop h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.15;
+  margin: var(--space-3xs) 0 var(--space-2xs);
+}
+
+.jr-pop p:not(.caption) {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--color-ink-2);
+  margin: 0;
+}
+
+/* ------------------------------------- under 900px: a straight left rail
+
+   A route that crosses the page needs a page to cross. At 380px it is a
+   scribble and a panel pinned beside it has nowhere to go, so the path
+   is hidden, the years fall into flow, and the panel opens under its own
+   year on tap. */
+
+.jr-path {
+  display: none;
+}
+
+.jr-node {
+  position: relative;
+  padding-left: 2.5rem;
+  padding-bottom: var(--space-xl);
+}
+
+/* The rail from one year to the next, dashed once the years stop being
+   things that happened. */
+.jr-node::before {
+  content: "";
+  position: absolute;
+  left: 0.44rem;
+  top: 0.5rem;
+  bottom: 0;
+  border-left: 2px solid var(--color-accent);
+  opacity: 0.4;
+}
+
+.jr-node[data-kind="ahead"]::before {
+  border-left-style: dashed;
+}
+
+/* It does not stop at 2030. The last stretch runs on and fades out,
+   because the target is the point of the plan, not the end of it. */
+.jr-node:last-child {
+  padding-bottom: var(--space-2xl);
+}
+
+.jr-node:last-child::before {
+  bottom: 0.5rem;
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+
+.jr-dot {
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+}
+
+.jr-shot {
+  max-width: 26rem;
+}
+
+.jr-pop {
+  display: none;
+  margin-top: var(--space-sm);
+  max-width: 30rem;
+}
+
+.jr-node[data-open] .jr-pop {
+  display: block;
+}
+
+/* Nothing arrives before it is scrolled to, here as well. There is no
+   route to draw on the rail layout, so the segment between one year and
+   the next grows out of its marker and the card comes with it. A reader
+   without script never matches these rules and gets the lot at once,
+   which is the right way for it to fail. */
+.js .jr-node .jr-hit,
+.js .jr-node .jr-dot {
+  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
+}
+
+.js .jr-node[data-lit="false"] .jr-hit,
+.js .jr-node[data-lit="false"] .jr-dot {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.js .jr-node::before {
+  transform-origin: top;
+  transform: scaleY(1);
+  transition: transform 600ms var(--ease-out);
+}
+
+.js .jr-node[data-lit="false"]::before {
+  transform: scaleY(0);
+}
+
+/* --------------------------------------- 900px and up: the drawn route */
+
+@media (min-width: 900px) {
+  .jr {
+    height: calc(var(--jr-n) * 17rem);
+  }
+
+  .jr-path {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .jr-run,
+  .jr-tail {
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  .jr-run {
+    stroke: var(--color-accent);
+    stroke-width: 2;
+    opacity: 0.5;
+  }
+
+  .jr-ahead {
+    stroke-dasharray: 3 10;
+    opacity: 0.75;
+  }
+
+  .jr-tail {
+    stroke: url(#jr-fade);
+    stroke-width: 2;
+    stroke-dasharray: 3 10;
+  }
+
+  .jr-fade-a {
+    stop-color: var(--color-accent);
+    stop-opacity: 0.75;
+  }
+
+  .jr-fade-b {
+    stop-color: var(--color-accent);
+    stop-opacity: 0;
+  }
+
+  .jr-nodes {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Each year spans the full width of the track, so its card can be
+     sized against the container rather than against a 14px marker. A
+     full-width row would swallow every pointer event on its band, so it
+     takes none and the three things inside it take them back; :hover
+     still reaches the row from any of them. */
+  .jr-node {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--y);
+    height: 0;
+    padding: 0;
+    pointer-events: none;
+  }
+
+  .jr-node::before {
+    display: none;
+  }
+
+  .jr-hit,
+  .jr-dot,
+  .jr-pop {
+    pointer-events: auto;
+  }
+
+  .jr-dot {
+    left: calc(var(--x) - 0.45rem);
+    top: -0.45rem;
+  }
+
+  /* The card sits on the outside of the bend, clear of the route. */
+  .jr-hit {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    max-width: min(21rem, 27%);
+  }
+
+  .jr-node[data-side="l"] .jr-hit {
+    right: calc(100% - var(--x) + 2rem);
+    text-align: right;
+  }
+
+  .jr-node[data-side="r"] .jr-hit {
+    left: calc(var(--x) + 2rem);
+    text-align: left;
+  }
+
+  /* And the panel opens on the inside, into the width the bend leaves
+     empty, which is the one place on the page it always fits. */
+  .jr-pop {
+    display: block;
+    position: absolute;
+    z-index: 4;
+    width: 20rem;
+    max-width: 36%;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    --pop-y: 0px;
+    transform: translateY(calc(var(--pop-y) + 8px));
+    transition: opacity var(--dur-fast) var(--ease-out),
+      visibility var(--dur-fast) var(--ease-out),
+      transform var(--dur-fast) var(--ease-out);
+  }
+
+  .jr-node[data-side="l"] .jr-pop {
+    left: calc(var(--x) + 2rem);
+  }
+
+  .jr-node[data-side="r"] .jr-pop {
+    right: calc(100% - var(--x) + 2rem);
+  }
+
+  .jr-node[data-vpos="mid"] .jr-pop {
+    top: 50%;
+    --pop-y: -50%;
+  }
+
+  .jr-node[data-vpos="top"] .jr-pop {
+    top: -1rem;
+  }
+
+  .jr-node[data-vpos="bottom"] .jr-pop {
+    bottom: -1rem;
+  }
+
+  .jr-hit:focus-visible ~ .jr-pop,
+  .jr-node[data-open] .jr-pop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(var(--pop-y));
+  }
+
+  .jr-node:hover,
+  .jr-node[data-open],
+  .jr-node:focus-within {
+    z-index: 5;
+  }
+
+  /* Nothing arrives before it is scrolled to. Script moves data-lit as
+     the drawing front passes each marker; a reader without script never
+     matches this rule and gets the whole route at once, which is the
+     right way for it to fail. */
+  .js .jr-node[data-lit="false"] .jr-hit,
+  .js .jr-node[data-lit="false"] .jr-dot {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .js .jr-node[data-lit="false"] .jr-hit {
+    transform: translateY(calc(-50% + 14px));
+  }
+
+  .js .jr-node .jr-hit,
+  .js .jr-node .jr-dot {
+    transition: opacity 700ms var(--ease-out),
+      transform 700ms var(--ease-out);
+  }
+}
+
+/* Hover opens the panel only where there is a pointer that can hover. On
+   a touch screen the same rule leaves it stuck open after a tap. */
+@media (min-width: 900px) and (hover: hover) {
+  .jr-node:hover .jr-pop {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(var(--pop-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jr-pop,
+  .jr-dot,
+  .jr-shot img {
+    transition: none;
+  }
+
+  .js .jr-node[data-lit="false"] .jr-hit,
+  .js .jr-node[data-lit="false"] .jr-dot {
+    opacity: 1;
+    transform: none;
+  }
+
+  .js .jr-node[data-lit="false"] .jr-hit {
+    transform: translateY(-50%);
+  }
+
+  .js .jr-node[data-lit="false"]::before {
+    transform: none;
   }
 }

@@ -73,7 +73,7 @@ FONTS = (
 # Home leaves the row: her name in the bar is the way back, as on the
 # reference. Contact stays the pill at the row's end.
 NAV = [
-    ("Story", "journey.html"),
+    ("Journey", "journey.html"),
     ("Career", "achievements.html"),
     ("Speaking", "speaking.html"),
     ("Partnerships", "partnership.html"),
@@ -1123,30 +1123,151 @@ def road_ahead(c, map_html="") -> str:
 </section>"""
 
 
-def journey_page(c, img):
+# The winding path. These are the numbers the fallback path is drawn
+# from and the numbers each marker is placed at; on a screen wide enough
+# for the route, script rebuilds the path in pixels from where the
+# markers actually landed, so the two can never disagree.
+JR_XL, JR_XR = 31.0, 69.0     # the two swing positions, in percent
+JR_STEP = 100.0               # vertical distance between one year and the next
+JR_PAD = 70.0                 # air above the first marker and below the last
+
+JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
+
+
+def journey_line(c, img) -> str:
+    """Her years as a drawn route, a photograph and a line at each stop.
+
+    The shape of her reference: a trail winding down the page with the
+    photograph on the outside of each bend and the caption beside it.
+    Two things it does not do, both asked for. The write-up is held back
+    for a hover, a tap or a tab, so the page reads as one line a year.
+    And past 2026 the path carries on dashed and fades out, because that
+    part is a plan and not a record.
+
+    Every marker is a real button carrying aria-expanded, and the whole
+    thing is an ordered list, because a chronology is one.
+    """
+    t = c["story"].get("timeline") or {}
+    ys = t.get("years") or []
+    if not ys:
+        return ""
+
+    n = len(ys)
+    total = JR_PAD * 2 + JR_STEP * (n - 1)
+
+    def px(i):
+        # Every year crosses. Holding a side for two put a straight run
+        # between the bends, and a straight run is the one thing this
+        # shape is not supposed to have.
+        return JR_XL if i % 2 == 0 else JR_XR
+
+    def py(i):
+        return JR_PAD + JR_STEP * i
+
+    def run(a, z):
+        """Node a to node z as S-bends, handles half a step long.
+
+        Vertical handles mean the curve leaves one marker straight down
+        and arrives at the next straight down, so both halves of every
+        bend match and the join is invisible.
+        """
+        d = f"M{px(a):.1f},{py(a):.1f}"
+        for i in range(a, z):
+            h = JR_STEP * 0.5
+            d += (f" C{px(i):.1f},{py(i) + h:.1f} "
+                  f"{px(i + 1):.1f},{py(i + 1) - h:.1f} "
+                  f"{px(i + 1):.1f},{py(i + 1):.1f}")
+        return d
+
+    last_past = max((i for i, y in enumerate(ys)
+                     if y.get("kind") != "ahead"), default=n - 1)
+
+    paths = f'<path class="jr-run" d="{run(0, last_past)}"/>'
+    if last_past < n - 1:
+        # The dashes start at the last year that happened, so the change
+        # of line lands on 2026 and not in the gap after it.
+        paths += (f'<path class="jr-run jr-ahead" '
+                  f'd="{run(last_past, n - 1)}"/>')
+    tx, ty = px(n - 1), py(n - 1)
+    paths += (f'<path class="jr-tail" d="M{tx:.1f},{ty:.1f} '
+              f'C{tx:.1f},{ty + 34:.1f} 50,{ty + 28:.1f} '
+              f'50,{ty + JR_PAD:.1f}"/>')
+
     items = []
-    for b in c["story"]["beats"]:
+    marked = False
+    for i, y in enumerate(ys):
+        side = "l" if px(i) < 50 else "r"
+        ahead = y.get("kind") == "ahead"
+        # The first two markers have no room above them and the last two
+        # none below, so their panels anchor to their own edge.
+        vpos = "top" if i < 2 else ("bottom" if i >= n - 2 else "mid")
+        pid = f"jr-p-{e(y['year'])}"
+
         shot = ""
-        if b.get("image"):
-            shot = (
-                '<figure class="step-shot">'
-                + img.tag(b["image"], "(min-width:800px) 44vw, 92vw")
-                + "</figure>"
-            )
+        if y.get("image"):
+            shot = ('<span class="jr-shot">'
+                    + img.tag(y["image"], JR_SHOT) + "</span>")
+        where = f' &middot; {e(y["place"])}' if y.get("place") else ""
+        # Said once, on the first year that has not happened, because a
+        # line going dashed under it is a convention and not a caption.
+        note = ""
+        if ahead and not marked and t.get("aheadNote"):
+            marked = True
+            note = f'<span class="jr-ahead-note">{e(t["aheadNote"])}</span>'
+
         items.append(f"""
-  <article class="step" id="beat-{e(b['id'])}" data-rise>
-    {shot}
-    <div class="step-copy">
-      <span class="ghost-year" aria-hidden="true">{e(str(b['year'])[:4])}</span>
-      <p class="caption">{e(b['year'])}</p>
-      <h2>{e(b['heading'])}</h2>
-      <p>{e(b['body'])}</p>
+      <li class="jr-node" data-side="{side}" data-vpos="{vpos}"
+          data-kind="{'ahead' if ahead else 'past'}" data-lit="false"
+          style="--x:{px(i):.2f}%;--y:{py(i) / total * 100:.3f}%">
+        <button class="jr-hit" type="button" aria-expanded="false"
+                aria-controls="{pid}">
+          <span class="jr-card">{shot}{note}
+            <span class="jr-year">{e(y['year'])}</span>
+            <span class="jr-line">{e(y.get('line') or '')}</span>
+          </span>
+        </button>
+        <div class="jr-pop" id="{pid}" role="group"
+             aria-label="{e(y['year'])} in detail">
+          <p class="caption jr-pop-where">{e(y['year'])}{where}</p>
+          <h3>{e(y.get('title') or '')}</h3>
+          <p>{e(y.get('detail') or '')}</p>
+        </div>
+        <span class="jr-dot" aria-hidden="true"></span>
+      </li>""")
+
+    return f"""
+<section class="prose-fold jr-fold" id="years">
+  <div class="wrap">
+    <div class="prose">
+      <h2>{e(t.get('heading') or '')}</h2>
+      <p>{e(t.get('lede') or '')}</p>
+      <p class="caption jr-hint" data-hover="{e(t.get('hint') or '')}"
+         data-touch="{e(t.get('hintTouch') or '')}">{e(t.get('hint') or '')}</p>
     </div>
-  </article>""")
+    <div class="jr" style="--jr-n:{n}">
+      <svg class="jr-path" viewBox="0 0 100 {total:.0f}"
+           preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="jr-fade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="jr-fade-a"/>
+            <stop offset="1" class="jr-fade-b"/>
+          </linearGradient>
+          <clipPath id="jr-clip">
+            <rect class="jr-clip-r" x="-10" y="0" width="120"
+                  height="{total:.0f}"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#jr-clip)">{paths}</g>
+      </svg>
+      <ol class="jr-nodes">{''.join(items)}</ol>
+    </div>
+  </div>
+</section>"""
+
+
+def journey_page(c, img):
     body = (
-        '<section class="prose-fold"><div class="wrap steps">'
-        + "".join(items)
-        + "</div></section>"
+        journey_line(c, img)
         # One heading, not two. The map and the target cards were two
         # sections both about what comes next, and after the client
         # renamed the map to The road to 2030 the page carried that
@@ -1217,18 +1338,11 @@ def route_map(c) -> str:
     # biathlon is up the valley at Le Grand-Bornand. Coordinates are the
     # village, 45.905N 6.425E.
     dx_, dy_ = 6.425 + 180.0, lat_top - 45.905
-    far = list(c["internationalFootprint"])
 
-    def arc(pid):
-        """A bowed line from a start line she has raced to the one ahead."""
-        x1, y1 = xy(pid)
-        mx, my = (x1 + dx_) / 2, (y1 + dy_) / 2
-        vx_, vy_ = dx_ - x1, dy_ - y1
-        cx, cy = mx - vy_ * 0.16, my + vx_ * 0.16
-        return (f'<path class="route-arc" pathLength="1" '
-                f'd="M{x1:.1f},{y1:.1f} Q{cx:.1f},{cy:.1f} {dx_:.1f},{dy_:.1f}"/>')
-
-    arcs = "".join(arc(q["id"]) for q in far)
+    # No lines at all, from 31 Aug. Fourteen arcs converging on one point in
+    # the Alps, plus three heavier ones for the road, drew a web over Europe.
+    # What the map is for is where she has stood, and dots do that on their
+    # own. The order still carries the story: the pins light one at a time.
     # The three named stops between here and the Games, from the target
     # cards below the map. Hollow marks, because she has not raced them
     # yet; the pins she has raced are filled.
@@ -1239,13 +1353,7 @@ def route_map(c) -> str:
     for n_, v in enumerate(c.get("targets", {}).get("venues", [])):
         px, py = v["lon"] + 180.0, lat_top - v["lat"]
         odx, ody, anc = plan_pos.get(v["place"], (0, -3.0, "middle"))
-        mx, my = (px + dx_) / 2, (py + dy_) / 2
-        rvx, rvy = dx_ - px, dy_ - py
         plan += (
-            f'<path class="road-arc" pathLength="1" data-step="{n_}" '
-            f'd="M{px:.1f},{py:.1f} '
-            f'Q{mx - rvy * 0.13:.1f},{my + rvx * 0.13:.1f} '
-            f'{dx_:.1f},{dy_:.1f}"/>'
             f'<circle cx="{px:.1f}" cy="{py:.1f}" r="1.7" class="plan-pin" '
             f'data-step="{n_}"/>'
             f'<text class="plan-label" data-step="{n_}" '
@@ -1255,7 +1363,7 @@ def route_map(c) -> str:
 
     lx, ly = dx_ - 16.0, dy_ + 0.6
     dest = (
-        f'<g class="past-lines">{arcs}</g><g class="plan">{plan}</g>'
+        f'<g class="plan">{plan}</g>'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="4.2" class="dest-halo"/>'
         f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="2.4" class="dest-dot"/>'
         f'<path class="dest-lead" d="M{dx_ - 4.4:.1f},{dy_:.1f} '
@@ -1272,9 +1380,10 @@ def route_map(c) -> str:
     return f"""
     <figure class="route-map" id="route">
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
-           aria-label="World map marking the fourteen places she has raced or
-           trained, with lines converging on La Clusaz in the French Alps,
-           where the 2030 Olympic cross-country races will be held.">
+           aria-label="World map marking the fourteen places she has raced
+           or trained, the three stops planned before the Games, and La
+           Clusaz in the French Alps, where the 2030 Olympic cross-country
+           races will be held.">
         <path d="{w['path']}" class="land"/>
         <g class="past">{dots}{texts}</g>{dest}
       </svg>
