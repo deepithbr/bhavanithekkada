@@ -986,9 +986,78 @@ a {
 /* --------------------------------------------------------------- the route */
 
 .route-map {
+  position: relative;
   margin: var(--space-md) 0 0;
   display: grid;
   gap: var(--space-sm);
+}
+
+/* Every pin carries its venue, its years and her best result there. The
+   circle takes a tabindex so the keyboard reaches it and a title so a
+   screen reader gets the same line the panel shows. */
+.route-map .pin {
+  cursor: pointer;
+  transition: r var(--dur-fast) var(--ease-out);
+}
+
+.route-map .pin:hover,
+.route-map .pin:focus-visible,
+.route-map .pin[data-on] {
+  r: 2.6;
+}
+
+.route-map .pin:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* HTML, not SVG text, so it sets at real sizes rather than in viewBox
+   units that scale with the frame. Script places it beside its pin. */
+.route-tip {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+  max-width: 15rem;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+  border-left: 3px solid var(--color-accent);
+  box-shadow: 0 12px 30px oklch(20% 0.03 255 / 0.18);
+  pointer-events: none;
+}
+
+.route-tip[hidden] {
+  display: none;
+}
+
+.route-tip p {
+  margin: 0;
+}
+
+.route-tip-where {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.route-tip-said {
+  color: var(--color-ink-3);
+  margin-top: var(--space-3xs) !important;
+}
+
+.route-tip-best {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+  margin-top: var(--space-2xs) !important;
+}
+
+.route-tip-best:empty,
+.route-tip-said:empty {
+  display: none;
 }
 
 .route-map svg {
@@ -6749,6 +6818,63 @@ body {
   .jr-ski { stroke-width: 2.2; }
   .jr-pole { stroke-width: 1.4; opacity: 0.75; }
 
+  /* The stretch she has just cut, brighter than the settled track. The
+     gradient moves with her; above the band it is transparent and the
+     ordinary groove underneath shows through instead. */
+  .jr-fresh {
+    fill: none;
+    stroke: url(#jr-cut);
+    stroke-width: 2.6;
+    stroke-linecap: round;
+  }
+
+  .jr-cut-a {
+    stop-color: var(--color-accent);
+    stop-opacity: 0;
+  }
+
+  .jr-cut-b {
+    stop-color: var(--color-accent-bright, var(--color-accent));
+    stop-opacity: 0.9;
+  }
+
+  /* She works her poles while the page is moving and rests when it
+     stops, because a skier striding on the spot is worse than one
+     standing still. */
+  .jr-skier[data-moving] .jr-pole {
+    animation: jr-stride 620ms var(--ease-out) infinite;
+  }
+
+  .jr-skier[data-moving] .jr-pole:last-of-type {
+    animation-delay: 310ms;
+  }
+
+  @keyframes jr-stride {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(-13deg); }
+  }
+
+  .jr-pole {
+    transform-box: fill-box;
+    transform-origin: 50% 20%;
+  }
+
+  /* One ring at the marker as it arrives, so the eye is told which year
+     just landed rather than having to catch it. */
+  .jr-node[data-lit="true"] .jr-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--color-accent);
+    animation: jr-ping 900ms var(--ease-out) 1 both;
+  }
+
+  @keyframes jr-ping {
+    from { transform: scale(1); opacity: 0.75; }
+    to { transform: scale(3.4); opacity: 0; }
+  }
+
   .jr-body {
     fill: var(--color-accent);
     stroke: var(--color-paper);
@@ -7021,9 +7147,23 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .jr-pop,
-  .jr-dot,
-  .jr-shot img {
+  .jr-dot {
     transition: none;
+  }
+
+  /* No stride, no ping, no fresh cut. The route and the years stand as
+     they are. */
+  .jr-skier[data-moving] .jr-pole,
+  .jr-node[data-lit="true"] .jr-dot::after {
+    animation: none;
+  }
+
+  .jr-node[data-lit="true"] .jr-dot::after {
+    display: none;
+  }
+
+  .jr-fresh {
+    display: none;
   }
 
   /* The drift is decoration. Without it the scenery simply sits still. */

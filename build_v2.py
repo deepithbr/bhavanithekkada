@@ -1337,6 +1337,13 @@ def journey_line(c, img) -> str:
             f'd="{run(last_past, n - 1, -o)}"/>'
             f'<path class="jr-run jr-ahead" data-o="1" '
             f'd="{run(last_past, n - 1, o)}"/>')
+    # The stretch she has just cut. Same two grooves again, brighter,
+    # stroked with a gradient the script slides along behind her; above
+    # the band it is transparent and below it the clip has already
+    # stopped the route at the drawing front.
+    paths += (f'<path class="jr-fresh" data-o="-1" '
+              f'd="{run(0, n - 1, -o)}"/>'
+              f'<path class="jr-fresh" data-o="1" d="{run(0, n - 1, o)}"/>')
     paths += f'<path class="jr-tail" d="{tail_d}"/>'
     # Not drawn. One continuous copy of the route for the script to
     # measure against when it puts the skier at the drawing front.
@@ -1402,6 +1409,13 @@ def journey_line(c, img) -> str:
           <linearGradient id="jr-fade" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" class="jr-fade-a"/>
             <stop offset="1" class="jr-fade-b"/>
+          </linearGradient>
+          <!-- Moved by script to sit behind the skier. In user space, so
+               its coordinates are the same pixels the route is drawn in. -->
+          <linearGradient id="jr-cut" gradientUnits="userSpaceOnUse"
+                          x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" class="jr-cut-a"/>
+            <stop offset="1" class="jr-cut-b"/>
           </linearGradient>
           <clipPath id="jr-clip">
             <rect class="jr-clip-r" x="-10" y="0" width="120"
@@ -1481,11 +1495,35 @@ def route_map(c) -> str:
     # odd and was right. The story lives in the order instead: the pins
     # appear one at a time, Kodagu first and Chile near the end, which is the
     # same narrative without the geometry.
+    def pin(i, p):
+        """One venue, with everything the file knows about it attached.
+
+        The event, the years and her best result were all sitting in the
+        content file unused. They go on the circle so the panel can read
+        them, into a title so a screen reader gets the same, and the
+        circle takes a tabindex so the keyboard can reach it.
+        """
+        x, y = xy(p["id"])
+        # Escaped part by part, then joined with the entity. Escaping
+        # the joined string instead turned its separators into literal
+        # &middot; wherever the text was parsed only once, which is what
+        # the title element does.
+        yrs = ", ".join(str(v) for v in (p.get("years") or []))
+        dot = " &middot; "
+        where = dot.join(
+            e(str(v)) for v in (p.get("place"), p.get("country")) if v)
+        said = dot.join(e(str(v)) for v in (yrs, p.get("event")) if v)
+        best = e(p.get("best") or "")
+        return (
+            f'<circle cx="{x:.1f}" cy="{y:.1f}" r="1.6" class="pin" '
+            f'data-stop="{i}" tabindex="0" role="button" '
+            f'data-where="{where}" data-said="{said}" '
+            f'data-best="{best}">'
+            f'<title>{where}{(dot + said) if said else ""}</title>'
+            f'</circle>')
+
     dots = "".join(
-        f'<circle cx="{xy(p["id"])[0]:.1f}" cy="{xy(p["id"])[1]:.1f}" r="1.6" '
-        f'class="pin" data-stop="{i}"/>'
-        for i, p in enumerate(c["internationalFootprint"])
-    )
+        pin(i, p) for i, p in enumerate(c["internationalFootprint"]))
     # dx, dy, anchor per label, tuned against the render
     labels = [
         ("kodagu", 3.5, 4.5, "start", "Kodagu"),
@@ -1558,6 +1596,11 @@ def route_map(c) -> str:
         <path d="{w['path']}" class="land"/>
         <g class="past">{dots}{texts}{leads}</g>
       </svg>
+      <div class="route-tip" role="status" aria-live="polite" hidden>
+        <p class="route-tip-where"></p>
+        <p class="route-tip-said caption"></p>
+        <p class="route-tip-best"></p>
+      </div>
       <figcaption class="caption">{roll}</figcaption>
     </figure>"""
 

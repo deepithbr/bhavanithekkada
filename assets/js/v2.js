@@ -444,7 +444,14 @@
     const piste = svg.querySelector(".jr-piste");
     const full = svg.querySelector(".jr-full");
     const skier = svg.querySelector(".jr-skier");
+    const cut = svg.querySelector("#jr-cut");
     const GROOVE = 5;
+    // How far back the fresh cut reads before it fades into the settled
+    // track, and how long after the page stops moving she stops striding.
+    const CUT = 190;
+    const REST = 220;
+    let strideOff = 0;
+    let lastAt = -1;
     const clip = svg.querySelector(".jr-clip-r");
     // Where the record stops and the plan starts.
     const lastPast =
@@ -553,6 +560,22 @@
         nodes[i].dataset.lit = at >= pts[i][1] - 8 ? "true" : "false";
       }
       ride(at);
+
+      // The band of track she has just cut. The gradient is in user
+      // space, so this is simply where it starts and where it ends.
+      if (cut) {
+        cut.setAttribute("y1", (at - CUT).toFixed(1));
+        cut.setAttribute("y2", at.toFixed(1));
+      }
+
+      // Striding, but only while the page is actually moving.
+      if (skier && Math.abs(at - lastAt) > 0.5) {
+        skier.setAttribute("data-moving", "");
+        clearTimeout(strideOff);
+        strideOff = setTimeout(
+          () => skier.removeAttribute("data-moving"), REST);
+      }
+      lastAt = at;
     };
 
     // Where the drawing front actually is on the route, and which way
@@ -592,8 +615,12 @@
         clip.setAttribute("height", (H + 40).toFixed(0));
       }
       for (const nd of nodes) nd.dataset.lit = "true";
-      // Nothing is moving, so nobody is skiing.
-      if (skier) skier.style.opacity = "0";
+      // Nothing is moving, so nobody is skiing and nothing is freshly cut.
+      if (skier) {
+        skier.style.opacity = "0";
+        skier.removeAttribute("data-moving");
+      }
+      if (cut) { cut.setAttribute("y1", "0"); cut.setAttribute("y2", "0"); }
     };
 
     if (reduce.matches) {
@@ -663,6 +690,74 @@
       const open = jr.querySelector(".jr-node[data-open] .jr-hit");
       shut(null);
       if (open) open.focus();
+    });
+  }
+
+  /* ---- a place on the map says what it is -------------------------------- */
+
+  // Every pin carries its venue, its years and her best result there,
+  // put on the circle by the builder. This reads them into a panel and
+  // places it against the pin it belongs to.
+  const routeFigure = document.querySelector(".route-map");
+  const tip = routeFigure && routeFigure.querySelector(".route-tip");
+  if (routeFigure && tip) {
+    const pins = Array.from(routeFigure.querySelectorAll(".pin"));
+    const where = tip.querySelector(".route-tip-where");
+    const said = tip.querySelector(".route-tip-said");
+    const best = tip.querySelector(".route-tip-best");
+    let on = null;
+
+    const close = () => {
+      if (on) on.removeAttribute("data-on");
+      on = null;
+      tip.hidden = true;
+    };
+
+    const open = (p) => {
+      if (on && on !== p) on.removeAttribute("data-on");
+      on = p;
+      p.setAttribute("data-on", "");
+      where.innerHTML = p.dataset.where || "";
+      said.innerHTML = p.dataset.said || "";
+      best.textContent = p.dataset.best || "";
+      tip.hidden = false;
+
+      // Placed against the pin: above it by default, below when there is
+      // no room above, and clamped so it never leaves the figure.
+      const fb = routeFigure.getBoundingClientRect();
+      const pb = p.getBoundingClientRect();
+      const tb = tip.getBoundingClientRect();
+      const cx = pb.left + pb.width / 2 - fb.left;
+      let x = cx - tb.width / 2;
+      x = Math.max(8, Math.min(x, fb.width - tb.width - 8));
+      const above = pb.top - fb.top - tb.height - 12;
+      const y = above > 4 ? above : pb.bottom - fb.top + 12;
+      tip.style.left = `${x.toFixed(0)}px`;
+      tip.style.top = `${y.toFixed(0)}px`;
+    };
+
+    for (const p of pins) {
+      p.addEventListener("pointerenter", () => open(p));
+      p.addEventListener("focus", () => open(p));
+      p.addEventListener("blur", close);
+      // Touch has no hover, so a tap is the way in and out.
+      p.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        if (on === p) close(); else open(p);
+      });
+      p.addEventListener("keydown", (ev) => {
+        if (ev.key !== "Enter" && ev.key !== " ") return;
+        ev.preventDefault();
+        if (on === p) close(); else open(p);
+      });
+    }
+
+    routeFigure.addEventListener("pointerleave", close);
+    document.addEventListener("click", (ev) => {
+      if (!ev.target.closest(".route-map")) close();
+    });
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape") close();
     });
   }
 
