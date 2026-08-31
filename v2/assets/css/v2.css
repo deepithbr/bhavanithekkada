@@ -6803,8 +6803,14 @@ body {
      turns it to the tangent, so it leans into the bends. Drawn rather
      than photographed because every photograph here is hers and rights
      settled, and a stock skier would be neither. */
+  /* The halo is what makes it one object rather than five marks. Two
+     passes of a paper drop-shadow cut the whole group out of the track
+     it is standing on, so the parts share a silhouette instead of each
+     one sitting on the grooves separately. */
   .jr-skier {
     opacity: 0;
+    filter: drop-shadow(0 0 2px var(--color-paper))
+      drop-shadow(0 0 4px var(--color-paper));
     transition: opacity var(--dur-fast) var(--ease-out);
   }
 
@@ -6815,8 +6821,16 @@ body {
     fill: none;
   }
 
-  .jr-ski { stroke-width: 2.2; }
-  .jr-pole { stroke-width: 1.4; opacity: 0.75; }
+  .jr-ski { stroke-width: 3.2; }
+  .jr-pole { stroke-width: 2; opacity: 0.8; }
+
+  /* The head takes the same paper ring the body does, or the two merge
+     into one blob at this size. */
+  .jr-head {
+    fill: var(--color-accent);
+    stroke: var(--color-paper);
+    stroke-width: 1.5;
+  }
 
   /* The stretch she has just cut, brighter than the settled track. The
      gradient moves with her; above the band it is transparent and the
@@ -6854,9 +6868,11 @@ body {
     50% { transform: rotate(-13deg); }
   }
 
+  /* The poles pivot where they meet the shoulder, not at their middle,
+     so the stride swings the planted end and the grip stays put. */
   .jr-pole {
     transform-box: fill-box;
-    transform-origin: 50% 20%;
+    transform-origin: 50% 0%;
   }
 
   /* One ring at the marker as it arrives, so the eye is told which year

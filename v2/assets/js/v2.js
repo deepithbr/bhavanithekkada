@@ -439,7 +439,11 @@
     // Two grooves per stretch, offset either side of the centre line,
     // plus the corridor they are cut into and a full-length copy that is
     // never drawn and exists only to be measured against.
-    const runs = Array.from(svg.querySelectorAll(".jr-run"));
+    // Selected on carrying an offset rather than on a class name. The
+    // fresh pair was missed when it was added because the loop asked for
+    // .jr-run, and it sat there in fallback coordinates as a stray line
+    // 130px into the page.
+    const runs = Array.from(svg.querySelectorAll("path[data-o]"));
     const tail = svg.querySelector(".jr-tail");
     const piste = svg.querySelector(".jr-piste");
     const full = svg.querySelector(".jr-full");
@@ -495,9 +499,13 @@
 
       for (const p of runs) {
         const o = Number(p.dataset.o || 0) * GROOVE;
-        p.setAttribute("d", p.classList.contains("jr-ahead")
-          ? seg(lastPast, pts.length - 1, o)
-          : seg(0, lastPast, o));
+        // The fresh pair runs the whole route: the gradient decides
+        // where it shows, not the geometry.
+        p.setAttribute("d",
+          p.classList.contains("jr-fresh") ? seg(0, pts.length - 1, o)
+          : p.classList.contains("jr-ahead")
+            ? seg(lastPast, pts.length - 1, o)
+            : seg(0, lastPast, o));
       }
 
       // And it does not stop at the last year. A short tail, in a stroke

@@ -1423,12 +1423,18 @@ def journey_line(c, img) -> str:
           </clipPath>
         </defs>
         <g clip-path="url(#jr-clip)">{paths}</g>
+        <!-- Seen from above. The skis sit in the grooves at the same
+             offset the grooves use, the poles start at the shoulders
+             and plant behind, and the head gives the figure a front.
+             Drawn in this order so the body covers where the poles
+             meet it and the whole thing reads as one shape. -->
         <g class="jr-skier" aria-hidden="true">
-          <line class="jr-ski" x1="-5" y1="-8" x2="-5" y2="8"/>
-          <line class="jr-ski" x1="5" y1="-8" x2="5" y2="8"/>
-          <line class="jr-pole" x1="-8" y1="-3" x2="-6" y2="6"/>
-          <line class="jr-pole" x1="8" y1="-3" x2="6" y2="6"/>
-          <ellipse class="jr-body" cx="0" cy="0" rx="4.2" ry="6.4"/>
+          <line class="jr-ski" x1="-5" y1="-14" x2="-5" y2="14"/>
+          <line class="jr-ski" x1="5" y1="-14" x2="5" y2="14"/>
+          <line class="jr-pole" x1="-3.5" y1="-3" x2="-10" y2="12"/>
+          <line class="jr-pole" x1="3.5" y1="-3" x2="10" y2="12"/>
+          <ellipse class="jr-body" cx="0" cy="0.8" rx="5.2" ry="8"/>
+          <circle class="jr-head" cx="0" cy="-7" r="3.2"/>
         </g>
       </svg>
       <ol class="jr-nodes">{''.join(items)}</ol>
