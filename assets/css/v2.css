@@ -6611,6 +6611,26 @@ body {
   margin-top: var(--space-xl);
 }
 
+/* ------------------------------------------------------------ the scenery
+
+   Five thousand pixels of white was a lot of page to scroll, and her
+   reference answers that with photography bled behind the content
+   rather than with more content. Her own frames, alternating edges down
+   the track, in the order the journey runs.
+
+   The mask carries the legibility, not the opacity. Each frame is solid
+   at the very edge of the screen and three quarters gone by the column
+   the cards sit in, which leaves an effective alpha of roughly 0.06
+   behind any text on the page.
+
+   Off on the rail layout: the years run down the left edge at full
+   width there, so there is no blank space to fill and nothing behind
+   them but text. */
+
+.jr-scenery {
+  display: none;
+}
+
 .jr-nodes {
   list-style: none;
   margin: 0;
@@ -6906,6 +6926,86 @@ body {
     inset: 0;
   }
 
+  /* Full bleed: the scenery reaches the edges of the screen, not the
+     edges of the column. 100vw counts the scrollbar, so the few pixels
+     that overhang are clipped by the section rather than left to widen
+     the page. */
+  .jr-fold {
+    position: relative;
+    overflow: clip;
+  }
+
+  .jr-scenery {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    z-index: -1;
+    pointer-events: none;
+    /* Script moves this from 0 to 1 across the section, so the scenery
+       drifts against the route as the page scrolls. */
+    --jr-p: 0;
+    transform: translate3d(0, calc(var(--jr-p) * -70px), 0);
+    will-change: transform;
+  }
+
+  .jr-scene {
+    position: absolute;
+    top: var(--at);
+    width: min(34rem, 34vw);
+    /* Taller than the gap between one frame and the next, so the wash is
+       continuous down the track instead of switching on and off. */
+    height: 54rem;
+    /* Faded top and bottom, so a frame arrives and leaves rather than
+       ending on a horizontal edge halfway down a blank page. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%,
+      #000 74%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 22%,
+      #000 74%, transparent);
+  }
+
+  .jr-scene[data-edge="l"] { left: 0; }
+  .jr-scene[data-edge="r"] { right: 0; }
+
+  /* The filter is legibility, not taste. Flattening the range means the
+     darkest pixel in any frame lands around 111 of 255 instead of 0, so
+     no part of a photograph can pull the paper below the contrast floor
+     however wide the window is and however strong the mask happens to
+     be at that point. Faint and cold is also the look her reference
+     has. */
+  .jr-scene img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    filter: saturate(0.45) contrast(0.42) brightness(1.42);
+  }
+
+  /* Strongest at the screen edge, mostly gone by the card column. The
+     mask shapes it and the filter guarantees it, and the ramp is capped
+     at 0.9 rather than solid so that no point on the page, not even one
+     no card currently reaches, can put text under the contrast floor. */
+  .jr-scene[data-edge="l"] img {
+    -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.68) 22%, rgb(0 0 0 / 0.28) 55%, transparent 100%);
+    mask-image: linear-gradient(to right, rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.68) 22%, rgb(0 0 0 / 0.28) 55%, transparent 100%);
+  }
+
+  .jr-scene[data-edge="r"] img {
+    -webkit-mask-image: linear-gradient(to left, rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.68) 22%, rgb(0 0 0 / 0.28) 55%, transparent 100%);
+    mask-image: linear-gradient(to left, rgb(0 0 0 / 0.9) 0%,
+      rgb(0 0 0 / 0.68) 22%, rgb(0 0 0 / 0.28) 55%, transparent 100%);
+  }
+
+  /* The panel opens over the scenery, so it keeps its own ground. */
+  .jr-pop {
+    background: var(--color-paper);
+  }
+
   /* Each year spans the full width of the track, so its card can be
      sized against the container rather than against a 14px marker. A
      full-width row would swallow every pointer event on its band, so it
@@ -7043,6 +7143,11 @@ body {
   .jr-dot,
   .jr-shot img {
     transition: none;
+  }
+
+  /* The drift is decoration. Without it the scenery simply sits still. */
+  .jr-scenery {
+    transform: none;
   }
 
   .js .jr-node[data-lit="false"] .jr-hit,

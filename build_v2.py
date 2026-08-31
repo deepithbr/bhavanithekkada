@@ -1133,6 +1133,54 @@ JR_PAD = 70.0                 # air above the first marker and below the last
 
 JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
 
+# The scenery behind the route: her own frames, in the order the journey
+# runs. Trees, then trees under snow, then the mountains, then the open
+# high ground. Each one is pinned to an edge of the screen and to a
+# point down the track. None of them is used as a card on this page, so
+# nothing appears twice.
+JR_SCENERY = [
+    ("race-forest", "l", 1),
+    ("classic-tracks", "r", 17.5),
+    ("lake-mountains", "l", 34),
+    ("nordic-overlook", "r", 50.5),
+    ("snow-ridge-line", "l", 67),
+    ("track-solo-pines", "r", 83.5),
+]
+
+JR_SCENE_SIZES = "34vw"
+
+
+# A 43-byte transparent GIF. It is what a narrow screen loads instead
+# of a photograph it is never going to show.
+BLANK_GIF = ("data:image/gif;base64,"
+             "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7")
+
+
+def decor(img, slot, sizes, gate="(min-width:900px)") -> str:
+    """A photograph carrying no information, and only where it is shown.
+
+    No alt and no announcement: the route and the captions say
+    everything this page says, and a screen reader being told about a
+    forest six times on the way down is noise.
+
+    And no download either, below the gate. display:none is not a
+    reliable brake on a lazy image, so the srcset sits behind a media
+    condition and the img's own src is a transparent GIF. A narrow
+    screen takes the 43 bytes; a wide one never looks at them.
+    """
+    a = img.by_slot.get(slot)
+    if not a:
+        return ""
+    w, h = a["natural"]
+    srcset = ", ".join(f"{img.base}/{a['file']}-{x}.webp {x}w"
+                       for x in a["widths"])
+    return (f'<picture>'
+            f'<source media="{e(gate)}" srcset="{e(srcset)}" '
+            f'sizes="{e(sizes)}" type="image/webp">'
+            f'<img src="{BLANK_GIF}" alt="" aria-hidden="true" '
+            f'width="{w}" height="{h}" loading="lazy" decoding="async">'
+            f'</picture>')
+
 
 def journey_line(c, img) -> str:
     """Her years as a drawn route, a photograph and a line at each stop.
@@ -1235,6 +1283,12 @@ def journey_line(c, img) -> str:
         <span class="jr-dot" aria-hidden="true"></span>
       </li>""")
 
+    scenery = "".join(
+        f'<span class="jr-scene" data-edge="{edge}" style="--at:{at}%">'
+        f'{decor(img, slot, JR_SCENE_SIZES)}</span>'
+        for slot, edge, at in JR_SCENERY
+    )
+
     return f"""
 <section class="prose-fold jr-fold" id="years">
   <div class="wrap">
@@ -1245,6 +1299,7 @@ def journey_line(c, img) -> str:
          data-touch="{e(t.get('hintTouch') or '')}">{e(t.get('hint') or '')}</p>
     </div>
     <div class="jr" style="--jr-n:{n}">
+      <div class="jr-scenery" aria-hidden="true">{scenery}</div>
       <svg class="jr-path" viewBox="0 0 100 {total:.0f}"
            preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <defs>

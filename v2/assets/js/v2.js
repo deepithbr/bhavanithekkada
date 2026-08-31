@@ -527,6 +527,8 @@
       }
       const top = jr.getBoundingClientRect().top;
       const at = Math.max(0, Math.min(H, innerHeight * FRONT - top));
+      // The scenery drifts against the route on the same number.
+      jr.style.setProperty("--jr-p", (at / H).toFixed(3));
       clip.setAttribute("y", "0");
       clip.setAttribute("height", (at + 6).toFixed(1));
       for (let i = 0; i < nodes.length; i++) {
