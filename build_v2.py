@@ -38,6 +38,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import math
 import re
 import pathlib
 import sys
@@ -1127,11 +1128,18 @@ def road_ahead(c, map_html="") -> str:
 # from and the numbers each marker is placed at; on a screen wide enough
 # for the route, script rebuilds the path in pixels from where the
 # markers actually landed, so the two can never disagree.
-JR_XL, JR_XR = 31.0, 69.0     # the two swing positions, in percent
+# A ski track, not a zigzag. The client's note of 31 Aug: mostly
+# straight, drifting, "just enough of a curve to give it the feeling of a
+# real ski trail". So a slow sine rather than a swing between two
+# positions: a centre line, how far it wanders either side, and how many
+# years one full wave takes.
+JR_XC = 30.0                  # the track's centre line, in percent
+JR_XA = 5.0                   # how far it drifts either side
+JR_XP = 6.0                   # years per full wave
 JR_STEP = 100.0               # vertical distance between one year and the next
 JR_PAD = 70.0                 # air above the first marker and below the last
 
-JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
+JR_SHOT = "(min-width:900px) 20vw, 88vw"
 
 # The scenery behind the route: her own frames, in the order the journey
 # runs. Trees, then trees under snow, then the mountains, then the open
@@ -1169,7 +1177,7 @@ JR_SCENE_SIZES_MID = "40vw"
 # Because the step and the fade are the same 25rem, one frame's fade-out
 # lands exactly on the next one's fade-in. Complementary ramps, so the
 # pair composites to less than either at full strength.
-JR_ROW_REM = 17.0
+JR_ROW_REM = 8.5
 JR_SCENE_REM = 90.0
 JR_SCENE_STEP = 60.0
 
@@ -1256,12 +1264,12 @@ def decor(img, slot, sizes, gate="(min-width:900px)") -> str:
 def journey_line(c, img) -> str:
     """Her years as a drawn route, a photograph and a line at each stop.
 
-    The shape of her reference: a trail winding down the page with the
-    photograph on the outside of each bend and the caption beside it.
-    Two things it does not do, both asked for. The write-up is held back
-    for a hover, a tap or a tab, so the page reads as one line a year.
-    And past 2026 the path carries on dashed and fades out, because that
-    part is a plan and not a record.
+    The shape of her reference: a ski track drifting down the page with
+    the years marked along it and their taglines beside them.
+    Two things it does not do, both asked for. The photograph and the
+    write-up are held back for a click, so the page reads as one line a
+    year. And past 2026 the track carries on dashed and fades out,
+    because that part is a plan and not a record.
 
     Every marker is a real button carrying aria-expanded, and the whole
     thing is an ordered list, because a chronology is one.
@@ -1275,10 +1283,11 @@ def journey_line(c, img) -> str:
     total = JR_PAD * 2 + JR_STEP * (n - 1)
 
     def px(i):
-        # Every year crosses. Holding a side for two put a straight run
-        # between the bends, and a straight run is the one thing this
-        # shape is not supposed to have.
-        return JR_XL if i % 2 == 0 else JR_XR
+        # The drift, sampled a year at a time. Consecutive years move a
+        # few per cent at most, so the cubic through them reads as a
+        # track wandering down a slope rather than a line changing its
+        # mind every row.
+        return JR_XC + JR_XA * math.sin(2.0 * math.pi * i / JR_XP)
 
     def py(i):
         return JR_PAD + JR_STEP * i
@@ -1315,17 +1324,18 @@ def journey_line(c, img) -> str:
     items = []
     marked = False
     for i, y in enumerate(ys):
-        side = "l" if px(i) < 50 else "r"
         ahead = y.get("kind") == "ahead"
         # The first two markers have no room above them and the last two
         # none below, so their panels anchor to their own edge.
         vpos = "top" if i < 2 else ("bottom" if i >= n - 2 else "mid")
         pid = f"jr-p-{e(y['year'])}"
 
+        # Back in the panel, where it was before 31 Aug. The page is a
+        # year and a line; the frame and the write-up wait for a click.
         shot = ""
         if y.get("image"):
-            shot = ('<span class="jr-shot">'
-                    + img.tag(y["image"], JR_SHOT) + "</span>")
+            shot = ('<figure class="jr-pop-shot">'
+                    + img.tag(y["image"], JR_SHOT) + "</figure>")
         where = f' &middot; {e(y["place"])}' if y.get("place") else ""
         # Said once, on the first year that has not happened, because a
         # line going dashed under it is a convention and not a caption.
@@ -1335,21 +1345,24 @@ def journey_line(c, img) -> str:
             note = f'<span class="jr-ahead-note">{e(t["aheadNote"])}</span>'
 
         items.append(f"""
-      <li class="jr-node" data-side="{side}" data-vpos="{vpos}"
+      <li class="jr-node" data-vpos="{vpos}"
           data-kind="{'ahead' if ahead else 'past'}" data-lit="false"
           style="--x:{px(i):.2f}%;--y:{py(i) / total * 100:.3f}%">
         <button class="jr-hit" type="button" aria-expanded="false"
                 aria-controls="{pid}">
-          <span class="jr-card">{shot}{note}
+          <span class="jr-card">{note}
             <span class="jr-year">{e(y['year'])}</span>
             <span class="jr-line">{e(y.get('line') or '')}</span>
           </span>
         </button>
         <div class="jr-pop" id="{pid}" role="group"
              aria-label="{e(y['year'])} in detail">
-          <p class="caption jr-pop-where">{e(y['year'])}{where}</p>
-          <h3>{e(y.get('title') or '')}</h3>
-          <p>{e(y.get('detail') or '')}</p>
+          {shot}
+          <div class="jr-pop-copy">
+            <p class="caption jr-pop-where">{e(y['year'])}{where}</p>
+            <h3>{e(y.get('title') or '')}</h3>
+            <p>{e(y.get('detail') or '')}</p>
+          </div>
         </div>
         <span class="jr-dot" aria-hidden="true"></span>
       </li>""")
@@ -1360,7 +1373,7 @@ def journey_line(c, img) -> str:
     <div class="prose">
       <h2 class="jr-head">{e(t.get('heading') or '')}</h2>
     </div>
-    <div class="jr" style="--jr-n:{n}">
+    <div class="jr" style="--jr-n:{n};--jr-xc:{JR_XC}%">
       <svg class="jr-path" viewBox="0 0 100 {total:.0f}"
            preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <defs>
@@ -1376,6 +1389,8 @@ def journey_line(c, img) -> str:
         <g clip-path="url(#jr-clip)">{paths}</g>
       </svg>
       <ol class="jr-nodes">{''.join(items)}</ol>
+      {f'<p class="jr-tail-note caption">{e(t["tailNote"])}</p>'
+       if t.get('tailNote') else ''}
     </div>
   </div>
 </section>"""

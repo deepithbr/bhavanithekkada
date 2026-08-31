@@ -293,11 +293,11 @@
     "timeline": {
       "heading": "Scroll through the years that shaped her journey",
       "aheadNote": "Still to come",
-      "sourceNote": "Assembled 31 Aug 2026 from the story beats, career milestones, certification phases and results rows already in this file. Client copy replaces `line` and `detail` when it arrives; the structure does not move.",
+      "sourceNote": "Taglines supplied by the client, 31 Aug 2026, and used as sent apart from four normalisations: her Title Case to sentence case, her first person to the page's third, her bullet to the site's middle dot, and Coorg to Kodagu, which is the spelling the rest of the site and the page title use. The longer write-ups behind each year are still assembled from the beats, milestones and results rows in this file.",
       "years": [
         {
           "year": "1995",
-          "line": "Born in Kodagu, a district that has never had snow.",
+          "line": "Born in Kodagu, Karnataka",
           "title": "Perur, near Napoklu",
           "place": "Kodagu, Karnataka",
           "detail": "Born 14 May 1995 in the coffee-growing hills of Kodagu. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
@@ -305,8 +305,17 @@
           "kind": "past"
         },
         {
+          "year": "2013",
+          "line": "Joined the NCC",
+          "title": "Joined the NCC",
+          "place": null,
+          "detail": "The National Cadet Corps, two years before the All India camp and three before the Republic Day contingent.",
+          "image": null,
+          "kind": "past"
+        },
+        {
           "year": "2014",
-          "line": "Started mountaineering at nineteen.",
+          "line": "Started mountaineering",
           "title": "The mountains came first",
           "place": "Manali and Darjeeling",
           "detail": "There was no ski club to come up through, so the mountains did that job. A Grade A adventure course at ABVIMAS, then Special Basic Mountaineering at the Himalayan Mountaineering Institute in Darjeeling.",
@@ -315,7 +324,7 @@
         },
         {
           "year": "2015",
-          "line": "Selected for the All India NCC camp.",
+          "line": "All India NCC/VSC camp",
           "title": "Through the NCC",
           "place": "India",
           "detail": "The camp that put her in front of the selectors for the Republic Day contingent the following January.",
@@ -324,7 +333,7 @@
         },
         {
           "year": "2016",
-          "line": "Marched in the Republic Day contingent, New Delhi.",
+          "line": "Republic Day parade, Delhi",
           "title": "The Republic Day Parade",
           "place": "Rajpath, New Delhi",
           "detail": "Selected for the NCC contingent at the Republic Day Parade, a year after the All India camp.",
@@ -333,7 +342,7 @@
         },
         {
           "year": "2017",
-          "line": "Qualified as a mountaineer and instructor.",
+          "line": "Qualified mountaineer and mountaineering instructor",
           "title": "Instructing at HMI",
           "place": "Himalayan Mountaineering Institute, Darjeeling",
           "detail": "Method of Instruction at HMI Darjeeling, then a year there as a guest instructor. Three years after her first course she was teaching the same ground.",
@@ -342,7 +351,7 @@
         },
         {
           "year": "2018",
-          "line": "First skis, and the highest summit in Europe.",
+          "line": "Started alpine skiing · climbed Mount Elbrus",
           "title": "Elbrus, and the start of skiing",
           "place": "Kashmir and the Caucasus",
           "detail": "Basic and intermediate skiing at the Jawaharlal Institute of Mountaineering, advanced skiing at the Indian Institute of Skiing and Mountaineering in Kashmir. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
@@ -351,7 +360,7 @@
         },
         {
           "year": "2019",
-          "line": "Certified to teach skiing abroad, in New Zealand.",
+          "line": "International ski instructor certification · began skiing abroad",
           "title": "Ruapehu",
           "place": "Mt. Ruapehu, New Zealand",
           "detail": "An international snowsports instructor certification taken on an active volcano with a ski field on it, and the first qualification she earned outside India. A season skiing abroad followed.",
@@ -360,7 +369,7 @@
         },
         {
           "year": "2020",
-          "line": "Moved to cross-country, and won her first national medals.",
+          "line": "Started cross-country skiing",
           "title": "The switch",
           "place": "Gulmarg, Jammu and Kashmir",
           "detail": "Cross-country replaced alpine. Two bronzes at the Khelo India Winter Games that season, over 5 km and 10 km.",
@@ -369,7 +378,7 @@
         },
         {
           "year": "2021",
-          "line": "First national title, over 1.4 km.",
+          "line": "First national gold medal",
           "title": "Khelo India gold",
           "place": "Gulmarg, Jammu and Kashmir",
           "detail": "Gold over 1.4 km and bronze over 5 km at the Khelo India Winter Games, in her second season on cross-country skis.",
@@ -378,7 +387,7 @@
         },
         {
           "year": "2022",
-          "line": "First FIS-scored races, in northern Iceland.",
+          "line": "FIS international competition debut",
           "title": "Akureyri",
           "place": "Akureyri, Iceland",
           "detail": "Her first internationally scored starts, in the sprint and the 10 km interval start, in January. Seventh in sprint qualification and sixth over the distance. At home the same season: golds and silvers across the national cross-country and biathlon championships.",
@@ -387,7 +396,7 @@
         },
         {
           "year": "2023",
-          "line": "First World Championships start, at Planica.",
+          "line": "World Championship debut",
           "title": "Nordic World Ski Championships",
           "place": "Planica, Slovenia",
           "detail": "A first Worlds, in the 10 km interval start. Earlier that season she returned to Akureyri and finished fourth in both the sprint and the interval start.",
@@ -396,7 +405,7 @@
         },
         {
           "year": "2024",
-          "line": "A first full block of racing on European snow.",
+          "line": "Hat-trick of gold medals",
           "title": "Kazakhstan, then Scandinavia",
           "place": "Schuchinsk, Idre, Seefeld, Lygna",
           "detail": "Continental cup racing at Schuchinsk in March, then three FIS meetings across Sweden, Austria and Norway in December: the first sustained block of racing on European snow. Three golds at the Khelo India Winter Games at home.",
@@ -405,7 +414,7 @@
         },
         {
           "year": "2025",
-          "line": "Flag bearer in Harbin, first international medals, first World Cup.",
+          "line": "Asian Winter Games · World Championships · World Cup debut",
           "title": "The season it turned",
           "place": "Harbin, Trondheim, Corralco, Ruka",
           "detail": "India's flag bearer at the Asian Winter Games opening ceremony in Harbin, and a sprint quarter-finalist there. Two bronzes on consecutive days at Corralco in Chile, reported in India as the first international cross-country medals won by an Indian woman. Then a first World Cup start at Ruka, forty kilometres short of the Arctic Circle.",
@@ -414,16 +423,16 @@
         },
         {
           "year": "2026",
-          "line": "National sprint title at Gulmarg.",
-          "title": "Khelo India Winter Games",
+          "line": "Entered the Worldloppet ski marathon circuit",
+          "title": "The Worldloppet circuit",
           "place": "Gulmarg, Jammu and Kashmir",
-          "detail": "Gold in the 1.5 km sprint in 4:13.91, with bronzes over 10 km and 15 km.",
+          "detail": "Her first season on the Worldloppet marathon circuit. At home the same season: gold in the 1.5 km sprint at the Khelo India Winter Games in 4:13.91, with bronzes over 10 km and 15 km.",
           "image": "start-line-gulmarg",
           "kind": "past"
         },
         {
           "year": "2027",
-          "line": "A third World Championships, at Falun.",
+          "line": "World Championships, Sweden",
           "title": "World Championships, Falun",
           "place": "Falun, Sweden",
           "detail": "A third start at the Worlds, with two editions already behind her.",
@@ -432,7 +441,7 @@
         },
         {
           "year": "2028",
-          "line": "The building season.",
+          "line": "Target: Asian Winter Games and World Championship qualification",
           "title": "Points, and the calendar",
           "place": null,
           "detail": "Race starts and FIS points under the qualification rules, the season that sets up everything after it.",
@@ -441,7 +450,7 @@
         },
         {
           "year": "2029",
-          "line": "Asian Winter Games, then the World Championships.",
+          "line": "Asian Winter Games · World Championships · Olympic qualification pathway",
           "title": "Almaty, then Lahti",
           "place": "Almaty and Lahti",
           "detail": "Almaty, then Lahti, and the points that decide 2030.",
@@ -450,14 +459,15 @@
         },
         {
           "year": "2030",
-          "line": "Winter Olympics, French Alps.",
+          "line": "Winter Olympics, France — the dream",
           "title": "Winter Olympics",
           "place": "La Clusaz, Haute-Savoie",
           "detail": "The reason the rest of it is planned the way it is. Cross-country at the 2030 Games is held at La Clusaz, on the Confins plateau, 1 to 17 February.",
           "image": null,
           "kind": "ahead"
         }
-      ]
+      ],
+      "tailNote": "Beyond 2030 — the journey continues"
     },
     "beatsNote": "Superseded on the journey page by story.timeline, 31 Aug 2026. Kept: build_v1 still renders them."
   },
@@ -1922,6 +1932,18 @@
       "claim": "New Zealand as a place she races",
       "origin": "Named by the client, 31 Aug 2026",
       "why": "Carried on her instruction, the same footing as the rest of the footprint. The country is hers; the venue pinned is the Snow Farm at Wanaka, read off her own 2026 frame from that location rather than stated by her, and worth confirming before the map is used as a source for anything.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "Entered the Worldloppet ski marathon circuit in 2026",
+      "origin": "Client's timeline, 31 Aug 2026",
+      "why": "Nothing in results.rows records a Worldloppet start; the 2026 rows are the Khelo India Winter Games at Gulmarg. Carried on her word, the same footing as the rest of her timeline, and worth a start list before it is used as a source.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "Joined the NCC in 2013",
+      "origin": "Client's timeline, 31 Aug 2026",
+      "why": "New with her list of 31 Aug; the file previously began the NCC thread at the All India camp in 2015. Her own statement about her own record.",
       "status": "published-client-asserted"
     }
   ],

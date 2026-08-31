@@ -6395,27 +6395,6 @@ body {
   display: block;
 }
 
-.jr-shot {
-  display: block;
-  margin-bottom: var(--space-sm);
-  background: var(--color-paper-3);
-  overflow: hidden;
-}
-
-.jr-shot img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  height: auto;
-  object-fit: cover;
-  transition: transform var(--dur-slow) var(--ease-out);
-}
-
-.jr-hit:hover .jr-shot img,
-.jr-hit:focus-visible .jr-shot img {
-  transform: scale(1.04);
-}
-
 .jr-year {
   display: block;
   font-family: var(--font-display);
@@ -6488,15 +6467,45 @@ body {
 
 /* ------------------------------------------------------------- the panel
 
-   Text only. The photograph is on the page now, so a panel carrying it
-   again would be the same picture twice, one on top of the other. */
+   The frame and the write-up, both held back for a click. The page is a
+   year and a line; this is everything else about that year.
+
+   Capped, because it is anchored near its own row and a panel taller
+   than the viewport has nowhere to be. The longest write-up scrolls
+   inside it; the rest never reach the ceiling. */
 
 .jr-pop {
-  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  max-height: min(32rem, 76vh);
   background: var(--color-paper);
   border: var(--rule-hair) solid var(--color-line);
   border-left: 3px solid var(--color-accent);
   box-shadow: 0 18px 46px oklch(20% 0.03 255 / 0.16);
+  overflow: hidden;
+}
+
+.jr-pop-shot {
+  flex: none;
+  margin: 0;
+  background: var(--color-paper-3);
+}
+
+.jr-pop-shot img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+}
+
+.jr-pop-copy {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3xs);
+  padding: var(--space-md);
+  min-height: 0;
+  overflow-y: auto;
 }
 
 .jr-pop-where {
@@ -6519,6 +6528,12 @@ body {
   line-height: 1.55;
   color: var(--color-ink-2);
   margin: 0;
+}
+
+/* On the rail layout the panel is in flow under its own year, so it does
+   not need the cap or the scroll. */
+.jr-pop {
+  max-height: none;
 }
 
 /* ------------------------------------- under 900px: a straight left rail
@@ -6586,6 +6601,18 @@ body {
   display: block;
 }
 
+/* Where the track runs out. Her list ends on it and so does her
+   reference: the dashes fade and this is the last thing said. */
+.jr-tail-note {
+  margin: 0;
+  padding-left: 2.5rem;
+  /* ink-3 measured 4.35:1 against the darkest pine frame, under the 4.5
+     floor at 13px. ink-2 is what the taglines beside it already use. */
+  color: var(--color-ink-2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 /* Nothing arrives before it is scrolled to, here as well. There is no
    route to draw on the rail layout, so the segment between one year and
    the next grows out of its marker and the card comes with it. A reader
@@ -6615,8 +6642,10 @@ body {
 /* --------------------------------------- 900px and up: the drawn route */
 
 @media (min-width: 900px) {
+  /* Half what it was. The rows carried a photograph until 31 Aug and
+     needed the height for it; a year and a line do not. */
   .jr {
-    height: calc(var(--jr-n) * 17rem);
+    height: calc(var(--jr-n) * 8.5rem);
   }
 
   .jr-path {
@@ -6668,6 +6697,14 @@ body {
   .jr-nodes {
     position: absolute;
     inset: 0;
+  }
+
+  /* At the foot of the track, in line with the years above it. */
+  .jr-tail-note {
+    position: absolute;
+    bottom: -1.5rem;
+    left: calc(var(--jr-xc, 30%) + 1.8rem);
+    padding-left: 0;
   }
 
   /* Full bleed: the scenery reaches the edges of the screen, not the
@@ -6815,33 +6852,29 @@ body {
     top: -0.45rem;
   }
 
-  /* The card sits on the outside of the bend, clear of the route. */
+  /* Every year in one column beside the track, the way her reference
+     has it. Alternating sides existed to give a photo card somewhere to
+     sit either side of a big swing; with the swing gone and the card
+     down to a year and a line, there is nothing to alternate around. */
   .jr-hit {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+    left: calc(var(--x) + 1.8rem);
     width: auto;
-    max-width: min(21rem, 27%);
-  }
-
-  .jr-node[data-side="l"] .jr-hit {
-    right: calc(100% - var(--x) + 2rem);
-    text-align: right;
-  }
-
-  .jr-node[data-side="r"] .jr-hit {
-    left: calc(var(--x) + 2rem);
+    max-width: 24rem;
     text-align: left;
   }
 
-  /* And the panel opens on the inside, into the width the bend leaves
-     empty, which is the one place on the page it always fits. */
+  /* The panel opens further right again, clear of the column, in the
+     width the track leaves empty on that side. */
   .jr-pop {
-    display: block;
+    display: flex;
     position: absolute;
     z-index: 4;
-    width: 20rem;
-    max-width: 36%;
+    left: calc(var(--x) + 28rem);
+    width: 22rem;
+    max-width: calc(96% - var(--x) - 28rem + 22rem);
     margin: 0;
     opacity: 0;
     visibility: hidden;
@@ -6850,14 +6883,6 @@ body {
     transition: opacity var(--dur-fast) var(--ease-out),
       visibility var(--dur-fast) var(--ease-out),
       transform var(--dur-fast) var(--ease-out);
-  }
-
-  .jr-node[data-side="l"] .jr-pop {
-    left: calc(var(--x) + 2rem);
-  }
-
-  .jr-node[data-side="r"] .jr-pop {
-    right: calc(100% - var(--x) + 2rem);
   }
 
   .jr-node[data-vpos="mid"] .jr-pop {
@@ -6898,6 +6923,12 @@ body {
 
   .js .jr-node[data-lit="false"] .jr-hit {
     transform: translateY(calc(-50% + 14px));
+  }
+
+  /* The panel is capped against the viewport, so it never needs to
+     scroll on a desktop unless the write-up is a long one. */
+  .jr-pop {
+    max-height: min(32rem, 76vh);
   }
 
   .js .jr-node .jr-hit,
