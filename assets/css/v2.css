@@ -1100,8 +1100,12 @@ a {
   display: block;
 }
 
+/* Measured at 1.19:1 against paper, which is a shape you have to be
+   told is there, and once the scenery ran behind this section it stopped
+   being one at all. The continents are the frame the pins are read
+   against, so they get enough weight to be a silhouette. */
 .route-map .land {
-  fill: var(--color-paper-3);
+  fill: oklch(84% 0.024 245);
   stroke: none;
 }
 
@@ -4811,9 +4815,40 @@ body {
    pins light one at a time in racing order, Kodagu first and New
    Zealand last, so the map assembles itself the way the career did. */
 
-/* The map sits inside the road section, so it needs its own air. */
+/* The map sits inside the road section, so it needs its own air, and
+   since 31 Aug it needs its own ground as well: the scenery runs behind
+   this section now, and a diagram over photography is noise rather than
+   atmosphere. The wash still shows around the card and behind the
+   heading above it. */
 #road .route-map {
   margin-block: var(--space-lg) 0;
+  padding: var(--space-lg) var(--space-md);
+  background: var(--color-paper);
+  border: var(--rule-hair) solid var(--color-line);
+}
+
+/* The labels are sized in viewBox units, so they scale with the frame.
+   At 292px of map they came out at 3.55 CSS pixels, which is not small
+   type, it is a smudge. Below the breakpoint the map is a dot map and
+   the caption under it carries all fifteen names as real text at 13px.
+   The leaders go with the labels; a leader pointing at nothing is worse
+   than no leader. */
+@media (max-width: 899px) {
+  #road .route-map {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .route-map .past text,
+  .route-map .map-lead {
+    display: none;
+  }
+
+  /* Bigger, because they are now the only thing on the map. 1.6 units
+     came out at 1.8px of radius here against 6.9px on a desktop; 3
+     lands at about 3.5px, which reads at arm's length. */
+  .route-map .pin {
+    r: 3;
+  }
 }
 
 /* ---------------------- the record, with photographs either side
