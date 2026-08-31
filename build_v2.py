@@ -1310,8 +1310,7 @@ def journey_line(c, img) -> str:
 <section class="prose-fold jr-fold" id="years">
   <div class="wrap">
     <div class="prose">
-      <h2>{e(t.get('heading') or '')}</h2>
-      <p class="jr-lede">{e(t.get('lede') or '')}</p>
+      <h2 class="jr-head">{e(t.get('heading') or '')}</h2>
     </div>
     <div class="jr" style="--jr-n:{n}">
       <div class="jr-scenery" aria-hidden="true">{scenery}</div>
@@ -1395,18 +1394,47 @@ def route_map(c) -> str:
         ("gulmarg", 3.5, -1.5, "start", "Gulmarg"),
         ("schuchinsk", 0, -3.5, "middle", "Schuchinsk"),
         ("harbin", 0, 5.5, "middle", "Harbin"),
-        # Below its pin, not above. Akureyri sits at 65.7N with the frame
-        # cropped at 70, and at 3.2 units the label's ascender crossed the
-        # top edge. There is open Atlantic under it and nothing else.
-        ("akureyri", -3.5, 4.6, "end", "Akureyri"),
+        # Beside its pin. Above, its ascender crossed the frame at 70N;
+        # below, it ran into the Scandinavian group label.
+        ("akureyri", -3.5, 1.0, "end", "Akureyri"),
         ("corralco", 3.5, 1.0, "start", "Chile"),
         ("snowfarm", -3.5, 1.0, "end", "New Zealand"),
+        # Alone out east, so it is labelled where it stands.
+        ("ruka", 3.5, 1.0, "start", "Ruka"),
     ]
     texts = "".join(
         f'<text x="{xy(pid)[0] + dx:.1f}" y="{xy(pid)[1] + dy:.1f}" '
         f'text-anchor="{a}">{e(t)}</text>'
         for pid, dx, dy, a, t in labels
     )
+
+    # The two European groups. Three venues each, inside about three units
+    # of map, which is closer than a label can be placed. One leader out to
+    # open water per group and a label naming all three: every place is on
+    # the map by name, and there are two lines rather than six.
+    #
+    #   ids            the venues in the group, in the order the label reads
+    #   lx, ly, anchor where the label sits, tuned against the render
+    #   fx, fy         where the leader leaves the label
+    clusters = [
+        (["trondheim", "lygna", "idre"], 168.0, 26.5, "end", 170.0, 25.6),
+        (["davos", "seefeld", "planica"], 191.0, 46.5, "middle", 191.0, 45.0),
+    ]
+    leads = ""
+    for ids, lx, ly, anc, fx, fy in clusters:
+        pts_ = [xy(i) for i in ids]
+        cx_ = sum(q[0] for q in pts_) / len(pts_)
+        cy_ = sum(q[1] for q in pts_) / len(pts_)
+        # Stop the leader short of the dots rather than into them.
+        vx_, vy_ = cx_ - fx, cy_ - fy
+        d_ = (vx_ ** 2 + vy_ ** 2) ** 0.5 or 1.0
+        ex_, ey_ = cx_ - vx_ / d_ * 3.4, cy_ - vy_ / d_ * 3.4
+        name = " &middot; ".join(
+            pts[i]["place"] for i in ids)
+        leads += (f'<path class="map-lead" d="M{fx:.1f},{fy:.1f} '
+                  f'L{ex_:.1f},{ey_:.1f}"/>'
+                  f'<text x="{lx:.1f}" y="{ly:.1f}" '
+                  f'text-anchor="{anc}">{name}</text>')
     # No destination and no planned stops, from 31 Aug. The map was doing
     # two jobs: marking where she has raced, and arguing a case about
     # 2030 with a ringed point in the Alps, a leader naming La Clusaz and
@@ -1426,9 +1454,11 @@ def route_map(c) -> str:
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
            aria-label="World map marking the fifteen places she has raced
            or trained, from Ruka inside the Arctic Circle to the Snow Farm
-           in New Zealand.">
+           in New Zealand. The three Scandinavian venues and the three
+           Alpine ones sit too close to label separately and are named as
+           two groups; all fifteen are listed under the map.">
         <path d="{w['path']}" class="land"/>
-        <g class="past">{dots}{texts}</g>
+        <g class="past">{dots}{texts}{leads}</g>
       </svg>
       <figcaption class="caption">{roll}</figcaption>
     </figure>"""

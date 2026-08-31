@@ -1105,8 +1105,22 @@ a {
   stroke: none;
 }
 
+/* Three venues three units apart overlap at this scale, and without a
+   stroke they merge into one shape. paint-order puts the fill over the
+   inner half of the stroke, so each dot keeps its radius and reads as a
+   circle against the one behind it. */
 .route-map .pin {
   fill: var(--color-accent);
+  stroke: var(--color-paper);
+  stroke-width: 0.6;
+  paint-order: stroke fill;
+}
+
+/* One leader per group of venues too close to label individually. */
+.route-map .map-lead {
+  fill: none;
+  stroke: var(--color-ink-3);
+  stroke-width: 0.28;
 }
 
 .route-map text {
@@ -6407,22 +6421,21 @@ body {
    is the only thing on the page that uses the distorted viewBox.
    ==================================================================== */
 
-/* Her note of 31 Aug: the line under the heading takes the heading's
-   face. Not its treatment, though. "One line a year" is three words in
-   wide-tracked caps and reads as one shape; a sentence set the same way
-   comes apart, which is the rule this stylesheet already states where
-   the section headings are defined. Same family, sentence case, a step
-   down in size and weight. */
-.jr-lede {
-  font-family: var(--font-display);
-  font-size: clamp(1.05rem, 0.35vw + 0.95rem, 1.3rem);
-  font-weight: 500;
-  letter-spacing: 0.005em;
-  line-height: 1.45;
-  color: var(--color-ink-2);
-  /* Wide enough to hold the line whole on a desktop. At 34ch it broke
-     after "her" and left "journey" alone on the second line. */
-  max-width: 34rem;
+/* Her instruction of 31 Aug: one line above the route, in the face and
+   the treatment "One line a year" used. It is the heading now, so it
+   takes .prose > h2 whole rather than imitating it.
+
+   The one departure is size. That rule was built for two and three word
+   section labels and this is a sentence, so it drops a step to hold two
+   lines instead of three. The Journey hero heading a few rules up
+   carries the same accommodation for the same reason. */
+/* .prose > h2 is (0,1,1) and this was (0,1,0), so the size below never
+   applied and the line ran at the full section-heading size. */
+.prose > h2.jr-head {
+  font-size: clamp(1.15rem, 1.55vw, 1.65rem);
+  /* Measured: at 26ch it broke into three lines of tracked caps, which is
+     a lot of label for one sentence. 24rem holds it in two. */
+  max-width: 24rem;
   text-wrap: balance;
 }
 
