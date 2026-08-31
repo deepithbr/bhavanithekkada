@@ -174,13 +174,13 @@
     "footprint": {
       "index": "02",
       "title": "The map of six seasons",
-      "lede": "One hundred and seven degrees of latitude separate her northernmost start from her southernmost. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn.",
+      "lede": "111 degrees of latitude separate her northernmost venue from her southernmost. She races from inside the Arctic Circle to the far side of the Tropic of Capricorn.",
       "anchors": [
         {
           "lat": 66.17,
           "place": "Ruka",
           "country": "Finland",
-          "note": "Northernmost start"
+          "note": "Northernmost venue"
         },
         {
           "lat": 12.42,
@@ -189,13 +189,13 @@
           "note": "Home"
         },
         {
-          "lat": -40.78,
-          "place": "Antillanca",
-          "country": "Chile",
-          "note": "Southernmost start"
+          "lat": -44.65,
+          "place": "Snow Farm",
+          "country": "New Zealand",
+          "note": "Southernmost venue"
         }
       ],
-      "mapNote": "From 41°S at Antillanca to 66°N at Ruka. Kodagu sits almost exactly halfway between the two, at 12°N."
+      "mapNote": "From 45°S at the Snow Farm to 66°N at Ruka. Kodagu sits between the two, at 12°N."
     },
     "beyond": {
       "index": "03",
@@ -290,7 +290,7 @@
     ],
     "timeline": {
       "heading": "One line a year",
-      "lede": "Thirty-one years from a district with no snow to a World Cup start list, a year at a time.",
+      "lede": "Scroll through the years that shaped her journey",
       "aheadNote": "Still to come",
       "sourceNote": "Assembled 31 Aug 2026 from the story beats, career milestones, certification phases and results rows already in this file. Client copy replaces `line` and `detail` when it arrives; the structure does not move.",
       "years": [
@@ -840,6 +840,22 @@
       "sourceRef": "fis",
       "best": "76th, World Cup sprint and interval start, 2025",
       "image": "downhill-tuck"
+    },
+    {
+      "id": "snowfarm",
+      "place": "Snow Farm",
+      "country": "New Zealand",
+      "lat": -44.65,
+      "lon": 169.2,
+      "years": [
+        "2026"
+      ],
+      "event": "Southern-hemisphere season",
+      "kind": "fis",
+      "sourceRef": "athlete-brief",
+      "best": "New Zealand block, 2026",
+      "image": "nz-snowfarm",
+      "provenance": "New Zealand named by the client as one of the places she races, 31 Aug 2026. The venue is the Snow Farm at Wanaka, taken from her own 2026 frame in that location and from the season copy that already names New Zealand; the country is hers, the specific venue is read off the photograph and worth her confirming."
     }
   ],
   "mountainAchievements": [
@@ -1900,6 +1916,12 @@
       "origin": "Named by Bhavani in the client review of 25 Aug 2026",
       "why": "Held back in an earlier review for want of evidence, carried from 25 Aug on her instruction, and removed again on her instruction of 31 Aug 2026. Reliance Foundation and the Government of Karnataka stand. The artwork is still in assets/img/partners in case it returns.",
       "status": "removed"
+    },
+    {
+      "claim": "New Zealand as a place she races",
+      "origin": "Named by the client, 31 Aug 2026",
+      "why": "Carried on her instruction, the same footing as the rest of the footprint. The country is hers; the venue pinned is the Snow Farm at Wanaka, read off her own 2026 frame from that location rather than stated by her, and worth confirming before the map is used as a source for anything.",
+      "status": "published-client-asserted"
     }
   ],
   "certificationPhases": [

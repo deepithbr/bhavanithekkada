@@ -399,9 +399,9 @@
   /* ---- the places arrive ----------------------------------------------- */
 
   // When the map enters, the fourteen pins appear one at a time in racing
-  // order: Kodagu first, the Chilean pair near the end. Runs once. Reduced
-  // motion, or no observer, sees the finished map. The lines stage went out
-  // with the lines on 31 Aug; three stages are left.
+  // order: Kodagu first, New Zealand last. Runs once; reduced motion, or
+  // no observer, sees the finished map. The staging went out on 31 Aug
+  // with the destination and the planned stops it existed to bring on.
   const routeFig = document.querySelector(".route-map");
   if (routeFig) {
     const pins = Array.from(routeFig.querySelectorAll(".pin[data-stop]"))
@@ -409,25 +409,14 @@
     const STEP = 150;
     const FIRST = 220;
 
-    // The client's order: every dot she will stand on comes up first, and
-    // La Clusaz arrives last, on its own. Each stage waits for the one
-    // before it to finish rather than racing it; the first pass had the
-    // destination land while the lines were still drawing.
     const run = () => {
       pins.forEach((pin, i) => {
         setTimeout(() => (pin.dataset.lit = "true"), FIRST + i * STEP);
       });
-      const lit = FIRST + pins.length * STEP;
-      const at = (ms, stage) =>
-        setTimeout(() => (routeFig.dataset.stage = stage), ms);
-      at(lit + 250, "plan");        // the three stops before the Games
-      at(lit + 1500, "dest");       // La Clusaz, alone
-      at(lit + 2800, "rest");       // and the rest steps back
     };
 
     if (reduce.matches || !("IntersectionObserver" in window)) {
       pins.forEach((p2) => (p2.dataset.lit = "true"));
-      routeFig.dataset.stage = "rest";
     } else {
       pins.forEach((p2) => (p2.dataset.lit = "false"));
       const arrive = new IntersectionObserver((entries) => {

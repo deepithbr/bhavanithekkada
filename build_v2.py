@@ -1084,15 +1084,17 @@ def about_page(c, img):
 def road_ahead(c, map_html="") -> str:
     """Where the page lands: one heading and the map.
 
-    The four target cards used to run under it. Removed at the client's
-    instruction, 30 Aug 2026; the years they carried are on the map now,
-    as the three stops before the Games. Beyond the finish line closed
-    this page before that. Both sets of copy stay in the content file."""
+    The four target cards ran under it until 30 Aug, and the map argued
+    the case for 2030 until 31 Aug. Both went at the client's
+    instruction, and the heading followed the second of them: a map of
+    where she has raced under a heading about the road to 2030 is the
+    caption arguing with the picture. Every line of that copy is still
+    in the content file."""
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
     <div class="prose">
-      <h2>The road to 2030 Winter Olympics</h2>
+      <h2>Where she races</h2>
     </div>
     {map_html}
   </div>
@@ -1309,7 +1311,7 @@ def journey_line(c, img) -> str:
   <div class="wrap">
     <div class="prose">
       <h2>{e(t.get('heading') or '')}</h2>
-      <p>{e(t.get('lede') or '')}</p>
+      <p class="jr-lede">{e(t.get('lede') or '')}</p>
     </div>
     <div class="jr" style="--jr-n:{n}">
       <div class="jr-scenery" aria-hidden="true">{scenery}</div>
@@ -1393,67 +1395,40 @@ def route_map(c) -> str:
         ("gulmarg", 3.5, -1.5, "start", "Gulmarg"),
         ("schuchinsk", 0, -3.5, "middle", "Schuchinsk"),
         ("harbin", 0, 5.5, "middle", "Harbin"),
-        ("akureyri", -3.5, -2.5, "end", "Akureyri"),
+        # Below its pin, not above. Akureyri sits at 65.7N with the frame
+        # cropped at 70, and at 3.2 units the label's ascender crossed the
+        # top edge. There is open Atlantic under it and nothing else.
+        ("akureyri", -3.5, 4.6, "end", "Akureyri"),
         ("corralco", 3.5, 1.0, "start", "Chile"),
+        ("snowfarm", -3.5, 1.0, "end", "New Zealand"),
     ]
     texts = "".join(
         f'<text x="{xy(pid)[0] + dx:.1f}" y="{xy(pid)[1] + dy:.1f}" '
         f'text-anchor="{a}">{e(t)}</text>'
         for pid, dx, dy, a, t in labels
     )
-    # Where it is all pointed. Cross-country and para-Nordic at the 2030
-    # Games are at La Clusaz, on the Confins plateau in Haute-Savoie;
-    # biathlon is up the valley at Le Grand-Bornand. Coordinates are the
-    # village, 45.905N 6.425E.
-    dx_, dy_ = 6.425 + 180.0, lat_top - 45.905
-
-    # No lines at all, from 31 Aug. Fourteen arcs converging on one point in
-    # the Alps, plus three heavier ones for the road, drew a web over Europe.
-    # What the map is for is where she has stood, and dots do that on their
-    # own. The order still carries the story: the pins light one at a time.
-    # The three named stops between here and the Games, from the target
-    # cards below the map. Hollow marks, because she has not raced them
-    # yet; the pins she has raced are filled.
-    plan_pos = {"Falun": (-3.4, -2.4, "end"),
-                "Lahti": (3.4, -2.4, "start"),
-                "Almaty": (0, 5.2, "middle")}
-    plan = ""
-    for n_, v in enumerate(c.get("targets", {}).get("venues", [])):
-        px, py = v["lon"] + 180.0, lat_top - v["lat"]
-        odx, ody, anc = plan_pos.get(v["place"], (0, -3.0, "middle"))
-        plan += (
-            f'<circle cx="{px:.1f}" cy="{py:.1f}" r="1.7" class="plan-pin" '
-            f'data-step="{n_}"/>'
-            f'<text class="plan-label" data-step="{n_}" '
-            f'x="{px + odx:.1f}" y="{py + ody:.1f}" text-anchor="{anc}">'
-            f'{e(v["place"])} {e(v["year"])}</text>'
-        )
-
-    lx, ly = dx_ - 16.0, dy_ + 0.6
-    dest = (
-        f'<g class="plan">{plan}</g>'
-        f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="4.2" class="dest-halo"/>'
-        f'<circle cx="{dx_:.1f}" cy="{dy_:.1f}" r="2.4" class="dest-dot"/>'
-        f'<path class="dest-lead" d="M{dx_ - 4.4:.1f},{dy_:.1f} '
-        f'L{lx + 1.2:.1f},{ly - 0.6:.1f}"/>'
-        f'<text class="dest-label" x="{lx:.1f}" y="{ly:.1f}" '
-        f'text-anchor="end">La Clusaz &middot; 2030</text>'
-    )
+    # No destination and no planned stops, from 31 Aug. The map was doing
+    # two jobs: marking where she has raced, and arguing a case about
+    # 2030 with a ringed point in the Alps, a leader naming La Clusaz and
+    # three hollow rings for stops she has not made. The second job went
+    # at the client's instruction. The lines went the same way on the
+    # same day, for the same reason: the places are the content.
 
     order = [p["place"] for p in c["internationalFootprint"]]
     roll = " &middot; ".join(order)
-    # crop: lon -85..145 -> x 95..325, lat 70..-45
-    vx, vw = 95, 230
-    vy, vh = lat_top - 70, 115
+    # crop: lon -85..178 -> x 95..358, lat 70..-50. It ran to 145 east
+    # and stopped in the Pacific short of New Zealand, and to 45 south,
+    # which cut the bottom off the Snow Farm at 44.6.
+    vx, vw = 95, 263
+    vy, vh = lat_top - 70, 120
     return f"""
     <figure class="route-map" id="route">
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
-           aria-label="World map marking the fourteen places she has raced
-           or trained, the three stops planned before the Games, and La
-           Clusaz in the French Alps, where the 2030 Olympic cross-country
-           races will be held.">
+           aria-label="World map marking the fifteen places she has raced
+           or trained, from Ruka inside the Arctic Circle to the Snow Farm
+           in New Zealand.">
         <path d="{w['path']}" class="land"/>
-        <g class="past">{dots}{texts}</g>{dest}
+        <g class="past">{dots}{texts}</g>
       </svg>
       <figcaption class="caption">{roll}</figcaption>
     </figure>"""

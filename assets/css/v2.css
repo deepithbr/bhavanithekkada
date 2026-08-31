@@ -1111,9 +1111,13 @@ a {
 
 .route-map text {
   font-family: var(--font-caption);
-  /* 2.8 svg units, roughly 11px rendered at the column width. The first
-     pass used 6.5 and the labels came out at 22px, larger than body copy. */
-  font-size: 2.8px;
+  /* 3.2 svg units. These are viewBox units, so they scale with the crop:
+     when the frame widened east to take in New Zealand on 31 Aug the
+     labels went from 13.6px rendered to 12.1px, and below a 1280 window
+     they fell under the 12px floor the legibility pass set. 3.2 puts
+     them back at 13.8px at 1280. The first pass used 6.5 and they came
+     out at 22px, larger than body copy. */
+  font-size: 3.2px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   fill: var(--color-ink-2);
@@ -4781,187 +4785,21 @@ body {
   margin-top: var(--space-lg);
 }
 
-/* ---------------------- the road, staged
+/* ---------------------- the map, and the places arriving
 
-   The client's order, and it matters: every dot she will stand on comes
-   up first, and La Clusaz arrives last, on its own. Five stages on one
-   attribute, each one waiting for the last to finish rather than racing
-   it, because the first pass had the destination land while the lines
-   were still drawing and it read as noise.
+   Fifteen filled dots and their labels, and nothing else. It carried a
+   ringed destination in the Alps, a leader naming La Clusaz and three
+   hollow rings for stops she has not made, plus a five-stage reveal
+   built to bring them on in order. All of it went on 31 Aug: the map
+   shows where she races.
 
-     pins   her fourteen venues, in racing order
-     plan   the three stops before the Games
-     lines  every one of them running to the Alps
-     dest   La Clusaz, alone
-     rest   everything else steps back
-
-   Grouped fades, not per-element: the pins and lines overlap around La
-   Clusaz, and fading them one by one composites back to solid, which was
-   the clutter the client pointed at. */
-
-/* Hollow, because she has not raced these yet. */
-.plan-pin {
-  fill: var(--color-paper-2);
-  stroke: var(--color-accent);
-  stroke-width: 0.7;
-}
-
-.plan-label {
-  font-weight: 600;
-  fill: var(--color-ink);
-}
-
-/* Her record running to the Alps: thin, so fourteen of them read as a
-   convergence rather than a web. Without fill:none an SVG path fills
-   itself, and these came out as black wedges across the map. */
-.route-arc {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 0.34;
-  stroke-linecap: round;
-  opacity: 0.42;
-}
-
-/* The three stops before the Games: heavier, because they are the road. */
-.road-arc {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 0.5;
-  stroke-linecap: round;
-  opacity: 0.7;
-}
-
-/* Everything after the pins starts hidden and arrives on cue. */
-.js .route-map .plan-pin,
-.js .route-map .plan-label,
-.js .route-map .dest-halo,
-.js .route-map .dest-dot,
-.js .route-map .dest-lead,
-.js .route-map .dest-label {
-  opacity: 0;
-  transition: opacity 800ms var(--ease-out);
-}
-
-.js .route-arc,
-.js .road-arc {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-}
-
-/* plan */
-.route-map:is([data-stage="plan"], [data-stage="lines"], [data-stage="dest"],
-  [data-stage="rest"]) :is(.plan-pin, .plan-label) {
-  opacity: 1;
-}
-
-.route-map[data-stage="plan"] .plan-pin[data-step="1"],
-.route-map[data-stage="plan"] .plan-label[data-step="1"] {
-  transition-delay: 200ms;
-}
-
-.route-map[data-stage="plan"] .plan-pin[data-step="2"],
-.route-map[data-stage="plan"] .plan-label[data-step="2"] {
-  transition-delay: 400ms;
-}
-
-/* lines */
-.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
-  :is(.route-arc, .road-arc) {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1600ms cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
-  .road-arc[data-step="1"] {
-  transition-delay: 160ms;
-}
-
-.route-map:is([data-stage="lines"], [data-stage="dest"], [data-stage="rest"])
-  .road-arc[data-step="2"] {
-  transition-delay: 320ms;
-}
-
-/* dest */
-.route-map:is([data-stage="dest"], [data-stage="rest"])
-  :is(.dest-dot, .dest-lead, .dest-label) {
-  opacity: 1;
-}
-
-.route-map:is([data-stage="dest"], [data-stage="rest"]) .dest-halo {
-  opacity: 0.55;
-}
-
-/* rest */
-.route-map .past,
-.route-map .past-lines,
-.route-map .plan {
-  transition: opacity 900ms var(--ease-out);
-}
-
-.route-map[data-stage="rest"] .past {
-  opacity: 0.26;
-}
-
-.route-map[data-stage="rest"] .past-lines {
-  opacity: 0.3;
-}
-
-.route-map[data-stage="rest"] .plan {
-  opacity: 0.45;
-}
-
-.dest-halo {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 0.6;
-}
-
-/* Her European venues sit directly under La Clusaz, so even faded they
-   touch it. A paper-coloured ring cuts the destination out of them. */
-.dest-dot {
-  fill: var(--color-accent);
-  stroke: var(--color-paper-2);
-  stroke-width: 0.9;
-}
-
-.dest-lead {
-  stroke: var(--color-ink-3);
-  stroke-width: 0.28;
-  fill: none;
-}
-
-.dest-label {
-  font-family: var(--font-caption);
-  font-size: 3.1px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  fill: var(--color-ink);
-}
+   What is left is the one thing that was always doing the work. The
+   pins light one at a time in racing order, Kodagu first and New
+   Zealand last, so the map assembles itself the way the career did. */
 
 /* The map sits inside the road section, so it needs its own air. */
 #road .route-map {
   margin-block: var(--space-lg) 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js .route-arc,
-  .js .road-arc {
-    stroke-dashoffset: 0;
-  }
-
-  .js .route-map :is(.plan-pin, .plan-label, .dest-dot, .dest-lead,
-    .dest-label) {
-    opacity: 1;
-  }
-
-  .js .route-map .dest-halo {
-    opacity: 0.55;
-  }
-
-  .route-map :is(.past, .past-lines, .plan, .route-arc, text) {
-    transition: none;
-  }
 }
 
 /* ---------------------- the record, with photographs either side
@@ -6568,6 +6406,25 @@ body {
    actually landed. The path in the markup is the no-script fallback and
    is the only thing on the page that uses the distorted viewBox.
    ==================================================================== */
+
+/* Her note of 31 Aug: the line under the heading takes the heading's
+   face. Not its treatment, though. "One line a year" is three words in
+   wide-tracked caps and reads as one shape; a sentence set the same way
+   comes apart, which is the rule this stylesheet already states where
+   the section headings are defined. Same family, sentence case, a step
+   down in size and weight. */
+.jr-lede {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 0.35vw + 0.95rem, 1.3rem);
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.45;
+  color: var(--color-ink-2);
+  /* Wide enough to hold the line whole on a desktop. At 34ch it broke
+     after "her" and left "journey" alone on the second line. */
+  max-width: 34rem;
+  text-wrap: balance;
+}
 
 .jr {
   position: relative;
