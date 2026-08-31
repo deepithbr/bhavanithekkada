@@ -6832,6 +6832,14 @@ body {
     stroke-width: 1.5;
   }
 
+  /* Lifted snow, so a cool pale grey rather than white: white on this
+     paper is invisible, and accent blue would read as part of the
+     route rather than as something thrown off it. */
+  .jr-spray circle {
+    fill: oklch(76% 0.035 250);
+    pointer-events: none;
+  }
+
   /* The stretch she has just cut, brighter than the settled track. The
      gradient moves with her; above the band it is transparent and the
      ordinary groove underneath shows through instead. */

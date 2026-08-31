@@ -456,6 +456,9 @@
     const REST = 220;
     let strideOff = 0;
     let lastAt = -1;
+    // Where she is and which way she is pointing, kept from the last
+    // frame so the spray knows where the ski tails are.
+    let heading = null;
     const clip = svg.querySelector(".jr-clip-r");
     // Where the record stops and the plan starts.
     const lastPast =
@@ -577,12 +580,17 @@
       }
 
       // Striding, but only while the page is actually moving.
-      if (skier && Math.abs(at - lastAt) > 0.5) {
+      const moved = lastAt < 0 ? 0 : Math.abs(at - lastAt);
+      if (skier && moved > 0.5) {
         skier.setAttribute("data-moving", "");
         clearTimeout(strideOff);
         strideOff = setTimeout(
           () => skier.removeAttribute("data-moving"), REST);
       }
+      // Scroll hard and she throws a lot; ease down and she throws
+      // almost none. Capped so a flick of the wheel does not empty the
+      // pool in one frame.
+      if (moved > 4) puff(Math.min(3, Math.round(moved / 14) + 1));
       lastAt = at;
     };
 
@@ -611,10 +619,97 @@
       const q = full.getPointAtLength(
         Math.min(len + 12, full.getTotalLength()));
       const deg = Math.atan2(q.x - p.x, q.y - p.y) * -180 / Math.PI;
+      // The unit vector along the route here. The spray works from this
+      // rather than from the angle, so it never has to convert back.
+      const dx = q.x - p.x, dy = q.y - p.y;
+      const m = Math.hypot(dx, dy) || 1;
+      heading = { x: p.x, y: p.y, tx: dx / m, ty: dy / m };
       skier.style.opacity = "1";
       skier.setAttribute("transform",
         `translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) ` +
         `rotate(${deg.toFixed(1)})`);
+    };
+
+    /* ---- snow off the tails ---------------------------------------- */
+
+    // A pool, not a stream of new elements: eighteen circles made once,
+    // each parked at zero radius when its life runs out and taken again
+    // by the next puff. They live in the SVG's own pixel space, which is
+    // the space the route is already drawn in.
+    const SNOW = 18;
+    const flakes = [];
+    let snowRAF = 0;
+
+    const makeSnow = () => {
+      if (flakes.length || !svg || reduce.matches) return;
+      const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "jr-spray");
+      g.setAttribute("aria-hidden", "true");
+      for (let i = 0; i < SNOW; i++) {
+        const c = document.createElementNS(
+          "http://www.w3.org/2000/svg", "circle");
+        c.setAttribute("r", "0");
+        g.appendChild(c);
+        flakes.push({ el: c, t: 0, T: 1, x: 0, y: 0, vx: 0, vy: 0, r: 1 });
+      }
+      svg.appendChild(g);
+    };
+
+    const stepSnow = () => {
+      let alive = 0;
+      for (const f of flakes) {
+        if (f.t <= 0) continue;
+        f.t -= 1;
+        f.x += f.vx;
+        f.y += f.vy;
+        // Drag, so it throws hard and settles rather than flying off.
+        f.vx *= 0.9;
+        f.vy *= 0.9;
+        const k = f.t / f.T;
+        f.el.setAttribute("cx", f.x.toFixed(1));
+        f.el.setAttribute("cy", f.y.toFixed(1));
+        f.el.setAttribute("r", (f.r * k).toFixed(2));
+        f.el.style.opacity = (k * 0.9).toFixed(2);
+        alive++;
+      }
+      snowRAF = alive ? requestAnimationFrame(stepSnow) : 0;
+    };
+
+    // n comes from how far the front moved this frame, so the spray is a
+    // reading of the scroll rather than a timer.
+    const puff = (n) => {
+      // Nothing is painting in a background tab, and without frames the
+      // pool would fill with flakes that never age. So it does not throw.
+      if (!heading || reduce.matches || document.hidden) return;
+      const { x, y, tx, ty } = heading;
+      for (let i = 0; i < n; i++) {
+        const f = flakes.find((v) => v.t <= 0);
+        if (!f) return;
+        const side = Math.random() < 0.5 ? -1 : 1;
+        // Normal to the direction of travel, which is where a ski
+        // throws snow.
+        const nx = -ty * side, ny = tx * side;
+        const jit = 0.55 + Math.random() * 0.9;
+        // Jittered along the ski as well as across it, or three flakes
+        // thrown in one frame start life stacked on the same point and
+        // only separate once their velocities pull them apart.
+        const back = 7 + Math.random() * 5;
+        const out = 3.5 + Math.random() * 2.5;
+        f.x = x - tx * back + nx * out;
+        f.y = y - ty * back + ny * out;
+        f.vx = (nx * 1.7 - tx * 0.8) * jit;
+        f.vy = (ny * 1.7 - ty * 0.8) * jit;
+        f.r = 1 + Math.random() * 1.4;
+        f.T = 24 + Math.random() * 18;
+        f.t = f.T;
+        // Placed the moment it is born rather than on the next frame,
+        // so a flake never blinks in a step late.
+        f.el.setAttribute("cx", f.x.toFixed(1));
+        f.el.setAttribute("cy", f.y.toFixed(1));
+        f.el.setAttribute("r", f.r.toFixed(2));
+        f.el.style.opacity = "0.9";
+      }
+      if (!snowRAF) snowRAF = requestAnimationFrame(stepSnow);
     };
 
     const all = () => {
@@ -636,6 +731,7 @@
       all();
       addEventListener("resize", () => { draw(); if (H) clip.setAttribute("height", (H + 40).toFixed(0)); });
     } else {
+      makeSnow();
       draw();
       sync();
       let tick = false;
