@@ -2420,40 +2420,6 @@ a {
   color: var(--color-ink-3);
 }
 
-/* --------------------------------------------------- level of competition */
-
-/* Her stat band: the number carries the section, everything else whispers. */
-.levels {
-  display: grid;
-  gap: var(--space-lg) var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  margin-top: var(--space-md);
-}
-
-.level-n {
-  display: block;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.8rem, 6vw, 4.5rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--color-accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.level h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-base);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-top: var(--space-2xs);
-}
-
-.level .caption {
-  color: var(--color-ink-3);
-  margin-top: var(--space-3xs);
-}
-
 /* Four format cards for the sport: two up on a phone, four across wide. */
 .facts-quad {
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2632,12 +2598,6 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .scroll-cue { display: none; }
-}
-
-/* Levels: hairline left rules give the numbers a colonnade to stand in. */
-.levels .level {
-  border-left: var(--rule-hair) solid var(--color-line);
-  padding-left: var(--space-md);
 }
 
 /* The who-she-is facts sit in a ruled strip, not loose on the page. */
@@ -6119,6 +6079,13 @@ body {
   overflow: hidden;
 }
 
+/* On Career it opens the page under a hero that has already named it,
+   so it carries no heading and does not need the air one would want. */
+.slabs[data-bare] {
+  padding-block: var(--space-2xl);
+  background: var(--color-paper-2);
+}
+
 .slabs-head h2 {
   font-family: var(--font-display);
   font-size: var(--text-3xl);
@@ -6281,10 +6248,12 @@ body {
 }
 
 
-/* --------------------------------------- the two new cards in the stack
+/* --------------------------------------- the new card in the stack
 
-   Eight cards now, not six. Each has to fill its card and paint its own
-   ground, or the one beneath shows through as it rises. */
+   Each card has to fill its card and paint its own ground, or the one
+   beneath shows through as it rises. The slabs were the eighth of these
+   until 31 Aug, when they moved to Career; the z-index rules are keyed
+   by position rather than by name, so they need nothing. */
 @media (min-width: 900px) {
   .stack > :nth-child(8) {
     z-index: 8;
@@ -6294,8 +6263,7 @@ body {
     z-index: 9;
   }
 
-  .stack > .glance,
-  .stack > .slabs {
+  .stack > .glance {
     min-height: 100svh;
     display: grid;
     align-content: center;
@@ -6512,8 +6480,11 @@ body {
 
    Five thousand pixels of white was a lot of page to scroll, and her
    reference answers that with photography bled behind the content
-   rather than with more content. Her own frames, alternating edges down
-   the track, in the order the journey runs.
+   rather than with more content. Her own frames run down both edges the
+   whole way, so there is no scroll position where one side is bare.
+   Six files fill both columns: the right one takes them rotated, so a
+   frame and its twin are never near each other and the browser still
+   fetches six things.
 
    The mask carries the legibility, not the opacity. Each frame is solid
    at the very edge of the screen and three quarters gone by the column
@@ -6852,15 +6823,17 @@ body {
     position: absolute;
     top: var(--at);
     width: min(34rem, 34vw);
-    /* Taller than the gap between one frame and the next, so the wash is
-       continuous down the track instead of switching on and off. */
-    height: 54rem;
-    /* Faded top and bottom, so a frame arrives and leaves rather than
-       ending on a horizontal edge halfway down a blank page. */
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%,
-      #000 74%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 22%,
-      #000 74%, transparent);
+    /* 75rem tall, stepped 50rem apart by the builder. The 25rem
+       difference is the crossfade, which is why these stops are at a
+       third and two thirds: 25 of 75. One frame's fade-out then lands
+       exactly on the next one's fade-in, the ramps are complementary,
+       and two half-strength layers composite to less than one at full
+       strength. Move either number and the other has to move with it. */
+    height: 75rem;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%,
+      #000 33.34%, #000 66.66%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%,
+      #000 33.34%, #000 66.66%, transparent 100%);
   }
 
   .jr-scene[data-edge="l"] { left: 0; }

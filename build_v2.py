@@ -636,31 +636,6 @@ def levels_data(c):
     return cards
 
 
-def levels_band(c, link=True, head=True) -> str:
-    """Level of competition: her three start-level cards verbatim, plus
-    the two medal counts computed from the results rows so the band can
-    never disagree with the tables on the Achievements page."""
-    cards = levels_data(c)
-    lis = "".join(
-        f'<article class="level" data-rise>'
-        f'<span class="level-n tally-total">{e(x["n"])}</span>'
-        f'<h3>{e(x["k"])}</h3><p class="caption">{e(x["s"])}</p></article>'
-        for x in cards
-    )
-    more = ('<p class="caption" style="margin-top:var(--space-md)">'
-            '<a href="achievements.html">The full record, race by race '
-            '&rarr;</a></p>') if link else ""
-    return f"""
-<section class="prose-fold" data-ground="ice" id="level">
-  <div class="wrap">
-    {'<div class="prose"><p class="caption">The record</p>'
-     '<h2>Level of competition</h2></div>' if head else ''}
-    <div class="levels">{lis}</div>
-    {more}
-  </div>
-</section>"""
-
-
 # One photograph per figure, in the order levels_data returns them:
 # her three start-level cards from the content file, then the two medal
 # counts computed from the results rows. Every one of them is owned, and
@@ -676,7 +651,7 @@ SLAB_SIZES = "(min-width:900px) 16vw, 44vw"
 SEASON_SHOT = "snow-ridge-line"
 
 
-def record_slabs(c, img) -> str:
+def record_slabs(c, img, head=True, link=True) -> str:
     """The level of competition, as the client's slab reference.
 
     Five leaning plates alternating navy and race-suit blue, each
@@ -703,16 +678,18 @@ def record_slabs(c, img) -> str:
         for n, x in enumerate(cards)
         if n < len(SLAB_SHOTS)
     )
+    top = ('<div class="slabs-head" data-rise>'
+           '<p class="caption">Level of competition</p>'
+           '<h2>The record</h2></div>') if head else ""
+    # Pointing at the page you are already standing on is furniture.
+    more = ('<p class="caption slabs-more"><a href="achievements.html">Every '
+            'start, race by race &rarr;</a></p>') if link else ""
     return f"""
-<section class="slabs" id="record">
+<section class="slabs" id="level"{'' if head else ' data-bare'}>
   <div class="wrap">
-    <div class="slabs-head" data-rise>
-      <p class="caption">Level of competition</p>
-      <h2>The record</h2>
-    </div>
+    {top}
     <ol class="slab-row">{lis}</ol>
-    <p class="caption slabs-more"><a href="achievements.html">Every
-      start, race by race &rarr;</a></p>
+    {more}
   </div>
 </section>"""
 
@@ -974,7 +951,6 @@ def page(c: dict, img: Img) -> str:
 {glance_fold(c, img)}
 {who_she_is(c, img)}
 {sport_fold(c, img)}
-{record_slabs(c, img)}
 {panel(img, SHOTS['closer'],
        'Join me on my journey to the 2030 French Alps Olympic Winter Games',
        'Cross-country skiing',
@@ -1138,16 +1114,34 @@ JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
 # high ground. Each one is pinned to an edge of the screen and to a
 # point down the track. None of them is used as a card on this page, so
 # nothing appears twice.
-JR_SCENERY = [
-    ("race-forest", "l", 1),
-    ("classic-tracks", "r", 17.5),
-    ("lake-mountains", "l", 34),
-    ("nordic-overlook", "r", 50.5),
-    ("snow-ridge-line", "l", 67),
-    ("track-solo-pines", "r", 83.5),
-]
+JR_SCENERY = ["race-forest", "classic-tracks", "lake-mountains",
+              "nordic-overlook", "snow-ridge-line", "track-solo-pines"]
 
 JR_SCENE_SIZES = "34vw"
+
+# The three numbers that make the scenery continuous, and they have to
+# agree with each other or it either gaps or stacks.
+#
+#   JR_ROW_REM      one year of track. Must match .jr height in the
+#                   stylesheet: calc(var(--jr-n) * 17rem).
+#   JR_SCENE_REM    one frame.
+#   JR_SCENE_STEP   frame top to frame top. The 25rem the frame has over
+#                   the step is the crossfade, and the stylesheet puts
+#                   the mask stops at exactly that: 25 of 75 is 33.3%.
+#
+# Because the step and the fade are the same 25rem, one frame's fade-out
+# lands exactly on the next one's fade-in. Complementary ramps, so the
+# pair composites to less than either at full strength.
+JR_ROW_REM = 17.0
+JR_SCENE_REM = 75.0
+JR_SCENE_STEP = 50.0
+
+# How far the right column is offset from the left, as a fraction of the
+# step, and how far the file order is rotated. Half a step apart and
+# three files along keeps a frame and its twin two thousand pixels
+# clear of each other.
+JR_SCENE_STAGGER = 0.5
+JR_SCENE_ROTATE = 3
 
 
 # A 43-byte transparent GIF. It is what a narrow screen loads instead
@@ -1283,10 +1277,31 @@ def journey_line(c, img) -> str:
         <span class="jr-dot" aria-hidden="true"></span>
       </li>""")
 
+    # Both columns, top to bottom, from the same six files.
+    step = JR_SCENE_STEP / (JR_ROW_REM * n) * 100.0
+    scenes = []
+    # From one frame above the track. The right column is staggered half
+    # a step below the left, so starting both at zero left the top of the
+    # right column bare for the first eighty pixels. Measured, not
+    # guessed: sampling the coverage every forty pixels showed the left
+    # column never below 0.32 and the right at 0.
+    k = -1
+    while True:
+        top = k * step - step * 0.4
+        if top >= 100.0:
+            break
+        m = len(JR_SCENERY)
+        scenes.append((JR_SCENERY[k % m], "l", top))
+        right = top + step * JR_SCENE_STAGGER
+        if right < 100.0:
+            scenes.append(
+                (JR_SCENERY[(k + JR_SCENE_ROTATE) % m], "r", right))
+        k += 1
+
     scenery = "".join(
-        f'<span class="jr-scene" data-edge="{edge}" style="--at:{at}%">'
+        f'<span class="jr-scene" data-edge="{edge}" style="--at:{at:.3f}%">'
         f'{decor(img, slot, JR_SCENE_SIZES)}</span>'
-        for slot, edge, at in JR_SCENERY
+        for slot, edge, at in scenes
     )
 
     return f"""
@@ -1867,7 +1882,7 @@ def achievements_page(c, img):
     # and each frame is lazy-loaded and revealed on arrival rather than
     # fetched with the page.
     body = (
-        levels_band(c, link=False, head=False)
+        record_slabs(c, img, head=False, link=False)
         + '<div class="rail-layout">'
         # Ordered to match the tables beside them: the three international
         # frames come first, then the three from home. Reading down the
