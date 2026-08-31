@@ -436,8 +436,15 @@
   if (jr) {
     const svg = jr.querySelector(".jr-path");
     const nodes = Array.from(jr.querySelectorAll(".jr-node"));
+    // Two grooves per stretch, offset either side of the centre line,
+    // plus the corridor they are cut into and a full-length copy that is
+    // never drawn and exists only to be measured against.
     const runs = Array.from(svg.querySelectorAll(".jr-run"));
     const tail = svg.querySelector(".jr-tail");
+    const piste = svg.querySelector(".jr-piste");
+    const full = svg.querySelector(".jr-full");
+    const skier = svg.querySelector(".jr-skier");
+    const GROOVE = 5;
     const clip = svg.querySelector(".jr-clip-r");
     // Where the record stops and the plan starts.
     const lastPast =
@@ -467,32 +474,51 @@
       // Vertical handles half the gap long: the curve leaves one marker
       // straight down and meets the next straight down, so both halves
       // of every bend match and the join does not show.
-      const seg = (a, z) => {
-        let d = `M${pts[a][0].toFixed(1)},${pts[a][1].toFixed(1)}`;
+      const seg = (a, z, o) => {
+        o = o || 0;
+        let d = `M${(pts[a][0] + o).toFixed(1)},${pts[a][1].toFixed(1)}`;
         for (let i = a; i < z; i++) {
           const h = (pts[i + 1][1] - pts[i][1]) * 0.5;
-          d += ` C${pts[i][0].toFixed(1)},${(pts[i][1] + h).toFixed(1)}` +
-               ` ${pts[i + 1][0].toFixed(1)},${(pts[i + 1][1] - h).toFixed(1)}` +
-               ` ${pts[i + 1][0].toFixed(1)},${pts[i + 1][1].toFixed(1)}`;
+          d += ` C${(pts[i][0] + o).toFixed(1)},${(pts[i][1] + h).toFixed(1)}` +
+               ` ${(pts[i + 1][0] + o).toFixed(1)},${(pts[i + 1][1] - h).toFixed(1)}` +
+               ` ${(pts[i + 1][0] + o).toFixed(1)},${pts[i + 1][1].toFixed(1)}`;
         }
         return d;
       };
 
-      runs[0].setAttribute("d", seg(0, lastPast));
-      if (runs[1]) runs[1].setAttribute("d", seg(lastPast, pts.length - 1));
+      for (const p of runs) {
+        const o = Number(p.dataset.o || 0) * GROOVE;
+        p.setAttribute("d", p.classList.contains("jr-ahead")
+          ? seg(lastPast, pts.length - 1, o)
+          : seg(0, lastPast, o));
+      }
 
       // And it does not stop at the last year. A short tail, in a stroke
       // that fades to nothing, because the target is the point of the
       // plan rather than the end of anything.
       const end = pts[pts.length - 1];
       const drop = Math.min(H - end[1] - 4, 150);
-      if (tail && drop > 20) {
-        tail.setAttribute("d",
+      // Held as a string rather than read back off the element, so the
+      // corridor and the measuring copy cannot pick up a stale tail if
+      // there is not enough room below the last year to draw one.
+      let tailD = "";
+      if (drop > 20) {
+        tailD =
           `M${end[0].toFixed(1)},${end[1].toFixed(1)}` +
           ` C${end[0].toFixed(1)},${(end[1] + drop * 0.6).toFixed(1)}` +
           ` ${(W / 2).toFixed(1)},${(end[1] + drop * 0.5).toFixed(1)}` +
-          ` ${(W / 2).toFixed(1)},${(end[1] + drop).toFixed(1)}`);
+          ` ${(W / 2).toFixed(1)},${(end[1] + drop).toFixed(1)}`;
+        if (tail) tail.setAttribute("d", tailD);
       }
+
+      // The corridor and the measuring copy run the whole route, tail
+      // included. The tail starts where the route ends, so its moveto
+      // becomes a lineto and the two join into one continuous path.
+      const whole = seg(0, pts.length - 1) +
+        (tailD ? " " + tailD.replace(/^M/, "L") : "");
+      if (piste) piste.setAttribute("d", whole);
+      if (full) full.setAttribute("d", whole);
+
       clip.setAttribute("x", "-20");
       clip.setAttribute("width", (W + 40).toFixed(0));
     };
@@ -526,6 +552,38 @@
       for (let i = 0; i < nodes.length; i++) {
         nodes[i].dataset.lit = at >= pts[i][1] - 8 ? "true" : "false";
       }
+      ride(at);
+    };
+
+    // Where the drawing front actually is on the route, and which way
+    // the route is pointing there. The route only ever descends, so the
+    // depth-to-length lookup is a bisection; twenty steps is well inside
+    // a pixel on a route this long.
+    const at2len = (y) => {
+      const total = full.getTotalLength();
+      let lo = 0, hi = total;
+      for (let i = 0; i < 20; i++) {
+        const mid = (lo + hi) / 2;
+        if (full.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
+      }
+      return lo;
+    };
+
+    const ride = (y) => {
+      if (!skier || !full) return;
+      if (y <= 2 || y >= H - 2) { skier.style.opacity = "0"; return; }
+      const len = at2len(y);
+      const p = full.getPointAtLength(len);
+      // A second sample a little further on gives the direction of
+      // travel, so the figure leans into the bends instead of sitting
+      // square to the page all the way down.
+      const q = full.getPointAtLength(
+        Math.min(len + 12, full.getTotalLength()));
+      const deg = Math.atan2(q.x - p.x, q.y - p.y) * -180 / Math.PI;
+      skier.style.opacity = "1";
+      skier.setAttribute("transform",
+        `translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) ` +
+        `rotate(${deg.toFixed(1)})`);
     };
 
     const all = () => {
@@ -534,6 +592,8 @@
         clip.setAttribute("height", (H + 40).toFixed(0));
       }
       for (const nd of nodes) nd.dataset.lit = "true";
+      // Nothing is moving, so nobody is skiing.
+      if (skier) skier.style.opacity = "0";
     };
 
     if (reduce.matches) {

@@ -6662,14 +6662,24 @@ body {
     stroke-linecap: round;
   }
 
-  /* Up from 0.5. There is photography behind the line now. Measured
-     against the darkest pixel of the darkest middle-column frame, the
-     line came out at 2.77:1 at 0.72, under the 3:1 floor for a graphic
-     that carries meaning; the route is the whole point of this section,
-     so it is not decoration. 0.85 clears it. */
+  /* The groomed corridor the grooves are cut into. Translucent, so it
+     tints whatever scenery is behind it rather than blanking it, which
+     is what a corridor of packed snow does to the ground it crosses. */
+  .jr-piste {
+    fill: none;
+    stroke: oklch(72% 0.055 250 / 0.2);
+    stroke-width: 34;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The two grooves. Measured against the darkest pixel of the darkest
+     middle-column frame, a single line came out at 2.77:1 at 0.72,
+     under the 3:1 floor for a graphic that carries meaning; the route is
+     the whole point of this section, so it is not decoration. */
   .jr-run {
     stroke: var(--color-accent);
-    stroke-width: 2;
+    stroke-width: 1.6;
     opacity: 0.85;
   }
 
@@ -6680,8 +6690,34 @@ body {
 
   .jr-tail {
     stroke: url(#jr-fade);
-    stroke-width: 2;
+    stroke-width: 1.6;
     stroke-dasharray: 3 10;
+  }
+
+  /* Seen from above, like the rest of the drawing: two skis in the
+     grooves, a body, two poles. Script puts it on the drawing front and
+     turns it to the tangent, so it leans into the bends. Drawn rather
+     than photographed because every photograph here is hers and rights
+     settled, and a stock skier would be neither. */
+  .jr-skier {
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .jr-ski,
+  .jr-pole {
+    stroke: var(--color-accent);
+    stroke-linecap: round;
+    fill: none;
+  }
+
+  .jr-ski { stroke-width: 2.2; }
+  .jr-pole { stroke-width: 1.4; opacity: 0.75; }
+
+  .jr-body {
+    fill: var(--color-accent);
+    stroke: var(--color-paper);
+    stroke-width: 1.4;
   }
 
   .jr-fade-a {

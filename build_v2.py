@@ -1136,6 +1136,7 @@ def road_ahead(c, map_html="") -> str:
 JR_XC = 30.0                  # the track's centre line, in percent
 JR_XA = 5.0                   # how far it drifts either side
 JR_XP = 6.0                   # years per full wave
+JR_GROOVE = 0.55              # half the gap between the two grooves
 JR_STEP = 100.0               # vertical distance between one year and the next
 JR_PAD = 70.0                 # air above the first marker and below the last
 
@@ -1292,34 +1293,55 @@ def journey_line(c, img) -> str:
     def py(i):
         return JR_PAD + JR_STEP * i
 
-    def run(a, z):
-        """Node a to node z as S-bends, handles half a step long.
+    def run(a, z, o=0.0):
+        """Node a to node z, optionally offset sideways by o.
 
         Vertical handles mean the curve leaves one marker straight down
         and arrives at the next straight down, so both halves of every
         bend match and the join is invisible.
+
+        The offset draws the two grooves of a classic track. It shifts x
+        rather than following the true normal, which is right to within
+        four per cent on a route that is never more than seventeen
+        degrees off vertical.
         """
-        d = f"M{px(a):.1f},{py(a):.1f}"
+        d = f"M{px(a) + o:.1f},{py(a):.1f}"
         for i in range(a, z):
             h = JR_STEP * 0.5
-            d += (f" C{px(i):.1f},{py(i) + h:.1f} "
-                  f"{px(i + 1):.1f},{py(i + 1) - h:.1f} "
-                  f"{px(i + 1):.1f},{py(i + 1):.1f}")
+            d += (f" C{px(i) + o:.1f},{py(i) + h:.1f} "
+                  f"{px(i + 1) + o:.1f},{py(i + 1) - h:.1f} "
+                  f"{px(i + 1) + o:.1f},{py(i + 1):.1f}")
         return d
 
     last_past = max((i for i, y in enumerate(ys)
                      if y.get("kind") != "ahead"), default=n - 1)
 
-    paths = f'<path class="jr-run" d="{run(0, last_past)}"/>'
+    # The fallback geometry, in viewBox units. Script rebuilds all of it
+    # in pixels; this is what a reader without script sees.
+    #
+    # A classic track is a groomed corridor with two grooves cut in it,
+    # so that is what gets drawn: one wide pale stroke down the whole
+    # route, and two thin ones either side of its centre.
+    tx, ty = px(n - 1), py(n - 1)
+    tail_d = (f'M{tx:.1f},{ty:.1f} C{tx:.1f},{ty + 34:.1f} '
+              f'50,{ty + 28:.1f} 50,{ty + JR_PAD:.1f}')
+    o = JR_GROOVE
+    paths = (f'<path class="jr-piste" d="{run(0, n - 1)} {tail_d}"/>'
+             f'<path class="jr-run" data-o="-1" d="{run(0, last_past, -o)}"/>'
+             f'<path class="jr-run" data-o="1" d="{run(0, last_past, o)}"/>')
     if last_past < n - 1:
         # The dashes start at the last year that happened, so the change
         # of line lands on 2026 and not in the gap after it.
-        paths += (f'<path class="jr-run jr-ahead" '
-                  f'd="{run(last_past, n - 1)}"/>')
-    tx, ty = px(n - 1), py(n - 1)
-    paths += (f'<path class="jr-tail" d="M{tx:.1f},{ty:.1f} '
-              f'C{tx:.1f},{ty + 34:.1f} 50,{ty + 28:.1f} '
-              f'50,{ty + JR_PAD:.1f}"/>')
+        paths += (
+            f'<path class="jr-run jr-ahead" data-o="-1" '
+            f'd="{run(last_past, n - 1, -o)}"/>'
+            f'<path class="jr-run jr-ahead" data-o="1" '
+            f'd="{run(last_past, n - 1, o)}"/>')
+    paths += f'<path class="jr-tail" d="{tail_d}"/>'
+    # Not drawn. One continuous copy of the route for the script to
+    # measure against when it puts the skier at the drawing front.
+    paths += (f'<path class="jr-full" fill="none" stroke="none" '
+              f'd="{run(0, n - 1)} {tail_d}"/>')
 
     items = []
     marked = False
@@ -1387,6 +1409,13 @@ def journey_line(c, img) -> str:
           </clipPath>
         </defs>
         <g clip-path="url(#jr-clip)">{paths}</g>
+        <g class="jr-skier" aria-hidden="true">
+          <line class="jr-ski" x1="-5" y1="-8" x2="-5" y2="8"/>
+          <line class="jr-ski" x1="5" y1="-8" x2="5" y2="8"/>
+          <line class="jr-pole" x1="-8" y1="-3" x2="-6" y2="6"/>
+          <line class="jr-pole" x1="8" y1="-3" x2="6" y2="6"/>
+          <ellipse class="jr-body" cx="0" cy="0" rx="4.2" ry="6.4"/>
+        </g>
       </svg>
       <ol class="jr-nodes">{''.join(items)}</ol>
       {f'<p class="jr-tail-note caption">{e(t["tailNote"])}</p>'
