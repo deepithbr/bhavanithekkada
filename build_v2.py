@@ -1133,9 +1133,9 @@ def road_ahead(c, map_html="") -> str:
 # real ski trail". So a slow sine rather than a swing between two
 # positions: a centre line, how far it wanders either side, and how many
 # years one full wave takes.
-JR_XC = 30.0                  # the track's centre line, in percent
+JR_XC = 32.0                  # the track's centre line, in percent
 JR_XA = 5.0                   # how far it drifts either side
-JR_XP = 6.0                   # years per full wave
+JR_XP = 4.0                   # years per full wave
 JR_GROOVE = 0.55              # half the gap between the two grooves
 JR_STEP = 100.0               # vertical distance between one year and the next
 JR_PAD = 70.0                 # air above the first marker and below the last
@@ -1430,16 +1430,30 @@ def journey_line(c, img) -> str:
              whole thing reads as one figure rather than a diagram of
              one. Skis and poles are ink, the suit is the accent: two
              tones, which is what makes her reference legible small. -->
+<!-- Each arm is grouped with the pole its hand is holding, so a
+             side swings as one about the shoulder at 3,-12; the legs
+             swing about the hip at -2,-2. Script turns all four from
+             how far down the track she is, which is what makes the
+             poling read as the thing moving her rather than a loop
+             playing over the top. Far side first, near side last. -->
         <g class="jr-skier" aria-hidden="true">
           <path class="jr-ski" d="M-24,17 L-4,17"/>
           <path class="jr-ski" d="M0,15 L20,15"/>
-          <path class="jr-limb" d="M-2,-2 L-12,8 L-16,16"/>
-          <path class="jr-pole" d="M-6,-8 L-14,12"/>
-          <path class="jr-pole" d="M12,-14 L2,10"/>
-          <path class="jr-limb" d="M-2,-2 L6,4 L8,14"/>
+          <g class="jr-leg" data-leg="back">
+            <path class="jr-limb" d="M-2,-2 L-12,8 L-16,16"/>
+          </g>
+          <g class="jr-side" data-side="back">
+            <path class="jr-pole" d="M-6,-8 L-14,12"/>
+            <path class="jr-limb jr-arm" d="M3,-12 L-6,-8"/>
+          </g>
+          <g class="jr-leg" data-leg="front">
+            <path class="jr-limb" d="M-2,-2 L6,4 L8,14"/>
+          </g>
           <path class="jr-limb jr-torso" d="M-2,-2 L4,-14"/>
-          <path class="jr-limb jr-arm" d="M3,-12 L-6,-8"/>
-          <path class="jr-limb jr-arm" d="M3,-12 L12,-14"/>
+          <g class="jr-side" data-side="front">
+            <path class="jr-pole" d="M12,-14 L2,10"/>
+            <path class="jr-limb jr-arm" d="M3,-12 L12,-14"/>
+          </g>
           <circle class="jr-head" cx="7" cy="-18" r="4.6"/>
         </g>
       </svg>

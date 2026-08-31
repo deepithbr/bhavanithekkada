@@ -449,12 +449,20 @@
     const full = svg.querySelector(".jr-full");
     const skier = svg.querySelector(".jr-skier");
     const cut = svg.querySelector("#jr-cut");
+    const legs = svg.querySelectorAll(".jr-leg");
+    const sides = svg.querySelectorAll(".jr-side");
     const GROOVE = 5;
+    // One full diagonal stride per hundred pixels of track, and how far
+    // the legs and the arms swing through it. The hip and the shoulder
+    // are the two points everything turns about.
+    const STRIDE = 100;
+    const LEG_SWING = 14;
+    const ARM_SWING = 18;
+    const HIP = "-2,-2";
+    const SHOULDER = "3,-12";
     // How far back the fresh cut reads before it fades into the settled
-    // track, and how long after the page stops moving she stops striding.
+    // track.
     const CUT = 190;
-    const REST = 220;
-    let strideOff = 0;
     let lastAt = -1;
     // Where she is and which way she is pointing, kept from the last
     // frame so the spray knows where the ski tails are.
@@ -579,14 +587,8 @@
         cut.setAttribute("y2", at.toFixed(1));
       }
 
-      // Striding, but only while the page is actually moving.
       const moved = lastAt < 0 ? 0 : Math.abs(at - lastAt);
-      if (skier && moved > 0.5) {
-        skier.setAttribute("data-moving", "");
-        clearTimeout(strideOff);
-        strideOff = setTimeout(
-          () => skier.removeAttribute("data-moving"), REST);
-      }
+      pole(at);
       // Scroll hard and she throws a lot; ease down and she throws
       // almost none. Capped so a flick of the wheel does not empty the
       // pool in one frame.
@@ -606,6 +608,26 @@
         if (full.getPointAtLength(mid).y < y) lo = mid; else hi = mid;
       }
       return lo;
+    };
+
+    // The stride, from position rather than from a clock. A negative
+    // rotation swings the front leg forward and a positive one swings
+    // the rear leg back, so the pair scissors; the arms take the
+    // opposite pairing, which is what makes it a diagonal stride and
+    // not a hop.
+    const pole = (y) => {
+      if (reduce.matches || !legs.length) return;
+      const t = Math.sin((y / STRIDE) * Math.PI * 2);
+      const l = (LEG_SWING * t).toFixed(1);
+      const a = (ARM_SWING * t).toFixed(1);
+      for (const g of legs) {
+        const d = g.dataset.leg === "front" ? -l : l;
+        g.setAttribute("transform", `rotate(${d} ${HIP})`);
+      }
+      for (const g of sides) {
+        const d = g.dataset.side === "front" ? a : -a;
+        g.setAttribute("transform", `rotate(${d} ${SHOULDER})`);
+      }
     };
 
     const ride = (y) => {
@@ -716,10 +738,7 @@
       }
       for (const nd of nodes) nd.dataset.lit = "true";
       // Nothing is moving, so nobody is skiing and nothing is freshly cut.
-      if (skier) {
-        skier.style.opacity = "0";
-        skier.removeAttribute("data-moving");
-      }
+      if (skier) skier.style.opacity = "0";
       if (cut) { cut.setAttribute("y1", "0"); cut.setAttribute("y2", "0"); }
     };
 

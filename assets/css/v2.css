@@ -1775,9 +1775,13 @@ a {
  * the site allows itself, because it is her fact and nobody else's.
  * Desktop only; on a phone it would fight the thumb.
  */
+/* In off the window edge. It was fixed 1.1rem from the right of the
+   viewport, which since the map left this section put it half a screen
+   from anything it refers to; it now hangs off the same column the page
+   is set in. */
 .lat-rail {
   position: fixed;
-  right: 1.1rem;
+  right: max(1.1rem, calc((100vw - var(--col)) / 2 - 3.5rem));
   top: 50%;
   transform: translateY(-50%);
   height: min(46vh, 22rem);
@@ -6950,8 +6954,12 @@ body {
   /* Lifted snow, so a cool pale grey rather than white: white on this
      paper is invisible, and accent blue would read as part of the
      route rather than as something thrown off it. */
+  /* Heavier and darker. At oklch 76% and one to two pixels it measured
+     1.84:1 against the piste, which on paper this pale is a decision to
+     draw nothing. Snow reads as lifted because it casts, not because it
+     is white. */
   .jr-spray circle {
-    fill: oklch(76% 0.035 250);
+    fill: oklch(62% 0.045 250);
     pointer-events: none;
   }
 
@@ -6975,43 +6983,11 @@ body {
     stop-opacity: 0.9;
   }
 
-  /* She works her poles while the page is moving and rests when it
-     stops, because a skier striding on the spot is worse than one
-     standing still. */
-  .jr-skier[data-moving] .jr-pole {
-    animation: jr-stride 620ms var(--ease-out) infinite;
-  }
-
-  .jr-skier[data-moving] .jr-pole:last-of-type {
-    animation-delay: 310ms;
-  }
-
-  @keyframes jr-stride {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(-13deg); }
-  }
-
-  /* The poles pivot at the grip, so the stride swings the planted end
-     and the hand stays where a hand would be. */
-  .jr-pole {
-    transform-box: fill-box;
-    transform-origin: 50% 0%;
-  }
-
-  /* The stride swings the arms with the poles, or the poles come away
-     from the hands holding them. */
-  .jr-skier[data-moving] .jr-arm {
-    animation: jr-stride 620ms var(--ease-out) infinite;
-  }
-
-  .jr-skier[data-moving] .jr-arm:last-of-type {
-    animation-delay: 310ms;
-  }
-
-  .jr-arm {
-    transform-box: fill-box;
-    transform-origin: 0% 50%;
-  }
+  /* Nothing here animates on a clock. Script sets an SVG rotate on
+     each side and each leg from how far down the track she is, so the
+     poling rate is the scroll rate: hard scrolling poles hard, easing
+     off slows her, stopping stops her mid-stride, and scrolling back up
+     skis her backwards. */
 
   /* One ring at the marker as it arrives, so the eye is told which year
      just landed rather than having to catch it. */
@@ -7207,13 +7183,16 @@ body {
      has it. Alternating sides existed to give a photo card somewhere to
      sit either side of a big swing; with the swing gone and the card
      down to a year and a line, there is nothing to alternate around. */
+  /* Fixed, not shrink-to-fit. Measured down the page the column ran
+     between 110px and 384px depending on how long that year's tagline
+     happened to be, and that rag is what made the column feel
+     unsettled. */
   .jr-hit {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     left: calc(var(--x) + 1.8rem);
-    width: auto;
-    max-width: 24rem;
+    width: 22rem;
     text-align: left;
   }
 
@@ -7307,8 +7286,6 @@ body {
 
   /* No stride, no ping, no fresh cut. The route and the years stand as
      they are. */
-  .jr-skier[data-moving] .jr-pole,
-  .jr-skier[data-moving] .jr-arm,
   .jr-node[data-lit="true"] .jr-dot::after {
     animation: none;
   }
