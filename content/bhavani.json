@@ -195,7 +195,9 @@
           "note": "Southernmost venue"
         }
       ],
-      "mapNote": "From 45°S at the Snow Farm to 66°N at Ruka. Kodagu sits between the two, at 12°N."
+      "mapNote": "From 45°S at the Snow Farm to 66°N at Ruka. Kodagu sits between the two, at 12°N.",
+      "mapHeading": "One home, {n} start lines",
+      "mapHeadingNote": "{n} is the count of pins that are not the origin, computed from internationalFootprint at build. Edit the wording, not the figure."
     },
     "beyond": {
       "index": "03",

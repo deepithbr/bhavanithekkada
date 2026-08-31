@@ -4806,11 +4806,13 @@ body {
   color: var(--color-ink);
 }
 
-/* The Journey heading is six words rather than two, so it takes a step
-   down to hold two lines rather than four. */
+/* The map heading is a counted sentence rather than a two-word label, so
+   it takes a step down in size. 22ch was set for the old six-word title
+   and broke this one over three lines; 26ch holds it in two, balanced. */
 #road .prose > h2 {
   font-size: clamp(1.15rem, 1.8vw, 1.85rem);
-  max-width: 22ch;
+  max-width: 26ch;
+  text-wrap: balance;
 }
 
 /* ---------------------- what she speaks to

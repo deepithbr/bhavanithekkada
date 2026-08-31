@@ -1081,20 +1081,42 @@ def about_page(c, img):
                    current="about.html", pos="50% 8%", og="about")
 
 
+NUMBER_WORDS = [
+    "no", "one", "two", "three", "four", "five", "six", "seven", "eight",
+    "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen",
+    "sixteen", "seventeen", "eighteen", "nineteen", "twenty",
+]
+
+
+def spell(n: int) -> str:
+    """Small counts as words, the way the rest of the site sets them."""
+    return NUMBER_WORDS[n] if 0 <= n < len(NUMBER_WORDS) else str(n)
+
+
 def road_ahead(c, map_html="") -> str:
     """Where the page lands: one heading and the map.
 
     The four target cards ran under it until 30 Aug, and the map argued
     the case for 2030 until 31 Aug. Both went at the client's
-    instruction, and the heading followed the second of them: a map of
-    where she has raced under a heading about the road to 2030 is the
-    caption arguing with the picture. Every line of that copy is still
-    in the content file."""
+    instruction, and the heading followed the second of them. Every line
+    of that copy is still in the content file.
+
+    The heading then had a second problem she spotted herself: Kodagu is
+    on the map and she has never raced there, so "Where she races" was
+    wrong about one of the fifteen dots. It counts them instead, and the
+    count is computed rather than typed."""
+    # One home and fourteen start lines. Counted from the pins rather
+    # than typed, so the heading cannot drift from the map: the origin is
+    # the pin carrying kind "origin" and the rest is everything else.
+    pins = c["internationalFootprint"]
+    starts = sum(1 for p in pins if p.get("kind") != "origin")
+    head = (c["sections"]["footprint"].get("mapHeading")
+            or "One home, {n} start lines").replace("{n}", spell(starts))
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
     <div class="prose">
-      <h2>Where she races</h2>
+      <h2>{e(head)}</h2>
     </div>
     {map_html}
   </div>
