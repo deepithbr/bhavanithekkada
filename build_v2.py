@@ -1138,14 +1138,20 @@ JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
 # high ground. Each one is pinned to an edge of the screen and to a
 # point down the track. None of them is used as a card on this page, so
 # nothing appears twice.
-JR_SCENERY = ["race-forest", "classic-tracks", "lake-mountains",
-              "nordic-overlook", "snow-ridge-line", "track-solo-pines"]
-
-# The middle column is pines, behind the route. Every one of these is a
-# trail through conifers, which is the one thing the outer columns are
-# not consistently about.
-JR_SCENERY_MID = ["track-solo-pines", "track-texture", "classic-tracks",
-                  "race-forest"]
+# Three columns, three lists, nothing shared between them. The middle
+# and the outer columns used to draw from overlapping lists of different
+# lengths, which put the same photograph in two columns side by side; a
+# stagger only changes when that happens, not whether. Disjoint makes it
+# impossible.
+#
+# The sort is deliberate too. The middle runs behind the route and is
+# all trail and trees with nobody in it, so it reads as texture rather
+# than as a figure standing behind the copy; the frames with someone in
+# them are out at the edges.
+JR_SCENERY_L = ["snow-ridge-line", "lake-mountains", "chile-lake",
+                "nz-snowfarm"]
+JR_SCENERY_MID = ["track-solo-pines", "track-texture", "classic-tracks"]
+JR_SCENERY_R = ["race-forest", "nordic-overlook", "night-training"]
 
 JR_SCENE_SIZES = "34vw"
 JR_SCENE_SIZES_MID = "40vw"
@@ -1174,23 +1180,20 @@ JR_SCENE_STEP = 60.0
 JR_HOST_EXTRA = 120.0
 
 # How far each column is offset from the left one, as a fraction of the
-# step, and how far its file order is rotated. Half a step apart and
-# three files along keeps a frame and its twin two thousand pixels clear
-# of each other; the middle column has its own list, so it only needs
-# the offset.
+# step. The lists no longer share a file, so this is only about the three
+# columns not changing frame in unison.
 JR_SCENE_STAGGER = 0.5
 JR_SCENE_MID_STAGGER = 0.25
-JR_SCENE_ROTATE = 3
 
 
 def scenery_layer(img, rows: int) -> str:
     """Three columns of weather behind the page.
 
-    Left and right share six files, the right taking them rotated. The
-    middle takes its own four, all of them trails through conifers.
-    Every column is stepped so one frame's fade-out lands on the next
-    one's fade-in, and the three are offset from each other so they do
-    not pulse together.
+    Each column has its own list and the three share nothing, so the
+    same photograph can never appear in two of them at once. Every
+    column is stepped so one frame's fade-out lands on the next one's
+    fade-in, and the three are offset from each other so they do not
+    change frame in unison.
     """
     tall = JR_ROW_REM * rows + JR_HOST_EXTRA
     scenes = []
@@ -1203,12 +1206,12 @@ def scenery_layer(img, rows: int) -> str:
         top = k * JR_SCENE_STEP - JR_SCENE_STEP * 0.4
         if top >= tall:
             break
-        nl, nm = len(JR_SCENERY), len(JR_SCENERY_MID)
-        scenes.append((JR_SCENERY[k % nl], "l", top, JR_SCENE_SIZES))
-        scenes.append((JR_SCENERY_MID[k % nm], "c",
+        scenes.append((JR_SCENERY_L[k % len(JR_SCENERY_L)], "l",
+                       top, JR_SCENE_SIZES))
+        scenes.append((JR_SCENERY_MID[k % len(JR_SCENERY_MID)], "c",
                        top + JR_SCENE_STEP * JR_SCENE_MID_STAGGER,
                        JR_SCENE_SIZES_MID))
-        scenes.append((JR_SCENERY[(k + JR_SCENE_ROTATE) % nl], "r",
+        scenes.append((JR_SCENERY_R[k % len(JR_SCENERY_R)], "r",
                        top + JR_SCENE_STEP * JR_SCENE_STAGGER,
                        JR_SCENE_SIZES))
         k += 1
