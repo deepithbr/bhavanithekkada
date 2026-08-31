@@ -1423,18 +1423,24 @@ def journey_line(c, img) -> str:
           </clipPath>
         </defs>
         <g clip-path="url(#jr-clip)">{paths}</g>
-        <!-- Seen from above. The skis sit in the grooves at the same
-             offset the grooves use, the poles start at the shoulders
-             and plant behind, and the head gives the figure a front.
-             Drawn in this order so the body covers where the poles
-             meet it and the whole thing reads as one shape. -->
+        <!-- Side view, in a diagonal stride, facing the way she is
+             going. Drawn back to front: the trailing ski and leg, then
+             the poles, then the torso and the leading side over them,
+             so the near half of the body covers the far half and the
+             whole thing reads as one figure rather than a diagram of
+             one. Skis and poles are ink, the suit is the accent: two
+             tones, which is what makes her reference legible small. -->
         <g class="jr-skier" aria-hidden="true">
-          <line class="jr-ski" x1="-5" y1="-14" x2="-5" y2="14"/>
-          <line class="jr-ski" x1="5" y1="-14" x2="5" y2="14"/>
-          <line class="jr-pole" x1="-3.5" y1="-3" x2="-10" y2="12"/>
-          <line class="jr-pole" x1="3.5" y1="-3" x2="10" y2="12"/>
-          <ellipse class="jr-body" cx="0" cy="0.8" rx="5.2" ry="8"/>
-          <circle class="jr-head" cx="0" cy="-7" r="3.2"/>
+          <path class="jr-ski" d="M-24,17 L-4,17"/>
+          <path class="jr-ski" d="M0,15 L20,15"/>
+          <path class="jr-limb" d="M-2,-2 L-12,8 L-16,16"/>
+          <path class="jr-pole" d="M-6,-8 L-14,12"/>
+          <path class="jr-pole" d="M12,-14 L2,10"/>
+          <path class="jr-limb" d="M-2,-2 L6,4 L8,14"/>
+          <path class="jr-limb jr-torso" d="M-2,-2 L4,-14"/>
+          <path class="jr-limb jr-arm" d="M3,-12 L-6,-8"/>
+          <path class="jr-limb jr-arm" d="M3,-12 L12,-14"/>
+          <circle class="jr-head" cx="7" cy="-18" r="4.6"/>
         </g>
       </svg>
       <ol class="jr-nodes">{''.join(items)}</ol>

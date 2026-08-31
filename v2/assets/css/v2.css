@@ -6814,22 +6814,34 @@ body {
     transition: opacity var(--dur-fast) var(--ease-out);
   }
 
+  /* Two tones, the way her reference gets its legibility: the suit in
+     the India blue the site is built on, the kit under her in ink. */
+  .jr-limb {
+    stroke: var(--color-accent);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+
+  .jr-torso { stroke-width: 5.4; }
+  .jr-arm { stroke-width: 3.2; }
+
   .jr-ski,
   .jr-pole {
-    stroke: var(--color-accent);
+    stroke: var(--color-ink-2);
     stroke-linecap: round;
     fill: none;
   }
 
-  .jr-ski { stroke-width: 3.2; }
-  .jr-pole { stroke-width: 2; opacity: 0.8; }
+  .jr-ski { stroke-width: 2.8; }
+  .jr-pole { stroke-width: 1.8; opacity: 0.85; }
 
-  /* The head takes the same paper ring the body does, or the two merge
-     into one blob at this size. */
+  /* The helmet. A paper ring keeps it off the shoulder it sits on. */
   .jr-head {
     fill: var(--color-accent);
     stroke: var(--color-paper);
-    stroke-width: 1.5;
+    stroke-width: 1.6;
   }
 
   /* Lifted snow, so a cool pale grey rather than white: white on this
@@ -6876,11 +6888,26 @@ body {
     50% { transform: rotate(-13deg); }
   }
 
-  /* The poles pivot where they meet the shoulder, not at their middle,
-     so the stride swings the planted end and the grip stays put. */
+  /* The poles pivot at the grip, so the stride swings the planted end
+     and the hand stays where a hand would be. */
   .jr-pole {
     transform-box: fill-box;
     transform-origin: 50% 0%;
+  }
+
+  /* The stride swings the arms with the poles, or the poles come away
+     from the hands holding them. */
+  .jr-skier[data-moving] .jr-arm {
+    animation: jr-stride 620ms var(--ease-out) infinite;
+  }
+
+  .jr-skier[data-moving] .jr-arm:last-of-type {
+    animation-delay: 310ms;
+  }
+
+  .jr-arm {
+    transform-box: fill-box;
+    transform-origin: 0% 50%;
   }
 
   /* One ring at the marker as it arrives, so the eye is told which year
@@ -7178,6 +7205,7 @@ body {
   /* No stride, no ping, no fresh cut. The route and the years stand as
      they are. */
   .jr-skier[data-moving] .jr-pole,
+  .jr-skier[data-moving] .jr-arm,
   .jr-node[data-lit="true"] .jr-dot::after {
     animation: none;
   }

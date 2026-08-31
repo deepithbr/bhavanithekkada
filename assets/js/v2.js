@@ -618,16 +618,17 @@
       // square to the page all the way down.
       const q = full.getPointAtLength(
         Math.min(len + 12, full.getTotalLength()));
-      const deg = Math.atan2(q.x - p.x, q.y - p.y) * -180 / Math.PI;
-      // The unit vector along the route here. The spray works from this
-      // rather than from the angle, so it never has to convert back.
+      // The unit vector along the route here, for the spray to throw
+      // against. She is no longer turned to it: a side view rotated to
+      // follow a line going down the page points her face at the floor
+      // and reads as falling, so she travels upright, which is what a
+      // figure moving along a map does.
       const dx = q.x - p.x, dy = q.y - p.y;
       const m = Math.hypot(dx, dy) || 1;
       heading = { x: p.x, y: p.y, tx: dx / m, ty: dy / m };
       skier.style.opacity = "1";
       skier.setAttribute("transform",
-        `translate(${p.x.toFixed(1)},${p.y.toFixed(1)}) ` +
-        `rotate(${deg.toFixed(1)})`);
+        `translate(${p.x.toFixed(1)},${p.y.toFixed(1)})`);
     };
 
     /* ---- snow off the tails ---------------------------------------- */
@@ -681,24 +682,20 @@
       // Nothing is painting in a background tab, and without frames the
       // pool would fill with flakes that never age. So it does not throw.
       if (!heading || reduce.matches || document.hidden) return;
-      const { x, y, tx, ty } = heading;
+      const { x, y } = heading;
       for (let i = 0; i < n; i++) {
         const f = flakes.find((v) => v.t <= 0);
         if (!f) return;
         const side = Math.random() < 0.5 ? -1 : 1;
-        // Normal to the direction of travel, which is where a ski
-        // throws snow.
-        const nx = -ty * side, ny = tx * side;
         const jit = 0.55 + Math.random() * 0.9;
-        // Jittered along the ski as well as across it, or three flakes
-        // thrown in one frame start life stacked on the same point and
-        // only separate once their velocities pull them apart.
-        const back = 7 + Math.random() * 5;
-        const out = 3.5 + Math.random() * 2.5;
-        f.x = x - tx * back + nx * out;
-        f.y = y - ty * back + ny * out;
-        f.vx = (nx * 1.7 - tx * 0.8) * jit;
-        f.vy = (ny * 1.7 - ty * 0.8) * jit;
+        // Off the skis, not off her hip. She is drawn side-on and no
+        // longer turned to the route, so this works in plain screen
+        // axes: the skis lie about 15 below the point she rides, and
+        // snow leaves them sideways and up-track behind her.
+        f.x = x + side * (5 + Math.random() * 9);
+        f.y = y + 13 + Math.random() * 5;
+        f.vx = side * (0.9 + Math.random() * 1.2) * jit;
+        f.vy = -(0.7 + Math.random() * 1.3) * jit;
         f.r = 1 + Math.random() * 1.4;
         f.T = 24 + Math.random() * 18;
         f.t = f.T;
