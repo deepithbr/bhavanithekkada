@@ -1141,7 +1141,14 @@ JR_SHOT = "(min-width:1200px) 22vw, (min-width:900px) 26vw, 88vw"
 JR_SCENERY = ["race-forest", "classic-tracks", "lake-mountains",
               "nordic-overlook", "snow-ridge-line", "track-solo-pines"]
 
+# The middle column is pines, behind the route. Every one of these is a
+# trail through conifers, which is the one thing the outer columns are
+# not consistently about.
+JR_SCENERY_MID = ["track-solo-pines", "track-texture", "classic-tracks",
+                  "race-forest"]
+
 JR_SCENE_SIZES = "34vw"
+JR_SCENE_SIZES_MID = "40vw"
 
 # The three numbers that make the scenery continuous, and they have to
 # agree with each other or it either gaps or stacks.
@@ -1157,15 +1164,58 @@ JR_SCENE_SIZES = "34vw"
 # lands exactly on the next one's fade-in. Complementary ramps, so the
 # pair composites to less than either at full strength.
 JR_ROW_REM = 17.0
-JR_SCENE_REM = 75.0
-JR_SCENE_STEP = 50.0
+JR_SCENE_REM = 90.0
+JR_SCENE_STEP = 60.0
 
-# How far the right column is offset from the left, as a fraction of the
-# step, and how far the file order is rotated. Half a step apart and
-# three files along keeps a frame and its twin two thousand pixels
-# clear of each other.
+# Everything below the timeline that the scenery still has to cover: the
+# prose above the route, the map section under it, and the page padding.
+# Over-covering is free, because a frame past the host's clip never
+# intersects the viewport and so is never fetched.
+JR_HOST_EXTRA = 120.0
+
+# How far each column is offset from the left one, as a fraction of the
+# step, and how far its file order is rotated. Half a step apart and
+# three files along keeps a frame and its twin two thousand pixels clear
+# of each other; the middle column has its own list, so it only needs
+# the offset.
 JR_SCENE_STAGGER = 0.5
+JR_SCENE_MID_STAGGER = 0.25
 JR_SCENE_ROTATE = 3
+
+
+def scenery_layer(img, rows: int) -> str:
+    """Three columns of weather behind the page.
+
+    Left and right share six files, the right taking them rotated. The
+    middle takes its own four, all of them trails through conifers.
+    Every column is stepped so one frame's fade-out lands on the next
+    one's fade-in, and the three are offset from each other so they do
+    not pulse together.
+    """
+    tall = JR_ROW_REM * rows + JR_HOST_EXTRA
+    scenes = []
+    # From one frame above the host. The middle and right columns are
+    # staggered below the left, so starting at zero left the top of the
+    # page thin: sampling coverage every sixty pixels put the right
+    # column at 0 and the middle at 0.09 for the first few hundred.
+    k = -1
+    while True:
+        top = k * JR_SCENE_STEP - JR_SCENE_STEP * 0.4
+        if top >= tall:
+            break
+        nl, nm = len(JR_SCENERY), len(JR_SCENERY_MID)
+        scenes.append((JR_SCENERY[k % nl], "l", top, JR_SCENE_SIZES))
+        scenes.append((JR_SCENERY_MID[k % nm], "c",
+                       top + JR_SCENE_STEP * JR_SCENE_MID_STAGGER,
+                       JR_SCENE_SIZES_MID))
+        scenes.append((JR_SCENERY[(k + JR_SCENE_ROTATE) % nl], "r",
+                       top + JR_SCENE_STEP * JR_SCENE_STAGGER,
+                       JR_SCENE_SIZES))
+        k += 1
+    return ('<div class="jr-scenery" aria-hidden="true">' + "".join(
+        f'<span class="jr-scene" data-edge="{edge}" style="--top:{top:.1f}rem">'
+        f'{decor(img, slot, sizes)}</span>'
+        for slot, edge, top, sizes in scenes) + "</div>")
 
 
 # A 43-byte transparent GIF. It is what a narrow screen loads instead
@@ -1301,33 +1351,6 @@ def journey_line(c, img) -> str:
         <span class="jr-dot" aria-hidden="true"></span>
       </li>""")
 
-    # Both columns, top to bottom, from the same six files.
-    step = JR_SCENE_STEP / (JR_ROW_REM * n) * 100.0
-    scenes = []
-    # From one frame above the track. The right column is staggered half
-    # a step below the left, so starting both at zero left the top of the
-    # right column bare for the first eighty pixels. Measured, not
-    # guessed: sampling the coverage every forty pixels showed the left
-    # column never below 0.32 and the right at 0.
-    k = -1
-    while True:
-        top = k * step - step * 0.4
-        if top >= 100.0:
-            break
-        m = len(JR_SCENERY)
-        scenes.append((JR_SCENERY[k % m], "l", top))
-        right = top + step * JR_SCENE_STAGGER
-        if right < 100.0:
-            scenes.append(
-                (JR_SCENERY[(k + JR_SCENE_ROTATE) % m], "r", right))
-        k += 1
-
-    scenery = "".join(
-        f'<span class="jr-scene" data-edge="{edge}" style="--at:{at:.3f}%">'
-        f'{decor(img, slot, JR_SCENE_SIZES)}</span>'
-        for slot, edge, at in scenes
-    )
-
     return f"""
 <section class="prose-fold jr-fold" id="years">
   <div class="wrap">
@@ -1335,7 +1358,6 @@ def journey_line(c, img) -> str:
       <h2 class="jr-head">{e(t.get('heading') or '')}</h2>
     </div>
     <div class="jr" style="--jr-n:{n}">
-      <div class="jr-scenery" aria-hidden="true">{scenery}</div>
       <svg class="jr-path" viewBox="0 0 100 {total:.0f}"
            preserveAspectRatio="none" aria-hidden="true" focusable="false">
         <defs>
@@ -1357,13 +1379,20 @@ def journey_line(c, img) -> str:
 
 
 def journey_page(c, img):
+    # The scenery is a page-level backdrop now rather than a decoration
+    # inside the timeline, so everything below the header shares a host
+    # it can be positioned against and clipped by.
     body = (
-        journey_line(c, img)
+        '<div class="jr-host">'
+        + scenery_layer(img, len(c["story"].get("timeline", {})
+                                 .get("years") or []))
+        + journey_line(c, img)
         # One heading, not two. The map and the target cards were two
         # sections both about what comes next, and after the client
         # renamed the map to The road to 2030 the page carried that
         # heading twice.
         + road_ahead(c, route_map(c))
+        + "</div>"
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
                    "A journey across continents, seasons, and start lines.", body,

@@ -6358,6 +6358,12 @@ body {
    the cards sit in, which leaves an effective alpha of roughly 0.06
    behind any text on the page.
 
+   Three columns. Left and right share six files, the right taking them
+   rotated so a frame and its twin are never near each other. The middle
+   is pines, behind the route, and it is the only column with nothing
+   over it but the line itself: the panels that open into that band
+   paint their own paper ground.
+
    Off on the rail layout: the years run down the left edge at full
    width there, so there is no blank space to fill and nothing behind
    them but text. */
@@ -6629,15 +6635,20 @@ body {
     stroke-linecap: round;
   }
 
+  /* Up from 0.5. There is photography behind the line now. Measured
+     against the darkest pixel of the darkest middle-column frame, the
+     line came out at 2.77:1 at 0.72, under the 3:1 floor for a graphic
+     that carries meaning; the route is the whole point of this section,
+     so it is not decoration. 0.85 clears it. */
   .jr-run {
     stroke: var(--color-accent);
     stroke-width: 2;
-    opacity: 0.5;
+    opacity: 0.85;
   }
 
   .jr-ahead {
     stroke-dasharray: 3 10;
-    opacity: 0.75;
+    opacity: 0.88;
   }
 
   .jr-tail {
@@ -6663,9 +6674,10 @@ body {
 
   /* Full bleed: the scenery reaches the edges of the screen, not the
      edges of the column. 100vw counts the scrollbar, so the few pixels
-     that overhang are clipped by the section rather than left to widen
-     the page. */
-  .jr-fold {
+     that overhang are clipped by the host rather than left to widen the
+     page. The host is everything below the header, so the wash runs
+     behind the map as well as the timeline. */
+  .jr-host {
     position: relative;
     overflow: clip;
   }
@@ -6688,15 +6700,19 @@ body {
 
   .jr-scene {
     position: absolute;
-    top: var(--at);
+    /* In rem, not per cent. The builder knows the step and the frame
+       height; it does not know how tall the host will be. */
+    top: var(--top);
     width: min(34rem, 34vw);
-    /* 75rem tall, stepped 50rem apart by the builder. The 25rem
+    /* 90rem tall, stepped 60rem apart by the builder. The 30rem
        difference is the crossfade, which is why these stops are at a
-       third and two thirds: 25 of 75. One frame's fade-out then lands
+       third and two thirds: a frame one and a half times its own step
+       overlaps by a third at each end. One frame's fade-out then lands
        exactly on the next one's fade-in, the ramps are complementary,
        and two half-strength layers composite to less than one at full
-       strength. Move either number and the other has to move with it. */
-    height: 75rem;
+       strength. The ratio is what matters; move one number and the
+       other has to move with it. */
+    height: 90rem;
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%,
       #000 33.34%, #000 66.66%, transparent 100%);
     mask-image: linear-gradient(to bottom, transparent 0%,
@@ -6705,6 +6721,18 @@ body {
 
   .jr-scene[data-edge="l"] { left: 0; }
   .jr-scene[data-edge="r"] { right: 0; }
+
+  /* The middle column sits behind the route, between the two card
+     columns, which is the band she pointed at as bare. */
+  .jr-scene[data-edge="c"] {
+    left: 50%;
+    /* Centred by transform, not by a negative margin. min(-23rem,-20vw)
+       and min(46rem,40vw) pick from different arms of their clamps at
+       most widths, so the margin was not half the width and the column
+       sat eighty pixels left of centre at 1440. */
+    transform: translateX(-50%);
+    width: min(46rem, 40vw);
+  }
 
   /* The filter is legibility, not taste. Flattening the range means the
      darkest pixel in any frame lands around 111 of 255 instead of 0, so
@@ -6718,6 +6746,22 @@ body {
     object-fit: cover;
     opacity: 0.4;
     filter: saturate(0.45) contrast(0.42) brightness(1.42);
+  }
+
+  /* Weaker than the outer columns. Nothing in the middle band carries
+     text, so the constraint is not contrast against type, it is the
+     route line staying readable over it. */
+  .jr-scene[data-edge="c"] img {
+    opacity: 0.3;
+  }
+
+  /* Faded at both its own edges, so it meets the outer columns without a
+     seam and leaves the cards on the ground they were measured against. */
+  .jr-scene[data-edge="c"] img {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%,
+      rgb(0 0 0 / 0.85) 26%, rgb(0 0 0 / 0.85) 74%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%,
+      rgb(0 0 0 / 0.85) 26%, rgb(0 0 0 / 0.85) 74%, transparent 100%);
   }
 
   /* Strongest at the screen edge, mostly gone by the card column. The
