@@ -7346,9 +7346,21 @@ body {
   }
 
   /* Nudged left off 63%, which is the phone's crop. Here it walked the
-     ski into the headline. */
+     ski into the headline.
+
+     The vertical half is the top of the frame rather than the middle of
+     it. On a wide screen the panel is about 1.98 against the picture's
+     1.78, so the picture is fitted to the width and a hundred and nine
+     pixels of it have to go off the top and bottom. Centred, half of that
+     came off the top, and since her hat sits 9.1% down the frame and the
+     ski tip 5.6% down, the tip was clipped at the edge and her head
+     finished twenty-two pixels inside the bar. Taking the whole crop off
+     the foot instead gives all of it back: her head clears the bar by
+     about thirty pixels and the ski tip comes back into the picture. What
+     it costs is the last tenth of the frame, which is the base of the ski
+     and the bottom of her glove. */
   .panel[data-size="hero"] {
-    --hero-pos: 15% 50%;
+    --hero-pos: 15% 0%;
   }
 
   /* On the root, not on the panel. The bar is a sibling of the hero, not
@@ -7366,12 +7378,36 @@ body {
     --hero-accent: oklch(42% 0.165 252);
   }
 
+  /* The eyebrow is a flex row, so its box ran the full measure of the
+     block while its words stopped a third of the way along. The empty
+     tail reached out to 55% of the panel, where the wash is nearly gone,
+     and the box measured 4.16:1 on ground its own type never sits on.
+     Shrinking the box to its words is the fix; the colour was never the
+     problem. */
   .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+    width: fit-content;
     color: var(--hero-accent);
   }
 
   .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
     background: var(--hero-accent);
+  }
+
+  /* The line has to end while the wash is still under it, and on a wide
+     screen it did not. Past 1400 the panel is wider than the picture, so
+     the picture is fitted to the width, nothing is cropped off the sides,
+     the ski stays at 41% across and the page margin pushes the words
+     inward at the same time. At 1900 the headline ran to 49.5%, which is
+     past the ski and out where the wash has faded to a quarter, and the
+     marked words measured 1.2:1.
+
+     Bounding the box against the viewport was the wrong lever: it wrapped
+     "THE LONG WAY" onto two lines, and the client approved that line
+     whole. The size is the lever. Held to the step it had before another
+     rule raised it, the line is about 9.1 times the type size, which puts
+     its end back on the wash at every width. */
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+    font-size: clamp(2.4rem, 5.6vw, 3.9rem);
   }
 
   .panel[data-size="hero"] .hero-min .hero-punch {
@@ -7475,4 +7511,55 @@ body {
     color: var(--hero-accent);
     background: oklch(24% 0.035 255 / 0.05);
   }
+
+  /* The coordinate rail is fixed, ink-coloured and always on. Against the
+     old hero it was ink on a near-black photograph and simply could not
+     be seen, so nobody had to decide what it did there. On this one it
+     turns up beside her shoulder reading as debris. It waits for the page
+     instead: the bar already knows whether the hero is still under it, and
+     the rail is its sibling, so no script is needed to ask. */
+  .nav[data-glass="true"]:not([data-scrolled="true"]) ~ .lat-rail {
+    opacity: 0;
+  }
+
+  .lat-rail {
+    transition: opacity var(--dur-mid, 320ms) var(--ease-out);
+  }
 }
+
+
+/* ------------------------------------ and the phone keeps its own ground
+
+   The phone was never going to take the daylight treatment: its crop is a
+   narrow slice centred on her face, so the words sit on her navy top and
+   white is right there. But the foot gradient underneath them was cut for
+   the old picture, where the whole lower half was dark forest. It runs at
+   full strength for the bottom fifth and has faded to a fifth by the time
+   it reaches the words, which on this frame sit between 36% and 50% up
+   the panel, across her face and collar.
+
+   Measured on the new frame the eyebrow came out at 2.5:1 and the marked
+   words at 1.9:1. Carrying the gradient up through the band the copy
+   actually occupies, rather than the band the old picture happened to
+   darken by itself, puts them at 5.9:1 and 4.4:1. */
+
+@media (max-width: 700px) {
+  .panel[data-size="hero"] .panel-shot::after {
+    background: linear-gradient(
+      to top,
+      oklch(16% 0.03 255 / 0.9) 0%,
+      oklch(16% 0.03 255 / 0.88) 30%,
+      oklch(16% 0.03 255 / 0.8) 46%,
+      oklch(16% 0.03 255 / 0.5) 60%,
+      oklch(16% 0.03 255 / 0.14) 76%,
+      oklch(16% 0.03 255 / 0.3) 100%
+    );
+  }
+
+  /* One step lighter for the same reason the desktop one went a step
+     darker: the ground moved, so the colour has to. */
+  .panel[data-size="hero"] .panel-body .hero-punch .hl {
+    color: oklch(87% 0.09 245);
+  }
+}
+
