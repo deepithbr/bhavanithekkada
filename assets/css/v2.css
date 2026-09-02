@@ -1464,7 +1464,6 @@ a {
 }
 
 
-
 }
 
 
@@ -3957,6 +3956,7 @@ a {
   transform: translateX(3px);
 }
 
+
 @media (prefers-reduced-motion: reduce) {
   .cred-caret {
     animation: none;
@@ -4977,7 +4977,6 @@ body {
   }
 
 
-
   .rail-shot img {
     width: 100%;
     height: auto;
@@ -5448,9 +5447,6 @@ body {
     transition: none;
   }
 }
-
-
-
 
 
 /* The grade follows the words: dark at the left where they sit, clear on
@@ -7407,5 +7403,179 @@ body {
 
   .js .jr-node[data-lit="false"]::before {
     transform: none;
+  }
+}
+
+
+/* -------------------------------------------- the hero turns to daylight
+
+   The frame this hero now carries is the opposite of the one it was built
+   for. Planica was a dim forest, so white type sat on it at 12:1 over a
+   corner grade dropped almost to black. This one is sky, pale peaks and
+   lit snow, and measured across the left third where the words go it runs
+   0.18 to 0.68 relative luminance. White display type lands between 1.5:1
+   and 4.4:1 on that, which is not a grade that needs nudging.
+
+   So the grade inverts. Paper where the words are, clear where she is,
+   and the type goes to ink, which measures 12:1 to 15:1 on the same
+   ground. Everything below follows from that one move.
+
+   Phones are excluded on purpose. The crop there is a narrow vertical
+   slice centred on her face, so the words land on her navy top, which is
+   the one dark thing in the picture, and white on it is correct. */
+
+@media (min-width: 900px) {
+  /* No foot wash to go with the left one. A gradient up from the bottom
+     would have to cross her as well as the chip, and at the strength the
+     chip wants it greys out her legs and the ski. The link at the other
+     end carries its own halo instead. */
+  .panel[data-size="hero"] .panel-shot::after {
+    /* The stops hold near full strength to 40% and then fall off inside
+       seven points. Measured, the old ramp left the last word of the
+       headline on the dark trees at the foot of the ski at 2.9:1, under
+       the 3:1 floor for display type; holding the wash out to where the
+       line actually ends puts it at 8:1. Past 47% it clears fast, because
+       that is where the ski stands and a veiled ski is the one thing in
+       the frame worth keeping vivid. */
+    background: linear-gradient(
+      95deg,
+      oklch(99% 0.003 250 / 0.94) 0%,
+      oklch(99% 0.003 250 / 0.9) 30%,
+      oklch(99% 0.003 250 / 0.8) 40%,
+      oklch(99% 0.003 250 / 0.35) 47%,
+      oklch(99% 0.003 250 / 0.08) 54%,
+      oklch(99% 0.003 250 / 0) 60%
+    );
+  }
+
+  /* Nudged left off 63%, which is the phone's crop. Here it walked the
+     ski into the headline. */
+  .panel[data-size="hero"] {
+    --hero-pos: 15% 50%;
+  }
+
+  /* On the root, not on the panel. The bar is a sibling of the hero, not
+     a child of it, so a token declared on the panel is simply undefined
+     by the time the bar's hover rules ask for it, and the colour falls
+     back to whatever it inherited. */
+  :root {
+    /* The site accent was chosen to carry a light word on a dark
+       photograph. Turned around onto snow it measures 2.77:1 behind the
+       marked words and 3.57:1 on the eyebrow, under both floors. One
+       step darker at the same hue reads as the same blue and measures
+       3.9:1 and 5.0:1. A colour that works on ink ground and a colour
+       that works on paper ground are not the same colour, which is the
+       whole reason this block exists. */
+    --hero-accent: oklch(42% 0.165 252);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+    color: var(--hero-accent);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
+    background: var(--hero-accent);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch {
+    color: var(--color-ink);
+    /* A paper halo rather than a drop shadow. It only has work to do at
+       the right-hand end of the longest line, where the wash has already
+       thinned; a dark shadow under ink type on snow reads as a printing
+       fault. */
+    text-shadow: 0 1px 10px oklch(99% 0.003 250 / 0.8);
+  }
+
+  .panel[data-size="hero"] .panel-body .hero-punch .hl {
+    color: var(--hero-accent);
+  }
+
+  /* The chip loses its night glass for frost. The rule down its left
+     edge is already the accent and stays. */
+  .panel[data-size="hero"] .hero-chip {
+    background: oklch(99% 0.003 250 / 0.58);
+    box-shadow: inset 0 1px 0 oklch(24% 0.035 255 / 0.07);
+  }
+
+  .panel[data-size="hero"] .hero-chip .hero-cred {
+    color: var(--color-ink);
+  }
+
+  .panel[data-size="hero"] .hero-chip .hero-cred b,
+  .panel[data-size="hero"] .hero-chip .hero-tag,
+  .panel[data-size="hero"] .cred-kicker {
+    color: var(--hero-accent);
+  }
+
+  .panel[data-size="hero"] .cred-caret {
+    background: var(--hero-accent);
+  }
+
+  /* The one piece of hero type outside the wash, and the crop decides what
+     is under it. Measured across the panel it runs 0.001 to 0.563, which
+     is her navy sleeve at one end and lit snow at the other: ink reaches
+     1.8:1 on the dark end and white reaches 1.7:1 on the light end, so no
+     colour saves it. It gets ground of its own instead, the same frost as
+     the chip at the other end of the foot, which also stops the two ends
+     reading as different kinds of thing. */
+  .panel[data-size="hero"] .hero-record {
+    color: var(--color-ink);
+    padding: 0.55rem 0.9rem 0.5rem;
+    background: oklch(99% 0.003 250 / 0.58);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: none;
+    box-shadow: inset 0 1px 0 oklch(24% 0.035 255 / 0.07);
+    text-shadow: none;
+  }
+
+  .panel[data-size="hero"] .hero-record:hover,
+  .panel[data-size="hero"] .hero-record:focus-visible {
+    color: var(--hero-accent);
+    background: oklch(99% 0.003 250 / 0.78);
+  }
+
+  /* The bar over the hero. Its own gradient was carrying the links
+     against a dark photograph; against this one it leaves them near 3:1,
+     so on this page it turns over with the hero rather than being
+     propped up with more shadow. index.html is the only page that sets
+     data-glass, so nothing else moves. */
+  .nav[data-glass="true"]:not([data-scrolled="true"]) {
+    background: linear-gradient(
+      to bottom,
+      oklch(99% 0.003 250 / 0.72),
+      oklch(99% 0.003 250 / 0)
+    );
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
+    color: var(--color-ink);
+  }
+
+  /* The quiet grey the bar used against a dark photograph measures 4.0:1
+     on this one, and these are 0.76rem caps, so the floor is 4.5 rather
+     than 3. The body ink measures 5.9:1 and is still lighter than the
+     wordmark beside it, so the row keeps its order. */
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+    color: var(--color-ink-body);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
+  .nav[data-glass="true"]:not([data-scrolled="true"])
+    .nav-links a[aria-current="page"] {
+    color: var(--hero-accent);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
+    color: var(--color-ink);
+    border-color: oklch(24% 0.035 255 / 0.4);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"])
+    .nav-links .nav-work:hover {
+    border-color: var(--hero-accent);
+    color: var(--hero-accent);
+    background: oklch(24% 0.035 255 / 0.05);
   }
 }

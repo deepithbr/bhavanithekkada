@@ -1983,6 +1983,12 @@
       "origin": "Client's timeline, 31 Aug 2026",
       "why": "New with her list of 31 Aug; the file previously began the NCC thread at the All India camp in 2015. Her own statement about her own record.",
       "status": "published-client-asserted"
+    },
+    {
+      "claim": "The home hero photograph",
+      "origin": "Client message, 2 Sep 2026, file 'ChatGPT Image Sep 2, 2026, 08_32_01 AM.png'",
+      "why": "Not a photograph. It is a generated picture of her, and it carries a legible FISCHER mark on the ski and a badge on the shoulder, so it puts equipment branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. Published at her instruction and filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
+      "status": "published-client-asserted"
     }
   ],
   "certificationPhases": [

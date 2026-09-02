@@ -495,10 +495,19 @@ def hero_panel(c, img) -> str:
         aria-hidden="true">&rarr;</span></a>
     </div>"""
 
-    slot = "hero-race-pro"
+    slot = "hero-alps"
+    # Wide frame into a wide panel, so on a desktop there is almost no
+    # crop and this barely bites. It is the phone that needs it: there the
+    # panel is tall and cover keeps only a narrow vertical slice, and the
+    # middle of this picture is the ski rather than her.
     tag = img.tag(slot, "100vw", eager=True)
+    # Handed over rather than fixed here: the desktop panel and the phone
+    # panel crop this frame in opposite directions and neither number is
+    # right for the other. The fallback is the phone value, because that
+    # is the crop that loses her if it is wrong.
     tag = tag.replace(
-        f"object-position:{img.focal(slot)}", "object-position:48% 30%"
+        f"object-position:{img.focal(slot)}",
+        "object-position:var(--hero-pos,63% 26%)"
     )
     # Her copy, so it lives in the content file. The accent falls on one
     # phrase inside the first line; it is matched against the escaped text
