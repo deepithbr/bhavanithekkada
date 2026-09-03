@@ -7391,16 +7391,17 @@ body {
    only does what the picture itself needs. */
 
 @media (min-width: 900px) {
-  /* 16:9, which is the first frame shaped for this panel rather than
-     cropped into it. A wide screen loses a tenth of the height where the
-     square ones lost a quarter to a third, so the whole loss comes off
-     the foot: her head clears the bar by 55px and the picture still runs
-     to within a tenth of her ski tails, which none of the others managed.
+  /* Back to 1.4355, so a wide screen loses about a quarter of the height
+     rather than the tenth the 16:9 frames cost. Her head is 9.6% down
+     this one, which is not much to spend, so the whole loss comes off the
+     foot: she clears the bar by 62px and the frame stops just above her
+     boots. Her skis sit at 95% and no crop of this shape reaches them on
+     a wide screen.
 
-     The horizontal is her head at 49%: it does nothing where the crop is
+     The horizontal is her head at 59%: it does nothing where the crop is
      vertical, and it is the whole thing on a tall panel. */
   .panel[data-size="hero"] {
-    --hero-pos: 49% 0%;
+    --hero-pos: 59% 0%;
     /* The panel pads itself to the site column, which put the record link
        463px short of the frame edge while the bar's CONTACT sits 46px
        from it. The right gutter comes in to match the bar, so the link

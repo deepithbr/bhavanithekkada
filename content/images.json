@@ -4,7 +4,7 @@
     "basePath": "assets/img",
     "format": "webp",
     "provenance": "Two sources. The original set was extracted from the client-supplied portfolio PDFs, deduplicated, de-rotated, cropped and re-encoded. The set added on 2026-08-25 came directly from the athlete's own Google Drive archive, downloaded with her rights holder's explicit permission and re-encoded by tools/add_images.py. No image on this site is hotlinked, and no substitute skier has been used anywhere.",
-    "rightsWarning": "Rights are settled for the images marked rights:\"owned\", which come from the athlete's own archive. They remain UNCONFIRMED for every image marked rights:\"unconfirmed\", which were extracted from the portfolio PDFs. One of those extracted frames (p03_00.jpg) carried a visible IMAGO agency watermark, so at least some of that race photography originates from a picture agency, and the cutout used in race-planica-elbrus appears to derive from the same frame. Confirm ownership or licence for the unconfirmed set before launch. Nine images, hero-alps, hero-piste, hero-spray, hero-track, hero-skate, hero-glide, hero-stride, hero-course and hero-tempo, are rights:\"ai-generated\": it is a generated picture rather than a photograph, and the equipment marks visible in it have not been cleared.",
+    "rightsWarning": "Rights are settled for the images marked rights:\"owned\", which come from the athlete's own archive. They remain UNCONFIRMED for every image marked rights:\"unconfirmed\", which were extracted from the portfolio PDFs. One of those extracted frames (p03_00.jpg) carried a visible IMAGO agency watermark, so at least some of that race photography originates from a picture agency, and the cutout used in race-planica-elbrus appears to derive from the same frame. Confirm ownership or licence for the unconfirmed set before launch. Ten images, hero-alps, hero-piste, hero-spray, hero-track, hero-skate, hero-glide, hero-stride, hero-course, hero-tempo and hero-drive, are rights:\"ai-generated\": it is a generated picture rather than a photograph, and the equipment marks visible in it have not been cleared.",
     "focalPointNote": "focal is [x, y] as fractions of width and height, used for object-position so crops keep the subject."
   },
   "images": [
@@ -1539,7 +1539,32 @@
         0.0
       ],
       "rights": "ai-generated",
-      "note": "Not a photograph. Supplied as \"Cross.png\" and carrying a signed C2PA content credential naming the OpenAI Media Service API. The client's final selection for the home hero, 3 Sep 2026. Real athlete, scene that did not happen, legible FISCHER mark on the skis. Clear the equipment marks and the use of a generated likeness before launch."
+      "note": "Not a photograph. Supplied as \"Cross.png\" and carrying a signed C2PA content credential naming the OpenAI Media Service API. Was the home hero on 3 Sep 2026, superseded by hero-drive. Real athlete, scene that did not happen, legible FISCHER mark on the skis. Clear the equipment marks and the use of a generated likeness before launch."
+    },
+    {
+      "slot": "hero-drive",
+      "file": "hero-drive",
+      "widths": [
+        480,
+        960,
+        1503
+      ],
+      "natural": [
+        1503,
+        1047
+      ],
+      "ratio": 1.4355,
+      "alt": "Bhavani Thekkada skating along a groomed piste, poles swung wide, snow lifting from her skis, alpine peaks behind her.",
+      "credit": "Client-supplied, AI-generated, 3 Sep 2026",
+      "year": null,
+      "location": null,
+      "category": "race",
+      "focal": [
+        0.59,
+        0.0
+      ],
+      "rights": "ai-generated",
+      "note": "Not a photograph. Supplied as \"bhavani_v3.png\" and carrying a signed C2PA content credential naming the OpenAI Media Service API. Used as the home hero at the client's instruction. Real athlete, scene that did not happen, legible FISCHER mark on the skis. Clear the equipment marks and the use of a generated likeness before launch."
     }
   ],
   "excluded": [
