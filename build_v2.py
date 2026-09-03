@@ -516,7 +516,7 @@ def hero_panel(c, img) -> str:
         aria-hidden="true">&rarr;</span></a>
     </div>"""
 
-    slot = "hero-course"
+    slot = "hero-tempo"
     # Wide frame into a wide panel, so on a desktop there is almost no
     # crop and this barely bites. It is the phone that needs it: there the
     # panel is tall and cover keeps only a narrow vertical slice, and the

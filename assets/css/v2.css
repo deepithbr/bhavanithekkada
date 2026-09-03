@@ -7617,9 +7617,14 @@ body {
      at 1.8:1. Ink on that ground is 5.1:1 and up. index.html is the only
      page that sets data-glass, so nothing else moves. */
   .nav[data-glass="true"]:not([data-scrolled="true"]) {
+    /* 0.70, not 0.62. The bar sits on whatever the top of the frame
+       happens to be, and on this one the patch under the last link is
+       darker than the rest: it measured 4.46:1 against a floor of 4.5 at
+       1280 while every other item passed. Eight points on the wash lifts
+       that one to 4.7:1 and costs the sky nothing anyone will see. */
     background: linear-gradient(
       to bottom,
-      oklch(99% 0.003 250 / 0.62),
+      oklch(99% 0.003 250 / 0.7),
       oklch(99% 0.003 250 / 0)
     );
   }

@@ -1986,8 +1986,8 @@
     },
     {
       "claim": "The home hero photograph",
-      "origin": "Client messages, 2 and 3 Sep 2026, eight generated frames in all, the last being 'Cross country skier.png'",
-      "why": "None of the eight is a photograph. All are generated pictures of her, and the last seven carry signed C2PA content credentials naming the OpenAI Media Service API, so the files themselves record it. Most show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-course is the one now in use; hero-alps, hero-piste, hero-spray, hero-track, hero-skate, hero-glide and hero-stride are kept in the library. All eight are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
+      "origin": "Client messages, 2 and 3 Sep 2026, nine generated frames in all, the last and chosen one being 'Cross.png'",
+      "why": "None of the nine is a photograph. All are generated pictures of her, and the last eight carry signed C2PA content credentials naming the OpenAI Media Service API, so the files themselves record it. Most show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-tempo is the client's final selection and the one now in use; the other eight are kept in the library. All nine are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
       "status": "published-client-asserted"
     }
   ],
