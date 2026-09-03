@@ -516,7 +516,7 @@ def hero_panel(c, img) -> str:
         aria-hidden="true">&rarr;</span></a>
     </div>"""
 
-    slot = "hero-drive"
+    slot = "hero-open"
     # Wide frame into a wide panel, so on a desktop there is almost no
     # crop and this barely bites. It is the phone that needs it: there the
     # panel is tall and cover keeps only a narrow vertical slice, and the
@@ -533,7 +533,7 @@ def hero_panel(c, img) -> str:
     # sides, so the x matters and it is her head at 42% across.
     tag = tag.replace(
         f"object-position:{img.focal(slot)}",
-        "object-position:var(--hero-pos,59% 0%)"
+        "object-position:var(--hero-pos,56% 0%)"
     )
     # Her copy, so it lives in the content file. The accent falls on one
     # phrase inside the first line; it is matched against the escaped text
