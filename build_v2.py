@@ -336,44 +336,65 @@ def panel(img: Img, slot, title, sub, cta=None, size=None, level="h2",
 
 # Three, not four. Four skis in the column left each one 137px wide and
 # the photographs unreadable; three at 192px carry a subject.
-MEDIA_STRIP = ["race-worldcup", "chile-corralco", "night-training"]
+# The collage, as (slot, columns, rows) on a four-column grid. Placement
+# is by hand because the sizes are the composition rather than a
+# by-product of it: a square anchor two across, three landscape bands, and
+# singles filling between them. The spans total sixteen cells exactly, so
+# the block closes square and nothing is left with a hole in it.
+#
+# Landscape frames take the two-column slots and portrait ones the
+# singles, so no photograph is asked to fill a shape it was not shot for.
+MEDIA_COLLAGE = [
+    ("flag-harbin", 2, 2),
+    ("khelo-medals", 1, 1),
+    ("nordic-podium", 1, 1),
+    ("podium-gulmarg-2023", 2, 1),
+    ("double-pole", 1, 1),
+    ("race-worldcup", 1, 1),
+    ("contingent-2021", 2, 1),
+    ("team-gulmarg", 2, 1),
+    ("chile-corralco", 1, 1),
+    ("nz-snowfarm", 1, 1),
+]
 
 
 def media_strip(c, img) -> str:
     """The way through to Media, after the journey.
 
-    The client's reference leans a pair of skis across the page. So the
-    photographs are cut into ski silhouettes rather than set in tilted
-    rectangles: pointed tip, parallel sides, rounded tail, leaning at one
-    angle and stepped down the page. The proportion is stylised, nearer
-    1:3.6 than a real ski's 1:15, because a true ski leaves a sliver of
-    photograph and the photographs are the point of the section."""
-    frames = "".join(
-        f'<a class="frame" href="media.html" tabindex="-1" aria-hidden="true" '
-        f'style="--i:{n}">{img.tag(slot, "(min-width:900px) 20vw, 44vw")}</a>'
-        # Rights are settled before a photograph is published, here as
-        # everywhere else on the site.
-        for n, slot in enumerate(
-            [x for x in MEDIA_STRIP
-             if (img.get(x) or {}).get("rights") == "owned"]
-        )
-    )
-    # One clip path, defined once, referenced by every frame. Normalised
-    # coordinates so it stretches to whatever size the frame ends up.
-    ski = """<svg class="ski-def" width="0" height="0" aria-hidden="true"
-      focusable="false"><defs><clipPath id="ski"
-      clipPathUnits="objectBoundingBox"><path d="M0.5,0
-      C0.665,0.004 0.855,0.028 0.951,0.072
-      C0.988,0.089 1,0.107 1,0.136
-      L1,0.957 C1,0.981 0.989,0.994 0.962,0.997
-      C0.892,1 0.677,1 0.5,1
-      C0.323,1 0.108,1 0.038,0.997
-      C0.011,0.994 0,0.981 0,0.957
-      L0,0.136 C0,0.107 0.012,0.089 0.049,0.072
-      C0.145,0.028 0.335,0.004 0.5,0 Z"/></clipPath></defs></svg>"""
+    The client's reference is a wall of her results: podiums, medals, the
+    flag, the squad, packed at mixed sizes. So the section carries a
+    collage rather than a row, and it assembles itself a frame at a time
+    as the reader arrives at it.
+
+    Every photograph in it is rights:"owned". A shop window for her
+    archive is the last place to hang a frame nobody has cleared, so an
+    uncleared slot is dropped rather than shown, and the grid closes up
+    around the gap.
+
+    The tiles are decorative. Ten links all pointing at the same page is
+    ten tab stops saying the same thing, and the button above says it
+    once."""
+    tiles = []
+    for slot, cols, rows in MEDIA_COLLAGE:
+        meta = img.get(slot) or {}
+        if meta.get("rights") != "owned":
+            continue
+        # Per tile, not one hint for all ten. The collage is about 38vw
+        # wide over four columns, so a single frame is near 10vw and a
+        # two-column one near 20vw; one shared value either starves the
+        # big tiles or sends the small ones a file four times the size
+        # they can show. Below the split the grid halves to two columns,
+        # where a single is 46vw and a wide one the full 92vw.
+        wide = cols == 2
+        tag = img.tag(slot, "(min-width:900px) %s, %s" % (
+            "20vw" if wide else "10vw", "92vw" if wide else "46vw"))
+        # Decorative: the alt is carried by the page these lead to.
+        tag = re.sub(r'alt="[^"]*"', 'alt=""', tag, count=1)
+        tiles.append(
+            f'<li class="collage-tile" style="--i:{len(tiles)};'
+            f'--c:{cols};--r:{rows}">{tag}</li>')
     return f"""
 <section class="media-strip" id="media">
-  {ski}
   <div class="wrap media-strip-inner">
     <div class="media-say" data-rise>
       <p class="caption">Media</p>
@@ -382,7 +403,7 @@ def media_strip(c, img) -> str:
       photographs from her own archive.</p>
       <a class="btn" href="media.html">View media</a>
     </div>
-    <div class="media-lean" data-rise>{frames}</div>
+    <ul class="collage" data-rise aria-hidden="true">{''.join(tiles)}</ul>
   </div>
 </section>"""
 

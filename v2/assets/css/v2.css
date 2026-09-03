@@ -4670,85 +4670,106 @@ body {
   max-width: 34ch;
 }
 
-.media-lean {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(0.6rem, 1.8vw, 1.6rem);
-  /* The lean needs headroom or the tips clip against the section edge. */
-  padding-block: var(--space-2xl);
+/* --------------------------------------------------------------- collage
+
+   The client's reference is a wall of results rather than a row of
+   pictures, so the section carries a mosaic: ten frames on four columns
+   at mixed sizes, hand-placed in the builder because the sizes are the
+   composition. The spans total sixteen cells, so four square columns give
+   four square rows and the block closes without a hole.
+
+   Landscape photographs take the two-column slots and portrait ones the
+   singles, so nothing is asked to fill a shape it was not shot for; the
+   rest is object-fit. */
+
+.collage {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 1fr;
+  gap: clamp(0.35rem, 0.7vw, 0.6rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Sixteen cells over four columns is four rows, and square cells make a
+     square block. Stated rather than left to the content so the tiles
+     cannot be pulled out of shape by one tall photograph. */
+  aspect-ratio: 1 / 1;
+  align-self: center;
 }
 
-.ski-def {
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.frame {
-  --i: 0;
-  display: block;
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 12.5rem;
-  /* A ski, not a photo frame: long, narrow, pointed at the tip. The
-     proportion is as slim as the photographs will carry; past this the
-     subject is a sliver and the section stops being about photographs. */
-  aspect-ratio: 1 / 2.9;
+.collage-tile {
+  grid-column: span var(--c);
+  grid-row: span var(--r);
   overflow: hidden;
+  border-radius: var(--radius-sm, 0.35rem);
   background: var(--color-paper-2);
-  clip-path: url(#ski);
-  /* One lean for all four, stepped down the page so the set rises. */
-  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem));
-  transition: transform 420ms var(--ease-out), filter 420ms var(--ease-out);
+  box-shadow: 0 1px 2px oklch(20% 0.03 255 / 0.1);
 }
 
-.frame img {
+.collage-tile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-/* clip-path cuts a box shadow off with the shape, so the lift is carried
-   by a drop-shadow filter on the frame instead. */
-.frame {
-  filter: drop-shadow(0 16px 30px oklch(20% 0.03 255 / 0.22));
+/* The block arrives a frame at a time.
+
+   The site's own observer already sets the flag on the container when it
+   comes into view, so this needs no script of its own. What it does need
+   is for the container to stop fading as one object, which is what the
+   sitewide rise does and what would have hidden the stagger completely:
+   the whole collage would have appeared at once, tiles and all. Only the
+   tiles move now, each waiting its turn off its own index, so the wall
+   builds over about a second and lands complete.
+
+   All of it is behind .js, like the sitewide rise: with no script the
+   tiles are simply there, which is the correct fallback for a decorative
+   block that would otherwise never appear. */
+
+.js .collage[data-rise] {
+  opacity: 1;
+  transform: none;
 }
 
-.frame:hover {
-  transform: rotate(-13deg) translateY(calc(var(--i) * 1.9rem - 1.2rem));
-  filter: drop-shadow(0 26px 44px oklch(20% 0.03 255 / 0.3));
+.js .collage[data-rise] .collage-tile {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0) scale(0.965);
+}
+
+.js .collage[data-rise][data-shown="true"] .collage-tile {
+  opacity: 1;
+  transform: none;
+  transition: opacity 520ms var(--ease-out), transform 520ms var(--ease-out);
+  transition-delay: calc(var(--i) * 110ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .frame {
+  .js .collage[data-rise] .collage-tile {
+    opacity: 1;
+    transform: none;
     transition: none;
+    transition-delay: 0s;
   }
 }
 
-/* Below the split the lean flattens: four tipped frames in a phone's
-   width leaves each one too narrow to read as a photograph. */
+/* Below the split the collage halves rather than shrinks. Four columns in
+   a phone's width puts a podium at 90px across, which is a texture and
+   not a photograph; two columns keeps the two-column frames full width
+   and the singles at half, so the rhythm of the wall survives. */
 @media (max-width: 899px) {
-  .media-lean {
-    display: grid;
+  .collage {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-sm);
-    padding-block: 0;
+    aspect-ratio: auto;
+    gap: var(--space-2xs);
   }
 
-  /* On a phone the skis flatten back to photographs: four tipped slivers
-     in 390px is a pattern, not a picture. */
-  .frame {
-    max-width: none;
-    aspect-ratio: 3 / 4;
-    clip-path: none;
-    transform: none;
-    filter: none;
+  .collage-tile {
+    aspect-ratio: 1 / 1;
   }
 
-  .frame:hover {
-    transform: none;
+  .collage-tile[style*="--c:2"] {
+    aspect-ratio: 2 / 1;
   }
 }
 
