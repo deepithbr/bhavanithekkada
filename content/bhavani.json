@@ -1986,8 +1986,8 @@
     },
     {
       "claim": "The home hero photograph",
-      "origin": "Client message, 2 Sep 2026, file 'ChatGPT Image Sep 2, 2026, 08_32_01 AM.png'",
-      "why": "Not a photograph. It is a generated picture of her, and it carries a legible FISCHER mark on the ski and a badge on the shoulder, so it puts equipment branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. Published at her instruction and filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
+      "origin": "Client messages, 2 and 3 Sep 2026, files 'ChatGPT Image Sep 2, 2026, 08_32_01 AM.png' and 'Bhavani_Skieng.png'",
+      "why": "Neither is a photograph. Both are generated pictures of her, and the second carries a signed C2PA content credential naming the OpenAI Media Service API, so the file itself records it. Both show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-piste is the one now in use and hero-alps is kept in the library. Both are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
       "status": "published-client-asserted"
     }
   ],

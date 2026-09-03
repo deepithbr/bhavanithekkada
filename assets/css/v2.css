@@ -7407,220 +7407,138 @@ body {
 }
 
 
-/* -------------------------------------------- the hero turns to daylight
+/* -------------------------------------------- the hero frame turns around
 
-   The frame this hero now carries is the opposite of the one it was built
-   for. Planica was a dim forest, so white type sat on it at 12:1 over a
-   corner grade dropped almost to black. This one is sky, pale peaks and
-   lit snow, and measured across the left third where the words go it runs
-   0.18 to 0.68 relative luminance. White display type lands between 1.5:1
-   and 4.4:1 on that, which is not a grade that needs nudging.
+   She is on the left of this one, skiing, and the right of the frame is a
+   pine slope under a shadowed mountain. Measured across the lower right,
+   where the copy sits, it runs 0.05 to 0.32 relative luminance, so the
+   site's own scheme is right again: white on a grade. What changes is the
+   side. The grade mirrors, the copy goes with it, and she keeps her light
+   on the left instead of the right.
 
-   So the grade inverts. Paper where the words are, clear where she is,
-   and the type goes to ink, which measures 12:1 to 15:1 on the same
-   ground. Everything below follows from that one move.
-
-   Phones are excluded on purpose. The crop there is a narrow vertical
-   slice centred on her face, so the words land on her navy top, which is
-   the one dark thing in the picture, and white on it is correct. */
+   Below the breakpoint none of this applies. There the panel is taller
+   than it is wide, the crop is a narrow slice centred on her, and the
+   copy sits over the middle of the picture rather than either edge, which
+   is what the foot grade already handles. */
 
 @media (min-width: 900px) {
-  /* No foot wash to go with the left one. A gradient up from the bottom
-     would have to cross her as well as the chip, and at the strength the
-     chip wants it greys out her legs and the ski. The link at the other
-     end carries its own halo instead. */
-  .panel[data-size="hero"] .panel-shot::after {
-    /* The stops hold near full strength to 40% and then fall off inside
-       seven points. Measured, the old ramp left the last word of the
-       headline on the dark trees at the foot of the ski at 2.9:1, under
-       the 3:1 floor for display type; holding the wash out to where the
-       line actually ends puts it at 8:1. Past 47% it clears fast, because
-       that is where the ski stands and a veiled ski is the one thing in
-       the frame worth keeping vivid. */
-    background: linear-gradient(
-      95deg,
-      oklch(99% 0.003 250 / 0.94) 0%,
-      oklch(99% 0.003 250 / 0.9) 30%,
-      oklch(99% 0.003 250 / 0.8) 40%,
-      oklch(99% 0.003 250 / 0.35) 47%,
-      oklch(99% 0.003 250 / 0.08) 54%,
-      oklch(99% 0.003 250 / 0) 60%
-    );
-  }
-
-  /* Nudged left off 63%, which is the phone's crop. Here it walked the
-     ski into the headline.
-
-     The vertical half is the top of the frame rather than the middle of
-     it. On a wide screen the panel is about 1.98 against the picture's
-     1.78, so the picture is fitted to the width and a hundred and nine
-     pixels of it have to go off the top and bottom. Centred, half of that
-     came off the top, and since her hat sits 9.1% down the frame and the
-     ski tip 5.6% down, the tip was clipped at the edge and her head
-     finished twenty-two pixels inside the bar. Taking the whole crop off
-     the foot instead gives all of it back: her head clears the bar by
-     about thirty pixels and the ski tip comes back into the picture. What
-     it costs is the last tenth of the frame, which is the base of the ski
-     and the bottom of her glove. */
+  /* Her head is 4% down this frame with nothing above it, so the vertical
+     crop comes off the foot, not the middle. The horizontal is her head
+     at 42%, which is what keeps her in a phone's narrow slice. */
   .panel[data-size="hero"] {
-    --hero-pos: 15% 0%;
+    --hero-pos: 42% 0%;
   }
 
-  /* On the root, not on the panel. The bar is a sibling of the hero, not
-     a child of it, so a token declared on the panel is simply undefined
-     by the time the bar's hover rules ask for it, and the colour falls
-     back to whatever it inherited. */
-  :root {
-    /* The site accent was chosen to carry a light word on a dark
-       photograph. Turned around onto snow it measures 2.77:1 behind the
-       marked words and 3.57:1 on the eyebrow, under both floors. One
-       step darker at the same hue reads as the same blue and measures
-       3.9:1 and 5.0:1. A colour that works on ink ground and a colour
-       that works on paper ground are not the same colour, which is the
-       whole reason this block exists. */
-    --hero-accent: oklch(42% 0.165 252);
+  /* A corner grade on the other corner. Dark where the words are, clear
+     where she is, and a little weight along the foot so the chip and the
+     link have ground under them. */
+  /* A corner, not a column. A grade that runs straight across cannot tell
+     the difference between the words and her: the copy block is a fixed
+     width, so as the window narrows its left end walks inward onto the
+     lit mountain flank, and at 1440 it sat there at 2.4:1. Strengthening
+     a left-to-right grade enough to fix that veils her at the same time,
+     because at that width she and the copy overlap.
+
+     Anchored at the bottom right it falls off in both directions at once.
+     Under the far end of the copy it holds about 0.46, and at her head,
+     which is two thirds of the way up and a third of the way across, it
+     has reached nothing at all. */
+  .panel[data-size="hero"] .panel-shot::after {
+    background:
+      radial-gradient(
+        130% 110% at 88% 86%,
+        rgba(3, 9, 20, 0.86) 0%,
+        rgba(3, 9, 20, 0.6) 38%,
+        rgba(3, 9, 20, 0.2) 62%,
+        rgba(3, 9, 20, 0) 80%
+      ),
+      linear-gradient(
+        to top,
+        rgba(3, 9, 20, 0.42) 0%,
+        rgba(3, 9, 20, 0.1) 30%,
+        rgba(3, 9, 20, 0) 54%
+      );
   }
 
-  /* The eyebrow is a flex row, so its box ran the full measure of the
-     block while its words stopped a third of the way along. The empty
-     tail reached out to 55% of the panel, where the wash is nearly gone,
-     and the box measured 4.16:1 on ground its own type never sits on.
-     Shrinking the box to its words is the fix; the colour was never the
-     problem. */
+  /* The block moves to the right edge and keeps its own column. The words
+     inside it stay ranged left, the way the journey panel does it, so the
+     lines still start on a common edge and only the block has moved. */
+  /* The block goes to the panel's own right gutter, not the right end of
+     the centred content column. Inside the column it stopped at 75% of
+     the panel, which on this frame is the lit mountain flank at 0.29 to
+     0.47, and white type measured 1.5:1 on it. Against the gutter it
+     starts at 69% and sits on the pine slope instead. */
+  /* The panel pads itself to the site column, so the body could not reach
+     past 75% of the frame however it was aligned, and 75% on this picture
+     is the lit mountain flank at 0.29 to 0.47, where white type measured
+     1.5:1. The right gutter shrinks to let the block out to the edge.
+
+     Two things have to be undone for that to hold. The body is also the
+     wrap, and the wrap centres itself with auto margins, which beat grid
+     alignment; the panel's own comment says as much about the left edge.
+     And the panel places its items at the start. */
+  .panel[data-size="hero"] {
+    padding-right: var(--space-xl);
+  }
+
+  .panel[data-size="hero"] .hero-min {
+    /* 42rem, not 34. The foot is a row holding the credential plate at
+       its widest ghost and the record link with nowrap, so its minimum
+       content is 672px whatever the column says. At 34rem the track grew
+       to that minimum anyway and the link overhung the panel's right edge
+       by sixty-four pixels, off the screen. */
+    width: min(42rem, 100%);
+    max-width: none;
+    margin-inline: 0;
+    justify-self: end;
+    grid-template-columns: minmax(0, 100%);
+    justify-items: start;
+  }
+
+  /* The foot declares width:100%, and it was still 800px wide inside a
+     672px column, hanging the record link sixty-four pixels off the right
+     edge of the panel. A grid item's min-width is auto, which floors it at
+     its own min-content, and the credential plate holds itself at the
+     width of its widest ghost. Releasing that floor lets the declared
+     width mean what it says, and the wrap is a net for the case where the
+     two really cannot share a line. */
+  .panel[data-size="hero"] .hero-foot {
+    /* An older rule runs the foot 128px wider than its column, to carry
+       the record link out to the panel's true right edge while the copy
+       sat in a left-hand column that stopped short of it. The copy is now
+       at that edge itself, so the overhang put the link sixty-four pixels
+       off the panel and out of sight. It also existed to leave the
+       coordinate rail its air, and the rail no longer sits over the hero
+       at all. */
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: var(--space-sm);
+  }
+
+  .panel[data-size="hero"] .hero-chip {
+    min-width: 0;
+  }
+
+  /* Held so the longest line fits the column on one line. Left at the
+     step another rule sets, it is 80px at this width, needs 728px and has
+     544px, so "THE LONG WAY" broke across two lines and the client
+     approved it whole. */
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+    font-size: clamp(2.4rem, 5.6vw, 3.7rem);
+  }
+
+  /* A flex row whose box ran the full measure while its words stopped a
+     third of the way along, so it was being judged on ground its own type
+     never sits on. Nothing to do with which picture is behind it. */
   .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
     width: fit-content;
-    color: var(--hero-accent);
   }
 
-  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
-    background: var(--hero-accent);
-  }
-
-  /* The line has to end while the wash is still under it, and on a wide
-     screen it did not. Past 1400 the panel is wider than the picture, so
-     the picture is fitted to the width, nothing is cropped off the sides,
-     the ski stays at 41% across and the page margin pushes the words
-     inward at the same time. At 1900 the headline ran to 49.5%, which is
-     past the ski and out where the wash has faded to a quarter, and the
-     marked words measured 1.2:1.
-
-     Bounding the box against the viewport was the wrong lever: it wrapped
-     "THE LONG WAY" onto two lines, and the client approved that line
-     whole. The size is the lever. Held to the step it had before another
-     rule raised it, the line is about 9.1 times the type size, which puts
-     its end back on the wash at every width. */
-  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
-    font-size: clamp(2.4rem, 5.6vw, 3.9rem);
-  }
-
-  .panel[data-size="hero"] .hero-min .hero-punch {
-    color: var(--color-ink);
-    /* A paper halo rather than a drop shadow. It only has work to do at
-       the right-hand end of the longest line, where the wash has already
-       thinned; a dark shadow under ink type on snow reads as a printing
-       fault. */
-    text-shadow: 0 1px 10px oklch(99% 0.003 250 / 0.8);
-  }
-
-  .panel[data-size="hero"] .panel-body .hero-punch .hl {
-    color: var(--hero-accent);
-  }
-
-  /* The chip loses its night glass for frost. The rule down its left
-     edge is already the accent and stays. */
-  .panel[data-size="hero"] .hero-chip {
-    background: oklch(99% 0.003 250 / 0.58);
-    box-shadow: inset 0 1px 0 oklch(24% 0.035 255 / 0.07);
-  }
-
-  .panel[data-size="hero"] .hero-chip .hero-cred {
-    color: var(--color-ink);
-  }
-
-  .panel[data-size="hero"] .hero-chip .hero-cred b,
-  .panel[data-size="hero"] .hero-chip .hero-tag,
-  .panel[data-size="hero"] .cred-kicker {
-    color: var(--hero-accent);
-  }
-
-  .panel[data-size="hero"] .cred-caret {
-    background: var(--hero-accent);
-  }
-
-  /* The one piece of hero type outside the wash, and the crop decides what
-     is under it. Measured across the panel it runs 0.001 to 0.563, which
-     is her navy sleeve at one end and lit snow at the other: ink reaches
-     1.8:1 on the dark end and white reaches 1.7:1 on the light end, so no
-     colour saves it. It gets ground of its own instead, the same frost as
-     the chip at the other end of the foot, which also stops the two ends
-     reading as different kinds of thing. */
-  .panel[data-size="hero"] .hero-record {
-    color: var(--color-ink);
-    padding: 0.55rem 0.9rem 0.5rem;
-    background: oklch(99% 0.003 250 / 0.58);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom: none;
-    box-shadow: inset 0 1px 0 oklch(24% 0.035 255 / 0.07);
-    text-shadow: none;
-  }
-
-  .panel[data-size="hero"] .hero-record:hover,
-  .panel[data-size="hero"] .hero-record:focus-visible {
-    color: var(--hero-accent);
-    background: oklch(99% 0.003 250 / 0.78);
-  }
-
-  /* The bar over the hero. Its own gradient was carrying the links
-     against a dark photograph; against this one it leaves them near 3:1,
-     so on this page it turns over with the hero rather than being
-     propped up with more shadow. index.html is the only page that sets
-     data-glass, so nothing else moves. */
-  .nav[data-glass="true"]:not([data-scrolled="true"]) {
-    background: linear-gradient(
-      to bottom,
-      oklch(99% 0.003 250 / 0.72),
-      oklch(99% 0.003 250 / 0)
-    );
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
-    color: var(--color-ink);
-  }
-
-  /* The quiet grey the bar used against a dark photograph measures 4.0:1
-     on this one, and these are 0.76rem caps, so the floor is 4.5 rather
-     than 3. The body ink measures 5.9:1 and is still lighter than the
-     wordmark beside it, so the row keeps its order. */
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
-    color: var(--color-ink-body);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
-  .nav[data-glass="true"]:not([data-scrolled="true"])
-    .nav-links a[aria-current="page"] {
-    color: var(--hero-accent);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
-    color: var(--color-ink);
-    border-color: oklch(24% 0.035 255 / 0.4);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"])
-    .nav-links .nav-work:hover {
-    border-color: var(--hero-accent);
-    color: var(--hero-accent);
-    background: oklch(24% 0.035 255 / 0.05);
-  }
-
-  /* The coordinate rail is fixed, ink-coloured and always on. Against the
-     old hero it was ink on a near-black photograph and simply could not
-     be seen, so nobody had to decide what it did there. On this one it
-     turns up beside her shoulder reading as debris. It waits for the page
-     instead: the bar already knows whether the hero is still under it, and
-     the rail is its sibling, so no script is needed to ask. */
+  /* The coordinate rail is fixed, ink-coloured and always on. Over a dark
+     hero it cannot be seen at all, which is not better than being wrong,
+     it is just quieter. It waits for the page instead, and the bar
+     already knows whether the hero is still under it. */
   .nav[data-glass="true"]:not([data-scrolled="true"]) ~ .lat-rail {
     opacity: 0;
   }
@@ -7633,34 +7551,32 @@ body {
 
 /* ------------------------------------ and the phone keeps its own ground
 
-   The phone was never going to take the daylight treatment: its crop is a
-   narrow slice centred on her face, so the words sit on her navy top and
-   white is right there. But the foot gradient underneath them was cut for
-   the old picture, where the whole lower half was dark forest. It runs at
-   full strength for the bottom fifth and has faded to a fifth by the time
-   it reaches the words, which on this frame sit between 36% and 50% up
-   the panel, across her face and collar.
+   No room to put the words beside her there: the panel is taller than it
+   is wide, the crop is a narrow slice centred on her, and the copy sits
+   over the middle of the picture whatever anyone does. So the phone keeps
+   the site's own arrangement and only its grade is retuned.
 
-   Measured on the new frame the eyebrow came out at 2.5:1 and the marked
-   words at 1.9:1. Carrying the gradient up through the band the copy
-   actually occupies, rather than the band the old picture happened to
-   darken by itself, puts them at 5.9:1 and 4.4:1. */
+   The foot grade runs at full strength for the bottom fifth and has faded
+   to a sixth by the time it reaches the words, which on this frame sit
+   between 32% and 51% up the panel, across lit snow and the pale flank
+   behind her shoulder. Measured there the eyebrow came out at 4.2:1 and
+   the marked words at 2.2:1. Carried up through the band the copy
+   actually occupies they measure 6.1:1 and 4.6:1. */
 
 @media (max-width: 700px) {
   .panel[data-size="hero"] .panel-shot::after {
     background: linear-gradient(
       to top,
-      oklch(16% 0.03 255 / 0.9) 0%,
-      oklch(16% 0.03 255 / 0.88) 30%,
-      oklch(16% 0.03 255 / 0.8) 46%,
-      oklch(16% 0.03 255 / 0.5) 60%,
-      oklch(16% 0.03 255 / 0.14) 76%,
-      oklch(16% 0.03 255 / 0.3) 100%
+      rgba(3, 9, 20, 0.9) 0%,
+      rgba(3, 9, 20, 0.86) 28%,
+      rgba(3, 9, 20, 0.78) 44%,
+      rgba(3, 9, 20, 0.5) 58%,
+      rgba(3, 9, 20, 0.16) 74%,
+      rgba(3, 9, 20, 0.28) 100%
     );
   }
 
-  /* One step lighter for the same reason the desktop one went a step
-     darker: the ground moved, so the colour has to. */
+  /* One step lighter, because the ground under it moved. */
   .panel[data-size="hero"] .panel-body .hero-punch .hl {
     color: oklch(87% 0.09 245);
   }
