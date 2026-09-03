@@ -1986,8 +1986,8 @@
     },
     {
       "claim": "The home hero photograph",
-      "origin": "Client messages, 2 and 3 Sep 2026: 'ChatGPT Image Sep 2, 2026, 08_32_01 AM.png', 'Bhavani_Skieng.png', 'ChatGPT Image Sep 3, 2026, 01_01_18 PM.png', 'Bhavani_!.png' and 'bhavani_cross country skier.png'",
-      "why": "None of the five is a photograph. All are generated pictures of her, and the last four carry signed C2PA content credentials naming the OpenAI Media Service API, so the files themselves record it. Most show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-skate is the one now in use; hero-alps, hero-piste, hero-spray and hero-track are kept in the library. All five are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
+      "origin": "Client messages, 2 and 3 Sep 2026: 'ChatGPT Image Sep 2, 2026, 08_32_01 AM.png', 'Bhavani_Skieng.png', 'ChatGPT Image Sep 3, 2026, 01_01_18 PM.png', 'Bhavani_!.png', 'bhavani_cross country skier.png' and 'bhavani_cross country skier1.png'",
+      "why": "None of the six is a photograph. All are generated pictures of her, and the last five carry signed C2PA content credentials naming the OpenAI Media Service API, so the files themselves record it. Most show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-glide is the one now in use; hero-alps, hero-piste, hero-spray, hero-track and hero-skate are kept in the library. All six are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
       "status": "published-client-asserted"
     }
   ],

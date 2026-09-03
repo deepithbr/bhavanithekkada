@@ -7494,11 +7494,19 @@ body {
    only does what the picture itself needs. */
 
 @media (min-width: 900px) {
-  /* Her head is 12.5% down this frame, so the vertical crop comes off the
-     foot and she clears the bar. The horizontal is her at the centre,
-     which is what keeps her in a narrow slice further down. */
+  /* This frame is 4:3, squarer than the ones before it, so a wide panel
+     has to lose a third of its height rather than a tenth and the crop
+     becomes a real choice rather than a formality. Her head sits 19% down
+     it, which is generous, and her skis and the spray are in the last
+     fifth, which is the part worth keeping. Taking 30% of the loss off
+     the top spends the headroom she can spare, clears the bar by about
+     65px and keeps the frame down to her boots.
+
+     The horizontal is her head at 60%: it does nothing on a wide panel,
+     where the crop is vertical, and it is the whole thing on a tall one,
+     where the slice is narrow. */
   .panel[data-size="hero"] {
-    --hero-pos: 50% 0%;
+    --hero-pos: 60% 30%;
     /* The panel pads itself to the site column, which put the record link
        463px short of the frame edge while the bar's CONTACT sits 46px
        from it. The right gutter comes in to match the bar, so the link
