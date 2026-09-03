@@ -7391,17 +7391,16 @@ body {
    only does what the picture itself needs. */
 
 @media (min-width: 900px) {
-  /* Back to a 1.44 frame, so a wide panel loses about a quarter of its
-     height rather than a third. Her head is 11% down it, the lowest of
-     any of these, so the whole loss can come off the foot and she still
-     clears the bar by 80px, the most comfortable clearance any frame has
-     given. What that costs is her skis, which sit in the last fortieth
-     and no crop of this shape reaches on a wide screen.
+  /* 16:9, which is the first frame shaped for this panel rather than
+     cropped into it. A wide screen loses a tenth of the height where the
+     square ones lost a quarter to a third, so the whole loss comes off
+     the foot: her head clears the bar by 55px and the picture still runs
+     to within a tenth of her ski tails, which none of the others managed.
 
-     The horizontal is her head at 53%: it does nothing where the crop is
+     The horizontal is her head at 49%: it does nothing where the crop is
      vertical, and it is the whole thing on a tall panel. */
   .panel[data-size="hero"] {
-    --hero-pos: 53% 0%;
+    --hero-pos: 49% 0%;
     /* The panel pads itself to the site column, which put the record link
        463px short of the frame edge while the bar's CONTACT sits 46px
        from it. The right gutter comes in to match the bar, so the link
@@ -7430,7 +7429,12 @@ body {
         rgba(3, 9, 20, 0.7) 30%,
         rgba(3, 9, 20, 0.42) 46%,
         rgba(3, 9, 20, 0.16) 64%,
-        rgba(3, 9, 20, 0.24) 100%
+        /* The tail carries the record link, which sits at the far right
+           of the foot. On this frame the ground under it is 0.18 and at
+           0.24 the link measured 4.50:1 against a floor of 4.5. The lift
+           is on the last stop only, so it reaches the right edge and
+           leaves her, and the middle of the picture, alone. */
+        rgba(3, 9, 20, 0.36) 100%
       ),
       linear-gradient(
         to top,
