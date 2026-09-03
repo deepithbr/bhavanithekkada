@@ -1677,7 +1677,18 @@ a {
    is set in. */
 .lat-rail {
   position: fixed;
-  right: max(1.1rem, calc((100vw - var(--col)) / 2 - 3.5rem));
+  /* Hard against the frame, not 3.5rem inside the site column. It was
+     placed relative to that column when the column had air to spare, but
+     the split panels set their own measure and run well past it: at 1900
+     the closing line of the profile reaches within 188px of the edge,
+     while the rail sat at 269px and the readout hung 100px further left
+     again, straight through the text.
+
+     Nothing on the page can be relied on to stop at the column, so the
+     rail stops relying on it. Pinned to the frame the readout still hangs
+     about 75px inward, which clears the widest running text at every
+     width the rail appears at. */
+  right: clamp(0.6rem, 1vw, 1.25rem);
   top: 50%;
   transform: translateY(-50%);
   height: min(46vh, 22rem);
@@ -7364,6 +7375,13 @@ body {
      which is what keeps her in a narrow slice further down. */
   .panel[data-size="hero"] {
     --hero-pos: 50% 0%;
+    /* The panel pads itself to the site column, which put the record link
+       463px short of the frame edge while the bar's CONTACT sits 46px
+       from it. The right gutter comes in to match the bar, so the link
+       lands directly under it and the hero's foot spans the frame the way
+       its head does. The copy itself does not move: it is left-aligned
+       and the headline is capped at 13ch. */
+    padding-right: clamp(1.1rem, 2.4vw, 2.875rem);
   }
 
   /* Full bleed: the shot covers the panel again. */
@@ -7399,7 +7417,10 @@ body {
      column, so every override the split and the right-hand layouts needed
      comes off. */
   .panel[data-size="hero"] .hero-min {
-    width: min(100% - 2 * var(--space-xl), var(--col));
+    /* The wrap caps itself at the site column and then insets 4rem each
+       side, which is what held the foot back. The hero takes the padded
+       box whole and lets the punch's own measure do the limiting. */
+    width: 100%;
     max-width: none;
     margin-inline: 0;
     justify-self: start;
@@ -7440,7 +7461,8 @@ body {
     min-width: 0;
     flex-wrap: wrap;
     row-gap: var(--space-sm);
-    justify-content: flex-start;
+    /* The plate at one end, the link at the other, spanning the frame. */
+    justify-content: space-between;
     column-gap: var(--space-lg);
     align-items: center;
     background: none;
