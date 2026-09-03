@@ -7407,241 +7407,6 @@ body {
 }
 
 
-/* -------------------------------------- the hero, with nothing over the type
-
-   This frame gives what the last three did not: a clean field beside her.
-   She holds the left third, her head 11% down, and everything from the
-   middle rightward is open sky, a far valley and groomed piste. Sampled
-   across the right half between a third and a half of the way down, it
-   runs 0.39 to 0.60 and barely moves.
-
-   So there is nothing over the words. No plate, no wash, no corner grade.
-   Ink type on the picture as it is, and the only reason the earlier frames
-   needed a veil was that none of them had a field this quiet.
-
-   Two things follow. The copy leaves the bottom corner, because the bottom
-   of this picture is lit snow and the band just above it is the one dark
-   stripe in the right half, so the corner is the worst place here rather
-   than the best. And the bar turns to ink with the type, because the sky
-   it now sits on is 0.50 and white on that is 2:1.
-
-   Phones keep the site's own arrangement. There the panel is taller than
-   it is wide, the crop is a narrow slice centred on her, and the words end
-   up on her black suit, where white is right. */
-
-@media (min-width: 900px) {
-  /* The site accent was chosen to carry a light word on a dark
-     photograph. Turned around onto snow it measures under both floors;
-     one step darker at the same hue reads as the same blue and clears
-     them. A colour that works on ink ground and a colour that works on
-     paper ground are not the same colour.
-
-     On the root, not the panel: the bar is a sibling of the hero, not a
-     child of it, and a token declared on the panel is undefined by the
-     time the bar's rules ask for it. */
-  :root {
-    /* 40%, not 42. With nothing under the words the eyebrow is judged on
-       the sky itself, which reaches 0.51, and at 42% it landed on 4.49:1
-       against a floor of 4.5. Two points darker clears it at 4.9:1 and
-       still reads as the same blue. */
-    --hero-accent: oklch(40% 0.165 252);
-  }
-
-  /* The crop comes off the foot. She has 11% of headroom and the bar takes
-     64px of it, so centring the crop would spend half of what she has. */
-  .panel[data-size="hero"] {
-    --hero-pos: 28% 0%;
-    /* Up into the quiet band, not merely off the bottom edge. The panel
-       anchors its copy to the bottom corner, which is right when the
-       corner is the calm part of the picture. On this one the calm part
-       is the top right: the sky and the sunlit peaks hold 0.39 to 0.60
-       down to halfway, and then the shadowed valley drops to 0.20.
-       Centred, the block straddled that line and its lower half sat on
-       the dark side at 1.7:1. It starts high instead, clear of the bar,
-       and ends before the shadow. */
-    align-content: start;
-    align-items: start;
-    padding-top: clamp(6rem, 16vh, 10rem);
-    padding-right: var(--space-xl);
-  }
-
-  /* Nothing at all over the photograph. Written out rather than deleted so
-     it reads as a decision and not an omission. */
-  .panel[data-size="hero"] .panel-shot::after {
-    background: none;
-  }
-
-  /* The block takes the right-hand field, against the panel's own gutter
-     rather than the right end of the centred content column, which stops
-     short of it. Two things have to be undone for that: the body is also
-     the wrap, and the wrap centres itself with auto margins that beat grid
-     alignment, and the panel places its items at the start. */
-  .panel[data-size="hero"] .hero-min {
-    width: min(42rem, 100%);
-    max-width: none;
-    margin-inline: 0;
-    justify-self: end;
-    grid-template-columns: minmax(0, 100%);
-    justify-items: start;
-  }
-
-  /* An older rule runs the foot 128px wider than its column, to carry the
-     record link out to the panel's true right edge while the copy sat in a
-     left-hand column that stopped short of it. The copy is at that edge
-     itself now, so the overhang put the link off the screen. */
-  /* The credential and the record link share one plate.
-
-     The words have nothing behind them and do not need any. These two do:
-     they are small type, they sit lower than the headline, and wherever
-     the block lands one of them finds a shaded ridge. Spread to the far
-     right the link measured 3.6:1, moved next to the plate 3.9:1, and the
-     dark it keeps finding is a rock a few tens of pixels across rather
-     than a band anything can be steered around.
-
-     The credential was already a plate, so this widens what exists rather
-     than introducing something. It hugs its contents instead of running
-     the width of the block, so it reads as a chip and not a bar. */
-  .panel[data-size="hero"] .hero-foot {
-    width: fit-content;
-    max-width: 100%;
-    min-width: 0;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    column-gap: var(--space-lg);
-    row-gap: var(--space-xs);
-    background: oklch(99% 0.003 250 / 0.52);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-left: 3px solid var(--hero-accent);
-    box-shadow: inset 0 1px 0 oklch(24% 0.035 255 / 0.07);
-    padding: var(--space-sm) var(--space-md) var(--space-xs);
-  }
-
-  .panel[data-size="hero"] .hero-record {
-    padding-bottom: 0.3rem;
-  }
-
-  .panel[data-size="hero"] .hero-chip {
-    min-width: 0;
-  }
-
-  /* Ink, and no shadow under it. A drop shadow beneath ink type on snow
-     reads as a printing fault, and on ground this even it has no work to
-     do anyway. */
-  .panel[data-size="hero"] .hero-min .hero-punch {
-    color: var(--color-ink);
-    text-shadow: none;
-  }
-
-  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
-    font-size: clamp(2.4rem, 5.6vw, 3.9rem);
-  }
-
-  /* A flex row whose box ran the full measure while its words stopped a
-     third of the way along, so it was judged on ground its own type never
-     sits on. */
-  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
-    width: fit-content;
-    color: var(--hero-accent);
-  }
-
-  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
-    background: var(--hero-accent);
-  }
-
-  .panel[data-size="hero"] .panel-body .hero-punch .hl {
-    color: var(--hero-accent);
-  }
-
-  /* The plate moved out to the row, so the chip inside it carries none. */
-  .panel[data-size="hero"] .hero-chip {
-    background: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-    border-left: none;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  .panel[data-size="hero"] .hero-chip .hero-cred {
-    color: var(--color-ink);
-  }
-
-  .panel[data-size="hero"] .hero-chip .hero-cred b,
-  .panel[data-size="hero"] .hero-chip .hero-tag,
-  .panel[data-size="hero"] .cred-kicker {
-    color: var(--hero-accent);
-  }
-
-  .panel[data-size="hero"] .cred-caret {
-    background: var(--hero-accent);
-  }
-
-  .panel[data-size="hero"] .hero-record {
-    color: var(--color-ink);
-    border-bottom-color: oklch(24% 0.035 255 / 0.32);
-    text-shadow: none;
-  }
-
-  .panel[data-size="hero"] .hero-record:hover,
-  .panel[data-size="hero"] .hero-record:focus-visible {
-    color: var(--hero-accent);
-    border-bottom-color: var(--hero-accent);
-  }
-
-  /* The bar carries its own gradient, which was doing its work against a
-     dark photograph. Over this sky it leaves the links near 2:1, so on
-     this page it turns over with the hero. index.html is the only page
-     that sets data-glass, so nothing else moves. */
-  .nav[data-glass="true"]:not([data-scrolled="true"]) {
-    background: linear-gradient(
-      to bottom,
-      oklch(99% 0.003 250 / 0.72),
-      oklch(99% 0.003 250 / 0)
-    );
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
-    color: var(--color-ink);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
-    color: var(--color-ink-body);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
-  .nav[data-glass="true"]:not([data-scrolled="true"])
-    .nav-links a[aria-current="page"] {
-    color: var(--hero-accent);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
-    color: var(--color-ink);
-    border-color: oklch(24% 0.035 255 / 0.4);
-  }
-
-  .nav[data-glass="true"]:not([data-scrolled="true"])
-    .nav-links .nav-work:hover {
-    border-color: var(--hero-accent);
-    color: var(--hero-accent);
-    background: oklch(24% 0.035 255 / 0.05);
-  }
-
-  /* The coordinate rail is fixed, ink-coloured and always on. Over a light
-     hero it turns up beside her reading as debris. It waits for the page
-     instead, and the bar already knows whether the hero is under it. */
-  .nav[data-glass="true"]:not([data-scrolled="true"]) ~ .lat-rail {
-    opacity: 0;
-  }
-
-  .lat-rail {
-    transition: opacity var(--dur-mid, 320ms) var(--ease-out);
-  }
-}
-
-
 /* --------------------------------- and below the breakpoint, its own ground
 
    There is no field beside her on a narrow screen. The panel is taller
@@ -7676,3 +7441,192 @@ body {
   }
 }
 
+
+/* ------------------------------------------------- the hero becomes a split
+
+   Her on the left, the words beside her on paper. Every version before
+   this one was a single full-bleed photograph with type laid over it, so
+   every frame swap meant hunting for somewhere on the picture quiet
+   enough to take words, and three frames running there was nowhere good.
+   The photograph takes the left of the frame instead and the copy sits on
+   the page's own ground, which is the one surface that does not change
+   when the picture does.
+
+   The panel carries no background of its own and the shot sits at a
+   negative z-index, so it paints behind the panel and the body's paper
+   shows through wherever the shot is not. Insetting the shot from the
+   right is therefore the whole mechanism: no second element, no overlay,
+   no change to the markup.
+
+   Below the breakpoint there is only room for one column, so the phone and
+   the tablet keep the full-bleed picture with the copy over it. */
+
+@media (min-width: 900px) {
+  /* Height-constrained in a column this narrow, so the y is spare and the
+     x is what matters: she is centred in this frame. */
+  .panel[data-size="hero"] {
+    --hero-pos: 50% 8%;
+    /* The left padding clears the photograph and adds the gutter between
+       them; the wrap then centres the copy in what is left. */
+    padding-inline: calc(54% + clamp(2rem, 3.5vw, 4rem))
+      clamp(2rem, 4vw, 4.5rem);
+    padding-block: clamp(2.5rem, 6vh, 4.5rem);
+    align-content: center;
+  }
+
+  .panel[data-size="hero"] .panel-shot {
+    right: 46%;
+  }
+
+  /* Nothing over the photograph, because nothing is on it. */
+  .panel[data-size="hero"] .panel-shot::after {
+    background: none;
+  }
+
+  /* The wrap centres itself in the padded box, which is now the paper
+     side, so the overrides the full-bleed layouts needed all come off. */
+  .panel[data-size="hero"] .hero-min {
+    width: min(100%, 34rem);
+    max-width: none;
+    margin-inline: auto;
+    justify-self: stretch;
+    grid-template-columns: minmax(0, 100%);
+    justify-items: start;
+  }
+
+  /* On paper, so ink, and no shadow: a drop shadow under ink type on white
+     reads as a printing fault. The site accent needs no darkening here
+     either, because paper is a known ground rather than a photograph. */
+  .panel[data-size="hero"] .hero-min .hero-punch {
+    color: var(--color-ink);
+    text-shadow: none;
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-big {
+    font-size: clamp(2.4rem, 4.4vw, 3.9rem);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow {
+    width: fit-content;
+    color: var(--color-accent);
+  }
+
+  .panel[data-size="hero"] .hero-min .hero-punch .punch-eyebrow::before {
+    background: var(--color-accent);
+  }
+
+  .panel[data-size="hero"] .panel-body .hero-punch .hl {
+    color: var(--color-accent);
+  }
+
+  /* An older rule runs the foot 128px wider than its column, to reach a
+     panel edge the copy no longer sits against. */
+  .panel[data-size="hero"] .hero-foot {
+    width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+    row-gap: var(--space-sm);
+    justify-content: space-between;
+    align-items: flex-end;
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-left: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  /* No frost. It was there to lift small type off a lit ridge, and the
+     ridge is on the other side of the frame now. The site's own quiet
+     tint and the accent rule are enough on paper. */
+  .panel[data-size="hero"] .hero-chip {
+    min-width: 0;
+    background: var(--color-paper-2);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    border-left: 3px solid var(--color-accent);
+    box-shadow: none;
+    padding: var(--space-sm) var(--space-md) var(--space-xs);
+  }
+
+  .panel[data-size="hero"] .hero-chip .hero-cred {
+    color: var(--color-ink);
+  }
+
+  .panel[data-size="hero"] .hero-chip .hero-cred b,
+  .panel[data-size="hero"] .hero-chip .hero-tag,
+  .panel[data-size="hero"] .cred-kicker {
+    color: var(--color-accent);
+  }
+
+  .panel[data-size="hero"] .cred-caret {
+    background: var(--color-accent);
+  }
+
+  .panel[data-size="hero"] .hero-record {
+    color: var(--color-ink);
+    border-bottom-color: oklch(24% 0.035 255 / 0.28);
+    background: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    text-shadow: none;
+    padding: 0 0 0.35rem;
+  }
+
+  .panel[data-size="hero"] .hero-record:hover,
+  .panel[data-size="hero"] .hero-record:focus-visible {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    background: none;
+  }
+
+  /* The bar goes solid. It was transparent because a photograph ran under
+     the whole width of it; now half of it would be over paper and half
+     over the picture, which reads as an accident rather than a device.
+     Solid also ends the crowding for good: the photograph starts below
+     the bar instead of behind it, so no future frame can put her head in
+     it. index.html is the only page that sets data-glass. */
+  .nav[data-glass="true"]:not([data-scrolled="true"]) {
+    background: var(--color-paper);
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .wordmark,
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-toggle {
+    color: var(--color-ink);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a {
+    color: var(--color-ink-2);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links a:hover,
+  .nav[data-glass="true"]:not([data-scrolled="true"])
+    .nav-links a[aria-current="page"] {
+    color: var(--color-accent);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"]) .nav-links .nav-work {
+    color: var(--color-ink);
+    border-color: oklch(24% 0.035 255 / 0.4);
+  }
+
+  .nav[data-glass="true"]:not([data-scrolled="true"])
+    .nav-links .nav-work:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: oklch(24% 0.035 255 / 0.05);
+  }
+
+  /* The coordinate rail is fixed and ink-coloured. It now lands on the
+     paper side of the hero, beside the words, reading as debris. It waits
+     for the page instead, and the bar already knows whether the hero is
+     under it. */
+  .nav[data-glass="true"]:not([data-scrolled="true"]) ~ .lat-rail {
+    opacity: 0;
+  }
+
+  .lat-rail {
+    transition: opacity var(--dur-mid, 320ms) var(--ease-out);
+  }
+}
