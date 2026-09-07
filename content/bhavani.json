@@ -293,7 +293,7 @@
     "timeline": {
       "heading": "Scroll through the years that shaped the journey",
       "aheadNote": "Still to come",
-      "sourceNote": "Rewritten 7 Sep 2026 from her own document, My Journey: From Kodagu to the World, which supplied the page name, the standfirst, this heading and a write-up for every year from 1995 to 2026. Three changes were made on the way in. Em dashes were removed on instruction, by rewriting the sentence rather than repunctuating it. Her first person became the page’s third, which is the same normalisation her taglines went through on 31 Aug and keeps one page from sounding like a different writer. And detail already sourced here was kept and written around rather than over: the document says two bronzes where this file has the 5 km and the 10 km, and a hat-trick where this file also carries Schuchinsk and the December block in Europe. Where the document and the page disagreed on a fact, the document was followed and the disagreement recorded in withheld. Two taglines on the track moved with it: 2015 takes the document’s name for the camp, and 2016 was reworded so it no longer repeats the heading under it word for word. 2027 onwards is a plan rather than a record, is not in the document, and is untouched.",
+      "sourceNote": "Rewritten 7 Sep 2026 from her own document, My Journey: From Kodagu to the World, which supplied the page name, the standfirst, this heading and a write-up for every year from 1995 to 2026. Three changes were made on the way in. Em dashes were removed on instruction, by rewriting the sentence rather than repunctuating it. Her first person became the page’s third, which is the same normalisation her taglines went through on 31 Aug and keeps one page from sounding like a different writer. And detail already sourced here was kept and written around rather than over: the document says two bronzes where this file has the 5 km and the 10 km, and a hat-trick where this file also carries Schuchinsk and the December block in Europe. Where the document and the page disagreed on a fact, the document was followed and the disagreement recorded in withheld. Every tagline on the track was then read back against its own year in the document. Thirteen already said something the document says for that year and were kept, because they name venues, medals and debuts that its headings do not. Three moved: 2015 takes the document’s name for the camp, and 2014 and 2016 are rewritten from their own paragraphs, which is where the Basic Mountaineering Course, Mount Rudugaira and the Advanced Mountaineering Course come from. 2027 onwards is a plan rather than a record, is not in the document, and is untouched.",
       "years": [
         {
           "year": "1995",
@@ -317,7 +317,7 @@
         },
         {
           "year": "2014",
-          "line": "Started mountaineering",
+          "line": "Basic Mountaineering Course · Mount Rudugaira",
           "title": "The mountains came first",
           "place": "Manali and Uttarakhand",
           "detail": "Yeh Jawaani Hai Deewani had put the Himalaya in her head long before the NCC gave her a way to get there. A mountaineering camp in Manali, the Basic Mountaineering Course at ABVIMAS, and then a first expedition, to Mount Rudugaira in Uttarakhand at 5,819 m.",
@@ -338,7 +338,7 @@
         },
         {
           "year": "2016",
-          "line": "Marched at the Republic Day parade",
+          "line": "Republic Day parade · Advanced Mountaineering Course",
           "title": "Republic Day Parade, Delhi",
           "place": "Rajpath, New Delhi",
           "detail": "She marched with the Karnataka and Goa Directorate at the Republic Day Parade in Delhi. The same year she completed her Advanced Mountaineering Course and went a step further into the mountains.",
