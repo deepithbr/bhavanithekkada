@@ -408,6 +408,28 @@ def media_strip(c, img) -> str:
 </section>"""
 
 
+def partner_mark(p, cls="backer-mark") -> str:
+    """One partner's mark, or their name set in type if it has not landed.
+
+    The content file has always said each entry "falls back to the name
+    set in type until its artwork is present". Nothing implemented it:
+    all three call sites filtered on whether the file names a logo, which
+    is a string, not on whether that logo exists, which is a file. So a
+    partner could be added only after their artwork, and naming one first
+    published a broken image.
+
+    The check is the file. The fallback holds the same box at the same
+    height, so a mark arriving later moves nothing around it.
+    """
+    logo = p.get("logo")
+    if logo and (ROOT / "assets" / "img" / "partners" / logo).exists():
+        inner = (f'<img src="../assets/img/partners/{e(logo)}" '
+                 f'alt="{e(p["name"])}" loading="lazy" decoding="async">')
+    else:
+        inner = f'<span class="backer-type">{e(p["name"])}</span>'
+    return f'<span class="{cls}">{inner}</span>'
+
+
 def backing(c) -> str:
     """The wrap-up: one centred line, three marks, one way through.
 
@@ -418,15 +440,10 @@ def backing(c) -> str:
     Only marks with written permission on file appear. Permission was
     confirmed on 11 Aug 2026 and is recorded in the content file."""
     cur = c["partnership"].get("current") or {}
-    rows = [p for p in cur.get("list", []) if p.get("logo")]
+    rows = cur.get("list", [])
     if not rows:
         return ""
-    marks = "".join(
-        f'<span class="backer-mark">'
-        f'<img src="../assets/img/partners/{e(p["logo"])}" '
-        f'alt="{e(p["name"])}" loading="lazy" decoding="async"></span>'
-        for p in rows
-    )
+    marks = "".join(partner_mark(p) for p in rows)
     return f"""
 <section class="backing" id="backing" data-ground="ice">
   <div class="wrap">
@@ -452,14 +469,12 @@ def sponsors(c: dict) -> str:
     confirmed on 11 Aug 2026 and is recorded in the content file.
     """
     cur = c["partnership"].get("current") or {}
-    logos = "".join(
-        f'<img src="../assets/img/partners/{e(p["logo"])}" alt="{e(p["name"])}" '
-        f'loading="lazy" decoding="async">'
-        for p in cur.get("list", [])
-        if p.get("logo")
-    )
-    if not logos:
+    rows = cur.get("list", [])
+    if not rows:
         return ""
+    # The band is marks, so a partner without artwork yet is their name in
+    # the band's own type rather than a hole in the row.
+    logos = "".join(partner_mark(p, cls="sponsor-mark") for p in rows)
     return f"""
 <aside class="sponsors" aria-label="Current support">
   <div class="wrap sponsors-inner">{logos}</div>
@@ -1887,15 +1902,16 @@ def partnership_page(c, img):
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
+    # Name, then what they are, then what they do: the client's own
+    # three lines, in their order.
     support = "".join(
         f'<article class="backer backer-row" data-rise>'
-        f'<span class="backer-mark">'
-        f'<img src="../assets/img/partners/{e(x["logo"])}" '
-        f'alt="{e(x["name"])}" loading="lazy" decoding="async"></span>'
+        f'{partner_mark(x)}'
         f'<div><h3>{e(x["name"])}</h3>'
-        f'<p>{e(x.get("role") or x.get("kind") or "")}</p></div></article>'
+        + (f'<p class="backer-kind caption">{e(x["kind"])}</p>'
+           if x.get("kind") else '')
+        + f'<p>{e(x.get("role") or "")}</p></div></article>'
         for x in (p.get("current") or {}).get("list", [])
-        if x.get("logo")
     )
     # Rights are settled before a photograph is published, here as
     # everywhere else; a category without an owned frame still lists.

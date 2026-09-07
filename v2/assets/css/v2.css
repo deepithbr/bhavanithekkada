@@ -4377,6 +4377,40 @@ body {
   object-fit: contain;
 }
 
+/* A partner whose artwork has not landed yet. Their name in the display
+   face at a mark's weight, holding the same box the image would, so the
+   row does not move when the file arrives. */
+
+.backer-type {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--color-ink-2);
+  text-align: center;
+  max-width: 14rem;
+  text-wrap: balance;
+}
+
+.backer-row .backer-type {
+  text-align: left;
+  font-size: var(--text-base);
+}
+
+/* The band is one solid colour, so a name set in it takes the band's ink
+   rather than the page's. */
+.sponsor-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sponsors .backer-type {
+  color: inherit;
+  opacity: 0.86;
+}
+
 /* The only commercial ask on the homepage, so it is a button rather
    than a caption link. A tiny underlined line in the last inch of a page
    is a footnote, and this is the whole reason a sponsor is reading. */

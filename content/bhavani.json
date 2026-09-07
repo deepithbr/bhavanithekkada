@@ -1785,23 +1785,39 @@
       "list": [
         {
           "name": "Reliance Foundation",
-          "kind": "Athlete support",
+          "kind": "Performance partner",
           "logo": "reliance-foundation.svg",
           "logoSource": "reliancefoundation.org",
-          "role": "Athlete support through their sports programme: sports psychologist, nutritionist and strength coach, and conditioning blocks in Mumbai through the Indian summer.",
-          "short": "Psychologist, nutritionist, strength coach"
+          "role": "Supporting her international skiing journey through athlete funding and access to professional performance support, including sports psychology, nutrition, and strength and conditioning.",
+          "short": "Funding and performance support"
         },
         {
           "name": "Government of Karnataka",
           "kind": "State support",
           "logo": "government-of-karnataka.png",
           "logoSource": "karnataka.gov.in",
-          "role": "State backing from her home state, the department that has recognised her results and carried her through domestic selection and the Khelo India programme.",
-          "short": "Home state and Khelo India"
+          "role": "Supporting her Olympic pathway through the Target Olympic Medal Scheme, helping towards training, coaching, nutrition, equipment and competition.",
+          "short": "Target Olympic Medal Scheme"
+        },
+        {
+          "name": "Snow Farm, New Zealand",
+          "kind": "Training partner",
+          "logo": "snow-farm-new-zealand.png",
+          "logoSource": "Supplied by the client, 7 Sep 2026",
+          "role": "Supporting her training and competition in New Zealand through access to its cross-country skiing community, training environment and race opportunities.",
+          "short": "Training base in New Zealand"
         }
       ],
-      "logoNote": "Permission to use both marks confirmed by the athlete, 11 Aug 2026. Each entry falls back to the name set in type until its artwork is present.",
-      "sourceRef": "athlete-brief"
+      "logoNote": "Permission to use the Reliance Foundation and Government of Karnataka marks confirmed by the athlete, 11 Aug 2026. The Snow Farm mark was sent by the client on 7 Sep 2026 and carries no written permission of its own yet. Each entry falls back to its name set in type until its artwork is present in assets/img/partners, which the builder decides by looking for the file rather than by trusting this record.",
+      "sourceRef": "athlete-brief",
+      "copySource": {
+        "sourceType": "client-supplied",
+        "sourceName": "Client document, Current support, 7 Sep 2026",
+        "sourceUrl": null,
+        "verified": false,
+        "needsConfirmation": false,
+        "note": "Label and paragraph for all three partners are the client’s, used as sent apart from two changes. The Reliance sentence ended on \"strength & conditioning and performance support\", repeating the \"professional performance support\" it had already offered, so the repeat is gone and the ampersand is an and. And her first person reads as third, as everywhere else on the site."
+      }
     },
     "openTo": [
       {
@@ -2048,6 +2064,12 @@
       "claim": "Journey page rewritten from her document, six facts changed",
       "origin": "Client document, My Journey: From Kodagu to the World, received 7 Sep 2026",
       "why": "The document disagrees with what this file already said, and it was followed each time, so each one is worth a second pair of eyes before launch. 2014: the document has the Basic Mountaineering Course at ABVIMAS and a first expedition to Mount Rudugaira, where the page had a Grade A adventure course at ABVIMAS and Special Basic Mountaineering at HMI Darjeeling. 2015: the camp is named as the All India NCC Air Wing Camp, and a first flight is added. 2016: an Advanced Mountaineering Course is added. 2017: two years as a guest instructor at HMI, where the page said one. 2019: the advanced alpine course at IISM Gulmarg moves here from 2018. 2026: 21 km at the Merino Muster with a podium in her age category, which is a new result and is not in the results table. Also new and unsourced elsewhere: leaving her job in 2022 and training in Norway, and the spelling Peroor for the village, which the page had as Perur.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "Snow Farm, New Zealand as a training partner, and its mark",
+      "origin": "Client message with artwork, 7 Sep 2026",
+      "why": "Published on the client’s word. The other two marks have written permission from the athlete on file from 11 Aug; this one does not, and a partner logo is the one asset on the site where using it without clearance is a trademark question rather than a provenance one. Confirm with Snow Farm before launch, and ask for a transparent version while doing it: the file sent is a white wordmark on a solid blue field, which will sit as a blue block between a transparent SVG and a crest in the homepage band.",
       "status": "published-client-asserted"
     }
   ],
