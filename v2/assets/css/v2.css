@@ -4375,6 +4375,12 @@ body {
   width: auto;
   height: auto;
   object-fit: contain;
+  /* Two of the three marks are transparent and this does nothing to
+     them. The third is a white wordmark on a solid field, which its
+     owner supplies that way, and on a pale ground a hard-cornered block
+     of colour reads as an image that failed to cut out. A small radius
+     makes it a tile instead. */
+  border-radius: var(--radius-sm, 0.35rem);
 }
 
 /* A partner whose artwork has not landed yet. Their name in the display
