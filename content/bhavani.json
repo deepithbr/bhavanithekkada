@@ -293,7 +293,7 @@
     "timeline": {
       "heading": "Scroll through the years that shaped the journey",
       "aheadNote": "Still to come",
-      "sourceNote": "Rewritten 7 Sep 2026 from her own document, My Journey: From Kodagu to the World, which supplied the page name, the standfirst, this heading and a write-up for every year from 1995 to 2026. Each panel is her paragraph for that year and nothing else. An earlier pass kept results that were already sourced here and wrote her sentences around them, which put a Khelo India sprint time in 2026 that her document does not contain and pushed her closing line out to make room; shown the two side by side the client chose the document, so every such addition came out. Nothing left the site with them: they are all in the results table, which is where a result belongs and where it carries a source. Mount Ruapehu went too, from 2019, which came from the page’s earlier copy rather than from her. Four place captions named venues the document never does and were cleared for the same reason: Akureyri off 2022, the European meetings off 2024, Harbin and Corralco and Ruka off 2025, Gulmarg off 2026. Two things are still turned on the way in. Em dashes are removed on instruction, by rewriting the sentence rather than repunctuating it, and her first person becomes the page’s third, which is the same normalisation her taglines went through on 31 Aug and keeps one page from sounding like a different writer. Every tagline on the track was read back against its own year in the document. Thirteen already said something the document says for that year and were kept, because they name venues, medals and debuts its headings do not. Three moved: 2015 takes the document’s name for the camp, and 2014 and 2016 are rewritten from their own paragraphs. 2027 onwards is a plan rather than a record, is not in the document, and is untouched.",
+      "sourceNote": "Rewritten 7 Sep 2026 from her own document, My Journey: From Kodagu to the World, which supplied the page name, the standfirst, this heading and a write-up for every year from 1995 to 2026. Each panel is her paragraph for that year and nothing else. An earlier pass kept results that were already sourced here and wrote her sentences around them, which put a Khelo India sprint time in 2026 that her document does not contain and pushed her closing line out to make room; shown the two side by side the client chose the document, so every such addition came out. Nothing left the site with them: they are all in the results table, which is where a result belongs and where it carries a source. Mount Ruapehu went too, from 2019, which came from the page’s earlier copy rather than from her. Four place captions named venues the document never does and were cleared for the same reason: Akureyri off 2022, the European meetings off 2024, Harbin and Corralco and Ruka off 2025, Gulmarg off 2026. Two things are still turned on the way in. Em dashes are removed on instruction, by rewriting the sentence rather than repunctuating it, and her first person becomes the page’s third, which is the same normalisation her taglines went through on 31 Aug and keeps one page from sounding like a different writer. Every tagline on the track was then rewritten to one fact in one clause, between 17 and 34 characters, with no middle-dot lists, because the old set ran from 14 characters to 71 and six of the nineteen wrapped to two lines at 1440, which is what made the column read as unconsidered next to the card headings. Every fact on the track comes from this document; what the lists dropped is still in the paragraph behind the marker. Five lines echo their card heading, at 1995, 2013, 2016, 2021 and 2023, left that way on purpose because in those years her heading and the milestone are the same sentence and the scan layer is the one that has to carry it. 2027 onwards is a plan rather than a record, is not in the document, and is untouched.",
       "years": [
         {
           "year": "1995",
@@ -307,7 +307,7 @@
         },
         {
           "year": "2013",
-          "line": "Joined the NCC",
+          "line": "Joined the NCC, Mangaluru",
           "title": "Joined the NCC",
           "place": null,
           "detail": "She moved to Mangaluru to study for her bachelor’s degree at St. Agnes College. During college she volunteered to join the National Cadet Corps, a youth organisation that introduced her to discipline, adventure and opportunities far beyond the classroom.",
@@ -317,7 +317,7 @@
         },
         {
           "year": "2014",
-          "line": "Basic Mountaineering Course · Mount Rudugaira",
+          "line": "First expedition, Mount Rudugaira",
           "title": "The mountains came first",
           "place": "Manali and Uttarakhand",
           "detail": "Inspired by Yeh Jawaani Hai Deewani, she had always dreamed of seeing the Himalayas. Through the NCC she got her first opportunity to travel to Manali for a mountaineering camp. She completed her Basic Mountaineering Course at ABVIMAS and later undertook her first expedition, to Mount Rudugaira at 5,819 m in Uttarakhand.",
@@ -338,7 +338,7 @@
         },
         {
           "year": "2016",
-          "line": "Republic Day parade · Advanced Mountaineering Course",
+          "line": "Republic Day parade, Delhi",
           "title": "Republic Day Parade, Delhi",
           "place": "New Delhi",
           "detail": "She represented the Karnataka and Goa Directorate at the Republic Day Parade in Delhi. That year she also completed her Advanced Mountaineering Course, taking another step deeper into the mountains.",
@@ -349,7 +349,7 @@
         },
         {
           "year": "2017",
-          "line": "Qualified mountaineer and mountaineering instructor",
+          "line": "Method of Instruction, HMI",
           "title": "Mountaineer to instructor",
           "place": "Himalayan Mountaineering Institute, Darjeeling",
           "detail": "She completed her Method of Instruction at HMI, Darjeeling, qualifying as a mountaineering instructor. She then spent two years as a guest instructor at HMI, teaching on the same grounds where she had trained just a few years earlier.",
@@ -360,7 +360,7 @@
         },
         {
           "year": "2018",
-          "line": "Started alpine skiing · climbed Mount Elbrus",
+          "line": "First skis, and Mount Elbrus",
           "title": "Discovering alpine skiing",
           "place": "Pahalgam and Russia",
           "detail": "She decided to try skiing and completed her Basic and Intermediate Alpine Skiing courses at JIM&WS, Pahalgam. Later that year she climbed Mount Elbrus in Russia, the highest peak in Europe. Watching Marit Bjørgen at the Winter Olympics also planted her first idea of cross-country skiing.",
@@ -370,7 +370,7 @@
         },
         {
           "year": "2019",
-          "line": "International ski instructor certification · began skiing abroad",
+          "line": "Ski instructor, New Zealand",
           "title": "Taking skiing abroad",
           "place": "Gulmarg and New Zealand",
           "detail": "She completed her Advanced Alpine Skiing course at IISM, Gulmarg, before travelling to New Zealand and earning her international Alpine Ski Instructor certification. Skiing was becoming more than a profession. It was becoming her path.",
@@ -380,7 +380,7 @@
         },
         {
           "year": "2020",
-          "line": "Started cross-country skiing",
+          "line": "Khelo India debut, two bronzes",
           "title": "Finding cross-country skiing",
           "place": "Kashmir",
           "detail": "While working as an Alpine Ski Instructor at JIM&WS in Kashmir, she got her first opportunity to try cross-country skiing. She took it up competitively, making her National and Khelo India debut and winning two bronze medals.",
@@ -400,7 +400,7 @@
         },
         {
           "year": "2022",
-          "line": "FIS international competition debut",
+          "line": "First FIS starts, and Norway",
           "title": "FIS international debut",
           "place": "Norway",
           "detail": "She left her job and committed herself to skiing full-time. She travelled to Norway for training and began racing internationally in FIS competitions, marking the start of her journey on the European circuit.",
@@ -411,7 +411,7 @@
         },
         {
           "year": "2023",
-          "line": "World Championship debut",
+          "line": "World Championships, Planica",
           "title": "Her first World Championship",
           "place": "Planica, Slovenia",
           "detail": "She qualified for and competed at her first World Championships in Planica, Slovenia, stepping onto the world’s biggest stage for the first time.",
@@ -422,7 +422,7 @@
         },
         {
           "year": "2024",
-          "line": "Hat-trick of gold medals",
+          "line": "Hat-trick of Khelo India golds",
           "title": "A breakthrough year",
           "place": null,
           "detail": "She won a hat-trick of gold medals at the Khelo India Winter Games. It was a breakthrough season and the beginning of a new chapter with support from the Reliance Foundation.",
@@ -433,7 +433,7 @@
         },
         {
           "year": "2025",
-          "line": "Asian Winter Games · World Championships · World Cup debut",
+          "line": "Flag bearer, and a World Cup debut",
           "title": "Breaking new ground",
           "place": null,
           "detail": "She represented India at the Asian Winter Games, carried the Indian flag, competed at her second World Championships and made her FIS Cross-Country Ski World Cup debut, becoming the first Indian cross-country skier to race on the World Cup circuit.",
@@ -445,7 +445,7 @@
         },
         {
           "year": "2026",
-          "line": "Entered the Worldloppet ski marathon circuit",
+          "line": "First Worldloppet marathon",
           "title": "A new distance",
           "place": "New Zealand",
           "detail": "She continued competing nationally and internationally before returning to New Zealand. She entered the Worldloppet ski marathon circuit for the first time, racing 21 km at the Merino Muster and finishing on the podium in her age category. A new distance, a new challenge, and another direction in her journey.",
@@ -457,7 +457,7 @@
         },
         {
           "year": "2027",
-          "line": "World Championships, Sweden",
+          "line": "World Championships, Falun",
           "title": "World Championships, Falun",
           "place": "Falun, Sweden",
           "detail": "A third start at the Worlds, with two editions already behind her.",
@@ -469,7 +469,7 @@
         },
         {
           "year": "2028",
-          "line": "Target: Asian Winter Games and World Championship qualification",
+          "line": "The qualification season",
           "title": "Points, and the calendar",
           "place": null,
           "detail": "Race starts and FIS points under the qualification rules, the season that sets up everything after it.",
@@ -481,7 +481,7 @@
         },
         {
           "year": "2029",
-          "line": "Asian Winter Games · World Championships · Olympic qualification pathway",
+          "line": "The road to Olympic qualification",
           "title": "Almaty, then Lahti",
           "place": "Almaty and Lahti",
           "detail": "Almaty, then Lahti, and the points that decide 2030.",
@@ -493,7 +493,7 @@
         },
         {
           "year": "2030",
-          "line": "Winter Olympics, France · the dream",
+          "line": "Winter Olympics, France",
           "title": "Winter Olympics",
           "place": "La Clusaz, Haute-Savoie",
           "detail": "The reason the rest of it is planned the way it is. Cross-country at the 2030 Games is held at La Clusaz, on the Confins plateau, 1 to 17 February.",
