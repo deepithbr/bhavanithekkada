@@ -1851,15 +1851,21 @@ def partnership_page(c, img):
     # a frame. The photo-only tiles are texture and say nothing the text
     # tiles do not, so they are hidden from screen readers.
     def tile(n, a):
+        # The client set one of the four with a second paragraph, so the
+        # tile carries one when there is one rather than folding it into
+        # the first, which would have changed what they wrote.
+        copy = f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p>'
+        if a.get("body2"):
+            copy += f'<p>{e(a["body2"])}</p>'
         sl = a.get("image")
         if sl and (img.get(sl) or {}).get("rights") == "owned":
             return (f'<article class="fund fund-shot" data-rise>'
                     f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
                     f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
-                    f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>')
+                    f'{copy}</article>')
         return (f'<article class="fund" data-rise>'
                 f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
-                f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p></article>')
+                f'{copy}</article>')
 
     def plate(t):
         sl = t["slot"]
@@ -1905,7 +1911,10 @@ def partnership_page(c, img):
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
-    <div class="prose"><h2>What support funds</h2></div>
+    <div class="prose">
+      <h2>{e(p.get('fundsHeading') or 'Where your support goes')}</h2>
+      {f'<p>{e(p["fundsLede"])}</p>' if p.get('fundsLede') else ''}
+    </div>
     <div class="funds">{areas}</div>
   </div>
 </section>
