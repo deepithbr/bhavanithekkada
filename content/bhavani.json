@@ -1822,23 +1822,28 @@
     "openTo": [
       {
         "label": "Sponsorships",
-        "image": "race-worldcup"
+        "image": "race-worldcup",
+        "body": "Long-term support for training, international competition, equipment and her Olympic journey."
       },
       {
         "label": "Brand partnerships",
-        "image": "flag-harbin"
+        "image": "flag-harbin",
+        "body": "Meaningful partnerships with brands that align with sport, performance, adventure and her journey as an Indian athlete."
       },
       {
         "label": "Campaigns",
-        "image": "downhill-tuck"
+        "image": "downhill-tuck",
+        "body": "Collaborations for brand campaigns, storytelling, content and athlete-led initiatives."
       },
       {
         "label": "Product collaborations",
-        "image": "double-pole"
+        "image": "double-pole",
+        "body": "Partnerships involving products and services that genuinely support her training, racing and life as an athlete."
       },
       {
-        "label": "Athlete partnerships",
-        "image": "team-gulmarg"
+        "label": "Journey partnerships",
+        "image": "team-gulmarg",
+        "body": "Long-term collaborations that go beyond traditional sponsorship and become part of the journey towards 2030."
       }
     ],
     "tileShots": [
@@ -1859,6 +1864,22 @@
       "verified": false,
       "needsConfirmation": false,
       "note": "Heading, standfirst and all four write-ups are the client’s, used as sent apart from three changes. The em dashes in 03 became a parenthesis, because they bracketed a clause and a bracket keeps their sentence in their order where four commas would not. Specialized became specialised, this file being British throughout including their own programme in the same paragraph. And 02 keeps the second paragraph they wrote, which the other three do not have. The copy it replaced named a race week, December 2025 from Ruka to Trondheim to Davos in sixteen days, and said in so many words that every other athlete on a World Cup start list has a wax team and she does not. Neither claim is on the page any more."
+    },
+    "nextStage": {
+      "heading": "Building the next stage",
+      "body": [
+        "The support she has received has taken her to the international stage. The next step is to build the programme needed to compete at the highest level and to go after her goal of the 2030 Winter Olympics.",
+        "She is looking for partners to join her for the next stage of the journey."
+      ],
+      "label": "Open to"
+    },
+    "openToSource": {
+      "sourceType": "client-supplied",
+      "sourceName": "Client document, Building the next stage and Open to, 7 Sep 2026",
+      "sourceUrl": null,
+      "verified": false,
+      "needsConfirmation": false,
+      "note": "Both headings, the two opening paragraphs and all five write-ups are the client’s, used as sent apart from her first person reading as third, as everywhere else on the site. 05 takes her name for it, Journey partnerships, where this file had Athlete partnerships. The lede it replaced was ours: \"She is actively looking for partners in these areas for the seasons between here and 2030.\""
     }
   },
   "contact": {

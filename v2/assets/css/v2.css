@@ -5702,34 +5702,51 @@ body {
   margin-right: 0;
 }
 
-/* ---------------------- open to, in the same tile language
+/* ---------------------- open to, five extended cards
 
-   The client asked for these to read like the funded areas, only
-   simpler. Same pale plate, same numeral, same label face, and no body
-   at all: each of the five is a two-word category and needs no more.
-   The numeral comes from a counter, so the markup stays a plain list.
-   No body at all: each of the five is a two-word category. */
+   The client gave each of the five a sentence, so the tile stops being a
+   label on a picture and becomes a card: the frame it always had, and
+   the sentence underneath it on the card's own ground.
+
+   Under it, not on it, for a reason worth writing down. At the old
+   thirteen-rem track the tiles came out 224px wide, which is 176px of
+   measure, about 25 characters a line. Her longest write-up runs 121
+   characters, so it would have been five lines of small type over a
+   photograph, under a label already taking two. Twenty rem gives three
+   across in the same 1216px wrap, 389px tiles and 341px of measure,
+   about 48 characters, and the same sentence lands in three lines of ink
+   on paper.
+
+   The five level themselves. They share one grid row so every card
+   stretches to the tallest, and inside each card the copy is the
+   flexible row, so a short sentence leaves white space rather than a
+   short card. */
 
 .open-tiles {
   list-style: none;
   counter-reset: opt;
-  margin: var(--space-lg) 0 0;
+  margin: var(--space-md) 0 0;
   padding: 0;
   display: grid;
   gap: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
 }
 
-/* Five pale plates in a row read as a form field, not a page about
-   working with an athlete. Each carries a frame chosen against its own
-   category, with the label over it, which is the language the sport
-   cards and the funded tiles already use. */
 .open-tiles li {
   counter-increment: opt;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--color-paper-2);
+  overflow: hidden;
+}
+
+/* The frame, which is what the whole tile used to be. Each carries a
+   photograph chosen against its own category with the label over it,
+   which is the language the sport cards and the funded tiles use. */
+.opt-frame {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: var(--color-paper-2);
   padding: var(--space-md);
   min-height: clamp(9rem, 14vw, 12rem);
   display: grid;
@@ -5741,6 +5758,15 @@ body {
   text-indent: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink);
+}
+
+.opt-say {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--color-ink-body);
+  margin: 0;
+  padding: var(--space-sm) var(--space-md) var(--space-md);
 }
 
 .opt-shot {
@@ -5758,7 +5784,7 @@ body {
   transition: transform 700ms var(--ease-out);
 }
 
-.open-tiles li.opt-shot-tile::after {
+.opt-shot-tile .opt-frame::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -5772,11 +5798,11 @@ body {
   );
 }
 
-.open-tiles li.opt-shot-tile {
+.opt-shot-tile .opt-frame {
   color: var(--color-ink-on-deep);
 }
 
-.open-tiles li.opt-shot-tile:hover .opt-shot img {
+.opt-shot-tile:hover .opt-shot img {
   transform: scale(1.05);
 }
 
@@ -5786,7 +5812,7 @@ body {
   }
 }
 
-.open-tiles li::before {
+.opt-frame::before {
   content: counter(opt, decimal-leading-zero);
   position: absolute;
   top: var(--space-sm);
@@ -5801,9 +5827,45 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.open-tiles li.opt-shot-tile::before {
+.opt-shot-tile .opt-frame::before {
   color: oklch(88% 0.09 245);
   opacity: 0.85;
+}
+
+/* Two tracks leave the fifth card alone beside a hole, so it takes the
+   row. Same answer as the desktop rule below, which supersedes this one
+   above 62rem, and a no-op in the single column below 40rem. */
+@media (max-width: 61.99rem) {
+  .open-tiles li:nth-child(odd):last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Five cards on three tracks leave a hole beside the last two, which
+   reads as a row that ran out rather than a grid that was designed. Six
+   tracks, cards spanning two and the final pair spanning three, fills
+   the second row exactly. The selector fires only on a list of exactly
+   five, so a sixth category drops straight back to three and three. */
+@media (min-width: 62rem) {
+  .open-tiles {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .open-tiles li {
+    grid-column: span 2;
+  }
+
+  .open-tiles li:nth-child(4):nth-last-child(2),
+  .open-tiles li:nth-child(5):nth-last-child(1) {
+    grid-column: span 3;
+  }
+}
+
+/* Her second heading, demoted to a caption so the section can open on
+   the first one instead of on a two-word label. */
+.open-label {
+  margin: var(--space-xl) 0 0;
+  color: var(--color-ink-3);
 }
 
 /* ---------------------- touch targets

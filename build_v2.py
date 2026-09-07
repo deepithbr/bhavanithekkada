@@ -1916,14 +1916,26 @@ def partnership_page(c, img):
     # Rights are settled before a photograph is published, here as
     # everywhere else; a category without an owned frame still lists.
     def opt(x):
+        # The frame is what it always was: photograph, numeral, label over
+        # it. The sentence the client wrote for each one goes underneath
+        # it rather than on it, because 341px of measure on paper carries
+        # a 121-character line in three and 176px over a photograph
+        # carries it in five.
         sl = x.get("image")
         shot = ""
         if sl and (img.get(sl) or {}).get("rights") == "owned":
             shot = (f'<span class="opt-shot">{img.tag(sl, OPT_SIZES)}</span>')
         cls = " opt-shot-tile" if shot else ""
-        return f'<li class="opt{cls}">{shot}<span>{e(x["label"])}</span></li>'
+        say = (f'<p class="opt-say">{e(x["body"])}</p>'
+               if x.get("body") else "")
+        return (f'<li class="opt{cls}">'
+                f'<span class="opt-frame">{shot}'
+                f'<span class="opt-label">{e(x["label"])}</span></span>'
+                f'{say}</li>')
 
     open_to = "".join(opt(x) for x in p.get("openTo", []))
+    ns = p.get("nextStage") or {}
+    stage_copy = "".join(f'<p>{e(t)}</p>' for t in ns.get("body", []))
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
@@ -1943,10 +1955,10 @@ def partnership_page(c, img):
 <section class="prose-fold" id="open">
   <div class="wrap">
     <div class="prose">
-      <h2>Open to</h2>
-      <p>She is actively looking for partners in these areas for the
-      seasons between here and 2030.</p>
+      <h2>{e(ns.get('heading') or 'Open to')}</h2>
+      {stage_copy}
     </div>
+    <p class="caption open-label">{e(ns.get('label') or 'Open to')}</p>
     <ol class="open-tiles">{open_to}</ol>
   </div>
 </section>
