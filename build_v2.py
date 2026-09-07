@@ -1523,7 +1523,7 @@ def journey_page(c, img):
         + "</div>"
     )
     return subpage(c, img, c["sections"]["journey"]["title"],
-                   "A journey across continents, seasons, and start lines.", body,
+                   c["sections"]["journey"]["lede"], body,
                    shot="ridge-sunrise",
                    current="journey.html", pos="50% 62%", og="journey")
 

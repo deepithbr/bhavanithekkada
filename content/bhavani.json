@@ -166,8 +166,8 @@
   "sections": {
     "journey": {
       "index": "01",
-      "title": "Kodagu to France",
-      "lede": "It begins in a district that has never had snow and is pointed at a start line in the French Alps.",
+      "title": "From Kodagu to the World",
+      "lede": "A journey across borders, disciplines, and starting lines.",
       "hinge": "All the records, on the record",
       "hingeNote": "Eleven starts, every one of them scored and published by FIS."
     },
@@ -291,16 +291,16 @@
       }
     ],
     "timeline": {
-      "heading": "Scroll through the years that shaped her journey",
+      "heading": "Scroll through the years that shaped the journey",
       "aheadNote": "Still to come",
-      "sourceNote": "Taglines supplied by the client, 31 Aug 2026, and used as sent apart from four normalisations: her Title Case to sentence case, her first person to the page's third, her bullet to the site's middle dot, and Coorg to Kodagu, which is the spelling the rest of the site and the page title use. The longer write-ups behind each year are still assembled from the beats, milestones and results rows in this file.",
+      "sourceNote": "Rewritten 7 Sep 2026 from her own document, My Journey: From Kodagu to the World, which supplied the page name, the standfirst, this heading and a write-up for every year from 1995 to 2026. Three changes were made on the way in. Em dashes were removed on instruction, by rewriting the sentence rather than repunctuating it. Her first person became the page’s third, which is the same normalisation her taglines went through on 31 Aug and keeps one page from sounding like a different writer. And detail already sourced here was kept and written around rather than over: the document says two bronzes where this file has the 5 km and the 10 km, and a hat-trick where this file also carries Schuchinsk and the December block in Europe. Where the document and the page disagreed on a fact, the document was followed and the disagreement recorded in withheld. Two taglines on the track moved with it: 2015 takes the document’s name for the camp, and 2016 was reworded so it no longer repeats the heading under it word for word. 2027 onwards is a plan rather than a record, is not in the document, and is untouched.",
       "years": [
         {
           "year": "1995",
           "line": "Born in Kodagu, Karnataka",
-          "title": "Perur, near Napoklu",
+          "title": "Born in Kodagu",
           "place": "Kodagu, Karnataka",
-          "detail": "Born 14 May 1995 in the coffee-growing hills of Kodagu. It rains hard there for four months a year and it has never snowed. The nearest snow sits two thousand kilometres north and four thousand metres up.",
+          "detail": "Born on 14 May 1995 in Peroor, near Napoklu, in the coffee-growing hills of Kodagu. She grew up among estates, four months of monsoon rain a year and mountains with no snow on them. The nearest snow was thousands of kilometres away.",
           "image": "family-kodava",
           "kind": "past",
           "figure": "walk"
@@ -310,7 +310,7 @@
           "line": "Joined the NCC",
           "title": "Joined the NCC",
           "place": null,
-          "detail": "The National Cadet Corps, two years before the All India camp and three before the Republic Day contingent.",
+          "detail": "She moved to Mangaluru to read for her degree at St. Agnes College, and volunteered for the National Cadet Corps while she was there. It handed her discipline and adventure, and a set of doors that led a long way past the classroom.",
           "image": null,
           "kind": "past",
           "figure": "cadet"
@@ -319,18 +319,18 @@
           "year": "2014",
           "line": "Started mountaineering",
           "title": "The mountains came first",
-          "place": "Manali and Darjeeling",
-          "detail": "There was no ski club to come up through, so the mountains did that job. A Grade A adventure course at ABVIMAS, then Special Basic Mountaineering at the Himalayan Mountaineering Institute in Darjeeling.",
+          "place": "Manali and Uttarakhand",
+          "detail": "Yeh Jawaani Hai Deewani had put the Himalaya in her head long before the NCC gave her a way to get there. A mountaineering camp in Manali, the Basic Mountaineering Course at ABVIMAS, and then a first expedition, to Mount Rudugaira in Uttarakhand at 5,819 m.",
           "image": "course-glacier",
           "kind": "past",
           "figure": "climb"
         },
         {
           "year": "2015",
-          "line": "All India NCC/VSC camp",
-          "title": "Through the NCC",
+          "line": "All India NCC Air Wing camp",
+          "title": "Beyond the classroom",
           "place": "India",
-          "detail": "The camp that put her in front of the selectors for the Republic Day contingent the following January.",
+          "detail": "She represented the Karnataka and Goa Directorate at the All India NCC Air Wing Camp. The camp opened aviation up to her, including her first time flying an aircraft, and sharpened the discipline she had gone there for.",
           "image": null,
           "kind": "past",
           "figure": "cadet",
@@ -338,10 +338,10 @@
         },
         {
           "year": "2016",
-          "line": "Republic Day parade, Delhi",
-          "title": "The Republic Day Parade",
+          "line": "Marched at the Republic Day parade",
+          "title": "Republic Day Parade, Delhi",
           "place": "Rajpath, New Delhi",
-          "detail": "Selected for the NCC contingent at the Republic Day Parade, a year after the All India camp.",
+          "detail": "She marched with the Karnataka and Goa Directorate at the Republic Day Parade in Delhi. The same year she completed her Advanced Mountaineering Course and went a step further into the mountains.",
           "image": "republic-day-2016",
           "kind": "past",
           "figure": "cadet",
@@ -350,9 +350,9 @@
         {
           "year": "2017",
           "line": "Qualified mountaineer and mountaineering instructor",
-          "title": "Instructing at HMI",
+          "title": "Mountaineer to instructor",
           "place": "Himalayan Mountaineering Institute, Darjeeling",
-          "detail": "Method of Instruction at HMI Darjeeling, then a year there as a guest instructor. Three years after her first course she was teaching the same ground.",
+          "detail": "She completed her Method of Instruction at HMI in Darjeeling and qualified as a mountaineering instructor. Two years as a guest instructor there followed, teaching on the same ground where she had trained a few years earlier.",
           "image": "summit-solo",
           "kind": "past",
           "figure": "climb",
@@ -361,9 +361,9 @@
         {
           "year": "2018",
           "line": "Started alpine skiing · climbed Mount Elbrus",
-          "title": "Elbrus, and the start of skiing",
+          "title": "Discovering alpine skiing",
           "place": "Kashmir and the Caucasus",
-          "detail": "Basic and intermediate skiing at the Jawaharlal Institute of Mountaineering, advanced skiing at the Indian Institute of Skiing and Mountaineering in Kashmir. The same year she climbed Mount Elbrus, at 5,642 m the highest summit in Europe.",
+          "detail": "She decided to try skiing, and took her basic and intermediate alpine courses at the Jawaharlal Institute of Mountaineering and Winter Sports in Pahalgam. Later that year she climbed Mount Elbrus in Russia, at 5,642 m the highest summit in Europe. Watching Marit Bjørgen at the Winter Olympics that February planted the first idea of cross-country.",
           "image": "first-skis-2018",
           "kind": "past",
           "figure": "alpine"
@@ -371,9 +371,9 @@
         {
           "year": "2019",
           "line": "International ski instructor certification · began skiing abroad",
-          "title": "Ruapehu",
-          "place": "Mt. Ruapehu, New Zealand",
-          "detail": "An international snowsports instructor certification taken on an active volcano with a ski field on it, and the first qualification she earned outside India. A season skiing abroad followed.",
+          "title": "Taking skiing abroad",
+          "place": "Gulmarg and New Zealand",
+          "detail": "Her advanced alpine course came at the Indian Institute of Skiing and Mountaineering in Gulmarg. Then New Zealand, and an international alpine ski instructor certification earned on Mount Ruapehu, an active volcano with a ski field on it. Skiing was turning from a profession into a direction.",
           "image": "ruapehu",
           "kind": "past",
           "figure": "alpine"
@@ -381,9 +381,9 @@
         {
           "year": "2020",
           "line": "Started cross-country skiing",
-          "title": "The switch",
+          "title": "Finding cross-country skiing",
           "place": "Gulmarg, Jammu and Kashmir",
-          "detail": "Cross-country replaced alpine. Two bronzes at the Khelo India Winter Games that season, over 5 km and 10 km.",
+          "detail": "She was working as an alpine ski instructor at the Jawaharlal Institute in Kashmir when she got her first go on cross-country skis. She took it up competitively straight away, made her national and Khelo India debut, and came home with two bronzes, over 5 km and over 10 km.",
           "image": "double-pole",
           "kind": "past",
           "figure": "ski"
@@ -391,9 +391,9 @@
         {
           "year": "2021",
           "line": "First national gold medal",
-          "title": "Khelo India gold",
+          "title": "Her first national gold",
           "place": "Gulmarg, Jammu and Kashmir",
-          "detail": "Gold over 1.4 km and bronze over 5 km at the Khelo India Winter Games, in her second season on cross-country skis.",
+          "detail": "Still teaching alpine, she went back to the Khelo India Winter Games and won her first national gold in cross-country, over 1.4 km, with a bronze over 5 km behind it. That was when the sport began to look like a future rather than a season.",
           "image": "contingent-2021",
           "kind": "past",
           "figure": "ski"
@@ -401,9 +401,9 @@
         {
           "year": "2022",
           "line": "FIS international competition debut",
-          "title": "Akureyri",
-          "place": "Akureyri, Iceland",
-          "detail": "Her first internationally scored starts, in the sprint and the 10 km interval start, in January. Seventh in sprint qualification and sixth over the distance. At home the same season: golds and silvers across the national cross-country and biathlon championships.",
+          "title": "FIS international debut",
+          "place": "Norway and Akureyri, Iceland",
+          "detail": "She left her job and gave the sport all of it. Training in Norway, then her first internationally scored starts, at Akureyri in January: a sprint and a 10 km interval start, seventh in sprint qualification and sixth over the distance. At home the same season came golds and silvers across the national cross-country and biathlon championships.",
           "image": "nordic-podium",
           "kind": "past",
           "figure": "ski",
@@ -412,9 +412,9 @@
         {
           "year": "2023",
           "line": "World Championship debut",
-          "title": "Nordic World Ski Championships",
+          "title": "Her first World Championship",
           "place": "Planica, Slovenia",
-          "detail": "A first Worlds, in the 10 km interval start. Earlier that season she returned to Akureyri and finished fourth in both the sprint and the interval start.",
+          "detail": "She qualified for the Nordic World Ski Championships at Planica and raced the 10 km interval start, her first time on the biggest stage the sport has. Earlier that season she had gone back to Akureyri and finished fourth in both the sprint and the interval start.",
           "image": "race-planica-elbrus",
           "kind": "past",
           "figure": "ski",
@@ -423,9 +423,9 @@
         {
           "year": "2024",
           "line": "Hat-trick of gold medals",
-          "title": "Kazakhstan, then Scandinavia",
+          "title": "A breakthrough year",
           "place": "Schuchinsk, Idre, Seefeld, Lygna",
-          "detail": "Continental cup racing at Schuchinsk in March, then three FIS meetings across Sweden, Austria and Norway in December: the first sustained block of racing on European snow. Three golds at the Khelo India Winter Games at home.",
+          "detail": "A hat-trick of golds at the Khelo India Winter Games, and the first sustained block of racing on European snow: Schuchinsk in March, then three FIS meetings across Sweden, Austria and Norway in December. It was also the start of a new chapter, with support from the Reliance Foundation behind her.",
           "image": "khelo-ladakh-skis",
           "kind": "past",
           "figure": "ski",
@@ -434,9 +434,9 @@
         {
           "year": "2025",
           "line": "Asian Winter Games · World Championships · World Cup debut",
-          "title": "The season it turned",
+          "title": "Breaking new ground",
           "place": "Harbin, Trondheim, Corralco, Ruka",
-          "detail": "India's flag bearer at the Asian Winter Games opening ceremony in Harbin, and a sprint quarter-finalist there. Two bronzes on consecutive days at Corralco in Chile, reported in India as the first international cross-country medals won by an Indian woman. Then a first World Cup start at Ruka, forty kilometres short of the Arctic Circle.",
+          "detail": "She carried the Indian flag at the Asian Winter Games in Harbin and made the sprint quarter-finals there. Two bronzes on consecutive days at Corralco in Chile followed, reported in India as the first international cross-country medals won by an Indian woman. Then a second World Championships, and a first World Cup start at Ruka, forty kilometres short of the Arctic Circle: the first Indian cross-country skier to race the circuit.",
           "image": "chile-corralco",
           "kind": "past",
           "figure": "ski",
@@ -446,9 +446,9 @@
         {
           "year": "2026",
           "line": "Entered the Worldloppet ski marathon circuit",
-          "title": "The Worldloppet circuit",
-          "place": "Gulmarg, Jammu and Kashmir",
-          "detail": "Her first season on the Worldloppet marathon circuit. At home the same season: gold in the 1.5 km sprint at the Khelo India Winter Games in 4:13.91, with bronzes over 10 km and 15 km.",
+          "title": "A new distance",
+          "place": "New Zealand and Gulmarg",
+          "detail": "She kept racing at home and abroad, then went back to New Zealand for her first Worldloppet marathon. She covered 21 km at the Merino Muster and finished on the podium in her age category. At the Khelo India Winter Games the same season she took gold in the 1.5 km sprint in 4:13.91, with bronzes over 10 km and over 15 km.",
           "image": "start-line-gulmarg",
           "kind": "past",
           "figure": "ski",
@@ -493,7 +493,7 @@
         },
         {
           "year": "2030",
-          "line": "Winter Olympics, France — the dream",
+          "line": "Winter Olympics, France · the dream",
           "title": "Winter Olympics",
           "place": "La Clusaz, Haute-Savoie",
           "detail": "The reason the rest of it is planned the way it is. Cross-country at the 2030 Games is held at La Clusaz, on the Confins plateau, 1 to 17 February.",
@@ -2031,6 +2031,12 @@
       "claim": "Khelo India Winter Games 2025, gold and silver",
       "origin": "Client message, 7 Sep 2026",
       "why": "Given as a line with no distances, no venue and no source. Published against nothing. Two points to settle: which two events they were, and the year, because the results table already carries these Games for 2020, 2021, 2023, 2024 and 2026 and has no 2025 edition in it. Her own statement about her own record, so it is published and marked rather than held back.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "Journey page rewritten from her document, six facts changed",
+      "origin": "Client document, My Journey: From Kodagu to the World, received 7 Sep 2026",
+      "why": "The document disagrees with what this file already said, and it was followed each time, so each one is worth a second pair of eyes before launch. 2014: the document has the Basic Mountaineering Course at ABVIMAS and a first expedition to Mount Rudugaira, where the page had a Grade A adventure course at ABVIMAS and Special Basic Mountaineering at HMI Darjeeling. 2015: the camp is named as the All India NCC Air Wing Camp, and a first flight is added. 2016: an Advanced Mountaineering Course is added. 2017: two years as a guest instructor at HMI, where the page said one. 2019: the advanced alpine course at IISM Gulmarg moves here from 2018. 2026: 21 km at the Merino Muster with a podium in her age category, which is a new result and is not in the results table. Also new and unsourced elsewhere: leaving her job in 2022 and training in Norway, and the spelling Peroor for the village, which the page had as Perur.",
       "status": "published-client-asserted"
     }
   ],

@@ -6716,7 +6716,7 @@ body {
 .jr-pop {
   display: flex;
   flex-direction: column;
-  max-height: min(32rem, 76vh);
+  max-height: min(40rem, 76vh);
   background: var(--color-paper);
   border: var(--rule-hair) solid var(--color-line);
   border-left: 3px solid var(--color-accent);
@@ -7376,9 +7376,12 @@ body {
   }
 
   /* The panel is capped against the viewport, so it never needs to
-     scroll on a desktop unless the write-up is a long one. */
+     scroll on a desktop unless the write-up is a long one. 40rem rather
+     than 32 since 7 Sep: the write-ups came from her own document and
+     are about a hundred characters longer each, and at the old cap
+     seven of the fifteen panels scrolled inside themselves. */
   .jr-pop {
-    max-height: min(32rem, 76vh);
+    max-height: min(40rem, 76vh);
   }
 
   .js .jr-node .jr-hit,
