@@ -1206,6 +1206,34 @@
         "sourceRef": "awg-wikipedia"
       },
       {
+        "id": "r35",
+        "year": "2025",
+        "event": "Khelo India Winter Games",
+        "detail": "Cross-country skiing",
+        "place": "India",
+        "medal": "gold",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "kiwg-2025"
+      },
+      {
+        "id": "r36",
+        "year": "2025",
+        "event": "Khelo India Winter Games",
+        "detail": "Cross-country skiing",
+        "place": "India",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "khelo-india"
+        ],
+        "featured": false,
+        "sourceRef": "kiwg-2025"
+      },
+      {
         "id": "r14",
         "year": "2024",
         "event": "Eastern Europe Cup",
@@ -1897,6 +1925,15 @@
       "needsConfirmation": false,
       "lastChecked": "2026-08-12",
       "note": "Reports her as the first Indian woman to medal in a FIS cross-country event, for the bronze at Corralco. Independent of the AP report, which carries the same characterisation."
+    },
+    "kiwg-2025": {
+      "sourceType": "client-supplied",
+      "sourceName": "Client message, 7 Sep 2026",
+      "sourceUrl": null,
+      "verified": false,
+      "needsConfirmation": true,
+      "lastChecked": "2026-09-07",
+      "note": "Two Khelo India Winter Games medals in 2025, a gold and a silver, given as a line without distances or a venue. Nothing published has been checked against it. Confirm the events and the venue, and confirm the year: the results table already runs 2020, 2021, 2023, 2024 and 2026 for these Games with no 2025 edition in it."
     }
   },
   "withheld": [
@@ -1988,6 +2025,12 @@
       "claim": "The home hero photograph",
       "origin": "Client messages, 2 and 3 Sep and 7 Sep 2026, twelve generated frames in all, the last being 'ChatGPT Image Sep 7, 2026, 09_08_24 AM.png'",
       "why": "None of the twelve is a photograph. All are generated pictures of her, and the last eleven carry signed C2PA content credentials naming the OpenAI Media Service API, so the files themselves record it. Most show a legible FISCHER mark on the equipment, which puts sponsor branding on a real athlete in a scene that did not happen, on a site whose partnerships page names real supporters. hero-lift is the one now in use; the other eleven are kept in the library. All twelve are filed in images.json as rights:\"ai-generated\" rather than under her own archive. Clear the equipment marks and the use of a generated likeness before launch.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "Khelo India Winter Games 2025, gold and silver",
+      "origin": "Client message, 7 Sep 2026",
+      "why": "Given as a line with no distances, no venue and no source. Published against nothing. Two points to settle: which two events they were, and the year, because the results table already carries these Games for 2020, 2021, 2023, 2024 and 2026 and has no 2025 edition in it. Her own statement about her own record, so it is published and marked rather than held back.",
       "status": "published-client-asserted"
     }
   ],
