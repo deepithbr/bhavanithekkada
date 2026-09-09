@@ -403,7 +403,7 @@
       ],
       "ratio": 1.0,
       "alt": "Six skiing medals hanging side by side on printed lanyards reading National Cross Country Skiing.",
-      "credit": "Client-supplied portfolio",
+      "credit": "Athlete's own archive",
       "year": null,
       "location": null,
       "category": "india",
@@ -411,7 +411,7 @@
         0.5,
         0.72
       ],
-      "rights": "unconfirmed"
+      "rights": "owned"
     },
     {
       "slot": "portrait-cap",
@@ -1615,6 +1615,173 @@
       ],
       "rights": "ai-generated",
       "note": "Not a photograph. Supplied as \"ChatGPT Image Sep 7, 2026, 09_08_24 AM.png\" and carrying a signed C2PA content credential naming the OpenAI Media Service API. Used as the home hero at the client's instruction. Real athlete, scene that did not happen, legible FISCHER mark on the skis. Clear the equipment marks and the use of a generated likeness before launch."
+    },
+    {
+      "slot": "family-kodagu",
+      "file": "family-kodagu",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3072,
+        3190
+      ],
+      "ratio": 0.963,
+      "alt": "Bhavani Thekkada and her family standing together outside a shopfront in Kodagu.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": null,
+      "category": "archive",
+      "focal": [
+        0.5,
+        0.26
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "ncc-commendation",
+      "file": "ncc-commendation",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4608,
+        3072
+      ],
+      "ratio": 1.5,
+      "alt": "Bhavani Thekkada in NCC uniform shaking hands with an Air Force officer in a directorate office, an events board on the wall behind them.",
+      "credit": "Athlete's own archive",
+      "year": 2014,
+      "location": null,
+      "category": "archive",
+      "focal": [
+        0.36,
+        0.25
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "summit-tricolour",
+      "file": "summit-tricolour",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4608,
+        3456
+      ],
+      "ratio": 1.3333,
+      "alt": "Four climbers on a snow summit holding the Indian tricolour and an NCC flag open between them, a ridge line and cloud below.",
+      "credit": "Athlete's own archive",
+      "year": 2014,
+      "location": null,
+      "category": "mountain",
+      "focal": [
+        0.5,
+        0.35
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "ncc-drill",
+      "file": "ncc-drill",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4608,
+        3456
+      ],
+      "ratio": 1.3333,
+      "alt": "NCC air wing cadets standing at attention in ranks on a parade square, palms and trees behind them.",
+      "credit": "Athlete's own archive",
+      "year": 2015,
+      "location": null,
+      "category": "archive",
+      "focal": [
+        0.5,
+        0.4
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "glacier-portrait",
+      "file": "glacier-portrait",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        1661,
+        1661
+      ],
+      "ratio": 1.0,
+      "alt": "Bhavani Thekkada in a red down jacket and crampons standing on a glacier below a steep face of snow and rock.",
+      "credit": "Athlete's own archive",
+      "year": 2017,
+      "location": null,
+      "category": "mountain",
+      "focal": [
+        0.47,
+        0.29
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "gulmarg-piste",
+      "file": "gulmarg-piste",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3116,
+        3024
+      ],
+      "ratio": 1.0304,
+      "alt": "A skier in a pink jacket at the top of a groomed piste above a wide snowfield, a chairlift running down the slope beside her.",
+      "credit": "Athlete's own archive",
+      "year": 2021,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.51,
+        0.52
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "khelo-podium-2021",
+      "file": "khelo-podium-2021",
+      "widths": [
+        480,
+        778
+      ],
+      "natural": [
+        778,
+        778
+      ],
+      "ratio": 1.0,
+      "alt": "Bhavani Thekkada on the top step of the podium at the second Khelo India National Winter Games presentation ceremony, the silver and bronze medallists either side of her.",
+      "credit": "Athlete's own archive",
+      "year": 2021,
+      "location": null,
+      "category": "race",
+      "focal": [
+        0.41,
+        0.41
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [

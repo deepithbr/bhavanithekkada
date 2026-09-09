@@ -301,7 +301,7 @@
           "title": "Born in Kodagu",
           "place": "Kodagu, Karnataka",
           "detail": "Born on 14 May 1995 in Peroor, near Napoklu, in the coffee-growing hills of Kodagu. She grew up surrounded by coffee estates, monsoon rains and mountains, but never snow. The nearest snow was thousands of kilometres away.",
-          "image": "family-kodava",
+          "image": "family-kodagu",
           "kind": "past",
           "figure": "walk"
         },
@@ -311,7 +311,7 @@
           "title": "Joined the NCC",
           "place": null,
           "detail": "She moved to Mangaluru to study for her bachelor’s degree at St. Agnes College. During college she volunteered to join the National Cadet Corps, a youth organisation that introduced her to discipline, adventure and opportunities far beyond the classroom.",
-          "image": null,
+          "image": "ncc-commendation",
           "kind": "past",
           "figure": "cadet"
         },
@@ -321,7 +321,7 @@
           "title": "The mountains came first",
           "place": "Manali and Uttarakhand",
           "detail": "Inspired by Yeh Jawaani Hai Deewani, she had always dreamed of seeing the Himalayas. Through the NCC she got her first opportunity to travel to Manali for a mountaineering camp. She completed her Basic Mountaineering Course at ABVIMAS and later undertook her first expedition, to Mount Rudugaira at 5,819 m in Uttarakhand.",
-          "image": "course-glacier",
+          "image": "summit-tricolour",
           "kind": "past",
           "figure": "climb"
         },
@@ -331,7 +331,7 @@
           "title": "Beyond the classroom",
           "place": "India",
           "detail": "She represented the Karnataka and Goa Directorate at the All India NCC Air Wing Camp. The camp introduced her to aviation, including her first experience of flying an aircraft, while strengthening her discipline, confidence and love for adventure.",
-          "image": null,
+          "image": "ncc-drill",
           "kind": "past",
           "figure": "cadet",
           "kit": "camp"
@@ -353,7 +353,7 @@
           "title": "Mountaineer to instructor",
           "place": "Himalayan Mountaineering Institute, Darjeeling",
           "detail": "She completed her Method of Instruction at HMI, Darjeeling, qualifying as a mountaineering instructor. She then spent two years as a guest instructor at HMI, teaching on the same grounds where she had trained just a few years earlier.",
-          "image": "summit-solo",
+          "image": "glacier-portrait",
           "kind": "past",
           "figure": "climb",
           "kit": "qualified"
@@ -364,7 +364,7 @@
           "title": "Discovering alpine skiing",
           "place": "Pahalgam and Russia",
           "detail": "She decided to try skiing and completed her Basic and Intermediate Alpine Skiing courses at JIM&WS, Pahalgam. Later that year she climbed Mount Elbrus in Russia, the highest peak in Europe. Watching Marit Bjørgen at the Winter Olympics also planted her first idea of cross-country skiing.",
-          "image": "first-skis-2018",
+          "image": "team-gulmarg",
           "kind": "past",
           "figure": "alpine"
         },
@@ -374,7 +374,7 @@
           "title": "Taking skiing abroad",
           "place": "Gulmarg and New Zealand",
           "detail": "She completed her Advanced Alpine Skiing course at IISM, Gulmarg, before travelling to New Zealand and earning her international Alpine Ski Instructor certification. Skiing was becoming more than a profession. It was becoming her path.",
-          "image": "ruapehu",
+          "image": "gulmarg-piste",
           "kind": "past",
           "figure": "alpine"
         },
@@ -384,7 +384,7 @@
           "title": "Finding cross-country skiing",
           "place": "Kashmir",
           "detail": "While working as an Alpine Ski Instructor at JIM&WS in Kashmir, she got her first opportunity to try cross-country skiing. She took it up competitively, making her National and Khelo India debut and winning two bronze medals.",
-          "image": "double-pole",
+          "image": "downhill-tuck",
           "kind": "past",
           "figure": "ski"
         },
@@ -394,7 +394,7 @@
           "title": "Her first national gold",
           "place": null,
           "detail": "Still working as an Alpine Ski Instructor, she returned to Khelo India and won her first national gold medal in cross-country skiing. It was the moment she began to see a future in the sport.",
-          "image": "contingent-2021",
+          "image": "khelo-podium-2021",
           "kind": "past",
           "figure": "ski"
         },
@@ -404,7 +404,7 @@
           "title": "FIS international debut",
           "place": "Norway",
           "detail": "She left her job and committed herself to skiing full-time. She travelled to Norway for training and began racing internationally in FIS competitions, marking the start of her journey on the European circuit.",
-          "image": "nordic-podium",
+          "image": "medals-detail",
           "kind": "past",
           "figure": "ski",
           "kit": "bib"
@@ -426,7 +426,7 @@
           "title": "A breakthrough year",
           "place": null,
           "detail": "She won a hat-trick of gold medals at the Khelo India Winter Games. It was a breakthrough season and the beginning of a new chapter with support from the Reliance Foundation.",
-          "image": "khelo-ladakh-skis",
+          "image": "khelo-medals",
           "kind": "past",
           "figure": "ski",
           "kit": "bib"
@@ -1528,7 +1528,7 @@
         ],
         "featured": false,
         "sourceRef": "portfolio; press",
-        "provenance": "Year, venue, distance and time verified 30 Aug 2026 against The South First (thesouthfirst.com, Karnataka desk), which reports a silver at the Raiffeisen Langlauf Cup in Dobbiaco, Italy in December 2022 over 5 km in 18:03. The site carried the event under its English name, Raiffeisen Cross-Country Cup, and no year at all. TIER UNCONFIRMED: the series appears in the FISI Suedtirol regional archive and is organised by ASC Toblach, and no Italian venue shows on her FIS athlete page, so this looks like a regional cup rather than a FIS-scored race. Confirm with her before the site describes the level."
+        "provenance": "Year, venue, distance and time verified 30 Aug 2026 against The South First (thesouthfirst.com, Karnataka desk), which reports a silver at the Raiffeisen Langlauf Cup in Dobbiaco, Italy in December 2022 over 5 km in 18:03. The site carried the event under its English name, Raiffeisen Cross-Country Cup, and no year at all. TIER UNCONFIRMED: the series appears in the FISI Suedtirol regional archive and is organised by ASC Toblach, and no Italian venue shows on her FIS athlete page, so this looks like a regional cup rather than a FIS-scored race. Confirm with her before the site describes the level. Her own archive corroborates the colour: the frame filed as nordic-podium, supplied 7 Sep 2026, has her on the second step at a Nordic arena with Raiffeisen boards behind. It says nothing about the tier."
       }
     ]
   },
@@ -2092,6 +2092,24 @@
       "origin": "Client message with artwork, 7 Sep 2026",
       "why": "Published on the client’s word. The other two marks have written permission from the athlete on file from 11 Aug; this one does not, and a partner logo is the one asset on the site where using it without clearance is a trademark question rather than a provenance one. Confirm with Snow Farm before launch, and ask for a transparent version while doing it: the file sent is a white wordmark on a solid blue field, which will sit as a blue block between a transparent SVG and a crest in the homepage band.",
       "status": "published-client-asserted"
+    },
+    {
+      "claim": "Journey year frames for 2023 and 2026, not published",
+      "origin": "Client Drive folder, 7 Sep 2026",
+      "why": "Both are professional race photography and neither looks hers to license. The 2026 frame came with a second file from the same shoot named \"M2026 - www.framepower.nz -495.jpg\", a New Zealand event photographer’s own filename. The 2023 frame is a long-lens shot of her on the Planica course with the Coop and Stora Enso boards sharp behind her, which is what an agency shoots and sells. Being the subject of a photograph is not owning it. Both stay off the site until she can show a licence or a release, and the cards keep the frames they had. The framepower one is worth clearing: it has her with the flag in front of the Snow Farm banner, which is the new partner.",
+      "status": "withheld-pending-rights"
+    },
+    {
+      "claim": "Journey year frame for 2025, not published",
+      "origin": "Client Drive folder, 7 Sep 2026",
+      "why": "Not a photograph. It is a nine-frame collage saved at 960 by 1200, and the card it would sit on is 389px wide, so each of its frames would render about 120px across. The Chile podium inside it is the strongest image in the whole folder. Ask her for that original on its own.",
+      "status": "withheld-unusable"
+    },
+    {
+      "claim": "Three journey frames were taken in a different year from the card they sit on",
+      "origin": "EXIF on the client Drive folder, 7 Sep 2026",
+      "why": "Her file named 2013 was shot on 16 December 2014, in front of a board reading DTE EVENTS 2014-15. Her files named 2019 and 2020 were both shot in March 2021. Each still shows the right beat, an NCC commendation, a Gulmarg piste, a tuck on skis, and no card on the journey captions its photograph with a date, so nothing on the page claims a year for them. Recorded because the library’s year field now disagrees with the card on purpose and the next person to read it should know why. Separately, the frame she chose for 1995 is a family photograph taken in December 2025, not one from her childhood.",
+      "status": "published-with-note"
     }
   ],
   "certificationPhases": [
