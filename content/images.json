@@ -1782,6 +1782,125 @@
         0.41
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "lectern-speaking",
+      "file": "lectern-speaking",
+      "widths": [
+        480,
+        960,
+        1578
+      ],
+      "natural": [
+        1578,
+        2560
+      ],
+      "ratio": 0.6164,
+      "alt": "Bhavani Thekkada speaking at a lectern with a microphone in front of her, in a dark blazer, greenery behind.",
+      "credit": "Athlete's own archive",
+      "year": 2024,
+      "location": null,
+      "category": "portrait",
+      "focal": [
+        0.5,
+        0.25
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "race-chile-skate",
+      "file": "race-chile-skate",
+      "widths": [
+        480,
+        960,
+        1440
+      ],
+      "natural": [
+        1440,
+        1440
+      ],
+      "ratio": 1.0,
+      "alt": "Bhavani Thekkada skating in the blue India race suit on an open course, spectators and a bare ridge line behind her.",
+      "credit": "Athlete's own archive",
+      "year": 2025,
+      "location": "Chile",
+      "category": "race",
+      "focal": [
+        0.37,
+        0.2
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "gulmarg-village",
+      "file": "gulmarg-village",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        4032,
+        3024
+      ],
+      "ratio": 1.3333,
+      "alt": "Snow-laden pines and timber lodges below a bare white ridge at Gulmarg under a deep blue sky.",
+      "credit": "Athlete's own archive",
+      "year": 2021,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.55,
+        0.5
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "gulmarg-field",
+      "file": "gulmarg-field",
+      "widths": [
+        480,
+        828
+      ],
+      "natural": [
+        828,
+        1472
+      ],
+      "ratio": 0.5625,
+      "alt": "Three skiers small on a wide open snowfield below a forested slope and a bare mountain face.",
+      "credit": "Athlete's own archive",
+      "year": 2022,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.5,
+        0.45
+      ],
+      "rights": "owned"
+    },
+    {
+      "slot": "alpine-lookout",
+      "file": "alpine-lookout",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3024,
+        3780
+      ],
+      "ratio": 0.8,
+      "alt": "A skier in a red jacket standing with alpine skis at the top of a track through snow-covered pines, a peak beyond.",
+      "credit": "Athlete's own archive",
+      "year": 2021,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.49,
+        0.48
+      ],
+      "rights": "owned"
     }
   ],
   "excluded": [

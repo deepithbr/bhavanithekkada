@@ -2110,6 +2110,12 @@
       "origin": "EXIF on the client Drive folder, 7 Sep 2026",
       "why": "Her file named 2013 was shot on 16 December 2014, in front of a board reading DTE EVENTS 2014-15. Her files named 2019 and 2020 were both shot in March 2021. Each still shows the right beat, an NCC commendation, a Gulmarg piste, a tuck on skis, and no card on the journey captions its photograph with a date, so nothing on the page claims a year for them. Recorded because the library’s year field now disagrees with the card on purpose and the next person to read it should know why. Separately, the frame she chose for 1995 is a family photograph taken in December 2025, not one from her childhood.",
       "status": "published-with-note"
+    },
+    {
+      "claim": "Three frames from the 7 Sep Drive folder are filed nowhere",
+      "origin": "Client Drive folder, 7 Sep 2026",
+      "why": "The cut-out portrait, BFD52C0B, is her in a black race suit holding a Fischer ski on a white ground. It is the strongest studio frame in the folder and it needs a designed placement, a colour block behind it, not a cell in a photo mosaic where a white rectangle reads as a loading error. Worth doing deliberately.\nIMG_3217 has her carrying the Indian flag past a wet arena apron in summer team kit. I cannot tell which event it is, and the flag is the kind of detail a caption gets wrong loudly.\nIMG_20250320_111354 is an arena ceremony with a lit snowflake, shot at 686 by 979. It looks like the Asian Winter Games opening in Harbin, which is where she carried the flag, but its filename dates it to 20 March 2025 and those Games finished in February. Ask her which ceremony it is and it can go on 2025.",
+      "status": "held-pending-detail"
     }
   ],
   "certificationPhases": [
@@ -2343,7 +2349,7 @@
       {
         "word": "Persuasion",
         "line": "Nobody funds what they cannot picture. Almost every season was paid for by explaining a sport the listener had never seen, and she can show how to make an unfamiliar idea land with the person who can back it.",
-        "image": "nz-snowfarm",
+        "image": "lectern-speaking",
         "audience": "Conferences and fireside conversations"
       },
       {

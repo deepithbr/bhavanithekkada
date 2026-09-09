@@ -349,7 +349,9 @@ MEDIA_COLLAGE = [
     ("khelo-medals", 1, 1),
     ("nordic-podium", 1, 1),
     ("podium-gulmarg-2023", 2, 1),
-    ("double-pole", 1, 1),
+    # A race in the India suit rather than a session on an empty
+    # field: the collage is the shop window for her archive.
+    ("race-chile-skate", 1, 1),
     ("race-worldcup", 1, 1),
     ("contingent-2021", 2, 1),
     ("team-gulmarg", 2, 1),
@@ -1208,9 +1210,11 @@ JR_SHOT = "(min-width:900px) 20vw, 88vw"
 # than as a figure standing behind the copy; the frames with someone in
 # them are out at the edges.
 JR_SCENERY_L = ["snow-ridge-line", "lake-mountains", "chile-lake",
-                "nz-snowfarm"]
-JR_SCENERY_MID = ["track-solo-pines", "track-texture", "classic-tracks"]
-JR_SCENERY_R = ["race-forest", "nordic-overlook", "night-training"]
+                "nz-snowfarm", "gulmarg-field"]
+JR_SCENERY_MID = ["track-solo-pines", "track-texture", "classic-tracks",
+                  "gulmarg-village"]
+JR_SCENERY_R = ["race-forest", "nordic-overlook", "night-training",
+                "alpine-lookout"]
 
 JR_SCENE_SIZES = "34vw"
 JR_SCENE_SIZES_MID = "40vw"
