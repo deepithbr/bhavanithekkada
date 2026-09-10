@@ -700,14 +700,15 @@ SEASON_SHOT = "snow-ridge-line"
 def record_slabs(c, img, head=True, link=True) -> str:
     """The level of competition, as the client's slab reference.
 
-    Five leaning plates alternating navy and race-suit blue, each
-    holding one figure reversed out of it, the label set underneath the
-    way the reference sets its athletes' names. Photographs were tried
-    inside the plates and came off on 10 Sep: five frames behind five
-    numerals is five grounds fighting one typographic system, and every
-    device that made it legible, a luminosity blend, two opacities, a
-    grade and a double shadow, existed only to hold a number over a
-    picture. The figures are the content. Same figures as the
+    Five figures, their labels under them, hairlines between.
+
+    This has been three things. Leaning plates in alternating navy and
+    blue, from her reference of 30 Aug; the same plates with a photograph
+    inside each; then the plates again. All three were one mistake in
+    different clothes, a shape drawn around a number and then stepped and
+    skewed so the row would not look flat, which is decoration
+    compensating for a problem the row never had. The figures are the
+    content and they are large enough to carry the section alone. Same figures as the
     Career page, from the same helper, so the two can never disagree;
     the medal counts are still computed from the results rows.
 
@@ -720,9 +721,8 @@ def record_slabs(c, img, head=True, link=True) -> str:
     """
     cards = levels_data(c)
     lis = "".join(
-        f'<li class="slab" data-fill="{"accent" if n % 2 else "deep"}"'
-        f' data-rise><span class="slab-plate">'
-        f'<b class="slab-n tally-total">{e(x["n"])}</b></span>'
+        f'<li class="slab" data-rise>'
+        f'<b class="slab-n tally-total">{e(x["n"])}</b>'
         f'<span class="slab-k">{e(x["k"])}</span>'
         f'<span class="slab-s caption">{e(x["s"])}</span></li>'
         for n, x in enumerate(cards)
@@ -1018,7 +1018,7 @@ def page(c: dict, img: Img) -> str:
 
 
 def subpage(c, img, title, lede, body_html, shot=None, current=None,
-            pos=None, og=None):
+            pos=None, og=None, shotside=False):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -1060,7 +1060,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <a class="skip" href="#main">Skip to content</a>
 {nav_block(current)}
 <main id="main">
-<section class="panel" data-size="head">{head_shot}
+<section class="panel" data-size="head"{' data-shot="side"' if shotside else ''}>{head_shot}
   <div class="wrap panel-body">
     <a class="crumb caption" href="index.html">&larr; Home</a>
     <h1>{e(title)}</h1>
@@ -1902,7 +1902,10 @@ def media_page(c, img):
                    # below, and the only banner on the site that is not
                    # daylight on snow. The band lands on the lit group,
                    # which sits at 0.45 to 0.85 of a portrait frame.
-                   body, shot="night-training", current="media.html",
+                   # Was night-training, a floodlit trail with nobody
+                   # identifiable in it: atmosphere, and nothing to do
+                   # with press. A podium is what gets reported.
+                   body, shot="podium-gulmarg-2023", current="media.html",
                    pos="50% 60%", og="media")
 
 
@@ -1920,39 +1923,24 @@ def partnership_page(c, img):
     # a frame. The photo-only tiles are texture and say nothing the text
     # tiles do not, so they are hidden from screen readers.
     def tile(n, a):
-        # The client set one of the four with a second paragraph, so the
-        # tile carries one when there is one rather than folding it into
-        # the first, which would have changed what they wrote.
+        # A band of photograph with the numeral over it, then the copy on
+        # paper beneath. The copy stays off the picture on purpose: these
+        # paragraphs run to 240 characters and small type over a
+        # photograph is the hardest contrast case on the site.
         copy = f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p>'
         if a.get("body2"):
             copy += f'<p>{e(a["body2"])}</p>'
         sl = a.get("image")
+        shot = ""
         if sl and (img.get(sl) or {}).get("rights") == "owned":
-            return (f'<article class="fund fund-shot" data-rise>'
-                    f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
-                    f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
-                    f'{copy}</article>')
+            shot = f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
         return (f'<article class="fund" data-rise>'
-                f'<span class="fund-n" aria-hidden="true">{n:02d}</span>'
-                f'{copy}</article>')
+                f'<span class="fund-frame">{shot}'
+                f'<b class="fund-n" aria-hidden="true">{n:02d}</b></span>'
+                f'<span class="fund-copy">{copy}</span></article>')
 
-    def plate(t):
-        sl = t["slot"]
-        tag = img.tag(sl, TILE_SIZES)
-        if t.get("pos"):
-            tag = tag.replace(f"object-position:{img.focal(sl)}",
-                              f"object-position:{t['pos']}")
-        return (f'<figure class="fund fund-plate" aria-hidden="true" '
-                f'data-rise>{tag}</figure>')
-
-    plain = [
-        plate(t) for t in p.get("tileShots", [])
-        if (img.get(t["slot"]) or {}).get("rights") == "owned"
-    ]
-    rows = [tile(n, a) for n, a in enumerate(p.get("areas", []), 1)]
-    # Interleaved so no column is all type or all photograph.
-    order = [rows[0]] + plain[:1] + rows[1:3] + plain[1:2] + rows[3:]
-    areas = "".join(order)
+    areas = "".join(
+        tile(n, a) for n, a in enumerate(p.get("areas", []), 1))
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
@@ -2271,15 +2259,15 @@ def speaking_page(c, img):
                    # The band is far wider than the frame, so the crop is
                    # a slice: y is set to land it across her face and the
                    # mic rather than at the middle of a portrait.
-                   # Was flag-almaty: athletes on an outdoor rink, rights
-                   # unconfirmed, nothing to do with speaking. Not the
-                   # lectern frame either, much as it belongs on this
-                   # page: the band measures 1585 by 414, which is 3.8:1,
-                   # and 3.8:1 of a portrait is a horizontal slice across
-                   # somebody's eyes. It sits on the Persuasion card
-                   # instead, where the box is 0.86:1 and she is whole.
-                   shot="team-gulmarg", current="speaking.html",
-                   og="speaking", pos="50% 42%")
+                   # The only apt photograph for this page is her at a
+                   # lectern, and it is a portrait. A full-bleed band is
+                   # 1585 by 414, which is 3.8:1, and 3.8:1 of a portrait
+                   # is a strip across somebody's eyes; measured, not
+                   # guessed. So on this page the photograph takes a
+                   # column at the right instead of the whole band, which
+                   # gives it about 1.15:1 and her most of her height.
+                   shot="lectern-speaking", current="speaking.html",
+                   og="speaking", pos="52% 26%", shotside=True)
 
 
 def contact_page(c, img):

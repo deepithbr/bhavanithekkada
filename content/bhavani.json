@@ -1663,7 +1663,8 @@
         "id": "training",
         "index": "01",
         "title": "Training blocks on snow",
-        "body": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready."
+        "body": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready.",
+        "image": "night-training"
       },
       {
         "id": "travel",
@@ -1677,13 +1678,15 @@
         "id": "coaching",
         "index": "03",
         "title": "Coaching and ski preparation",
-        "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day."
+        "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day.",
+        "image": "double-pole"
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and equipment",
-        "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level."
+        "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level.",
+        "image": "team-gulmarg"
       }
     ],
     "cta": {
@@ -1812,15 +1815,6 @@
         "bodyHeld": "Long-term collaborations that go beyond traditional sponsorship and become part of the journey towards 2030."
       }
     ],
-    "tileShots": [
-      {
-        "slot": "nz-snowfarm",
-        "pos": "50% 68%"
-      },
-      {
-        "slot": "classic-tracks"
-      }
-    ],
     "fundsHeading": "Where your support goes",
     "fundsLede": "Supporting an international cross-country skiing programme means investing in the details that make high-level competition possible.",
     "areasSource": {
@@ -1829,7 +1823,7 @@
       "sourceUrl": null,
       "verified": false,
       "needsConfirmation": false,
-      "note": "Heading, standfirst and all four write-ups are the client’s, used as sent apart from three changes. The em dashes in 03 became a parenthesis, because they bracketed a clause and a bracket keeps their sentence in their order where four commas would not. Specialized became specialised, this file being British throughout including their own programme in the same paragraph. And 02 keeps the second paragraph they wrote, which the other three do not have. The copy it replaced named a race week, December 2025 from Ruka to Trondheim to Davos in sixteen days, and said in so many words that every other athlete on a World Cup start list has a wax team and she does not. Neither claim is on the page any more."
+      "note": "Heading, standfirst and all four write-ups are the client’s, used as sent apart from three changes. The em dashes in 03 became a parenthesis, because they bracketed a clause and a bracket keeps their sentence in their order where four commas would not. Specialized became specialised, this file being British throughout including their own programme in the same paragraph. And 02 keeps the second paragraph they wrote, which the other three do not have. The copy it replaced named a race week, December 2025 from Ruka to Trondheim to Davos in sixteen days, and said in so many words that every other athlete on a World Cup start list has a wax team and she does not. Neither claim is on the page any more. On 10 Sep every card became photographic, one frame each chosen against what that card says, and the two filler plates came off: four of six tiles were identical and the other two were pictures with nothing to say, which is what made the section read as monotonous and haphazard. The plates are held as tileShotsHeld."
     },
     "nextStage": {
       "heading": "Building the next stage",
@@ -1846,7 +1840,16 @@
       "verified": false,
       "needsConfirmation": false,
       "note": "Both headings, the two opening paragraphs and all five write-ups are the client’s, used as sent apart from her first person reading as third, as everywhere else on the site. 05 takes her name for it, Journey partnerships, where this file had Athlete partnerships. The lede it replaced was ours: \"She is actively looking for partners in these areas for the seasons between here and 2030.\" The five write-ups came off the cards on 10 Sep at her instruction, the names standing on their own as they did before. Her wording is kept on each item as bodyHeld rather than deleted."
-    }
+    },
+    "tileShotsHeld": [
+      {
+        "slot": "nz-snowfarm",
+        "pos": "50% 68%"
+      },
+      {
+        "slot": "classic-tracks"
+      }
+    ]
   },
   "contact": {
     "email": "bhavani.thekkada2026@gmail.com",
