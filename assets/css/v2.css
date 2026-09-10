@@ -5272,67 +5272,101 @@ body {
 
 /* -------------------------------------------- where your support goes
 
-   Four cards, each a band of photograph with its numeral over it and its
-   copy on paper beneath.
+   Four rows, not four cards.
 
-   It was six: four identical pale tiles and two photographs with nothing
-   to say, dropped in to break the run. That read as four of the same
-   thing plus two that did not belong, which is what "monotonous and
-   haphazard" was describing. The filler is gone and every card now
-   carries a frame chosen against what it says, which is the device the
-   Open to cards already use further down this page.
+   This section has been a card wall three times and each time the
+   complaint was the same, that the four read as one thing repeated. That
+   is what a grid of equal boxes does: it says these are four of a kind
+   and nothing else, and when the write-ups came out there was nothing
+   left to tell them apart at all.
 
-   The copy sits below the frame rather than on it because these
-   paragraphs run to 240 characters, and small type over a photograph is
-   the hardest contrast case on the site. The tile that did set its type
-   on a picture needed a grade running two thirds up the card to survive
-   it, and that grade is gone with it.
+   A row says something a card cannot. The numerals line up down the left
+   edge so the sequence is legible at a glance, the write-up gets a full
+   measure instead of a column squeezed inside a box, and the photograph
+   sits beside the words rather than on top of them. The version she
+   liked, before the mosaic, put a heavy rule over each block for the
+   same reason; at full width that rule is what makes four rows read as a
+   ledger of what the money buys rather than as four paragraphs.
 
-   Two across rather than three: four cards on three tracks strand one,
-   and at 389px a 240-character paragraph is seven lines. */
+   Column widths: a fixed track for the numeral, then the copy and the
+   frame sharing what is left at 1 to 0.85, which at the 1216 wrap gives
+   the copy about 58 characters and the frame 16:9. */
 
 .funds {
   margin-top: var(--space-lg);
   display: grid;
-  gap: var(--space-md);
+  gap: 0;
   grid-template-columns: minmax(0, 1fr);
-}
-
-/* Not a 2x2. Four equal rectangles in a square is the thing she has
-   twice called monotonous, and with the write-ups gone there is nothing
-   inside them to tell one from another.
-
-   So the row alternates instead: three tracks, the first card two of
-   them wide and the second one, then the third one and the fourth two.
-   A pinwheel. Every frame is the same height, so the widths are what
-   change and the two rows are mirror images rather than a repeat.
-
-   Uniform height rather than a uniform aspect ratio is what makes that
-   work: with an aspect ratio the wide cards would be twice as tall as
-   the narrow ones and each row would sit on a ragged baseline. */
-
-@media (min-width: 760px) {
-  .funds {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .fund:nth-child(1),
-  .fund:nth-child(4) {
-    grid-column: span 2;
-  }
-
-  .fund .fund-frame {
-    aspect-ratio: auto;
-    height: clamp(13rem, 23vw, 20rem);
-  }
 }
 
 .fund {
   display: grid;
-  grid-template-rows: auto auto;
-  background: var(--color-paper-2);
-  overflow: hidden;
+  align-content: start;
+  gap: var(--space-2xs);
+  padding-block: var(--space-lg);
+  border-top: 2px solid var(--color-ink);
+}
+
+/* 1080 rather than 900. At 1024 the three tracks left the copy column
+   368px wide, which is 39 characters: too narrow to read comfortably and
+   the whole point of moving to rows was to give the write-up a measure.
+   Below this the row stacks, and a stacked row has the full width. */
+@media (min-width: 1080px) {
+  .fund {
+    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 0.85fr);
+    align-items: start;
+    column-gap: var(--space-xl);
+    row-gap: 0;
+    padding-block: var(--space-xl);
+  }
+
+  .fund-copy {
+    grid-column: 2;
+  }
+
+  .fund-frame {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: start;
+  }
+}
+
+/* The numeral is the spine of the section, so it is set once and large
+   and left where the eye can run down it. Ink rather than a tint: it is
+   an index, not a watermark. */
+.fund-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 3rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+}
+
+.fund-copy {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+}
+
+.fund h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  max-width: 20ch;
+}
+
+.fund p {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+  margin: 0;
+  max-width: 58ch;
 }
 
 .fund-frame {
@@ -5341,6 +5375,7 @@ body {
   overflow: hidden;
   aspect-ratio: 16 / 9;
   background: var(--color-paper-3);
+  margin-top: var(--space-sm);
 }
 
 .fund-img,
@@ -5354,59 +5389,6 @@ body {
 
 .fund-img img {
   object-fit: cover;
-}
-
-/* Ground under the numeral, in its own corner only, so the rest of the
-   frame is left alone. */
-.fund-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom left,
-    rgba(3, 9, 20, 0.62) 0%,
-    rgba(3, 9, 20, 0.18) 42%,
-    rgba(3, 9, 20, 0) 68%
-  );
-}
-
-/* It was 2.8rem at 16% opacity in a corner, which is a watermark nobody
-   reads. On the frame, large, and cropped by the card's own edge. */
-.fund-n {
-  position: absolute;
-  top: -0.14em;
-  right: 0.1em;
-  z-index: 1;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(3rem, 4.6vw, 4.4rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--color-ink-on-deep);
-  opacity: 0.9;
-  font-variant-numeric: tabular-nums;
-  user-select: none;
-}
-
-/* Two words on a strip of paper. With the paragraph gone the old
-   padding left the strip mostly empty, so it closes up to a caption
-   under a picture. */
-.fund-copy {
-  display: grid;
-  align-content: center;
-  min-height: 4.5rem;
-  padding: var(--space-sm) var(--space-md);
-}
-
-.fund h3 {
-  font-family: var(--font-display);
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
-  font-weight: 400;
-  letter-spacing: 0.1em;
-  text-indent: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-ink);
-  max-width: 22ch;
 }
 
 /* ---------------------- partnership: the three, and what she is open to */

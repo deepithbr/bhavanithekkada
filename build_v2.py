@@ -1933,20 +1933,23 @@ def partnership_page(c, img):
     # a frame. The photo-only tiles are texture and say nothing the text
     # tiles do not, so they are hidden from screen readers.
     def tile(n, a):
-        # A band of photograph with the numeral over it and the name
-        # under it. The write-ups came off on 10 Sep at her instruction,
-        # the same call she made on the Open to cards; her wording is
-        # held on each area in the content file rather than deleted, and
-        # the section's standfirst above still says what it is all for.
+        # A row, not a card: the numeral on the left, the name and the
+        # write-up in the measure beside it, the photograph on the right.
+        # Four of these down the page under heavy rules read as a
+        # prospectus, which is what the section is; four boxes in a
+        # square read as a card wall, which is what it kept becoming.
+        copy = f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p>'
+        if a.get("body2"):
+            copy += f'<p>{e(a["body2"])}</p>'
         sl = a.get("image")
         shot = ""
         if sl and (img.get(sl) or {}).get("rights") == "owned":
-            shot = f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
+            shot = (f'<span class="fund-frame">'
+                    f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
+                    f'</span>')
         return (f'<article class="fund" data-rise>'
-                f'<span class="fund-frame">{shot}'
-                f'<b class="fund-n" aria-hidden="true">{n:02d}</b></span>'
-                f'<span class="fund-copy"><h3>{e(a["title"])}</h3></span>'
-                f'</article>')
+                f'<b class="fund-n" aria-hidden="true">{n:02d}</b>'
+                f'<span class="fund-copy">{copy}</span>{shot}</article>')
 
     areas = "".join(
         tile(n, a) for n, a in enumerate(p.get("areas", []), 1))

@@ -1664,29 +1664,29 @@
         "index": "01",
         "title": "Training blocks on snow",
         "image": "night-training",
-        "bodyHeld": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready."
+        "body": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready."
       },
       {
         "id": "travel",
         "index": "02",
         "title": "Competition travel",
         "image": "chile-lake",
-        "bodyHeld": "World Championships, international and national racing can mean moving between countries within days. Flights, transfers, accommodation and everything between the start lists are part of the journey.",
-        "body2Held": "Your support helps make international racing possible."
+        "body": "World Championships, international and national racing can mean moving between countries within days. Flights, transfers, accommodation and everything between the start lists are part of the journey.",
+        "body2": "Your support helps make international racing possible."
       },
       {
         "id": "coaching",
         "index": "03",
         "title": "Coaching and ski preparation",
         "image": "double-pole",
-        "bodyHeld": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day."
+        "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day."
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and equipment",
         "image": "team-gulmarg",
-        "bodyHeld": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level."
+        "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level."
       }
     ],
     "cta": {
@@ -1823,7 +1823,7 @@
       "sourceUrl": null,
       "verified": false,
       "needsConfirmation": false,
-      "note": "Heading, standfirst and all four write-ups are the client’s, used as sent apart from three changes. The em dashes in 03 became a parenthesis, because they bracketed a clause and a bracket keeps their sentence in their order where four commas would not. Specialized became specialised, this file being British throughout including their own programme in the same paragraph. And 02 keeps the second paragraph they wrote, which the other three do not have. The copy it replaced named a race week, December 2025 from Ruka to Trondheim to Davos in sixteen days, and said in so many words that every other athlete on a World Cup start list has a wax team and she does not. Neither claim is on the page any more. On 10 Sep every card became photographic, one frame each chosen against what that card says, and the two filler plates came off: four of six tiles were identical and the other two were pictures with nothing to say, which is what made the section read as monotonous and haphazard. The plates are held as tileShotsHeld. The four write-ups came off the cards on 10 Sep at her instruction, the same call she made on the Open to cards: the frame and the name, and no sentence under them. Her wording is kept on each area as bodyHeld and body2Held rather than deleted. The standfirst above the cards is untouched, so the section still says what it is for."
+      "note": "Heading, standfirst and all four write-ups are the client’s, used as sent apart from three changes. The em dashes in 03 became a parenthesis, because they bracketed a clause and a bracket keeps their sentence in their order where four commas would not. Specialized became specialised, this file being British throughout including their own programme in the same paragraph. And 02 keeps the second paragraph they wrote, which the other three do not have. The copy it replaced named a race week, December 2025 from Ruka to Trondheim to Davos in sixteen days, and said in so many words that every other athlete on a World Cup start list has a wax team and she does not. Neither claim is on the page any more. On 10 Sep every card became photographic, one frame each chosen against what that card says, and the two filler plates came off: four of six tiles were identical and the other two were pictures with nothing to say, which is what made the section read as monotonous and haphazard. The plates are held as tileShotsHeld. The four write-ups came off the cards on 10 Sep at her instruction, the same call she made on the Open to cards: the frame and the name, and no sentence under them. Her wording is kept on each area as bodyHeld and body2Held rather than deleted. The standfirst above the cards is untouched, so the section still says what it is for. They went back on the same day: four names with no sentence under them cannot tell a sponsor what the money buys, which is the only job this section has."
     },
     "nextStage": {
       "heading": "Building the next stage",
