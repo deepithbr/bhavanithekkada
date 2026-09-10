@@ -415,7 +415,7 @@
           "title": "Her first World Championship",
           "place": "Planica, Slovenia",
           "detail": "She qualified for and competed at her first World Championships in Planica, Slovenia, stepping onto the world’s biggest stage for the first time.",
-          "image": "race-planica-elbrus",
+          "image": "race-planica",
           "kind": "past",
           "figure": "ski",
           "kit": "bib"
@@ -1823,27 +1823,27 @@
       {
         "label": "Sponsorships",
         "image": "race-worldcup",
-        "body": "Long-term support for training, international competition, equipment and her Olympic journey."
+        "bodyHeld": "Long-term support for training, international competition, equipment and her Olympic journey."
       },
       {
         "label": "Brand partnerships",
         "image": "flag-harbin",
-        "body": "Meaningful partnerships with brands that align with sport, performance, adventure and her journey as an Indian athlete."
+        "bodyHeld": "Meaningful partnerships with brands that align with sport, performance, adventure and her journey as an Indian athlete."
       },
       {
         "label": "Campaigns",
         "image": "downhill-tuck",
-        "body": "Collaborations for brand campaigns, storytelling, content and athlete-led initiatives."
+        "bodyHeld": "Collaborations for brand campaigns, storytelling, content and athlete-led initiatives."
       },
       {
         "label": "Product collaborations",
         "image": "double-pole",
-        "body": "Partnerships involving products and services that genuinely support her training, racing and life as an athlete."
+        "bodyHeld": "Partnerships involving products and services that genuinely support her training, racing and life as an athlete."
       },
       {
         "label": "Journey partnerships",
         "image": "team-gulmarg",
-        "body": "Long-term collaborations that go beyond traditional sponsorship and become part of the journey towards 2030."
+        "bodyHeld": "Long-term collaborations that go beyond traditional sponsorship and become part of the journey towards 2030."
       }
     ],
     "tileShots": [
@@ -1879,7 +1879,7 @@
       "sourceUrl": null,
       "verified": false,
       "needsConfirmation": false,
-      "note": "Both headings, the two opening paragraphs and all five write-ups are the client’s, used as sent apart from her first person reading as third, as everywhere else on the site. 05 takes her name for it, Journey partnerships, where this file had Athlete partnerships. The lede it replaced was ours: \"She is actively looking for partners in these areas for the seasons between here and 2030.\""
+      "note": "Both headings, the two opening paragraphs and all five write-ups are the client’s, used as sent apart from her first person reading as third, as everywhere else on the site. 05 takes her name for it, Journey partnerships, where this file had Athlete partnerships. The lede it replaced was ours: \"She is actively looking for partners in these areas for the seasons between here and 2030.\" The five write-ups came off the cards on 10 Sep at her instruction, the names standing on their own as they did before. Her wording is kept on each item as bodyHeld rather than deleted."
     }
   },
   "contact": {
@@ -2116,6 +2116,18 @@
       "origin": "Client Drive folder, 7 Sep 2026",
       "why": "The cut-out portrait, BFD52C0B, is her in a black race suit holding a Fischer ski on a white ground. It is the strongest studio frame in the folder and it needs a designed placement, a colour block behind it, not a cell in a photo mosaic where a white rectangle reads as a loading error. Worth doing deliberately.\nIMG_3217 has her carrying the Indian flag past a wet arena apron in summer team kit. I cannot tell which event it is, and the flag is the kind of detail a caption gets wrong loudly.\nIMG_20250320_111354 is an arena ceremony with a lit snowflake, shot at 686 by 979. It looks like the Asian Winter Games opening in Harbin, which is where she carried the flag, but its filename dates it to 20 March 2025 and those Games finished in February. Ask her which ceremony it is and it can go on 2025.",
       "status": "held-pending-detail"
+    },
+    {
+      "claim": "Italy and Germany appear in her country list and not on the map",
+      "origin": "Client message, 10 Sep 2026",
+      "why": "The list under the map is now read off the pins, and the pins carry twelve countries where her own list has fourteen. Italy is real and already in this file: the 2022 Raiffeisen silver at Dobbiaco, result r34, 5 km in 18:03. It has no pin only because the map was built from the venues on her FIS page. Say the word and Dobbiaco goes on at 46.7N 12.2E, which makes the heading read fifteen start lines. Germany appears nowhere in this file: no venue, no year, no result. Which race was it?",
+      "status": "open-question"
+    },
+    {
+      "claim": "race-planica-elbrus was a montage and is off the site",
+      "origin": "Reviewed 10 Sep 2026",
+      "why": "It carried her racing at Planica on the left and Mount Elbrus dropped in behind on the right: one frame showing two places three thousand kilometres apart, presented on a page about what she has actually done. It was already marked unconfirmed-agency-derived. Her own Planica frame replaces it on the 2023 card, filed client-supplied rather than owned because the rights question from 7 Sep is still open. The montage stays in the library, used by nothing.",
+      "status": "published-client-asserted"
     }
   ],
   "certificationPhases": [

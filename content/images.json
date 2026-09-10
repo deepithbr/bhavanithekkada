@@ -1901,6 +1901,29 @@
         0.48
       ],
       "rights": "owned"
+    },
+    {
+      "slot": "race-planica",
+      "file": "race-planica",
+      "widths": [
+        480,
+        828
+      ],
+      "natural": [
+        828,
+        870
+      ],
+      "ratio": 0.9517,
+      "alt": "Bhavani Thekkada racing in the blue India suit at the Nordic World Ski Championships, bib 16 over her race suit.",
+      "credit": "Supplied by the athlete, rights not established",
+      "year": 2023,
+      "location": "Planica, Slovenia",
+      "category": "race",
+      "focal": [
+        0.45,
+        0.22
+      ],
+      "rights": "client-supplied"
     }
   ],
   "excluded": [

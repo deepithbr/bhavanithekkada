@@ -1664,7 +1664,13 @@ def route_map(c) -> str:
     # at the client's instruction. The lines went the same way on the
     # same day, for the same reason: the places are the content.
 
-    order = [p["place"] for p in c["internationalFootprint"]]
+    # Countries rather than venues, at her instruction of 10 Sep, and
+    # read off the pins so the roll and the map cannot drift apart. Her
+    # own list runs to fourteen: the two the pins do not carry are Italy,
+    # which this file knows as Dobbiaco from the 2022 silver but never
+    # put on the map, and Germany, which appears nowhere in it at all.
+    # Both are in withheld as an open question rather than typed in here.
+    order = sorted({p["country"] for p in c["internationalFootprint"]})
     roll = " &middot; ".join(order)
     # crop: lon -85..178 -> x 95..358, lat 70..-50. It ran to 145 east
     # and stopped in the Pacific short of New Zealand, and to 45 south,
@@ -1930,12 +1936,12 @@ def partnership_page(c, img):
         if sl and (img.get(sl) or {}).get("rights") == "owned":
             shot = (f'<span class="opt-shot">{img.tag(sl, OPT_SIZES)}</span>')
         cls = " opt-shot-tile" if shot else ""
-        say = (f'<p class="opt-say">{e(x["body"])}</p>'
-               if x.get("body") else "")
+        # The write-up came off on 10 Sep at her instruction. The frame
+        # and the label are the card again, which is what they were.
         return (f'<li class="opt{cls}">'
                 f'<span class="opt-frame">{shot}'
                 f'<span class="opt-label">{e(x["label"])}</span></span>'
-                f'{say}</li>')
+                f'</li>')
 
     open_to = "".join(opt(x) for x in p.get("openTo", []))
     ns = p.get("nextStage") or {}
@@ -2215,8 +2221,21 @@ def speaking_page(c, img):
   </div>
 </section>"""
     return subpage(c, img, "Speaking", sp.get("lede") or "", body,
-                   shot="flag-almaty", current="speaking.html", og="speaking",
-                   pos="58% 44%")
+                   # Was flag-almaty: athletes in white kit on an outdoor
+                   # rink, rights unconfirmed, and nothing to do with
+                   # speaking. This is her at a lectern with a microphone.
+                   # The band is far wider than the frame, so the crop is
+                   # a slice: y is set to land it across her face and the
+                   # mic rather than at the middle of a portrait.
+                   # Was flag-almaty: athletes on an outdoor rink, rights
+                   # unconfirmed, nothing to do with speaking. Not the
+                   # lectern frame either, much as it belongs on this
+                   # page: the band measures 1585 by 414, which is 3.8:1,
+                   # and 3.8:1 of a portrait is a horizontal slice across
+                   # somebody's eyes. It sits on the Persuasion card
+                   # instead, where the box is 0.86:1 and she is whole.
+                   shot="team-gulmarg", current="speaking.html",
+                   og="speaking", pos="50% 42%")
 
 
 def contact_page(c, img):

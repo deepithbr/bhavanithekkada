@@ -2160,11 +2160,7 @@ a {
   margin-top: var(--space-lg);
 }
 
-@media (min-width: 760px) {
-  .funds {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
+
 
 
 /* ---------------------------------------------------- the blended opening */
@@ -5173,27 +5169,38 @@ body {
    photo-only tiles are texture: they say nothing the type tiles do not,
    so they are hidden from screen readers. */
 
+/* A grid rather than columns since 10 Sep. Columns balance by total
+   content height and can only break between tiles, so six tiles of
+   heights 247, 284, 432, 273, 505 and 273 came out two per column with
+   the three columns ending 250px apart. On a 1600px screen that reads as
+   a section that ran out of content on the right, which is what the
+   client saw and what the note above this rule got wrong: a grid does
+   not leave holes here, because the tiles stretch to their row.
+
+   The builder already interleaves type tiles and photographic ones, so
+   row-major flow puts a picture beside type on both rows without any
+   placement rules. */
+
 .funds {
   margin-top: var(--space-lg);
-  columns: 1;
-  column-gap: var(--space-md);
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 @media (min-width: 700px) {
   .funds {
-    columns: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 1040px) {
   .funds {
-    columns: 3;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 .fund {
-  break-inside: avoid;
-  margin: 0 0 var(--space-md);
   display: grid;
   align-content: start;
   gap: var(--space-2xs);
@@ -5300,7 +5307,12 @@ body {
 .fund-plate {
   padding: 0;
   background: var(--color-paper-2);
-  aspect-ratio: 4 / 3;
+  /* A floor, not a shape. Under columns the plate set its own height and
+     that was the end of it; in a grid row its neighbours are type tiles
+     that can run 500px, and a plate locked to 4/3 left a hole under
+     itself. min-height keeps it from collapsing when it is the tallest
+     thing in the row, and object-fit does the rest when it is not. */
+  min-height: 14rem;
   overflow: hidden;
   display: block;
   position: relative;
@@ -5729,13 +5741,12 @@ body {
   padding: 0;
   display: grid;
   gap: var(--space-md);
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
 }
 
 .open-tiles li {
   counter-increment: opt;
   display: grid;
-  grid-template-rows: auto 1fr;
   background: var(--color-paper-2);
   overflow: hidden;
 }
@@ -5758,15 +5769,6 @@ body {
   text-indent: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink);
-}
-
-.opt-say {
-  font-family: var(--font-body);
-  font-size: 0.95rem;
-  line-height: 1.55;
-  color: var(--color-ink-body);
-  margin: 0;
-  padding: var(--space-sm) var(--space-md) var(--space-md);
 }
 
 .opt-shot {
@@ -5830,35 +5832,6 @@ body {
 .opt-shot-tile .opt-frame::before {
   color: oklch(88% 0.09 245);
   opacity: 0.85;
-}
-
-/* Two tracks leave the fifth card alone beside a hole, so it takes the
-   row. Same answer as the desktop rule below, which supersedes this one
-   above 62rem, and a no-op in the single column below 40rem. */
-@media (max-width: 61.99rem) {
-  .open-tiles li:nth-child(odd):last-child {
-    grid-column: 1 / -1;
-  }
-}
-
-/* Five cards on three tracks leave a hole beside the last two, which
-   reads as a row that ran out rather than a grid that was designed. Six
-   tracks, cards spanning two and the final pair spanning three, fills
-   the second row exactly. The selector fires only on a list of exactly
-   five, so a sixth category drops straight back to three and three. */
-@media (min-width: 62rem) {
-  .open-tiles {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .open-tiles li {
-    grid-column: span 2;
-  }
-
-  .open-tiles li:nth-child(4):nth-last-child(2),
-  .open-tiles li:nth-child(5):nth-last-child(1) {
-    grid-column: span 3;
-  }
 }
 
 /* Her second heading, demoted to a caption so the section can open on
