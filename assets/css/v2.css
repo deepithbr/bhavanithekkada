@@ -5272,123 +5272,204 @@ body {
 
 /* -------------------------------------------- where your support goes
 
-   Four rows, not four cards.
+   The bento, back, and placed this time.
 
-   This section has been a card wall three times and each time the
-   complaint was the same, that the four read as one thing repeated. That
-   is what a grid of equal boxes does: it says these are four of a kind
-   and nothing else, and when the write-ups came out there was nothing
-   left to tell them apart at all.
+   Her reference lays its proof out as a mosaic of unequal tiles: pale
+   plates carrying type, photographic ones carrying none, and one frame
+   with its text over the picture. That was built on 29 Aug and it was
+   the right idea. What went wrong was underneath it: CSS columns, which
+   balance by total content height and can only break between tiles, so
+   six tiles of very different heights came out two per column with the
+   three columns ending 250px apart. A mosaic that lands differently at
+   every window width does not read as composed, it reads as accidental,
+   and that is what "haphazard" was describing.
 
-   A row says something a card cannot. The numerals line up down the left
-   edge so the sequence is legible at a glance, the write-up gets a full
-   measure instead of a column squeezed inside a box, and the photograph
-   sits beside the words rather than on top of them. The version she
-   liked, before the mosaic, put a heavy rule over each block for the
-   same reason; at full width that rule is what makes four rows read as a
-   ledger of what the money buys rather than as four paragraphs.
+   So the shapes are declared instead of discovered. Four columns, rows
+   that grow with their content, and every tile placed:
 
-   Column widths: a fixed track for the numeral, then the copy and the
-   frame sharing what is left at 1 to 0.85, which at the 1216 wrap gives
-   the copy about 58 characters and the frame 16:9. */
+     01  cols 1-2, rows 1-2   the hero, type on the photograph
+     02  cols 3-4, row 1      wide and short
+     A   col  3,   row 2      picture
+     03  col  4,   rows 2-3   tall and narrow
+     04  cols 1-2, row 3      wide and short
+     B   col  3,   row 3      picture
+
+   Twelve cells, six tiles, no holes, and the same arrangement at every
+   width above the breakpoint.
+
+   The hero takes the floodlit trail because it is the darkest frame in
+   the set and its type sits on the picture. The grade under that type
+   has to carry further than a caption's would: this is thirty-odd words
+   in a column, not a two-word label. */
 
 .funds {
   margin-top: var(--space-lg);
   display: grid;
-  gap: 0;
+  gap: var(--space-md);
   grid-template-columns: minmax(0, 1fr);
 }
 
+@media (min-width: 640px) {
+  .funds {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1040px) {
+  .funds {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* Stated, not discovered. On auto rows the tall narrow tile drove
+       row 2 to 672px and dragged the hero to 713 with it, which is the
+       same fault the columns had in a different costume: one tile's
+       content deciding the shape of the whole mosaic. minmax keeps a
+       floor under each row and still lets one grow if its copy needs
+       it. */
+    grid-template-rows:
+      minmax(17rem, auto) minmax(12rem, auto) minmax(12rem, auto);
+  }
+
+  .fund[data-cell="a1"] {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 2;
+  }
+
+  .fund[data-cell="a2"] {
+    grid-column: 3 / span 2;
+    grid-row: 1;
+  }
+
+  .fund[data-cell="p1"] {
+    grid-column: 3;
+    grid-row: 2;
+  }
+
+  .fund[data-cell="a3"] {
+    grid-column: 4;
+    grid-row: 2 / span 2;
+  }
+
+  .fund[data-cell="a4"] {
+    grid-column: 1 / span 2;
+    grid-row: 3;
+  }
+
+  .fund[data-cell="p2"] {
+    grid-column: 3;
+    grid-row: 3;
+  }
+}
+
 .fund {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   align-content: start;
   gap: var(--space-2xs);
-  padding-block: var(--space-lg);
-  border-top: 2px solid var(--color-ink);
+  background: var(--color-paper-2);
+  padding: var(--space-md);
 }
 
-/* 1080 rather than 900. At 1024 the three tracks left the copy column
-   368px wide, which is 39 characters: too narrow to read comfortably and
-   the whole point of moving to rows was to give the write-up a measure.
-   Below this the row stacks, and a stacked row has the full width. */
-@media (min-width: 1080px) {
-  .fund {
-    grid-template-columns: 4.5rem minmax(0, 1fr) minmax(0, 0.85fr);
-    align-items: start;
-    column-gap: var(--space-xl);
-    row-gap: 0;
-    padding-block: var(--space-xl);
-  }
-
-  .fund-copy {
-    grid-column: 2;
-  }
-
-  .fund-frame {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-    align-self: start;
-  }
-}
-
-/* The numeral is the spine of the section, so it is set once and large
-   and left where the eye can run down it. Ink rather than a tint: it is
-   an index, not a watermark. */
 .fund-n {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-md);
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2rem, 3.4vw, 3rem);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
   color: var(--color-accent);
+  opacity: 0.16;
   font-variant-numeric: tabular-nums;
   user-select: none;
 }
 
-.fund-copy {
-  display: grid;
-  align-content: start;
-  gap: var(--space-2xs);
-}
-
 .fund h3 {
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   text-indent: 0.1em;
   text-transform: uppercase;
   color: var(--color-ink);
-  max-width: 20ch;
+  max-width: 18ch;
 }
 
 .fund p {
   font-family: var(--font-body);
   color: var(--color-ink-body);
   margin: 0;
-  max-width: 58ch;
+  max-width: 52ch;
 }
 
-.fund-frame {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: var(--color-paper-3);
-  margin-top: var(--space-sm);
+/* The hero: its type sits on the photograph, so the tile has to give it
+   a ground and the type goes to the foot where the ground is deepest. */
+.fund-shot {
+  align-content: end;
+  padding: var(--space-lg);
+  color: var(--color-ink-on-deep);
+  min-height: clamp(18rem, 26vw, 24rem);
 }
 
-.fund-img,
-.fund-img img {
+.fund-shot h3,
+.fund-shot p {
+  color: inherit;
+  max-width: 40ch;
+}
+
+.fund-shot .fund-n {
+  color: oklch(88% 0.09 245);
+  opacity: 0.85;
+}
+
+.fund-img {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  z-index: -2;
   display: block;
 }
 
-.fund-img img {
+.fund-img img,
+.fund-plate img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+/* Thirty-odd words reach well up the tile, so this runs much further
+   than a caption's grade would. */
+.fund-shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.9) 0%,
+    rgba(3, 9, 20, 0.82) 34%,
+    rgba(3, 9, 20, 0.55) 62%,
+    rgba(3, 9, 20, 0.3) 100%
+  );
+}
+
+/* A picture tile takes the shape the grid gives it, so its photograph
+   must not have an opinion about height. Left in flow, the portrait
+   frame asked for 381px at 286 wide and drove the whole middle row,
+   which is one tile's content deciding the mosaic again. Out of flow it
+   asks for nothing and object-fit does the rest. */
+.fund-plate {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+  min-height: 10rem;
+}
+
+.fund-plate img {
+  position: absolute;
+  inset: 0;
 }
 
 /* ---------------------- partnership: the three, and what she is open to */

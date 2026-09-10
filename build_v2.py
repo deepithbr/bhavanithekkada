@@ -1933,26 +1933,45 @@ def partnership_page(c, img):
     # a frame. The photo-only tiles are texture and say nothing the text
     # tiles do not, so they are hidden from screen readers.
     def tile(n, a):
-        # A row, not a card: the numeral on the left, the name and the
-        # write-up in the measure beside it, the photograph on the right.
-        # Four of these down the page under heavy rules read as a
-        # prospectus, which is what the section is; four boxes in a
-        # square read as a card wall, which is what it kept becoming.
+        """One tile of the bento, placed by its position in the grid.
+
+        The first carries its type on a photograph and the rest are pale
+        plates, which is the arrangement in the client's own reference.
+        The frame under the type is the darkest in the set for the
+        obvious reason.
+        """
         copy = f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p>'
         if a.get("body2"):
             copy += f'<p>{e(a["body2"])}</p>'
         sl = a.get("image")
         shot = ""
+        cls = "fund"
         if sl and (img.get(sl) or {}).get("rights") == "owned":
-            shot = (f'<span class="fund-frame">'
-                    f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
-                    f'</span>')
-        return (f'<article class="fund" data-rise>'
-                f'<b class="fund-n" aria-hidden="true">{n:02d}</b>'
-                f'<span class="fund-copy">{copy}</span>{shot}</article>')
+            cls = "fund fund-shot"
+            shot = f'<span class="fund-img">{img.tag(sl, TILE_SIZES)}</span>'
+        return (f'<article class="{cls}" data-rise data-cell="a{n}">'
+                f'{shot}<b class="fund-n" aria-hidden="true">{n:02d}</b>'
+                f'{copy}</article>')
 
-    areas = "".join(
-        tile(n, a) for n, a in enumerate(p.get("areas", []), 1))
+    def plate(k, t):
+        """A tile that is only a photograph.
+
+        In a bento the picture tiles are what stop six plates of type
+        reading as a table, so they are structure rather than filler.
+        They say nothing the type tiles do not, so screen readers skip
+        them."""
+        sl = t["slot"]
+        return (f'<figure class="fund fund-plate" data-cell="p{k}" '
+                f'aria-hidden="true" data-rise>'
+                f'{img.tag(sl, TILE_SIZES)}</figure>')
+
+    plates = [plate(k, t) for k, t in
+              enumerate(p.get("tileShots", []), 1)
+              if (img.get(t["slot"]) or {}).get("rights") == "owned"]
+    rows = [tile(n, a) for n, a in enumerate(p.get("areas", []), 1)]
+    # Source order is reading order: the hero, then the three type tiles,
+    # then the two pictures. The grid places them.
+    areas = "".join(rows + plates)
     # Her brief: show the partners she has, labelled, and no others. The
     # names sit here with the role each one actually plays, which is the
     # honest version of a logo band.
