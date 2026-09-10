@@ -689,15 +689,8 @@ def levels_data(c):
     return cards
 
 
-# One photograph per figure, in the order levels_data returns them:
-# her three start-level cards from the content file, then the two medal
-# counts computed from the results rows. Every one of them is owned, and
-# each answers the figure it sits under. Holmenkollen stands in for the
-# World Championships rows, which have no owned frame of their own.
-SLAB_SHOTS = ["race-worldcup", "holmenkollen", "flag-harbin",
-              "nordic-podium", "contingent-2021"]
-
-SLAB_SIZES = "(min-width:900px) 16vw, 44vw"
+# How many plates the row carries.
+SLAB_COUNT = 5
 
 # Behind the season band: a long line of skiers spread across an open
 # ridge, which is the nearest owned frame to what the band is about.
@@ -709,7 +702,12 @@ def record_slabs(c, img, head=True, link=True) -> str:
 
     Five leaning plates alternating navy and race-suit blue, each
     holding one figure reversed out of it, the label set underneath the
-    way the reference sets its athletes' names. Same figures as the
+    way the reference sets its athletes' names. Photographs were tried
+    inside the plates and came off on 10 Sep: five frames behind five
+    numerals is five grounds fighting one typographic system, and every
+    device that made it legible, a luminosity blend, two opacities, a
+    grade and a double shadow, existed only to hold a number over a
+    picture. The figures are the content. Same figures as the
     Career page, from the same helper, so the two can never disagree;
     the medal counts are still computed from the results rows.
 
@@ -724,12 +722,11 @@ def record_slabs(c, img, head=True, link=True) -> str:
     lis = "".join(
         f'<li class="slab" data-fill="{"accent" if n % 2 else "deep"}"'
         f' data-rise><span class="slab-plate">'
-        f'<span class="slab-shot">{img.tag(SLAB_SHOTS[n], SLAB_SIZES)}</span>'
         f'<b class="slab-n tally-total">{e(x["n"])}</b></span>'
         f'<span class="slab-k">{e(x["k"])}</span>'
         f'<span class="slab-s caption">{e(x["s"])}</span></li>'
         for n, x in enumerate(cards)
-        if n < len(SLAB_SHOTS)
+        if n < SLAB_COUNT
     )
     top = ('<div class="slabs-head" data-rise>'
            '<p class="caption">Level of competition</p>'
@@ -1802,6 +1799,9 @@ def media_page(c, img):
     """
     press = []
     for pr in c["press"]:
+        # The video and the FIS story have their own section below.
+        if pr.get("kind") in ("video", "story"):
+            continue
         head = pr.get("title") or ""
         if not head:
             continue
@@ -1809,10 +1809,6 @@ def media_page(c, img):
         year = str(pr.get("date") or "")[:4]
         meta = f" {chr(183)} ".join(x for x in (outlet, year) if x)
         url = pr.get("url") or ""
-        thumb = ""
-        if pr.get("image") and img.get(pr["image"]):
-            thumb = (f'<span class="press-shot">'
-                     f'{img.tag(pr["image"], "(min-width:760px) 30vw, 90vw")}</span>')
         thumb = ""
         if pr.get("image") and img.get(pr["image"]):
             thumb = (f'<span class="press-shot">'
@@ -1837,14 +1833,52 @@ def media_page(c, img):
         for a in lib["images"]
         if a.get("rights") == "owned" and a.get("category") in ("race", "training")
     )
+    # The film and the federation's story, together, because the reader
+    # asking for one is asking for the other. The film plays here rather
+    # than on YouTube: what loads is a poster and a control, and the
+    # iframe only exists once somebody has asked for it.
+    watch = ""
+    vid = next((p for p in c["press"] if p.get("kind") == "video"), None)
+    story = next((p for p in c["press"] if p.get("kind") == "story"), None)
+    if vid or story:
+        parts = []
+        if vid and vid.get("youtube"):
+            poster = (img.tag(vid["image"], "(min-width:900px) 62vw, 92vw")
+                      if img.get(vid.get("image")) else "")
+            parts.append(
+                f'<a class="player" href="{e(vid["url"])}" rel="noopener"'
+                f' target="_blank" data-yt="{e(vid["youtube"])}"'
+                f' data-title="{e(vid["title"])}">'
+                f'<span class="player-shot">{poster}</span>'
+                f'<span class="player-go" aria-hidden="true"></span>'
+                f'<span class="player-say">'
+                f'<span class="caption">{e(vid["publication"])}'
+                f' &middot; video</span>'
+                f'<b>{e(vid["title"])}</b></span></a>')
+        if story:
+            parts.append(
+                f'<a class="press-note" href="{e(story["url"])}"'
+                f' rel="noopener" target="_blank">'
+                f'<span class="caption">{e(story["publication"])}'
+                f' &middot; story</span>'
+                f'<b>{e(story["title"])}</b>'
+                f'<span>{e(story.get("context") or "")}</span></a>')
+        watch = f"""
+<section class="prose-fold" data-ground="ice" id="watch">
+  <div class="wrap">
+    <div class="prose"><h2>Videos and stories</h2></div>
+    <div class="watch">{''.join(parts)}</div>
+  </div>
+</section>"""
+
     body = f"""
 <section class="prose-fold">
   <div class="wrap">
     <div class="prose"><h2>Press</h2></div>
     <ul class="press-grid">{''.join(press)}</ul>
   </div>
-</section>
-<section class="prose-fold" data-ground="ice">
+</section>{watch}
+<section class="prose-fold">
   <div class="wrap">
     <div class="prose"><h2>Photographs</h2></div>
     <div class="masonry" style="margin-top:var(--space-md)">{gallery}</div>

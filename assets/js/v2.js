@@ -1118,4 +1118,40 @@
       }
     });
   }
+
+  // The film, played where it sits.
+  //
+  // Until this fires, the card is a poster and a link: nothing has been
+  // requested from Google, no iframe exists, no cookie has been set. The
+  // click is caught here and the iframe takes the poster's place. Without
+  // this file the same element is a plain link to the video, which is why
+  // it is marked up as one rather than as a button.
+  //
+  // nocookie rather than youtube.com, and autoplay because the reader has
+  // just asked for the film by clicking on it.
+  const player = document.querySelector(".player[data-yt]");
+  if (player) {
+    player.addEventListener("click", (ev) => {
+      if (player.hasAttribute("data-playing")) return;
+      // A modified click is somebody deliberately opening a new tab.
+      if (ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.button) return;
+      ev.preventDefault();
+      const id = encodeURIComponent(player.dataset.yt);
+      const frame = document.createElement("iframe");
+      frame.src =
+        "https://www.youtube-nocookie.com/embed/" +
+        id +
+        "?autoplay=1&rel=0&modestbranding=1";
+      frame.title = player.dataset.title || "Video";
+      frame.allow =
+        "accelerometer; autoplay; encrypted-media; picture-in-picture";
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
+      const shot = player.querySelector(".player-shot");
+      if (shot) shot.replaceWith(frame);
+      else player.appendChild(frame);
+      player.setAttribute("data-playing", "");
+      player.removeAttribute("href");
+    });
+  }
 })();

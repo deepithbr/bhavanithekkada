@@ -2264,8 +2264,6 @@ a {
 }
 
 
-
-
 /* ---------------------------------------------------- the blended opening */
 
 /*
@@ -6291,60 +6289,6 @@ body {
   background: var(--color-accent);
 }
 
-/* The photograph inside the plate, as her reference sets an athlete
-   inside its slab. Luminosity blending takes the light from the frame
-   and the colour from the plate underneath, so the navy plates read as
-   monochrome and the blue ones as a duotone, and the alternating rhythm
-   holds whatever the photograph happens to contain. */
-/* The blend goes on the wrapper, not the image. The wrapper carries the
-   counter-skew, and a transform makes a stacking context, so a blend mode
-   set on the image inside it would have had nothing but transparency to
-   blend against and the photograph came through in full colour. */
-.slab-shot {
-  position: absolute;
-  inset: 0;
-  mix-blend-mode: luminosity;
-  opacity: 0.55;
-}
-
-.slab[data-fill="accent"] .slab-shot {
-  /* The blue plate is far lighter than the navy one, so the same frame at
-     the same strength buries the numeral on it. */
-  opacity: 0.4;
-}
-
-.slab-shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* A foot-to-head grade, so the figure always has ground under it however
-   bright the photograph is at that point. Outside the blend group, on
-   the plate itself, so it grades the result rather than joining it. */
-.slab-plate::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    oklch(14% 0.03 255 / 0.5) 0%,
-    oklch(14% 0.03 255 / 0.12) 52%,
-    oklch(14% 0.03 255 / 0.3) 100%
-  );
-}
-
-/* The figure is the subject of the plate, and it is now standing on a
-   photograph rather than a flat fill. It carries its own shadow so a
-   busy frame underneath can never take it. */
-.slab-n {
-  position: relative;
-  z-index: 1;
-  text-shadow:
-    0 2px 6px oklch(12% 0.03 255 / 0.55),
-    0 8px 30px oklch(12% 0.03 255 / 0.6);
-}
-
 .slab-n {
   display: block;
   font-family: var(--font-display);
@@ -6391,16 +6335,6 @@ body {
   .slab-plate {
     aspect-ratio: 5 / 7;
     transform: skewX(-8deg);
-  }
-
-  /* The plate leans, the photograph inside it does not. Counter-skewing
-     the frame cancels the plate's transform and leaves an upright
-     rectangle; it then has to widen to cover the parallelogram it is
-     clipped to, which is the plate's width plus height x tan(8deg). */
-  .slab-shot {
-    left: -12%;
-    right: -12%;
-    transform: skewX(8deg);
   }
 
   .slab-n {
@@ -7746,4 +7680,163 @@ body {
   .lat-rail {
     transition: opacity var(--dur-mid, 320ms) var(--ease-out);
   }
+}
+
+/* ------------------------------------------- the film, played in place
+
+   Sending a reader to YouTube is sending them somewhere they may not come
+   back from, so the film plays on the page. What loads is a poster, a
+   control and a caption: no iframe, no YouTube script, no cookie, no
+   request to Google at all until somebody asks for one.
+
+   The control is a real link to the video. With no JavaScript that is
+   exactly what it does, so the page never carries a dead button; with
+   JavaScript the click is caught and the iframe takes the poster's place.
+
+   The poster is one of her own frames rather than YouTube's thumbnail,
+   for the same reason: fetching the thumbnail would put a request to
+   Google on the page before anyone had clicked. The caption says YouTube,
+   so nothing is disguised. */
+
+.watch {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+@media (min-width: 900px) {
+  .watch {
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-lg);
+  }
+}
+
+.player {
+  position: relative;
+  display: block;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-paper-deep);
+  aspect-ratio: 16 / 9;
+  color: var(--color-ink-on-deep);
+  text-decoration: none;
+}
+
+.player-shot,
+.player-shot img,
+.player iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+.player-shot img {
+  object-fit: cover;
+}
+
+.player::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.82) 0%,
+    rgba(3, 9, 20, 0.34) 46%,
+    rgba(3, 9, 20, 0.12) 100%
+  );
+}
+
+/* A disc with a triangle in it, drawn rather than fetched. */
+.player-go {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: clamp(3.6rem, 6vw, 5rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: oklch(99% 0.003 250 / 0.92);
+  box-shadow: 0 10px 30px oklch(12% 0.03 255 / 0.4);
+  transition: transform var(--dur-fast) var(--ease-out),
+    background var(--dur-fast) var(--ease-out);
+}
+
+.player-go::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 54%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 0.62em 0 0.62em 1.02em;
+  border-color: transparent transparent transparent var(--color-accent);
+}
+
+.player:hover .player-go,
+.player:focus-visible .player-go {
+  transform: translate(-50%, -50%) scale(1.06);
+  background: oklch(100% 0 0);
+}
+
+.player-say {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: grid;
+  gap: var(--space-3xs);
+  padding: var(--space-md);
+}
+
+.player-say b {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.player-say .caption {
+  color: oklch(88% 0.09 245);
+}
+
+/* Once it is playing the poster's furniture is in the way of the film. */
+.player[data-playing] .player-go,
+.player[data-playing] .player-say,
+.player[data-playing]::after {
+  display: none;
+}
+
+.press-note {
+  display: grid;
+  gap: var(--space-3xs);
+  align-content: start;
+  padding: var(--space-md);
+  background: var(--color-paper-2);
+  border-left: 3px solid var(--color-accent);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.press-note b {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.press-note span:not(.caption) {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+}
+
+.press-note:hover {
+  background: var(--color-paper-3);
 }

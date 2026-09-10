@@ -1534,28 +1534,6 @@
   },
   "press": [
     {
-      "id": "fis-profile",
-      "publication": "FIS",
-      "title": "Athlete biography · Bhavani Thekkada Nanjunda",
-      "date": null,
-      "byline": null,
-      "context": "The governing body's complete record of her scored races since 2022.",
-      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
-      "verified": true,
-      "image": "race-orange-bib"
-    },
-    {
-      "id": "ap-2025",
-      "publication": "Associated Press",
-      "title": "Olympic hopeful cross-country skier tries to put India on the winter sports map",
-      "date": "2025-12-10",
-      "byline": "Ken Maguire",
-      "context": "A profile filed during her first World Cup block, on the coffee farm upbringing and the economics of racing without a federation budget. Carried internationally, including by the South China Morning Post.",
-      "url": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
-      "verified": true,
-      "image": "double-pole"
-    },
-    {
       "id": "pr-kashmirimages",
       "publication": "Kashmir Images",
       "title": "Bhavani wins two back-to-back medals for India in Cross-Country Skiing",
@@ -1583,28 +1561,6 @@
       "image": "chile-corralco"
     },
     {
-      "id": "pr-indiatoday",
-      "publication": "India Today",
-      "title": "Icy ambitions: India at the 2026 Winter Olympics",
-      "url": "https://www.indiatoday.in/magazine/leisure/story/20251027-icy-ambitions-india-at-the-2026-winter-olympics-2804672-2025-10-17",
-      "date": "2025-10-17",
-      "byline": "",
-      "context": "On India's athletes going into the 2026 Winter Olympics.",
-      "image": "contingent-2021",
-      "verified": false
-    },
-    {
-      "id": "pr-som",
-      "publication": "Star of Mysore",
-      "title": "Chasing gold through snow",
-      "date": "",
-      "byline": "",
-      "context": "A long interview in her home district's paper, on the route out of Kodagu and what she is aiming at next. Republished by Karnataka First.",
-      "url": "https://starofmysore.com/chasing-gold-through-snow/",
-      "verified": true,
-      "image": "medals-detail"
-    },
-    {
       "publication": "The Hindu",
       "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
       "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
@@ -1624,39 +1580,23 @@
       "verified": true
     },
     {
-      "id": "kiwg-official",
-      "publication": "Khelo India",
-      "title": "KIWG 2026 medal tally",
-      "date": "2026-02",
-      "byline": null,
-      "context": "Official results for the 2026 edition at Gulmarg.",
-      "url": "https://winter.kheloindia.gov.in/medal-tally",
-      "verified": true,
-      "image": "khelo-ice-sculpture"
-    },
-    {
-      "publication": "The New Indian Express",
-      "title": "National skiing athlete from Kodagu looks for sponsors to support her Olympic dream",
-      "url": "https://www.newindianexpress.com/sport/other/2022/apr/21/national-skiing-athlete-from-kodagu-looks-for-sponsors-to-support-her-olympic-dream-2444798.html",
-      "date": "2022-04-21",
-      "context": "The earliest of the coverage, published before her first World Championships and already about how a season gets paid for.",
-      "image": "roller-road"
-    },
-    {
-      "publication": "FIS Stories",
+      "publication": "FIS",
       "title": "Bhavani Thekkada, in the federation's story series",
       "url": "https://fis.shar.estori.es/go/40b85a82-a28c-897e-7cbb-3a1ef8fbe32b/83bc8941-ccb3-006f-2573-3a1ef8fe4a18",
       "date": "",
       "context": "Published by the international governing body for the sport.",
-      "image": "race-forest"
+      "image": "race-forest",
+      "kind": "story"
     },
     {
-      "publication": "YouTube",
-      "title": "Bhavani Thekkada, on video",
+      "publication": "FIS",
+      "title": "Her season, on film",
       "url": "https://youtu.be/uAPd7bUt87o",
       "date": "",
       "context": "Video interview and race footage.",
-      "image": "start-line-gulmarg"
+      "image": "race-chile-skate",
+      "kind": "video",
+      "youtube": "uAPd7bUt87o"
     }
   ],
   "gallery": {
@@ -2470,5 +2410,71 @@
       "k": "Asian Games",
       "s": "Asian Winter Games · 2025"
     }
-  ]
+  ],
+  "pressArchive": [
+    {
+      "id": "fis-profile",
+      "publication": "FIS",
+      "title": "Athlete biography · Bhavani Thekkada Nanjunda",
+      "date": null,
+      "byline": null,
+      "context": "The governing body's complete record of her scored races since 2022.",
+      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
+      "verified": true,
+      "image": "race-orange-bib"
+    },
+    {
+      "id": "ap-2025",
+      "publication": "Associated Press",
+      "title": "Olympic hopeful cross-country skier tries to put India on the winter sports map",
+      "date": "2025-12-10",
+      "byline": "Ken Maguire",
+      "context": "A profile filed during her first World Cup block, on the coffee farm upbringing and the economics of racing without a federation budget. Carried internationally, including by the South China Morning Post.",
+      "url": "https://apnews.com/article/01380f72cf3b383e773da29007e08cd6",
+      "verified": true,
+      "image": "double-pole"
+    },
+    {
+      "id": "pr-indiatoday",
+      "publication": "India Today",
+      "title": "Icy ambitions: India at the 2026 Winter Olympics",
+      "url": "https://www.indiatoday.in/magazine/leisure/story/20251027-icy-ambitions-india-at-the-2026-winter-olympics-2804672-2025-10-17",
+      "date": "2025-10-17",
+      "byline": "",
+      "context": "On India's athletes going into the 2026 Winter Olympics.",
+      "image": "contingent-2021",
+      "verified": false
+    },
+    {
+      "id": "pr-som",
+      "publication": "Star of Mysore",
+      "title": "Chasing gold through snow",
+      "date": "",
+      "byline": "",
+      "context": "A long interview in her home district's paper, on the route out of Kodagu and what she is aiming at next. Republished by Karnataka First.",
+      "url": "https://starofmysore.com/chasing-gold-through-snow/",
+      "verified": true,
+      "image": "medals-detail"
+    },
+    {
+      "id": "kiwg-official",
+      "publication": "Khelo India",
+      "title": "KIWG 2026 medal tally",
+      "date": "2026-02",
+      "byline": null,
+      "context": "Official results for the 2026 edition at Gulmarg.",
+      "url": "https://winter.kheloindia.gov.in/medal-tally",
+      "verified": true,
+      "image": "khelo-ice-sculpture"
+    },
+    {
+      "publication": "The New Indian Express",
+      "title": "National skiing athlete from Kodagu looks for sponsors to support her Olympic dream",
+      "url": "https://www.newindianexpress.com/sport/other/2022/apr/21/national-skiing-athlete-from-kodagu-looks-for-sponsors-to-support-her-olympic-dream-2444798.html",
+      "date": "2022-04-21",
+      "context": "The earliest of the coverage, published before her first World Championships and already about how a season gets paid for.",
+      "image": "roller-road"
+    }
+  ],
+  "pressArchiveNote": "Taken off the Media page on 10 Sep 2026 at her instruction, which named the six that stay. Kept here rather than deleted: the Associated Press piece is the source behind the partnership standfirst and her FIS athlete page is where much of the results table was checked, and neither of those references reads this list, so the cards could go without touching them."
 }
