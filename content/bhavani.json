@@ -415,7 +415,7 @@
           "title": "Her first World Championship",
           "place": "Planica, Slovenia",
           "detail": "She qualified for and competed at her first World Championships in Planica, Slovenia, stepping onto the world’s biggest stage for the first time.",
-          "image": "race-planica",
+          "image": "race-worldcup",
           "kind": "past",
           "figure": "ski",
           "kit": "bib"
@@ -2103,6 +2103,12 @@
       "origin": "Client message, 10 Sep 2026",
       "why": "She says she has raced in Germany and cannot name the town, so the pin is the country and says so: it sits at the geographic centre, 51.16N 10.45E, and its panel states that the venue is not recorded. It is marked kind \"country\" and the heading’s count of start lines skips it, because that count is a count of venues. Worth closing: the town, the year and the race would turn it into a pin like the others, and would tell us whether it belongs in the results table too, where Germany appears nowhere.",
       "status": "published-client-asserted"
+    },
+    {
+      "claim": "The 2023 card shows a frame from a different championship",
+      "origin": "Reviewed 10 Sep 2026",
+      "why": "The card is her first World Championships at Planica and there is no frame of Planica she owns. It showed race-planica-elbrus, a montage of her at Planica with Mount Elbrus dropped in behind, which went on 10 Sep. Her own Planica frame replaced it and was replaced in turn at the client’s instruction, because it is the same photograph as the left half of the montage and reads as a re-crop rather than a change.\nIt now shows race-worldcup: her in the India suit on a stadium loop in front of a full grandstand, from Trondheim in 2025. Nothing in the frame names a venue, only FIS series sponsors, and the card prints the year’s own place rather than the photograph’s, so nothing on screen claims it is Planica. It is still a photograph from one championship on a card about another, which is worth knowing. A Planica frame she owns would replace it outright.",
+      "status": "published-with-note"
     }
   ],
   "certificationPhases": [
