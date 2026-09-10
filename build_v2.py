@@ -1018,7 +1018,7 @@ def page(c: dict, img: Img) -> str:
 
 
 def subpage(c, img, title, lede, body_html, shot=None, current=None,
-            pos=None, og=None, shotside=False):
+            pos=None, og=None):
     """One interior page. Same language as the index, one idea per page.
 
     Every interior page is the same three moves: a short photographic header,
@@ -1060,7 +1060,7 @@ def subpage(c, img, title, lede, body_html, shot=None, current=None,
 <a class="skip" href="#main">Skip to content</a>
 {nav_block(current)}
 <main id="main">
-<section class="panel" data-size="head"{' data-shot="side"' if shotside else ''}>{head_shot}
+<section class="panel" data-size="head">{head_shot}
   <div class="wrap panel-body">
     <a class="crumb caption" href="index.html">&larr; Home</a>
     <h1>{e(title)}</h1>
@@ -1902,11 +1902,21 @@ def media_page(c, img):
                    # below, and the only banner on the site that is not
                    # daylight on snow. The band lands on the lit group,
                    # which sits at 0.45 to 0.85 of a portrait frame.
-                   # Was night-training, a floodlit trail with nobody
-                   # identifiable in it: atmosphere, and nothing to do
-                   # with press. A podium is what gets reported.
-                   body, shot="podium-gulmarg-2023", current="media.html",
-                   pos="50% 60%", og="media")
+                   # The lesson on this band is shape, not subject. A
+                   # floodlit trail said nothing. A podium of three
+                   # people standing, cropped to 3.8:1, is a band of
+                   # torsos with the heads above the frame. The Gulmarg
+                   # village is the handsomest frame in the library and
+                   # measures 2.35:1 under the h1, the worst on the site,
+                   # because it is snow all the way across.
+                   #
+                   # This one is a horizontal composition to start with:
+                   # a squad spread the width of an open ridge with their
+                   # poles up, heads against the sky. 3.02 under the h1
+                   # and 5.46 under the sub, which beats About, Career
+                   # and Journey, all three of which are already live.
+                   body, shot="snow-ridge-line", current="media.html",
+                   pos="50% 42%", og="media")
 
 
 def partnership_page(c, img):
@@ -2259,15 +2269,16 @@ def speaking_page(c, img):
                    # The band is far wider than the frame, so the crop is
                    # a slice: y is set to land it across her face and the
                    # mic rather than at the middle of a portrait.
-                   # The only apt photograph for this page is her at a
-                   # lectern, and it is a portrait. A full-bleed band is
-                   # 1585 by 414, which is 3.8:1, and 3.8:1 of a portrait
-                   # is a strip across somebody's eyes; measured, not
-                   # guessed. So on this page the photograph takes a
-                   # column at the right instead of the whole band, which
-                   # gives it about 1.15:1 and her most of her height.
-                   shot="lectern-speaking", current="speaking.html",
-                   og="speaking", pos="52% 26%", shotside=True)
+                   # A full band like every other page, so the frame has
+                   # to be one that survives 3.8:1. Of the thirteen owned
+                   # landscape frames, rendered at that ratio and looked
+                   # at, two hold: this one and the line of skiers on the
+                   # Media page. A lone figure on a summit ridge against
+                   # a Himalayan panorama, with the left third open for
+                   # the title. The lectern portrait keeps the Persuasion
+                   # card, where the box is 0.86:1 and she is whole.
+                   shot="summit-solo", current="speaking.html",
+                   og="speaking", pos="62% 42%")
 
 
 def contact_page(c, img):
