@@ -1933,13 +1933,11 @@ def partnership_page(c, img):
     # a frame. The photo-only tiles are texture and say nothing the text
     # tiles do not, so they are hidden from screen readers.
     def tile(n, a):
-        # A band of photograph with the numeral over it, then the copy on
-        # paper beneath. The copy stays off the picture on purpose: these
-        # paragraphs run to 240 characters and small type over a
-        # photograph is the hardest contrast case on the site.
-        copy = f'<h3>{e(a["title"])}</h3><p>{e(a["body"])}</p>'
-        if a.get("body2"):
-            copy += f'<p>{e(a["body2"])}</p>'
+        # A band of photograph with the numeral over it and the name
+        # under it. The write-ups came off on 10 Sep at her instruction,
+        # the same call she made on the Open to cards; her wording is
+        # held on each area in the content file rather than deleted, and
+        # the section's standfirst above still says what it is all for.
         sl = a.get("image")
         shot = ""
         if sl and (img.get(sl) or {}).get("rights") == "owned":
@@ -1947,7 +1945,8 @@ def partnership_page(c, img):
         return (f'<article class="fund" data-rise>'
                 f'<span class="fund-frame">{shot}'
                 f'<b class="fund-n" aria-hidden="true">{n:02d}</b></span>'
-                f'<span class="fund-copy">{copy}</span></article>')
+                f'<span class="fund-copy"><h3>{e(a["title"])}</h3></span>'
+                f'</article>')
 
     areas = "".join(
         tile(n, a) for n, a in enumerate(p.get("areas", []), 1))

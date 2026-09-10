@@ -5195,16 +5195,39 @@ body {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Not a 2x2. Four equal rectangles in a square is the thing she has
+   twice called monotonous, and with the write-ups gone there is nothing
+   inside them to tell one from another.
+
+   So the row alternates instead: three tracks, the first card two of
+   them wide and the second one, then the third one and the fourth two.
+   A pinwheel. Every frame is the same height, so the widths are what
+   change and the two rows are mirror images rather than a repeat.
+
+   Uniform height rather than a uniform aspect ratio is what makes that
+   work: with an aspect ratio the wide cards would be twice as tall as
+   the narrow ones and each row would sit on a ragged baseline. */
+
 @media (min-width: 760px) {
   .funds {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-lg);
+  }
+
+  .fund:nth-child(1),
+  .fund:nth-child(4) {
+    grid-column: span 2;
+  }
+
+  .fund .fund-frame {
+    aspect-ratio: auto;
+    height: clamp(13rem, 23vw, 20rem);
   }
 }
 
 .fund {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: auto auto;
   background: var(--color-paper-2);
   overflow: hidden;
 }
@@ -5253,7 +5276,7 @@ body {
   z-index: 1;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(3.4rem, 6vw, 5rem);
+  font-size: clamp(3rem, 4.6vw, 4.4rem);
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--color-ink-on-deep);
@@ -5262,11 +5285,14 @@ body {
   user-select: none;
 }
 
+/* Two words on a strip of paper. With the paragraph gone the old
+   padding left the strip mostly empty, so it closes up to a caption
+   under a picture. */
 .fund-copy {
   display: grid;
-  align-content: start;
-  gap: var(--space-2xs);
-  padding: var(--space-md) var(--space-md) var(--space-lg);
+  align-content: center;
+  min-height: 4.5rem;
+  padding: var(--space-sm) var(--space-md);
 }
 
 .fund h3 {
@@ -5278,23 +5304,6 @@ body {
   text-transform: uppercase;
   color: var(--color-ink);
   max-width: 22ch;
-}
-
-/* A stop between the label and the sentence. */
-.fund h3::after {
-  content: "";
-  display: block;
-  width: 2.2rem;
-  height: 2px;
-  margin-top: var(--space-2xs);
-  background: var(--color-accent);
-}
-
-.fund p {
-  font-family: var(--font-body);
-  color: var(--color-ink-body);
-  margin: 0;
-  max-width: 46ch;
 }
 
 /* ---------------------- partnership: the three, and what she is open to */
