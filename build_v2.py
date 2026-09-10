@@ -1159,7 +1159,11 @@ def road_ahead(c, map_html="") -> str:
     # than typed, so the heading cannot drift from the map: the origin is
     # the pin carrying kind "origin" and the rest is everything else.
     pins = c["internationalFootprint"]
-    starts = sum(1 for p in pins if p.get("kind") != "origin")
+    # Venues, which is what a start line is. The origin is her home and
+    # the Germany dot is a country with no venue behind it, so neither is
+    # one of these.
+    starts = sum(1 for p in pins
+                 if p.get("kind") not in ("origin", "country"))
     head = (c["sections"]["footprint"].get("mapHeading")
             or "One home, {n} start lines").replace("{n}", spell(starts))
     return f"""
@@ -1637,7 +1641,13 @@ def route_map(c) -> str:
     #   fx, fy         where the leader leaves the label
     clusters = [
         (["trondheim", "lygna", "idre"], 168.0, 26.5, "end", 170.0, 25.6),
-        (["davos", "seefeld", "planica"], 191.0, 46.5, "middle", 191.0, 45.0),
+        # Dobbiaco joined this group on 10 Sep. It lands 5px from
+        # Seefeld and 7 from Planica on a 1600px render, which is
+        # inside the fuse the ring and the counted label exist for,
+        # so it is named in the label rather than left as an
+        # unlabelled dot among labelled ones.
+        (["davos", "seefeld", "planica", "dobbiaco"],
+         191.0, 46.5, "middle", 191.0, 45.0),
     ]
     leads = ""
     for ids, lx, ly, anc, fx, fy in clusters:
@@ -1677,11 +1687,11 @@ def route_map(c) -> str:
     return f"""
     <figure class="route-map" id="route">
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
-           aria-label="World map marking the fifteen places she has raced
+           aria-label="World map marking the {len(pts)} places she has raced
            or trained, from Ruka inside the Arctic Circle to the Snow Farm
            in New Zealand. The three Scandinavian venues and the three
            Alpine ones sit too close to label separately and are named as
-           two groups; all fifteen are listed under the map.">
+           two groups; the countries are listed under the map.">
         <path d="{w['path']}" class="land"/>
         <g class="past">{dots}{texts}{leads}</g>
       </svg>

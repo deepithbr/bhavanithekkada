@@ -905,6 +905,32 @@
       "best": "New Zealand block, 2026",
       "image": "nz-snowfarm",
       "provenance": "New Zealand named by the client as one of the places she races, 31 Aug 2026. The venue is the Snow Farm at Wanaka, taken from her own 2026 frame in that location and from the season copy that already names New Zealand; the country is hers, the specific venue is read off the photograph and worth her confirming."
+    },
+    {
+      "id": "dobbiaco",
+      "place": "Dobbiaco",
+      "country": "Italy",
+      "lat": 46.73,
+      "lon": 12.22,
+      "years": [
+        "2022"
+      ],
+      "event": "Raiffeisen Cross-Country Cup",
+      "kind": "venue",
+      "sourceRef": "portfolio; press",
+      "best": "Silver over 5 km in 18:03."
+    },
+    {
+      "id": "germany",
+      "place": "Germany",
+      "country": "Germany",
+      "lat": 51.16,
+      "lon": 10.45,
+      "years": [],
+      "event": null,
+      "kind": "country",
+      "sourceRef": "athlete-brief",
+      "best": "She has raced in Germany. The venue is not recorded here yet."
     }
   ],
   "mountainAchievements": [
@@ -2067,6 +2093,12 @@
       "claim": "race-planica-elbrus was a montage and is off the site",
       "origin": "Reviewed 10 Sep 2026",
       "why": "It carried her racing at Planica on the left and Mount Elbrus dropped in behind on the right: one frame showing two places three thousand kilometres apart, presented on a page about what she has actually done. It was already marked unconfirmed-agency-derived. Her own Planica frame replaces it on the 2023 card, filed client-supplied rather than owned because the rights question from 7 Sep is still open. The montage stays in the library, used by nothing.",
+      "status": "published-client-asserted"
+    },
+    {
+      "claim": "A pin on Germany with no venue behind it",
+      "origin": "Client message, 10 Sep 2026",
+      "why": "She says she has raced in Germany and cannot name the town, so the pin is the country and says so: it sits at the geographic centre, 51.16N 10.45E, and its panel states that the venue is not recorded. It is marked kind \"country\" and the heading’s count of start lines skips it, because that count is a count of venues. Worth closing: the town, the year and the race would turn it into a pin like the others, and would tell us whether it belongs in the results table too, where Germany appears nowhere.",
       "status": "published-client-asserted"
     }
   ],
