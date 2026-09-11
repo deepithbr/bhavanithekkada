@@ -2432,10 +2432,27 @@ a {
   border-color: oklch(45% 0.17 25);
 }
 
+/* "Organisation optional" reads as a two-word field name. The brackets
+   make it the aside it is. They are drawn rather than typed so the
+   label's own text stays clean, and because a bracket is punctuation
+   about the layout rather than part of what the field is called.
+
+   The margin is negative because the uppercase label is letter-spaced
+   and that tracking is still applied to its final space, which left a
+   visible gap in front of the bracket. */
 .field .opt {
   text-transform: none;
   letter-spacing: 0;
   color: var(--color-ink-3);
+  margin-left: -0.12em;
+}
+
+.field .opt::before {
+  content: "(";
+}
+
+.field .opt::after {
+  content: ")";
 }
 
 /* --------------------------------------------------- the lightbox, closed */

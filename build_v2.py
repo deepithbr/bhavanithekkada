@@ -951,17 +951,24 @@ def media_tiles(c: dict, img: Img) -> str:
 
 
 def footer(c: dict) -> str:
-    # Her item 6: the block beneath every page goes. What survives is what
-    # her document's Contact section lists: Instagram, email, copyright.
-    # The page links live in the navigation alone.
+    # Her item 6: the block beneath every page goes. What survives is her
+    # Instagram and the copyright. The page links live in the navigation
+    # alone.
+    #
+    # The mailto came off on 11 Sep. Her address was published in plain
+    # sight on all nine pages, which is an address harvesters read before
+    # anyone else does, and the site already has a contact form and a
+    # Contact page that carry the same job without printing it. Removing
+    # it also stops the footer offering two different routes in.
     ct = c["contact"]
     return f"""
 <footer class="foot">
   <div class="wrap">
     <div class="foot-rows" style="margin-top:0;border-top:none">
       <div class="foot-links">
-        <a href="{e(ct['instagramUrl'])}" rel="me">Instagram</a>
-        <a href="mailto:{e(ct['email'])}">Email</a>
+        <a href="{e(ct['instagramUrl'])}" rel="me"
+           target="_blank">Instagram</a>
+        <a href="contact.html">Contact</a>
       </div>
       <p class="foot-fine">&copy; 2026 Bhavani Thekkada Nanjunda</p>
     </div>
