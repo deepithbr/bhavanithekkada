@@ -8005,3 +8005,13 @@ body {
     transition: none;
   }
 }
+
+
+/* A photographer's credit under a journey frame that is not hers. Small,
+   quiet, and on the paper rather than over the picture. */
+.jr-credit {
+  margin: 0;
+  padding: var(--space-3xs) var(--space-md) 0;
+  color: var(--color-ink-3);
+  font-size: 0.68rem;
+}

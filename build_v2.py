@@ -1443,8 +1443,12 @@ def journey_line(c, img) -> str:
         # year and a line; the frame and the write-up wait for a click.
         shot = ""
         if y.get("image"):
+            # A photographer's credit, where the frame is not hers.
+            cl = (img.get(y["image"]) or {}).get("creditLine")
+            cap = (f'<figcaption class="jr-credit caption">{e(cl)}'
+                   f'</figcaption>' if cl else "")
             shot = ('<figure class="jr-pop-shot">'
-                    + img.tag(y["image"], JR_SHOT) + "</figure>")
+                    + img.tag(y["image"], JR_SHOT) + cap + "</figure>")
         where = f' &middot; {e(y["place"])}' if y.get("place") else ""
         # Said once, on the first year that has not happened, because a
         # line going dashed under it is a convention and not a caption.

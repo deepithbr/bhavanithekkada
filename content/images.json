@@ -1924,6 +1924,32 @@
         0.22
       ],
       "rights": "client-supplied"
+    },
+    {
+      "slot": "flag-merino-2026",
+      "file": "flag-merino-2026",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        2432,
+        3648
+      ],
+      "ratio": 0.6667,
+      "alt": "Bhavani Thekkada holding the Indian flag open in front of the Snow Farm and Merino Muster banners, her skis beside her.",
+      "credit": "Framepower NZ",
+      "creditLine": "Photo: Framepower NZ",
+      "year": 2026,
+      "location": "Snow Farm, New Zealand",
+      "category": "race",
+      "focal": [
+        0.5,
+        0.36
+      ],
+      "rights": "client-supplied",
+      "source": "M2026 - www.framepower.nz -495.jpg, her journey Drive folder"
     }
   ],
   "excluded": [
