@@ -1119,6 +1119,31 @@
     });
   }
 
+  // Where your support goes, beta: whichever area is in the middle of
+  // the screen is lit, and the photograph beside the list changes to its
+  // frame. A thin band across the middle of the viewport decides "in the
+  // middle", so exactly one area holds it at a time.
+  const fs = document.querySelector(".funds-scroll");
+  if (fs && "IntersectionObserver" in window) {
+    const steps = Array.from(fs.querySelectorAll(".fs-step"));
+    const shots = Array.from(fs.querySelectorAll(".fs-shot"));
+    const count = fs.querySelector(".fs-count b");
+    const light = (n) => {
+      steps.forEach((s) => s.toggleAttribute("data-on", s.dataset.step === n));
+      shots.forEach((s) => s.toggleAttribute("data-on", s.dataset.for === n));
+      if (count) count.textContent = String(n).padStart(2, "0");
+    };
+    const band = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) light(entry.target.dataset.step);
+        }
+      },
+      { rootMargin: "-48% 0px -48% 0px", threshold: 0 }
+    );
+    steps.forEach((s) => band.observe(s));
+  }
+
   // The film, played where it sits.
   //
   // Until this fires, the card is a poster and a link: nothing has been

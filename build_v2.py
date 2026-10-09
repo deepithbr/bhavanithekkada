@@ -1169,10 +1169,11 @@ def road_ahead(c, map_html="") -> str:
     # Venues, which is what a start line is. The origin is her home and
     # the Germany dot is a country with no venue behind it, so neither is
     # one of these.
-    starts = sum(1 for p in pins
-                 if p.get("kind") not in ("origin", "country"))
+    # Countries since 10 Oct, when the map went to one dot per country.
+    # Counted off the pins, so the heading and the map cannot disagree.
+    starts = len({p["country"] for p in pins})
     head = (c["sections"]["footprint"].get("mapHeading")
-            or "One home, {n} start lines").replace("{n}", spell(starts))
+            or "Raced in {n} countries").replace("{n}", spell(starts))
     return f"""
 <section class="prose-fold" id="road">
   <div class="wrap">
@@ -1578,36 +1579,62 @@ def route_map(c) -> str:
     """
     w = json.loads((CONTENT / "worldmap.json").read_text(encoding="utf-8"))
     lat_top = w["latTop"]
-    pts = {p["id"]: p for p in c["internationalFootprint"]}
 
-    def xy(pid):
-        p = pts[pid]
+    # One dot per country, from 10 Oct, at her instruction. A dot per
+    # venue made Europe a smear of nine and asked the reader to know
+    # where Idre is; a dot per country answers the question she is
+    # asking, which is where in the world she has raced. The venues are
+    # kept, inside each country's panel, so Gulmarg and Kodagu are still
+    # named, under India. Each dot sits at the mean of its venues, and
+    # countries arrive in the order she first raced in them.
+    countries = {}
+    for p in c["internationalFootprint"]:
+        countries.setdefault(p["country"], []).append(p)
+    pts = {}
+    for name, vs in countries.items():
+        pts[name] = {
+            "lat": sum(v["lat"] for v in vs) / len(vs),
+            "lon": sum(v["lon"] for v in vs) / len(vs),
+            "venues": vs,
+        }
+
+    def xy(name):
+        p = pts[name]
         return p["lon"] + 180.0, lat_top - p["lat"]
 
-    # No connecting line. Her route doubles back across continents, so drawn
-    # honestly it reads as string rather than a journey; the client called it
-    # odd and was right. The story lives in the order instead: the pins
-    # appear one at a time, Kodagu first and Chile near the end, which is the
-    # same narrative without the geometry.
-    def pin(i, p):
-        """One venue, with everything the file knows about it attached.
-
-        The event, the years and her best result were all sitting in the
-        content file unused. They go on the circle so the panel can read
-        them, into a title so a screen reader gets the same, and the
-        circle takes a tabindex so the keyboard can reach it.
-        """
-        x, y = xy(p["id"])
-        # Escaped part by part, then joined with the entity. Escaping
-        # the joined string instead turned its separators into literal
-        # &middot; wherever the text was parsed only once, which is what
-        # the title element does.
-        yrs = ", ".join(str(v) for v in (p.get("years") or []))
+    def pin(i, name):
+        """One country, with its venues, years and events attached for
+        the panel, a title for a screen reader, and a tabindex."""
+        x, y = xy(name)
+        vs = pts[name]["venues"]
         dot = " &middot; "
-        where = dot.join(
-            e(str(v)) for v in (p.get("place"), p.get("country")) if v)
-        said = dot.join(e(str(v)) for v in (yrs, p.get("event")) if v)
-        best = e(p.get("best") or "")
+        # A country-level entry has no venue of its own to name.
+        places = [v for v in vs if v.get("kind") != "country"]
+        if len(places) == 1:
+            v = places[0]
+            yrs = ", ".join(str(t) for t in (v.get("years") or []))
+            said = dot.join(e(str(t)) for t in
+                            (v["place"], yrs, v.get("event")) if t)
+            best = e(v.get("best") or "")
+        elif places:
+            said = dot.join(
+                e(v["place"]) + (" (home)" if v.get("kind") == "origin"
+                                 else "")
+                for v in places)
+            # Her home carries her birth year, which is not a race.
+            yrs = sorted({str(t) for v in places
+                          if v.get("kind") != "origin"
+                          for t in (v.get("years") or [])})
+            if len(yrs) > 1:
+                best = f"Racing here {yrs[0]} to {yrs[-1]}."
+            elif yrs:
+                best = f"Racing here in {yrs[0]}."
+            else:
+                best = ""
+        else:
+            said = ""
+            best = e(vs[0].get("best") or "")
+        where = e(name)
         return (
             f'<circle cx="{x:.1f}" cy="{y:.1f}" r="1.6" class="pin" '
             f'data-stop="{i}" tabindex="0" role="button" '
@@ -1616,75 +1643,53 @@ def route_map(c) -> str:
             f'<title>{where}{(dot + said) if said else ""}</title>'
             f'</circle>')
 
-    dots = "".join(
-        pin(i, p) for i, p in enumerate(c["internationalFootprint"]))
+    dots = "".join(pin(i, n) for i, n in enumerate(pts))
+
     # dx, dy, anchor per label, tuned against the render
     labels = [
-        ("kodagu", 3.5, 4.5, "start", "Kodagu"),
-        ("gulmarg", 3.5, -1.5, "start", "Gulmarg"),
-        ("schuchinsk", 0, -3.5, "middle", "Schuchinsk"),
-        ("harbin", 0, 5.5, "middle", "Harbin"),
-        # Beside its pin. Above, its ascender crossed the frame at 70N;
-        # below, it ran into the Scandinavian group label.
-        ("akureyri", -3.5, 1.0, "end", "Akureyri"),
-        ("corralco", 3.5, 1.0, "start", "Chile"),
-        ("snowfarm", -3.5, 1.0, "end", "New Zealand"),
-        # Alone out east, so it is labelled where it stands.
-        ("ruka", 3.5, 1.0, "start", "Ruka"),
+        ("India", 3.5, 1.0, "start"),
+        ("Kazakhstan", 0, -3.5, "middle"),
+        ("China", 0, 5.5, "middle"),
+        ("Iceland", -3.5, 1.0, "end"),
+        ("Finland", 3.5, 1.0, "start"),
+        ("Germany", -3.5, 1.0, "end"),
+        ("Chile", 3.5, 1.0, "start"),
+        ("New Zealand", -3.5, 1.0, "end"),
     ]
     texts = "".join(
-        f'<text x="{xy(pid)[0] + dx:.1f}" y="{xy(pid)[1] + dy:.1f}" '
-        f'text-anchor="{a}">{e(t)}</text>'
-        for pid, dx, dy, a, t in labels
+        f'<text x="{xy(n)[0] + dx:.1f}" y="{xy(n)[1] + dy:.1f}" '
+        f'text-anchor="{a}">{e(n)}</text>'
+        for n, dx, dy, a in labels if n in pts
     )
 
-    # The two European groups. Three venues each, inside about three units
-    # of map, which is closer than a label can be placed. One leader out to
-    # open water per group and a label naming all three: every place is on
-    # the map by name, and there are two lines rather than six.
+    # Two groups sit closer than a label can be placed: Norway and Sweden
+    # two units apart, and four Alpine countries inside four units. One
+    # leader out to open water per group and a label naming them all.
     #
-    #   ids            the venues in the group, in the order the label reads
+    #   names          the countries, in the order the label reads
     #   lx, ly, anchor where the label sits, tuned against the render
     #   fx, fy         where the leader leaves the label
     clusters = [
-        (["trondheim", "lygna", "idre"], 168.0, 26.5, "end", 170.0, 25.6),
-        # Dobbiaco joined this group on 10 Sep. It lands 5px from
-        # Seefeld and 7 from Planica on a 1600px render, which is
-        # inside the fuse the ring and the counted label exist for,
-        # so it is named in the label rather than left as an
-        # unlabelled dot among labelled ones.
-        (["davos", "seefeld", "planica", "dobbiaco"],
+        (["Norway", "Sweden"], 168.0, 26.5, "end", 170.0, 25.6),
+        (["Switzerland", "Austria", "Italy", "Slovenia"],
          191.0, 46.5, "middle", 191.0, 45.0),
     ]
     leads = ""
-    for ids, lx, ly, anc, fx, fy in clusters:
-        pts_ = [xy(i) for i in ids]
+    for names, lx, ly, anc, fx, fy in clusters:
+        names = [n for n in names if n in pts]
+        pts_ = [xy(n) for n in names]
         cx_ = sum(q[0] for q in pts_) / len(pts_)
         cy_ = sum(q[1] for q in pts_) / len(pts_)
-        # Stop the leader short of the dots rather than into them.
         vx_, vy_ = cx_ - fx, cy_ - fy
         d_ = (vx_ ** 2 + vy_ ** 2) ** 0.5 or 1.0
         ex_, ey_ = cx_ - vx_ / d_ * 3.4, cy_ - vy_ / d_ * 3.4
-        name = " &middot; ".join(
-            pts[i]["place"] for i in ids)
+        name = " &middot; ".join(e(n) for n in names)
         leads += (f'<path class="map-lead" d="M{fx:.1f},{fy:.1f} '
                   f'L{ex_:.1f},{ey_:.1f}"/>'
                   f'<text x="{lx:.1f}" y="{ly:.1f}" '
                   f'text-anchor="{anc}">{name}</text>')
-    # No destination and no planned stops, from 31 Aug. The map was doing
-    # two jobs: marking where she has raced, and arguing a case about
-    # 2030 with a ringed point in the Alps, a leader naming La Clusaz and
-    # three hollow rings for stops she has not made. The second job went
-    # at the client's instruction. The lines went the same way on the
-    # same day, for the same reason: the places are the content.
 
-    # Countries rather than venues, at her instruction of 10 Sep, and
-    # read off the pins so the roll and the map cannot drift apart. Her
-    # own list runs to fourteen: the two the pins do not carry are Italy,
-    # which this file knows as Dobbiaco from the 2022 silver but never
-    # put on the map, and Germany, which appears nowhere in it at all.
-    # Both are in withheld as an open question rather than typed in here.
-    order = sorted({p["country"] for p in c["internationalFootprint"]})
+    order = sorted(pts)
     roll = " &middot; ".join(order)
     # crop: lon -85..178 -> x 95..358, lat 70..-50. It ran to 145 east
     # and stopped in the Pacific short of New Zealand, and to 45 south,
@@ -1694,11 +1699,11 @@ def route_map(c) -> str:
     return f"""
     <figure class="route-map" id="route">
       <svg viewBox="{vx} {vy:.0f} {vw} {vh:.0f}" role="img"
-           aria-label="World map marking the {len(pts)} places she has raced
-           or trained, from Ruka inside the Arctic Circle to the Snow Farm
-           in New Zealand. The three Scandinavian venues and the three
-           Alpine ones sit too close to label separately and are named as
-           two groups; the countries are listed under the map.">
+           aria-label="World map marking the {len(pts)} countries she has
+           raced in, one dot each, from Finland inside the Arctic Circle
+           to New Zealand. Norway and Sweden, and the four Alpine
+           countries, sit too close to label separately and are named as
+           two groups. The countries are also listed under the map.">
         <path d="{w['path']}" class="land"/>
         <g class="past">{dots}{texts}{leads}</g>
       </svg>
@@ -1805,14 +1810,12 @@ def records_page(c, img):
 
 
 def media_page(c, img):
-    """Press as cards, not a list of links.
+    """Press as strips, the way the first version had it.
 
-    Each card is the thumbnail the press entry already carries, the
-    publication, the year, and the headline. The whole card is the link. Two
-    columns, so ten stories read as a page of stories rather than a wall of
-    blue text. The fields are `publication` and `title`: the first pass read
-    `outlet` and `headline`, which do not exist, so every outlet line
-    rendered empty.
+    Her photograph on the left, the brief on the right: outlet and year,
+    the headline, and the line of context each entry carries. The whole
+    strip is the link. They slide in from alternating sides as the reader
+    reaches them, once, and then sit still.
     """
     press = []
     for pr in c["press"]:
@@ -1826,16 +1829,33 @@ def media_page(c, img):
         year = str(pr.get("date") or "")[:4]
         meta = f" {chr(183)} ".join(x for x in (outlet, year) if x)
         url = pr.get("url") or ""
-        thumb = ""
+        # The slot is always emitted, even empty, so a story without a
+        # picture cannot shift its whole row a column to the left. V1
+        # learned that the hard way.
+        thumb = '<span class="press-shot is-empty"></span>'
         if pr.get("image") and img.get(pr["image"]):
             thumb = (f'<span class="press-shot">'
-                     f'{img.tag(pr["image"], "(min-width:760px) 30vw, 90vw")}</span>')
+                     f'{img.tag(pr["image"], "(min-width:760px) 22vw, 90vw")}'
+                     f'</span>')
+        # The public line. `context` stays the internal note, and two of
+        # those correct the outlet: The Hindu counts three golds where the
+        # result was one gold and two bronzes, and Srinagar News calls two
+        # individual races relays. Saying so on her own sponsor page reads
+        # as her arguing with the press, so the page carries `brief`.
+        line = pr.get("brief") or pr.get("context")
+        brief = (f'<span class="press-brief">{e(line)}</span>'
+                 if line else "")
+        more = '<span class="press-more caption">Read the story</span>'
         inner = (f'{thumb}<span class="press-body">'
                  f'<span class="caption">{e(meta)}</span>'
-                 f'<b>{e(head)}</b></span>')
+                 f'<b>{e(head)}</b>{brief}{more if url else ""}</span>')
+        # Alternate sides, so the list arrives the way V1's did.
+        side = "l" if len(press) % 2 == 0 else "r"
         press.append(
-            f'<li data-rise><a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
-            if url else f'<li data-rise><p>{inner}</p></li>'
+            f'<li class="strip" data-rise data-side="{side}">'
+            f'<a href="{e(url)}" rel="noopener" target="_blank">{inner}</a></li>'
+            if url else
+            f'<li class="strip" data-rise data-side="{side}"><p>{inner}</p></li>'
         )
     lib = json.loads((CONTENT / "images.json").read_text(encoding="utf-8"))
     # Each tile is a link to the full frame. The grid crops to 3:4 for order;
@@ -1892,7 +1912,7 @@ def media_page(c, img):
 <section class="prose-fold">
   <div class="wrap">
     <div class="prose"><h2>Press</h2></div>
-    <ul class="press-grid">{''.join(press)}</ul>
+    <ul class="press-strips">{''.join(press)}</ul>
   </div>
 </section>{watch}
 <section class="prose-fold">
@@ -1926,7 +1946,7 @@ def media_page(c, img):
                    pos="50% 42%", og="media")
 
 
-def partnership_page(c, img):
+def partnership_page(c, img, beta=False):
     """Four things and nothing else, to the client's brief of 30 Aug 2026:
     what support funds, who supports her now, a line on each of them, and
     what she is open to. Work with Bhavani closes it.
@@ -2014,6 +2034,40 @@ def partnership_page(c, img):
                 f'</li>')
 
     open_to = "".join(opt(x) for x in p.get("openTo", []))
+
+    # The beta tells the same four areas as a scroll: a photograph that
+    # holds still on the left and changes as each area passes on the
+    # right. Built only for partnership-beta.html.
+    if beta:
+        frames, steps = [], []
+        for n, a in enumerate(p.get("areas", []), 1):
+            sl = a.get("betaImage") or a.get("image")
+            ok = sl and (img.get(sl) or {}).get("rights") == "owned"
+            if ok:
+                frames.append(
+                    f'<figure class="fs-shot" data-for="{n}"'
+                    f'{" data-on" if n == 1 else ""}>'
+                    f'{img.tag(sl, "(min-width:1000px) 40vw, 92vw")}'
+                    f'</figure>')
+            inline = (f'<span class="fs-inline" aria-hidden="true">'
+                      f'{img.tag(sl, "92vw")}</span>' if ok else "")
+            copy = f'<p>{e(a["body"])}</p>'
+            if a.get("body2"):
+                copy += f'<p>{e(a["body2"])}</p>'
+            steps.append(
+                f'<li class="fs-step" data-step="{n}"'
+                f'{" data-on" if n == 1 else ""}>{inline}'
+                f'<span class="fs-n" aria-hidden="true">{n:02d}</span>'
+                f'<h3>{e(a["title"])}</h3>{copy}</li>')
+        total = len(steps)
+        areas = (
+            f'<div class="funds-scroll">'
+            f'<div class="fs-media" aria-hidden="true">'
+            f'<div class="fs-frames">{"".join(frames)}</div>'
+            f'<p class="fs-count caption"><b>01</b> / {total:02d}</p>'
+            f'</div>'
+            f'<ol class="fs-steps">{"".join(steps)}</ol></div>')
+
     ns = p.get("nextStage") or {}
     stage_copy = "".join(f'<p>{e(t)}</p>' for t in ns.get("body", []))
     body = f"""
@@ -2023,7 +2077,7 @@ def partnership_page(c, img):
       <h2>{e(p.get('fundsHeading') or 'Where your support goes')}</h2>
       {f'<p>{e(p["fundsLede"])}</p>' if p.get('fundsLede') else ''}
     </div>
-    <div class="funds">{areas}</div>
+    {areas if beta else f'<div class="funds">{areas}</div>'}
   </div>
 </section>
 <section class="prose-fold" data-ground="ice" id="current">
@@ -2430,6 +2484,11 @@ def main() -> int:
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
+    # The beta for Where your support goes, kept out of the navigation and
+    # out of search, so the client can compare it with the live page.
+    beta = partnership_page(c, img, beta=True).replace(
+        "<head>", '<head>\n<meta name="robots" content="noindex">', 1)
+    (OUT / "partnership-beta.html").write_text(beta, encoding="utf-8")
     (OUT / "speaking.html").write_text(speaking_page(c, img), encoding="utf-8")
     (OUT / "contact.html").write_text(contact_page(c, img), encoding="utf-8")
     (OUT / "404.html").write_text(f"""<!doctype html>

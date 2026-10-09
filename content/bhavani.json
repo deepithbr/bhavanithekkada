@@ -196,8 +196,8 @@
         }
       ],
       "mapNote": "From 45°S at the Snow Farm to 66°N at Ruka. Kodagu sits between the two, at 12°N.",
-      "mapHeading": "One home, {n} start lines",
-      "mapHeadingNote": "{n} is the count of pins that are not the origin, computed from internationalFootprint at build. Edit the wording, not the figure."
+      "mapHeading": "Raced in {n} countries",
+      "mapHeadingNote": "{n} is the count of countries carried by internationalFootprint, computed at build. One dot per country since 10 Oct 2026; each country’s panel lists its venues. Edit the wording, not the figure."
     },
     "beyond": {
       "index": "03",
@@ -482,9 +482,9 @@
         {
           "year": "2029",
           "line": "The road to Olympic qualification",
-          "title": "Almaty, then Lahti",
-          "place": "Almaty and Lahti",
-          "detail": "Almaty, then Lahti, and the points that decide 2030.",
+          "title": "Asian Winter Games and World Championships",
+          "place": "Almaty, Kazakhstan and Lahti, Finland",
+          "detail": "The Asian Winter Games in Almaty and the FIS Nordic World Ski Championships in Lahti, and the points between them that decide 2030.",
           "image": null,
           "kind": "ahead",
           "figure": "ski",
@@ -707,6 +707,31 @@
       "sourceRef": "kiwg-2026",
       "best": "Gold, Nordic sprint, Khelo India 2026",
       "image": "podium-gulmarg-2023"
+    },
+    {
+      "id": "auli",
+      "place": "Auli",
+      "country": "India",
+      "region": "Uttarakhand",
+      "lat": 30.53,
+      "lon": 79.57,
+      "years": [],
+      "event": null,
+      "kind": "venue",
+      "sourceRef": "athlete-brief",
+      "best": ""
+    },
+    {
+      "id": "himachal",
+      "place": "Himachal Pradesh",
+      "country": "India",
+      "lat": 31.9,
+      "lon": 77.2,
+      "years": [],
+      "event": null,
+      "kind": "venue",
+      "sourceRef": "athlete-brief",
+      "best": ""
     },
     {
       "id": "akureyri",
@@ -1567,8 +1592,9 @@
       "date": "2025-09-16",
       "byline": "Farhat Naik",
       "context": "Filed from Santiago two days after the Corralco races, and the earliest of the reports on them. Carries her own account of the two bronzes.",
-      "image": "khelo-medals",
-      "verified": true
+      "image": "race-chile-skate",
+      "verified": true,
+      "brief": "Filed from Santiago two days after the Corralco races, the earliest report on them, with her own account of the two bronzes."
     },
     {
       "publication": "Olympics.com",
@@ -1576,7 +1602,8 @@
       "url": "https://www.olympics.com/hi/news/bhavani-thekkada-inspirational-story",
       "date": "",
       "context": "Her story on the Olympic movement's own site, published in Hindi.",
-      "image": "track-solo-pines"
+      "image": "track-solo-pines",
+      "brief": "Her story on the Olympic movement’s own site, published in Hindi."
     },
     {
       "publication": "Femina",
@@ -1584,7 +1611,8 @@
       "url": "https://share.google/Ynch5cGQ9Yyi3XJpR",
       "date": "",
       "context": "A profile built around the bronze in Chile. The third outlet to report that medal as a first for an Indian woman.",
-      "image": "chile-corralco"
+      "image": "chile-corralco",
+      "brief": "A profile built around her bronze in Chile, reported as a first for an Indian woman."
     },
     {
       "publication": "The Hindu",
@@ -1592,7 +1620,8 @@
       "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
       "date": "",
       "context": "On the Khelo India Winter Games at Gulmarg. The headline counts three medals as golds. The official result is one gold and two bronzes.",
-      "image": "podium-gulmarg-2022"
+      "image": "podium-gulmarg-2022",
+      "brief": "On her medals at the Khelo India Winter Games in Gulmarg, and the road from a village 900 m above sea level to the slopes."
     },
     {
       "id": "pr-srinagarnews",
@@ -1603,7 +1632,8 @@
       "byline": "",
       "context": "On the sprint gold at Gulmarg. The report calls the two bronzes relays. Both were individual races, timed and placed, at 33:22.03 and 53:20.44.",
       "image": "trophy-karnataka",
-      "verified": true
+      "verified": true,
+      "brief": "On her sprint gold at the Khelo India Winter Games 2026 in Gulmarg."
     },
     {
       "publication": "FIS",
@@ -1664,26 +1694,30 @@
         "index": "01",
         "title": "Training blocks on snow",
         "body": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready.",
-        "image": "night-training"
+        "image": "night-training",
+        "betaImage": "night-training"
       },
       {
         "id": "travel",
         "index": "02",
         "title": "Competition travel",
         "body": "World Championships, international and national racing can mean moving between countries within days. Flights, transfers, accommodation and everything between the start lists are part of the journey.",
-        "body2": "Your support helps make international racing possible."
+        "body2": "Your support helps make international racing possible.",
+        "betaImage": "chile-lake"
       },
       {
         "id": "coaching",
         "index": "03",
         "title": "Coaching and ski preparation",
-        "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day."
+        "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day.",
+        "betaImage": "double-pole"
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and equipment",
-        "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level."
+        "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level.",
+        "betaImage": "team-gulmarg"
       }
     ],
     "cta": {
@@ -2105,6 +2139,12 @@
       "origin": "Reviewed 10 Sep 2026",
       "why": "The card is her first World Championships at Planica and there is no frame of Planica she owns. It showed race-planica-elbrus, a montage of her at Planica with Mount Elbrus dropped in behind, which went on 10 Sep. Her own Planica frame replaced it and was replaced in turn at the client’s instruction, because it is the same photograph as the left half of the montage and reads as a re-crop rather than a change.\nIt now shows race-worldcup: her in the India suit on a stadium loop in front of a full grandstand, from Trondheim in 2025. Nothing in the frame names a venue, only FIS series sponsors, and the card prints the year’s own place rather than the photograph’s, so nothing on screen claims it is Planica. It is still a photograph from one championship on a card about another, which is worth knowing. A Planica frame she owns would replace it outright.",
       "status": "published-with-note"
+    },
+    {
+      "claim": "Auli and Himachal Pradesh on the map with no year or event",
+      "origin": "Client message, 9 Oct 2026",
+      "why": "Both were given as places she has raced or trained and nothing more. Neither carries a year, an event or a result, and the Himachal entry sits at the middle of the state because no town was named. Her own medal photograph, medals-detail, shows an All India Open Invitational Ski and Snowboard Championship at Lahaul in 2022 and a medal from the HP Winter Games Association, so Lahaul 2022 is probably the Himachal race. Confirm the town, the years and the events for both.",
+      "status": "published-client-asserted"
     }
   ],
   "certificationPhases": [

@@ -23,7 +23,8 @@ DIST = ROOT / "dist"
 # from here. /v2 rides along unchanged for anyone holding a review link.
 SHIP_FILES = ["index.html", "journal.html", "achievements.html",
               "journey.html", "media.html", "partnership.html",
-              "speaking.html", "contact.html", "404.html"]
+              "speaking.html", "contact.html", "404.html",
+              "partnership-beta.html"]
 SHIP_DIRS = ["assets", "journal",
              # The journal editor and the V2 build ride along so both are
              # reachable on the deployed site: /admin for her writing room,

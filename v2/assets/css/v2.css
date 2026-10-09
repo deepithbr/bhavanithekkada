@@ -1157,69 +1157,135 @@ a {
 }
 
 
-/* ------------------------------------------------------------- press cards */
+/* ------------------------------------------------------------ press strips
 
-.press-grid {
+   The first version's press list, rebuilt. Each story is a strip: her
+   photograph on the left, the brief on the right, a hairline between
+   strips. V1's thumbnail was 72px; here it is a real frame, because on
+   this page the picture is half of what makes a row worth stopping on.
+
+   They arrive from alternating sides as the reader reaches them. V1 drove
+   that offset from scroll position every frame, and two rows caught at
+   different points of their travel opened uneven gaps in the list. Here
+   each strip slides once, on entry, and then behaves like text. */
+
+.press-strips {
   list-style: none;
   margin: var(--space-md) 0 0;
   padding: 0;
-  display: grid;
-  gap: var(--space-lg) var(--space-md);
+  border-top: var(--rule-hair) solid var(--color-line);
 }
 
-@media (min-width: 760px) {
-  .press-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.strip {
+  border-bottom: var(--rule-hair) solid var(--color-line);
 }
 
-.press-grid a,
-.press-grid li > p {
+.strip a,
+.strip > p {
   display: grid;
   gap: var(--space-sm);
   margin: 0;
+  padding-block: var(--space-lg);
   text-decoration: none;
-  align-content: start;
+  color: inherit;
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .strip a,
+  .strip > p {
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    gap: var(--space-xl);
+  }
 }
 
 .press-shot {
   display: block;
   overflow: hidden;
   background: var(--color-paper-3);
+  aspect-ratio: 3 / 2;
+}
+
+/* A story with no picture keeps its slot, so the brief beside it lines
+   up with every other strip, but it must not read as a broken image. */
+.press-shot.is-empty {
+  background: none;
+  border: var(--rule-hair) solid var(--color-line);
 }
 
 .press-shot img {
   width: 100%;
-  /* 3:2, not 16:9. A cinema band across a tall source keeps a sliver and
-     throws the person away; two cards rendered as a blue field with a piece
-     of her face and read as duplicates of each other. 3:2 holds a face and
-     its context in every source the press list uses. */
-  aspect-ratio: 3 / 2;
-  height: auto;
+  height: 100%;
   object-fit: cover;
+  display: block;
   transition: transform var(--dur-slow) var(--ease-out);
 }
 
-.press-grid a:hover .press-shot img {
+.strip a:hover .press-shot img {
   transform: scale(1.03);
 }
 
 .press-body {
   display: grid;
-  gap: var(--space-3xs);
+  align-content: start;
+  gap: var(--space-2xs);
+}
+
+.press-body .caption {
+  color: var(--color-accent);
 }
 
 .press-body b {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: var(--text-lg);
+  font-size: var(--text-xl);
   letter-spacing: -0.015em;
-  line-height: 1.3;
+  line-height: 1.25;
+  text-wrap: balance;
   transition: color var(--dur-fast) var(--ease-out);
 }
 
-.press-grid a:hover .press-body b {
+.press-brief {
+  font-family: var(--font-body);
+  color: var(--color-ink-body);
+  line-height: 1.55;
+  max-width: 58ch;
+}
+
+.press-more {
+  margin-top: var(--space-2xs);
+  color: var(--color-ink);
+}
+
+.press-more::after {
+  content: " \2192";
+}
+
+.strip a:hover .press-body b,
+.strip a:hover .press-more {
   color: var(--color-accent);
+}
+
+/* The arrival. The site's observer already sets data-shown the moment a
+   strip enters; this only changes where it comes from. Behind .js like
+   every reveal, so a blocked script leaves the strips simply there. */
+.js .strip[data-rise][data-side="l"] {
+  transform: translate3d(-48px, 0, 0);
+}
+
+.js .strip[data-rise][data-side="r"] {
+  transform: translate3d(48px, 0, 0);
+}
+
+.js .strip[data-rise][data-shown="true"] {
+  transform: none;
+  transition: opacity 640ms var(--ease-out), transform 640ms var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .strip[data-rise] {
+    transform: none;
+  }
 }
 
 
@@ -7766,4 +7832,176 @@ body {
 
 .press-note:hover {
   background: var(--color-paper-3);
+}
+
+
+/* ---------------------------------------- where your support goes, beta
+
+   The four areas as a scroll rather than a grid. On a wide screen a
+   photograph holds still on the left while the areas pass on the right;
+   the one in the middle of the screen is lit, the rest dim, and the
+   photograph crossfades to that area's frame. A counter under the picture
+   keeps the reader's place.
+
+   On a phone there is no room to hold a picture beside full-width text,
+   so each area carries its own frame above it and nothing dims.
+
+   Nothing here hides content without script. The dimming is behind .js,
+   and with no script every area is simply there at full strength with
+   the first photograph beside them. */
+
+.funds-scroll {
+  margin-top: var(--space-lg);
+}
+
+.fs-media {
+  display: none;
+}
+
+.fs-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.fs-step {
+  display: grid;
+  gap: var(--space-2xs);
+  border-top: 2px solid var(--color-ink);
+  padding-top: var(--space-md);
+}
+
+.fs-inline {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  margin-bottom: var(--space-sm);
+  background: var(--color-paper-3);
+}
+
+.fs-inline img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fs-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.fs-step h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.fs-step p {
+  font-family: var(--font-body);
+  font-size: clamp(1.02rem, 0.3vw + 0.95rem, 1.15rem);
+  line-height: 1.6;
+  color: var(--color-ink-body);
+  max-width: 46ch;
+  margin: 0;
+}
+
+@media (min-width: 1000px) {
+  .funds-scroll {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  /* The picture holds still while the areas pass. top clears the bar. */
+  .fs-media {
+    display: block;
+    position: sticky;
+    top: calc(var(--nav-h, 5rem) + var(--space-lg));
+  }
+
+  .fs-frames {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    max-height: 72vh;
+    width: 100%;
+    overflow: hidden;
+    background: var(--color-paper-3);
+  }
+
+  .fs-shot {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out);
+  }
+
+  .fs-shot[data-on] {
+    opacity: 1;
+  }
+
+  .fs-shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .fs-count {
+    margin-top: var(--space-sm);
+    color: var(--color-ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fs-count b {
+    color: var(--color-ink);
+  }
+
+  /* Each area gets enough height that scrolling moves through them one
+     at a time, and the last one can still reach the middle of the
+     screen. */
+  .fs-steps {
+    gap: 0;
+    padding-bottom: 20vh;
+  }
+
+  .fs-step {
+    min-height: 62vh;
+    align-content: center;
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .fs-inline {
+    display: none;
+  }
+
+  .js .fs-step {
+    opacity: 0.28;
+    transition: opacity 500ms var(--ease-out);
+  }
+
+  .js .fs-step[data-on] {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fs-shot,
+  .js .fs-step {
+    transition: none;
+  }
 }
