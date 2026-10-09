@@ -265,7 +265,9 @@ def statline(c) -> str:
         f"{hemi(min(lats))} to {hemi(max(lats))}",
         f"{span}&deg; of latitude",
         f"{meds} medals",
-        f"{len(pts)} places",
+        # Countries, to match the map, which went to one dot per country
+        # on 10 Oct. Counting venues here would say 19 under a map of 14.
+        f"{len({p['country'] for p in pts})} countries",
     ]
     inner = "".join(f"<span>{x}</span>" for x in bits)
     return f'<p class="statline caption" data-rise>{inner}</p>'
