@@ -2041,10 +2041,72 @@ def partnership_page(c, img, beta=False):
 
     open_to = "".join(opt(x) for x in p.get("openTo", []))
 
-    # The beta tells the same four areas as a scroll: a photograph that
-    # holds still on the left and changes as each area passes on the
-    # right. Built only for partnership-beta.html.
-    if beta:
+    # Three betas for Where your support goes, one page each, so the
+    # client can choose between ideas rather than layouts.
+    #
+    #   scroll    a photograph holds still, the four areas pass beside it
+    #   panels    four photographs side by side, one opens to tell it
+    #   season    the four areas laid over her October to March
+    if beta == "panels":
+        cards = []
+        for n, a in enumerate(p.get("areas", []), 1):
+            sl = a.get("panelImage") or a.get("image")
+            ok = sl and (img.get(sl) or {}).get("rights") == "owned"
+            pic = (f'<span class="fp-img">'
+                   f'{img.tag(sl, "(min-width:1000px) 50vw, 92vw")}</span>'
+                   if ok else "")
+            copy = f'<p>{e(a["body"])}</p>'
+            if a.get("body2"):
+                copy += f'<p>{e(a["body2"])}</p>'
+            cards.append(
+                f'<article class="fp-panel" tabindex="0"'
+                f'{" data-open" if n == 1 else ""}>{pic}'
+                f'<span class="fp-n" aria-hidden="true">{n:02d}</span>'
+                f'<div class="fp-copy"><h3>{e(a["title"])}</h3>'
+                f'<div class="fp-say">{copy}</div></div></article>')
+        areas = f'<div class="fp">{"".join(cards)}</div>'
+
+    elif beta == "season":
+        sea = p.get("season") or {}
+        months = sea.get("months", [])
+        span = float(len(months)) or 6.0
+        # Which areas a band funds, read off its own "need" line.
+        KEY = {"training": "training", "travel": "travel",
+               "coaching": "wax", "equipment": "skis"}
+        picks = []
+        for n, a in enumerate(p.get("areas", []), 1):
+            copy = f'<span class="ss-say">{e(a["body"])}</span>'
+            picks.append(
+                f'<li><button type="button" class="ss-area" '
+                f'data-k="{e(a["id"])}" aria-pressed="false">'
+                f'<span class="ss-n" aria-hidden="true">{n:02d}</span>'
+                f'<b>{e(a["title"])}</b>{copy}</button></li>')
+        lanes = []
+        for b in sea.get("bands", []):
+            need = (b.get("need") or "").lower()
+            ks = " ".join(k for k, w in KEY.items() if w in need)
+            left = b["from"] / span * 100
+            width = (b["to"] - b["from"]) / span * 100
+            # A band starting past the middle sets its label to end at the
+            # bar's end, or it would run off the right of the chart.
+            late = " data-late" if left > 55 else ""
+            lanes.append(
+                f'<li class="ss-band" data-for="{ks}"{late} '
+                f'style="--l:{left:.2f}%;--w:{width:.2f}%">'
+                f'<span class="ss-bar"></span>'
+                f'<span class="ss-what"><b>{e(b["label"])}</b> '
+                f'{e(b.get("need") or "")}</span></li>')
+        ticks = "".join(f'<span>{e(m)}</span>' for m in months)
+        areas = (
+            f'<div class="ss">'
+            f'<ol class="ss-areas">{"".join(picks)}</ol>'
+            f'<figure class="ss-season">'
+            f'<p class="ss-head caption">Her season, October to March</p>'
+            f'<div class="ss-months" aria-hidden="true">{ticks}</div>'
+            f'<ol class="ss-bands">{"".join(lanes)}</ol>'
+            f'</figure></div>')
+
+    elif beta:
         frames, steps = [], []
         for n, a in enumerate(p.get("areas", []), 1):
             sl = a.get("betaImage") or a.get("image")
@@ -2490,11 +2552,14 @@ def main() -> int:
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
     (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
-    # The beta for Where your support goes, kept out of the navigation and
-    # out of search, so the client can compare it with the live page.
-    beta = partnership_page(c, img, beta=True).replace(
-        "<head>", '<head>\n<meta name="robots" content="noindex">', 1)
-    (OUT / "partnership-beta.html").write_text(beta, encoding="utf-8")
+    # The betas for Where your support goes, kept out of the navigation
+    # and out of search, so the client can compare them with the live page.
+    for name, kind in (("partnership-beta.html", "scroll"),
+                       ("partnership-beta-2.html", "panels"),
+                       ("partnership-beta-3.html", "season")):
+        beta_html = partnership_page(c, img, beta=kind).replace(
+            "<head>", '<head>\n<meta name="robots" content="noindex">', 1)
+        (OUT / name).write_text(beta_html, encoding="utf-8")
     (OUT / "speaking.html").write_text(speaking_page(c, img), encoding="utf-8")
     (OUT / "contact.html").write_text(contact_page(c, img), encoding="utf-8")
     (OUT / "404.html").write_text(f"""<!doctype html>

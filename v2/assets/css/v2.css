@@ -8015,3 +8015,349 @@ body {
   color: var(--color-ink-3);
   font-size: 0.68rem;
 }
+
+
+/* --------------------------------- where your support goes, beta 2: panels
+
+   Four photographs side by side. The one you point at, tap or tab to
+   opens to roughly three times the width of the others and tells its
+   story over the foot of the frame; the rest stay as tall slivers with
+   their number and name, so all four are always on screen. On a phone
+   they stack and every one is open.
+
+   The copy sits over the picture here, so the grade runs high and dark.
+   Without script every panel is the same width and every story shows. */
+
+.fp {
+  margin-top: var(--space-lg);
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.fp-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 24rem;
+  display: grid;
+  align-content: end;
+  padding: var(--space-lg);
+  color: var(--color-ink-on-deep);
+  background: var(--color-paper-deep);
+  outline-offset: 3px;
+}
+
+.fp-img,
+.fp-img img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.fp-img {
+  z-index: -2;
+}
+
+.fp-img img {
+  object-fit: cover;
+  transition: transform 900ms var(--ease-out);
+}
+
+.fp-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgba(3, 9, 20, 0.93) 0%,
+    rgba(3, 9, 20, 0.87) 46%,
+    rgba(3, 9, 20, 0.5) 72%,
+    rgba(3, 9, 20, 0.2) 100%
+  );
+}
+
+.fp-n {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-lg);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 4.4vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: oklch(88% 0.09 245);
+  font-variant-numeric: tabular-nums;
+}
+
+.fp-copy {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.fp-copy h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: inherit;
+  max-width: 18ch;
+}
+
+.fp-say p {
+  font-family: var(--font-body);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 44ch;
+  color: oklch(94% 0.01 250);
+}
+
+.fp-say p + p {
+  margin-top: var(--space-2xs);
+}
+
+@media (min-width: 1000px) {
+  .fp {
+    display: flex;
+    height: clamp(30rem, 40vw, 36rem);
+  }
+
+  .fp-panel {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    cursor: pointer;
+    transition: flex-grow 650ms var(--ease-out);
+  }
+
+  /* The story is a fixed width, so the text does not rewrap as the panel
+     grows; it simply comes into view. */
+  .fp-say {
+    width: min(26rem, 30vw);
+  }
+
+  .js .fp-panel {
+    flex-grow: 1;
+  }
+
+  .js .fp-panel[data-open] {
+    flex-grow: 3.2;
+    cursor: default;
+  }
+
+  .js .fp-say {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+    transition: opacity 300ms var(--ease-out),
+      transform 300ms var(--ease-out);
+  }
+
+  .js .fp-panel[data-open] .fp-say {
+    opacity: 1;
+    transform: none;
+    transition-delay: 260ms;
+  }
+
+  .js .fp-panel[data-open] .fp-img img {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fp-panel,
+  .js .fp-say,
+  .fp-img img {
+    transition: none;
+  }
+}
+
+
+/* --------------------------------- where your support goes, beta 3: season
+
+   The four areas laid over her racing year. Her season, October to
+   March, is drawn as five bands from the content file, each naming what
+   it needs; pick an area and the bands it pays for stay lit while the
+   rest fall back. A sponsor sees when the money is spent as well as on
+   what, which is the question a sponsor actually asks next.
+
+   Nothing is dimmed until something is picked, so the chart reads whole
+   on arrival and without script. */
+
+.ss {
+  margin-top: var(--space-lg);
+  display: grid;
+  gap: var(--space-xl);
+}
+
+.ss-areas {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 720px) {
+  .ss-areas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .ss-areas {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.ss-area {
+  all: unset;
+  box-sizing: border-box;
+  display: grid;
+  align-content: start;
+  gap: var(--space-2xs);
+  width: 100%;
+  height: 100%;
+  padding: var(--space-md);
+  background: var(--color-paper-2);
+  border-top: 3px solid transparent;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.ss-area:hover,
+.ss-area:focus-visible {
+  background: var(--color-paper-3);
+}
+
+.ss-area:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.ss-area[aria-pressed="true"] {
+  border-top-color: var(--color-accent);
+  background: var(--color-paper-3);
+}
+
+.ss-n {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ss-area b {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-indent: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+
+.ss-say {
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  color: var(--color-ink-body);
+}
+
+/* The season, on the deep ground the site uses for its record. */
+.ss-season {
+  margin: 0;
+  padding: var(--space-lg);
+  background: var(--color-paper-deep);
+  color: var(--color-ink-on-deep);
+}
+
+.ss-head {
+  margin: 0 0 var(--space-md);
+  color: oklch(88% 0.09 245);
+}
+
+.ss-months {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-bottom: var(--rule-hair) solid oklch(100% 0 0 / 0.25);
+  padding-bottom: var(--space-2xs);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: oklch(100% 0 0 / 0.7);
+}
+
+.ss-bands {
+  list-style: none;
+  margin: var(--space-sm) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.ss-band {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  transition: opacity 400ms var(--ease-out);
+}
+
+.ss-bar {
+  display: block;
+  height: 14px;
+  margin-left: var(--l);
+  width: var(--w);
+  border-radius: 2px;
+  background: var(--color-accent);
+  transition: background 400ms var(--ease-out);
+}
+
+.ss-what {
+  margin-left: var(--l);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  color: oklch(100% 0 0 / 0.72);
+}
+
+.ss-what b {
+  color: var(--color-ink-on-deep);
+  font-weight: 600;
+}
+
+/* A label that starts late in the season would run off the right edge,
+   so from the middle onwards it ends where its bar ends instead. */
+.ss-band[data-late] .ss-what {
+  margin-left: 0;
+  text-align: right;
+  padding-right: calc(100% - var(--l) - var(--w));
+}
+
+.ss[data-pick] .ss-band {
+  opacity: 0.22;
+}
+
+.ss[data-pick] .ss-band[data-lit] {
+  opacity: 1;
+}
+
+.ss[data-pick] .ss-band[data-lit] .ss-bar {
+  background: oklch(78% 0.13 245);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ss-band,
+  .ss-bar {
+    transition: none;
+  }
+}
+

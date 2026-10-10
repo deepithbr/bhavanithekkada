@@ -1144,6 +1144,39 @@
     steps.forEach((s) => band.observe(s));
   }
 
+  // Beta 2: the panel you point at, tap or tab to is the one that opens.
+  const fp = document.querySelector(".fp");
+  if (fp) {
+    const panels = Array.from(fp.querySelectorAll(".fp-panel"));
+    const open = (p) =>
+      panels.forEach((q) => q.toggleAttribute("data-open", q === p));
+    panels.forEach((p) => {
+      p.addEventListener("mouseenter", () => open(p));
+      p.addEventListener("focus", () => open(p));
+      p.addEventListener("click", () => open(p));
+    });
+  }
+
+  // Beta 3: pick an area and the bands of her season it pays for stay
+  // lit. Pick it again to see the whole season.
+  const ss = document.querySelector(".ss");
+  if (ss) {
+    const picks = Array.from(ss.querySelectorAll(".ss-area"));
+    const bands = Array.from(ss.querySelectorAll(".ss-band"));
+    const show = (k) => {
+      if (k) ss.dataset.pick = k;
+      else delete ss.dataset.pick;
+      picks.forEach((b) =>
+        b.setAttribute("aria-pressed", String(b.dataset.k === k)));
+      bands.forEach((b) =>
+        b.toggleAttribute("data-lit",
+          !!k && b.dataset.for.split(" ").includes(k)));
+    };
+    picks.forEach((b) =>
+      b.addEventListener("click", () =>
+        show(ss.dataset.pick === b.dataset.k ? null : b.dataset.k)));
+  }
+
   // The film, played where it sits.
   //
   // Until this fires, the card is a poster and a link: nothing has been

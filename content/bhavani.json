@@ -1695,7 +1695,8 @@
         "title": "Training blocks on snow",
         "body": "The European racing season begins in November, while many competitors have already been training on snow for weeks. Early-season training blocks are essential to arrive prepared, competitive and race-ready.",
         "image": "night-training",
-        "betaImage": "night-training"
+        "betaImage": "night-training",
+        "panelImage": "night-training"
       },
       {
         "id": "travel",
@@ -1703,21 +1704,24 @@
         "title": "Competition travel",
         "body": "World Championships, international and national racing can mean moving between countries within days. Flights, transfers, accommodation and everything between the start lists are part of the journey.",
         "body2": "Your support helps make international racing possible.",
-        "betaImage": "chile-lake"
+        "betaImage": "chile-lake",
+        "panelImage": "chile-lake"
       },
       {
         "id": "coaching",
         "index": "03",
         "title": "Coaching and ski preparation",
         "body": "At the highest level, performance extends beyond the athlete. Coaching, race preparation and professional ski preparation (including grinding, waxing and adapting skis to changing snow conditions) can make a crucial difference on race day.",
-        "betaImage": "double-pole"
+        "betaImage": "double-pole",
+        "panelImage": "double-pole"
       },
       {
         "id": "equipment",
         "index": "04",
         "title": "Race skis and equipment",
         "body": "Cross-country skiing requires specialised equipment for different snow conditions, techniques and race formats. Your support helps provide race skis, poles, boots, race suits and the equipment needed to compete at the highest level.",
-        "betaImage": "team-gulmarg"
+        "betaImage": "team-gulmarg",
+        "panelImage": "khelo-medals"
       }
     ],
     "cta": {
