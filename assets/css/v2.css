@@ -8215,6 +8215,9 @@ body {
   text-transform: uppercase;
   color: inherit;
   max-width: 18ch;
+  /* One line-height in both states, so the name growing does not also
+     jump its line spacing. */
+  line-height: 1.25;
 }
 
 .fp-say p {
@@ -8249,67 +8252,97 @@ body {
     width: min(26rem, 30vw);
   }
 
+  /* Opening, in order. The panel widens over 650ms. The name rises to its
+     open place and grows to its open size over 600ms, carried up by the
+     story's row opening beneath it. The paragraph only fades in from
+     380ms, once the name has nearly arrived. Closing reverses it, the
+     paragraph leaving first. */
   .js .fp-panel {
     flex-grow: 1;
+    padding-inline: var(--space-md);
+    transition: flex-grow 650ms var(--ease-out),
+      padding 600ms var(--ease-out);
   }
 
   .js .fp-panel[data-open] {
     flex-grow: 3.2;
+    padding-inline: var(--space-lg);
     cursor: default;
   }
 
+  .js .fp-n {
+    left: var(--space-md);
+    transition: left 600ms var(--ease-out);
+  }
+
+  .js .fp-panel[data-open] .fp-n {
+    left: var(--space-lg);
+  }
+
+  /* Name over story, and the story's row goes 0fr to 1fr. A fraction
+     track animates to the height the paragraph actually needs, which a
+     max-height cannot: animated to a guessed ceiling it ends early or
+     late depending on the paragraph's length, and left untransitioned,
+     as it was, it opened in one frame and shoved the name up the photo.
+     No gap between the rows, or a closed panel keeps a sliver of it. */
+  .js .fp-copy {
+    grid-template-rows: auto 0fr;
+    row-gap: 0;
+    transition: grid-template-rows 600ms var(--ease-out);
+  }
+
+  .js .fp-panel[data-open] .fp-copy {
+    grid-template-rows: auto 1fr;
+  }
+
+  .js .fp-copy h3 {
+    font-size: clamp(0.78rem, 0.95vw, 1rem);
+    letter-spacing: 0.07em;
+    text-indent: 0;
+    transition: font-size 600ms var(--ease-out),
+      letter-spacing 600ms var(--ease-out);
+  }
+
+  .js .fp-panel[data-open] .fp-copy h3 {
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    letter-spacing: 0.1em;
+  }
+
   .js .fp-say {
+    min-height: 0;
+    overflow: hidden;
     opacity: 0;
-    transform: translate3d(0, 12px, 0);
-    transition: opacity 300ms var(--ease-out),
-      transform 300ms var(--ease-out);
+    transform: translate3d(0, 10px, 0);
+    transition: opacity 180ms var(--ease-out),
+      transform 180ms var(--ease-out);
+  }
+
+  /* The space between name and story lives inside the story, so it
+     opens with it rather than sitting there when closed. */
+  .js .fp-say > p:first-child {
+    padding-top: var(--space-xs);
   }
 
   .js .fp-panel[data-open] .fp-say {
     opacity: 1;
     transform: none;
-    transition-delay: 260ms;
+    transition: opacity 360ms var(--ease-out) 380ms,
+      transform 360ms var(--ease-out) 380ms;
   }
 
   .js .fp-panel[data-open] .fp-img img {
     transform: scale(1.04);
   }
-
-  /* A closed panel is a sliver, about 200px at 1440 and 150 at 1000.
-     Its name has to fit whole at both: "PREPARATION" alone outruns the
-     inside of a sliver at the open size. So a closed panel sets its name
-     smaller and tighter on narrower padding, and lets it wrap a word to a
-     line, which is how a name on a spine reads anyway. */
-  .js .fp-panel:not([data-open]) {
-    padding-inline: var(--space-md);
-  }
-
-  .js .fp-panel:not([data-open]) .fp-n {
-    left: var(--space-md);
-  }
-
-  .js .fp-panel:not([data-open]) .fp-copy h3 {
-    font-size: clamp(0.78rem, 0.95vw, 1rem);
-    letter-spacing: 0.07em;
-    text-indent: 0;
-    line-height: 1.3;
-  }
-
-  /* Closed, the story takes no height, so the name sits at the foot of
-     the photograph rather than above an invisible block of text. */
-  .js .fp-panel:not([data-open]) .fp-say {
-    max-height: 0;
-    overflow: hidden;
-  }
-
-  .js .fp-panel[data-open] .fp-say {
-    max-height: 24rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fp-panel,
+  .js .fp-panel,
+  .js .fp-n,
+  .js .fp-copy,
+  .js .fp-copy h3,
   .js .fp-say,
+  .js .fp-panel[data-open] .fp-say,
   .fp-img img {
     transition: none;
   }
