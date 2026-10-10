@@ -8120,7 +8120,7 @@ body {
 }
 
 
-/* --------------------------------- where your support goes, beta 2: panels
+/* -------------------------------------- where your support goes, panels
 
    Four photographs side by side. The one you point at, tap or tab to
    opens to roughly three times the width of the others and tells its
@@ -8195,9 +8195,15 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* The column is the panel's width, not the story's. The story keeps a
+   fixed width so it does not rewrap as the panel grows, and when the
+   column sized itself to that, a closed panel laid its name out for an
+   open one and cut it off at the edge. */
 .fp-copy {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-xs);
+  min-width: 0;
 }
 
 .fp-copy h3 {
@@ -8267,6 +8273,37 @@ body {
 
   .js .fp-panel[data-open] .fp-img img {
     transform: scale(1.04);
+  }
+
+  /* A closed panel is a sliver, about 200px at 1440 and 150 at 1000.
+     Its name has to fit whole at both: "PREPARATION" alone outruns the
+     inside of a sliver at the open size. So a closed panel sets its name
+     smaller and tighter on narrower padding, and lets it wrap a word to a
+     line, which is how a name on a spine reads anyway. */
+  .js .fp-panel:not([data-open]) {
+    padding-inline: var(--space-md);
+  }
+
+  .js .fp-panel:not([data-open]) .fp-n {
+    left: var(--space-md);
+  }
+
+  .js .fp-panel:not([data-open]) .fp-copy h3 {
+    font-size: clamp(0.78rem, 0.95vw, 1rem);
+    letter-spacing: 0.07em;
+    text-indent: 0;
+    line-height: 1.3;
+  }
+
+  /* Closed, the story takes no height, so the name sits at the foot of
+     the photograph rather than above an invisible block of text. */
+  .js .fp-panel:not([data-open]) .fp-say {
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .js .fp-panel[data-open] .fp-say {
+    max-height: 24rem;
   }
 }
 

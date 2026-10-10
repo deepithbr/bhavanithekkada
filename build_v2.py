@@ -2551,12 +2551,16 @@ def main() -> int:
     (OUT / "achievements.html").write_text(achievements_page(c, img), encoding="utf-8")
     (OUT / "journey.html").write_text(journey_page(c, img), encoding="utf-8")
     (OUT / "media.html").write_text(media_page(c, img), encoding="utf-8")
-    (OUT / "partnership.html").write_text(partnership_page(c, img), encoding="utf-8")
+    # The panels are the live section since 10 Oct, at her choice. The
+    # bento that was live before is kept as a copy, like the scroll beta.
+    (OUT / "partnership.html").write_text(
+        partnership_page(c, img, beta="panels"), encoding="utf-8")
     # The betas for Where your support goes, kept out of the navigation
     # and out of search, so the client can compare them with the live page.
+    # Kept copies, out of the menu and out of search. The season beta was
+    # retired on 10 Oct; its builder code stays, its page does not.
     for name, kind in (("partnership-beta.html", "scroll"),
-                       ("partnership-beta-2.html", "panels"),
-                       ("partnership-beta-3.html", "season")):
+                       ("partnership-bento.html", None)):
         beta_html = partnership_page(c, img, beta=kind).replace(
             "<head>", '<head>\n<meta name="robots" content="noindex">', 1)
         (OUT / name).write_text(beta_html, encoding="utf-8")
