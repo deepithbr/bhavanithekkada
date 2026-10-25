@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "v2/assets/js/v2.js"
+        ],
+        "createdAt": "2026-10-25T04:21:27.110Z",
+        "reason": "Claude: lightbox <img alt=''> at L295 is a runtime shell; its src is set from the clicked tile before the box opens"
+      }
+    ]
+  }
+}

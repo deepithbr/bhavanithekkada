@@ -158,23 +158,25 @@
       "file": "roller-road",
       "widths": [
         480,
-        855
+        960
       ],
       "natural": [
-        855,
-        1140
+        960,
+        1280
       ],
       "ratio": 0.75,
-      "alt": "Bhavani training on roller skis along a tarmac road beside an autumn field, poles planted mid-push.",
-      "credit": "Client-supplied portfolio",
+      "alt": "Bhavani Thekkada aiming a rifle on the biathlon shooting range at Oberhof, target numbers in front of her and an autumn hillside behind.",
+      "credit": "Athlete's own archive",
       "year": null,
-      "location": null,
+      "location": "Oberhof, Germany",
       "category": "training",
       "focal": [
-        0.4,
-        0.28
+        0.45,
+        0.16
       ],
-      "rights": "unconfirmed"
+      "rights": "owned",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.31 AM.jpeg)",
+      "note": "Same frame as the portfolio extract, replaced 25 Oct 2026 by her larger copy. The old alt called it roller skiing on a road. The banner reads Arena am Rennsteig, Oberhof."
     },
     {
       "slot": "race-orange-bib",
@@ -1950,6 +1952,235 @@
       ],
       "rights": "client-supplied",
       "source": "M2026 - www.framepower.nz -495.jpg, her journey Drive folder"
+    },
+    {
+      "slot": "podium-khelo-gulmarg",
+      "file": "podium-khelo-gulmarg",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        1623,
+        1080
+      ],
+      "ratio": 1.5028,
+      "alt": "Bhavani Thekkada on the top step of a Khelo India Nordic skiing podium, skis raised above her head, snow-laden pines behind.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": "Gulmarg, Jammu and Kashmir",
+      "category": "race",
+      "focal": [
+        0.48,
+        0.24
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.36 AM.jpeg)"
+    },
+    {
+      "slot": "fischer-portrait",
+      "file": "fischer-portrait",
+      "widths": [
+        480,
+        960
+      ],
+      "natural": [
+        960,
+        1280
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada in a black race suit and mirrored glasses, holding a pair of Fischer skis upright, trees behind her.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.55,
+        0.24
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.25 AM.jpeg)"
+    },
+    {
+      "slot": "india-jacket-trail",
+      "file": "india-jacket-trail",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3008,
+        4000
+      ],
+      "ratio": 0.752,
+      "alt": "Bhavani Thekkada seen from behind in an India team jacket, skiing along a groomed trail beside a fence, snowy hills ahead.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "training",
+      "focal": [
+        0.58,
+        0.42
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.38 AM.jpeg)"
+    },
+    {
+      "slot": "talk-school",
+      "file": "talk-school",
+      "widths": [
+        480,
+        780
+      ],
+      "natural": [
+        780,
+        1040
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada standing with a microphone in front of a school crest on a white wall, in a black waistcoat and trousers.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.43,
+        0.26
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.24 AM.jpeg)"
+    },
+    {
+      "slot": "student-medal",
+      "file": "student-medal",
+      "widths": [
+        480,
+        960,
+        1280
+      ],
+      "natural": [
+        1280,
+        1600
+      ],
+      "ratio": 0.8,
+      "alt": "Bhavani Thekkada beside a smiling schoolgirl in a sports kit who is wearing a medal.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.5,
+        0.3
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.34 AM (1).jpeg)"
+    },
+    {
+      "slot": "felicitation-bouquet",
+      "file": "felicitation-bouquet",
+      "widths": [
+        480,
+        780
+      ],
+      "natural": [
+        780,
+        1040
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada being handed a bouquet by two men in an office, files stacked on the desk in front of them.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.32,
+        0.3
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.32 AM (2).jpeg)"
+    },
+    {
+      "slot": "medals-office",
+      "file": "medals-office",
+      "widths": [
+        480,
+        780
+      ],
+      "natural": [
+        780,
+        1040
+      ],
+      "ratio": 0.75,
+      "alt": "Bhavani Thekkada holding up two medals beside a man in a grey suit, a bouquet on the desk in front of them.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.45,
+        0.33
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.34 AM.jpeg)"
+    },
+    {
+      "slot": "ncc-cadets",
+      "file": "ncc-cadets",
+      "widths": [
+        480,
+        960,
+        1280
+      ],
+      "natural": [
+        1280,
+        960
+      ],
+      "ratio": 1.3333,
+      "alt": "Bhavani Thekkada standing in a line of NCC cadets in ceremonial dress with an Indian Air Force officer.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.55,
+        0.4
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.35 AM (1).jpeg)"
+    },
+    {
+      "slot": "award-stage",
+      "file": "award-stage",
+      "widths": [
+        480,
+        694
+      ],
+      "natural": [
+        694,
+        1040
+      ],
+      "ratio": 0.6673,
+      "alt": "Bhavani Thekkada receiving a framed award from a man on a stage, people seated and standing behind them.",
+      "credit": "Athlete's own archive",
+      "year": null,
+      "location": null,
+      "category": "appearance",
+      "focal": [
+        0.4,
+        0.5
+      ],
+      "rights": "owned",
+      "added": "2026-10-22",
+      "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.36 AM (1).jpeg)"
     }
   ],
   "excluded": [
@@ -1964,6 +2195,26 @@
     {
       "source": "portfolioA/p08_00, p08_01, p08_04, p08_05, p08_09, p08_12, p06_02, p06_04, p06_05, p06_06, p06_08, p06_14, p06_00",
       "reason": "Flat blue background fills, gradient panels, flag fragments and thin slices left over from the PDF layout. No photographic content."
+    },
+    {
+      "source": "WhatsApp WhatsApp Image 2026-10-22 at 11.50.36 AM (2).jpeg",
+      "reason": "A studio-style headshot that is AI-generated. Confirmed by Deepith on 25 Oct 2026. Not her photograph to publish."
+    },
+    {
+      "source": "WhatsApp WhatsApp Image 2026-10-22 at 11.50.35 AM.jpeg",
+      "reason": "A designed poster with a claim printed across it, 'First Indian to compete at FIS cross country skiing World Cup 2025', and another account's logo. Posters are ruled out by the brief."
+    },
+    {
+      "source": "WhatsApp WhatsApp Image 2026-10-22 at 11.50.35 AM (2).jpeg",
+      "reason": "A composite of race cutouts over a flag, carrying the watermark 'Coorgthekashmirofkarnataka'. Someone else's edit."
+    },
+    {
+      "source": "WhatsApp WhatsApp Image 2026-10-22 at 11.50.32 AM.jpeg",
+      "reason": "Two event photographs stitched into one frame. Collages are ruled out by the brief."
+    },
+    {
+      "source": "WhatsApp WhatsApp Image 2026-10-22 at 11.50.32 AM (1).jpeg",
+      "reason": "A selfie in which the face filling the frame is another skier's, not hers."
     }
   ]
 }

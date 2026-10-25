@@ -7703,6 +7703,17 @@ body {
     align-items: start;
     gap: var(--space-lg);
   }
+
+  /* Two films sit side by side at equal size, and the story runs the
+     full width beneath them. In the 1.9 to 1 split a second film was
+     squeezed into the narrow column with its play disc over its title. */
+  .watch:has(.player + .player) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .watch:has(.player + .player) .press-note {
+    grid-column: 1 / -1;
+  }
 }
 
 .player {

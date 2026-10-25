@@ -1867,25 +1867,35 @@ def media_page(c, img):
     # Each tile is a link to the full frame. The grid crops to 3:4 for order;
     # a click opens the photograph whole, in a lightbox when JavaScript runs
     # and as the plain image file when it does not.
+    # Her 22 Oct photographs lead, because she sent them for the gallery.
+    # They bring a third kind, `appearance`: talks, schools, felicitations,
+    # which she wanted shown beside the racing. Older off-snow frames stay
+    # out, since nobody asked for them here.
+    shown = [a for a in lib["images"]
+             if a.get("rights") == "owned"
+             and a.get("category") in ("race", "training", "appearance")]
+    shown.sort(key=lambda a: a.get("added") or "", reverse=True)
     gallery = "".join(
         f'<a class="tile" href="../assets/img/{a["file"]}-{a["widths"][-1]}.webp" '
         f'data-full data-cap="{e((img.caption(a["slot"]) or "").replace("&middot;", chr(183)))}">'
         f'<span class="tile-shot">{img.tag(a["slot"], TILE_SIZES)}</span>'
         f'<figcaption class="caption">'
         f'{img.caption(a["slot"]) or "From the archive"}</figcaption></a>'
-        for a in lib["images"]
-        if a.get("rights") == "owned" and a.get("category") in ("race", "training")
+        for a in shown
     )
     # The film and the federation's story, together, because the reader
     # asking for one is asking for the other. The film plays here rather
     # than on YouTube: what loads is a poster and a control, and the
     # iframe only exists once somebody has asked for it.
     watch = ""
-    vid = next((p for p in c["press"] if p.get("kind") == "video"), None)
+    # Every film, not only the first: she sent a second documentary on
+    # 22 Oct, and the first-only lookup would have hidden it.
+    vids = [p for p in c["press"]
+            if p.get("kind") == "video" and p.get("youtube")]
     story = next((p for p in c["press"] if p.get("kind") == "story"), None)
-    if vid or story:
+    if vids or story:
         parts = []
-        if vid and vid.get("youtube"):
+        for vid in vids:
             poster = (img.tag(vid["image"], "(min-width:900px) 62vw, 92vw")
                       if img.get(vid.get("image")) else "")
             parts.append(

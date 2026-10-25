@@ -1585,6 +1585,18 @@
   },
   "press": [
     {
+      "id": "pr-nie-merino",
+      "publication": "The New Indian Express",
+      "title": "Thekkada Bhavani from Kodagu wins silver medal in cross-country skiing in New Zealand",
+      "url": "https://www.newindianexpress.com/states/karnataka/2026/Aug/25/thekkada-bhavani-from-kodagu-wins-silver-medal-in-cross-country-skiing-in-new-zealand",
+      "date": "2026-08-25",
+      "byline": "Express News Service",
+      "context": "Filed from Madikeri. Calls the Merino Muster result a silver; her own journey copy has it as a podium in her age category. Sent by her, 22 Oct 2026.",
+      "brief": "On her silver at the Merino Muster, the ski marathon at Snow Farm in New Zealand.",
+      "image": "flag-merino-2026",
+      "verified": true
+    },
+    {
       "id": "pr-kashmirimages",
       "publication": "Kashmir Images",
       "title": "Bhavani wins two back-to-back medals for India in Cross-Country Skiing",
@@ -1619,9 +1631,31 @@
       "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
       "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
       "date": "",
-      "context": "On the Khelo India Winter Games at Gulmarg. The headline counts three medals as golds. The official result is one gold and two bronzes.",
-      "image": "podium-gulmarg-2022",
+      "context": "On the Khelo India Winter Games 2024 at Gulmarg, where she won the 10 km, 5 km and 1.6 km, results r17 to r19. Photo changed at her request, 22 Oct 2026.",
+      "image": "podium-khelo-gulmarg",
       "brief": "On her medals at the Khelo India Winter Games in Gulmarg, and the road from a village 900 m above sea level to the slopes."
+    },
+    {
+      "id": "pr-indiacom",
+      "publication": "India.com",
+      "title": "Meet Thekkada Bhavani Nanjugunda, India's Skiing Sensation Breaking Boundaries With Three Gold Medals",
+      "url": "https://www.india.com/lifestyle/meet-thekkada-bhavani-nanjugunda-indias-skiing-sensation-breaking-boundaries-with-three-gold-medals-6751561/",
+      "date": "2024-02-27",
+      "context": "On the three Nordic golds at the Khelo India Winter Games 2024. Sent by her, 22 Oct 2026.",
+      "brief": "On her three golds at the Khelo India Winter Games 2024, and the road from Kodagu to Gulmarg.",
+      "image": "khelo-medals",
+      "verified": true
+    },
+    {
+      "id": "pr-ndtv",
+      "publication": "NDTV Sports",
+      "title": "Karnataka's Thekkada Bhavani Nanjugunda, The Queen Of Nordic Skiing In India",
+      "url": "https://sports.ndtv.com/othersports/karnatakas-thekkada-bhavani-nanjugunda-the-queen-of-nordic-skiing-in-india-5129351",
+      "date": "",
+      "context": "NDTV blocks automated reading, so the page was not opened. The headline and link are as she sent them, 22 Oct 2026.",
+      "brief": "A profile of her path into Nordic skiing, from the NCC to the Khelo India Winter Games.",
+      "image": "fischer-portrait",
+      "verified": false
     },
     {
       "id": "pr-srinagarnews",
@@ -1634,6 +1668,17 @@
       "image": "trophy-karnataka",
       "verified": true,
       "brief": "On her sprint gold at the Khelo India Winter Games 2026 in Gulmarg."
+    },
+    {
+      "id": "pr-kodagufirst",
+      "publication": "Kodagu First",
+      "title": "Bhavani Thekkada Nanjunda",
+      "url": "https://www.kodagufirst.in/?tag=bhavani-thekkada-nanjunda",
+      "date": "",
+      "context": "Her home district's news site. The link is its tag page, which gathers its stories on her, as she sent it.",
+      "brief": "Her home district's news site, with its stories on her gathered in one place.",
+      "image": "medals-office",
+      "verified": true
     },
     {
       "publication": "FIS",
@@ -1653,6 +1698,17 @@
       "image": "race-chile-skate",
       "kind": "video",
       "youtube": "uAPd7bUt87o"
+    },
+    {
+      "id": "vid-champion-stories",
+      "publication": "The Champion Stories",
+      "title": "From Coorg to the World Stage: Bhavani's Journey to Making History",
+      "url": "https://youtu.be/jxv7Zk34LI4",
+      "date": "",
+      "context": "A documentary on her journey. Sent by her, 22 Oct 2026.",
+      "image": "snow-ridge-line",
+      "kind": "video",
+      "youtube": "jxv7Zk34LI4"
     }
   ],
   "gallery": {
@@ -1889,16 +1945,16 @@
     "email": "bhavani.thekkada2026@gmail.com",
     "phone": "+91 97439 36387",
     "phoneHref": "tel:+919743936387",
-    "instagramHandle": "bhavani.thekkada",
-    "instagramUrl": "https://www.instagram.com/bhavani.thekkada/",
-    "instagramVerified": false,
+    "instagramHandle": "thekkada.skier",
+    "instagramUrl": "https://www.instagram.com/thekkada.skier/",
+    "instagramVerified": true,
     "formIsPrototype": true,
     "source": {
       "sourceType": "client-supplied",
       "sourceName": "Bhavani portfolio.pdf, sponsorship contact page",
       "verified": false,
       "needsConfirmation": true,
-      "note": "Published as sponsorship contacts in the supplied portfolio. Confirm before launch. The Instagram URL is constructed from the handle and has not been opened."
+      "note": "Email and Instagram confirmed by her on WhatsApp, 22 Oct 2026. The Instagram handle is thekkada.skier; the bhavani.thekkada handle used before was constructed and never opened."
     },
     "heading": "Work with Bhavani",
     "lede": "One route in, for everything. Say which of these it is and it reaches the right place faster.",

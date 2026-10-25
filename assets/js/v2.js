@@ -1187,8 +1187,7 @@
   //
   // nocookie rather than youtube.com, and autoplay because the reader has
   // just asked for the film by clicking on it.
-  const player = document.querySelector(".player[data-yt]");
-  if (player) {
+  document.querySelectorAll(".player[data-yt]").forEach((player) => {
     player.addEventListener("click", (ev) => {
       if (player.hasAttribute("data-playing")) return;
       // A modified click is somebody deliberately opening a new tab.
@@ -1211,5 +1210,5 @@
       player.setAttribute("data-playing", "");
       player.removeAttribute("href");
     });
-  }
+  });
 })();
