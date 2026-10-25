@@ -1882,8 +1882,11 @@ def media_page(c, img):
         f'<a class="tile" href="../assets/img/{a["file"]}-{a["widths"][-1]}.webp" '
         f'data-full data-cap="{e((img.caption(a["slot"]) or "").replace("&middot;", chr(183)))}">'
         f'<span class="tile-shot">{img.tag(a["slot"], TILE_SIZES)}</span>'
-        f'<figcaption class="caption">'
-        f'{img.caption(a["slot"]) or "From the archive"}</figcaption></a>'
+        # A caption only when there is a place or a year to give. "From the
+        # archive" on every unlabelled frame told the reader nothing.
+        + (f'<figcaption class="caption">{img.caption(a["slot"])}</figcaption>'
+           if img.caption(a["slot"]) else '')
+        + '</a>'
         for a in shown
     )
     # The film and the federation's story, together, because the reader
