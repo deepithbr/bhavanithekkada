@@ -1922,7 +1922,7 @@ def media_page(c, img):
         watch = f"""
 <section class="prose-fold" data-ground="ice" id="watch">
   <div class="wrap">
-    <div class="prose"><h2>Videos and stories</h2></div>
+    <div class="prose"><h2>{"Videos and stories" if story else "Videos"}</h2></div>
     <div class="watch">{''.join(parts)}</div>
   </div>
 </section>"""

@@ -1699,17 +1699,6 @@
     },
     {
       "publication": "FIS",
-      "title": "Her race record, on the FIS database",
-      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
-      "date": "",
-      "context": "Every FIS-scored race she has started since 2022, kept by the sport's governing body.",
-      "image": "race-forest",
-      "kind": "story",
-      "note": "Was the FIS web story at fis.shar.estori.es/go/40b85a82…, which returned 'Story unavailable' on 25 Oct 2026.",
-      "label": "record"
-    },
-    {
-      "publication": "FIS",
       "title": "Her season, on film",
       "url": "https://youtu.be/uAPd7bUt87o",
       "date": "",
@@ -2632,6 +2621,18 @@
       "date": "2022-04-21",
       "context": "The earliest of the coverage, published before her first World Championships and already about how a season gets paid for.",
       "image": "roller-road"
+    },
+    {
+      "publication": "FIS",
+      "title": "Her race record, on the FIS database",
+      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
+      "date": "",
+      "context": "Every FIS-scored race she has started since 2022, kept by the sport's governing body.",
+      "image": "race-forest",
+      "kind": "story",
+      "note": "Was the FIS web story at fis.shar.estori.es/go/40b85a82…, which returned 'Story unavailable' on 25 Oct 2026.",
+      "label": "record",
+      "removed": "25 Oct 2026, at Deepith's call. The FIS story itself was taken down, and her FIS record is already linked from the Journey and Career pages, so the Media page keeps only the films."
     }
   ],
   "pressArchiveNote": "Taken off the Media page on 10 Sep 2026 at her instruction, which named the six that stay. Kept here rather than deleted: the Associated Press piece is the source behind the partnership standfirst and her FIS athlete page is where much of the results table was checked, and neither of those references reads this list, so the cards could go without touching them."
