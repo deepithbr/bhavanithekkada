@@ -57,6 +57,9 @@ OUT = ROOT if AT_ROOT else ROOT / "v2"
 IMG_BASE = "assets/img" if AT_ROOT else "../assets/img"
 # The 404 needs absolute paths, because a 404 is served at any depth.
 ABS = "/assets" if AT_ROOT else "/v2/assets"
+# Where the 404 page sends people. At the root it was still pointing into the
+# /v2/ review copy, so a lost visitor landed on the review site, not the live one.
+HOME = "" if AT_ROOT else "/v2"
 
 FONTS = (
     "https://fonts.googleapis.com/css2"
@@ -1913,7 +1916,7 @@ def media_page(c, img):
                 f'<a class="press-note" href="{e(story["url"])}"'
                 f' rel="noopener" target="_blank">'
                 f'<span class="caption">{e(story["publication"])}'
-                f' &middot; story</span>'
+                f' &middot; {e(story.get("label") or "story")}</span>'
                 f'<b>{e(story["title"])}</b>'
                 f'<span>{e(story.get("context") or "")}</span></a>')
         watch = f"""
@@ -2594,9 +2597,9 @@ def main() -> int:
     <h1>Off the course</h1>
     <p class="sub">This page does not exist. The site does.</p>
     <div class="masthead-cta">
-      <a class="btn" data-on="accent" href="/v2/index.html">Back to the start</a>
-      <a class="btn" href="/v2/journey.html">The journey</a>
-      <a class="btn" href="/v2/contact.html">Contact</a>
+      <a class="btn" data-on="accent" href="{HOME}/">Back to the start</a>
+      <a class="btn" href="{HOME}/journey">The journey</a>
+      <a class="btn" href="{HOME}/contact">Contact</a>
     </div>
   </div>
 </main>

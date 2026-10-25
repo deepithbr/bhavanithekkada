@@ -448,7 +448,7 @@
           "line": "First Worldloppet marathon",
           "title": "A new distance",
           "place": "New Zealand",
-          "detail": "She continued competing nationally and internationally before returning to New Zealand. She entered the Worldloppet ski marathon circuit for the first time, racing 21 km at the Merino Muster and finishing on the podium in her age category. A new distance, a new challenge, and another direction in her journey.",
+          "detail": "She continued competing nationally and internationally before returning to New Zealand. She entered the Worldloppet ski marathon circuit for the first time, racing 21 km at the Merino Muster and winning silver. A new distance, a new challenge, and another direction in her journey.",
           "image": "flag-merino-2026",
           "kind": "past",
           "figure": "ski",
@@ -924,10 +924,10 @@
       "years": [
         "2026"
       ],
-      "event": "Southern-hemisphere season",
+      "event": "Merino Muster",
       "kind": "fis",
       "sourceRef": "athlete-brief",
-      "best": "New Zealand block, 2026",
+      "best": "Silver at the Merino Muster, 21 km, 2026",
       "image": "nz-snowfarm",
       "provenance": "New Zealand named by the client as one of the places she races, 31 Aug 2026. The venue is the Snow Farm at Wanaka, taken from her own 2026 frame in that location and from the season copy that already names New Zealand; the country is hers, the specific venue is read off the photograph and worth her confirming."
     },
@@ -947,15 +947,17 @@
     },
     {
       "id": "germany",
-      "place": "Germany",
+      "place": "Oberhof",
       "country": "Germany",
-      "lat": 51.16,
-      "lon": 10.45,
+      "lat": 50.7,
+      "lon": 10.73,
       "years": [],
       "event": null,
-      "kind": "country",
+      "kind": "venue",
       "sourceRef": "athlete-brief",
-      "best": "She has raced in Germany. The venue is not recorded here yet."
+      "best": "Oberhof, at the Arena am Rennsteig biathlon range",
+      "image": "roller-road",
+      "provenance": "Venue taken from her own photograph on the Oberhof biathlon range, which is on the site, at Deepith's instruction of 25 Oct 2026. Year and race are not recorded."
     }
   ],
   "mountainAchievements": [
@@ -1101,6 +1103,21 @@
         ],
         "featured": true,
         "sourceRef": "kiwg-2026"
+      },
+      {
+        "id": "r-merino-2026",
+        "year": "2026",
+        "event": "Merino Muster",
+        "detail": "21 km",
+        "place": "Snow Farm, New Zealand",
+        "medal": "silver",
+        "mark": null,
+        "tags": [
+          "international"
+        ],
+        "featured": true,
+        "sourceRef": "pr-nie-merino",
+        "provenance": "The New Indian Express, 25 Aug 2026, reports a silver at the Merino Muster. Her journey copy said a podium in her age category; Deepith ruled on 25 Oct 2026 that the site follows the paper. The Merino Muster is a Worldloppet ski marathon, not a FIS race."
       },
       {
         "id": "r04",
@@ -1591,7 +1608,7 @@
       "url": "https://www.newindianexpress.com/states/karnataka/2026/Aug/25/thekkada-bhavani-from-kodagu-wins-silver-medal-in-cross-country-skiing-in-new-zealand",
       "date": "2026-08-25",
       "byline": "Express News Service",
-      "context": "Filed from Madikeri. Calls the Merino Muster result a silver; her own journey copy has it as a podium in her age category. Sent by her, 22 Oct 2026.",
+      "context": "Filed from Madikeri. Reports a silver at the Merino Muster; the site follows it, at Deepith's instruction of 25 Oct 2026, over her own journey copy, which had a podium in her age category.",
       "brief": "On her silver at the Merino Muster, the ski marathon at Snow Farm in New Zealand.",
       "image": "flag-merino-2026",
       "verified": true
@@ -1620,7 +1637,7 @@
     {
       "publication": "Femina",
       "title": "Meet TN Bhavani, first Indian to win a cross-country skiing medal",
-      "url": "https://share.google/Ynch5cGQ9Yyi3XJpR",
+      "url": "https://www.femina.in/trending/achievers/meet-tn-bhavani-first-indian-to-win-a-cross-country-skiing-medal-288084.html",
       "date": "",
       "context": "A profile built around the bronze in Chile. The third outlet to report that medal as a first for an Indian woman.",
       "image": "chile-corralco",
@@ -1629,7 +1646,7 @@
     {
       "publication": "The Hindu",
       "title": "Karnataka skier from a 900 m village wins three golds on the 4,000 m slopes of Gulmarg",
-      "url": "https://share.google/ZfSEnQcXwYbqPk2LU",
+      "url": "https://www.thehindu.com/news/national/karnataka-skier-from-900-m-altitude-village-wins-three-golds-on-4000-m-high-slopes-of-gulmarg/article67884600.ece",
       "date": "",
       "context": "On the Khelo India Winter Games 2024 at Gulmarg, where she won the 10 km, 5 km and 1.6 km, results r17 to r19. Photo changed at her request, 22 Oct 2026.",
       "image": "podium-khelo-gulmarg",
@@ -1651,11 +1668,11 @@
       "publication": "NDTV Sports",
       "title": "Karnataka's Thekkada Bhavani Nanjugunda, The Queen Of Nordic Skiing In India",
       "url": "https://sports.ndtv.com/othersports/karnatakas-thekkada-bhavani-nanjugunda-the-queen-of-nordic-skiing-in-india-5129351",
-      "date": "",
-      "context": "NDTV blocks automated reading, so the page was not opened. The headline and link are as she sent them, 22 Oct 2026.",
-      "brief": "A profile of her path into Nordic skiing, from the NCC to the Khelo India Winter Games.",
+      "date": "2024-02-26",
+      "context": "Opened 25 Oct 2026 in a browser. NDTV Sports Desk, 26 Feb 2024, on the three golds at KIWG 2024, rows r17 to r19.",
+      "brief": "On her hat-trick of Nordic golds at the Khelo India Winter Games 2024 in Gulmarg.",
       "image": "fischer-portrait",
-      "verified": false
+      "verified": true
     },
     {
       "id": "pr-srinagarnews",
@@ -1682,12 +1699,14 @@
     },
     {
       "publication": "FIS",
-      "title": "Bhavani Thekkada, in the federation's story series",
-      "url": "https://fis.shar.estori.es/go/40b85a82-a28c-897e-7cbb-3a1ef8fbe32b/83bc8941-ccb3-006f-2573-3a1ef8fe4a18",
+      "title": "Her race record, on the FIS database",
+      "url": "https://www.fis-ski.com/DB/general/athlete-biography.html?competitorid=260257&sectorcode=cc&type=result",
       "date": "",
-      "context": "Published by the international governing body for the sport.",
+      "context": "Every FIS-scored race she has started since 2022, kept by the sport's governing body.",
       "image": "race-forest",
-      "kind": "story"
+      "kind": "story",
+      "note": "Was the FIS web story at fis.shar.estori.es/go/40b85a82…, which returned 'Story unavailable' on 25 Oct 2026.",
+      "label": "record"
     },
     {
       "publication": "FIS",
@@ -2144,7 +2163,8 @@
       "claim": "Journey page rewritten from her document, six facts changed",
       "origin": "Client document, My Journey: From Kodagu to the World, received 7 Sep 2026",
       "why": "The document disagrees with what this file already said, and it was followed each time, so each one is worth a second pair of eyes before launch. 2014: the document has the Basic Mountaineering Course at ABVIMAS and a first expedition to Mount Rudugaira, where the page had a Grade A adventure course at ABVIMAS and Special Basic Mountaineering at HMI Darjeeling. 2015: the camp is named as the All India NCC Air Wing Camp, and a first flight is added. 2016: an Advanced Mountaineering Course is added. 2017: two years as a guest instructor at HMI, where the page said one. 2019: the advanced alpine course at IISM Gulmarg moves here from 2018. 2026: 21 km at the Merino Muster with a podium in her age category, which is a new result and is not in the results table. Also new and unsourced elsewhere: leaving her job in 2022 and training in Norway, and the spelling Peroor for the village, which the page had as Perur.",
-      "status": "published-client-asserted"
+      "status": "published-client-asserted",
+      "resolved": "25 Oct 2026. Merino Muster now reads silver, following The New Indian Express of 25 Aug 2026, and is row r-merino-2026 in the results table."
     },
     {
       "claim": "Snow Farm, New Zealand as a training partner, and its mark",
@@ -2192,7 +2212,8 @@
       "claim": "A pin on Germany with no venue behind it",
       "origin": "Client message, 10 Sep 2026",
       "why": "She says she has raced in Germany and cannot name the town, so the pin is the country and says so: it sits at the geographic centre, 51.16N 10.45E, and its panel states that the venue is not recorded. It is marked kind \"country\" and the heading’s count of start lines skips it, because that count is a count of venues. Worth closing: the town, the year and the race would turn it into a pin like the others, and would tell us whether it belongs in the results table too, where Germany appears nowhere.",
-      "status": "published-client-asserted"
+      "status": "published-client-asserted",
+      "resolved": "25 Oct 2026. Pinned to Oberhof, from her photograph on the biathlon range there. Year and race still not recorded."
     },
     {
       "claim": "The 2023 card shows a frame from a different championship",
