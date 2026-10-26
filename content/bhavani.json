@@ -2662,8 +2662,8 @@
       "date": "",
       "image": "print-star-of-mysore",
       "url": "https://starofmysore.com/chasing-gold-through-snow/",
-      "held": true,
-      "heldWhy": "Star of Mysore came off the Media page on 10 Sep 2026 at her instruction. Held until she agrees to the page going back on. Set held to false to show it."
+      "held": false,
+      "heldWhy": "Released 26 Oct 2026: she agreed to the Star of Mysore page going back on Media."
     }
   ]
 }
