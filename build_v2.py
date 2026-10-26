@@ -1904,6 +1904,12 @@ def media_page(c, img):
         for vid in vids:
             poster = (img.tag(vid["image"], "(min-width:900px) 62vw, 92vw")
                       if img.get(vid.get("image")) else "")
+            # The play disc sits dead centre, which is exactly where the
+            # focal point puts her face. A poster can carry its own
+            # position so the face clears the disc.
+            if vid.get("posterPos"):
+                poster = re.sub(r"object-position:[^\"]*",
+                                f"object-position:{vid['posterPos']}", poster)
             parts.append(
                 f'<a class="player" href="{e(vid["url"])}" rel="noopener"'
                 f' target="_blank" data-yt="{e(vid["youtube"])}"'
