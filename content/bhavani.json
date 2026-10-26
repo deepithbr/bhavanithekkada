@@ -2649,5 +2649,21 @@
       "removed": "25 Oct 2026, at Deepith's call. The FIS story itself was taken down, and her FIS record is already linked from the Journey and Career pages, so the Media page keeps only the films."
     }
   ],
-  "pressArchiveNote": "Taken off the Media page on 10 Sep 2026 at her instruction, which named the six that stay. Kept here rather than deleted: the Associated Press piece is the source behind the partnership standfirst and her FIS athlete page is where much of the results table was checked, and neither of those references reads this list, so the cards could go without touching them."
+  "pressArchiveNote": "Taken off the Media page on 10 Sep 2026 at her instruction, which named the six that stay. Kept here rather than deleted: the Associated Press piece is the source behind the partnership standfirst and her FIS athlete page is where much of the results table was checked, and neither of those references reads this list, so the cards could go without touching them.",
+  "inPrint": [
+    {
+      "publication": "Kashmir Images",
+      "date": "2025-09-17",
+      "image": "print-kashmir-images-2025",
+      "url": "https://thekashmirimages.com/2025/09/16/bhavani-wins-two-back-to-back-medals-for-india-in-cross-country-skiing/"
+    },
+    {
+      "publication": "Star of Mysore",
+      "date": "",
+      "image": "print-star-of-mysore",
+      "url": "https://starofmysore.com/chasing-gold-through-snow/",
+      "held": true,
+      "heldWhy": "Star of Mysore came off the Media page on 10 Sep 2026 at her instruction. Held until she agrees to the page going back on. Set held to false to show it."
+    }
+  ]
 }

@@ -1893,6 +1893,34 @@ def media_page(c, img):
         + '</a>'
         for a in shown
     )
+    # The papers as they were printed. A page of newsprint is unreadable as
+    # a strip thumbnail and out of place among her photographs, so it gets
+    # its own row, and a click opens the page whole so it can be read.
+    # `held` keeps a page out until she agrees to it.
+    pages = [p for p in c.get("inPrint", [])
+             if not p.get("held") and img.get(p.get("image"))]
+    in_print = ""
+    if pages:
+        tiles = "".join(
+            f'<figure class="print-page" data-rise>'
+            f'<a class="tile" href="../assets/img/{img.get(p["image"])["file"]}-'
+            f'{img.get(p["image"])["widths"][-1]}.webp" data-full>'
+            f'<span class="tile-shot">'
+            f'{img.tag(p["image"], "(min-width:900px) 40vw, 92vw")}</span></a>'
+            f'<figcaption class="caption">{e(p["publication"])}'
+            + (f' &middot; {e(p["date"][:4])}' if p.get("date") else "")
+            + (f' &middot; <a href="{e(p["url"])}" rel="noopener" '
+               f'target="_blank">read it online</a>' if p.get("url") else "")
+            + '</figcaption></figure>'
+            for p in pages)
+        in_print = f"""
+<section class="prose-fold" id="in-print">
+  <div class="wrap">
+    <div class="prose"><h2>In print</h2></div>
+    <div class="print-row" data-group>{tiles}</div>
+  </div>
+</section>"""
+
     # The film and the federation's story, together, because the reader
     # asking for one is asking for the other. The film plays here rather
     # than on YouTube: what loads is a poster and a control, and the
@@ -1946,11 +1974,11 @@ def media_page(c, img):
     <div class="prose"><h2>Press</h2></div>
     <ul class="press-strips">{''.join(press)}</ul>
   </div>
-</section>{watch}
+</section>{in_print}{watch}
 <section class="prose-fold">
   <div class="wrap">
     <div class="prose"><h2>Photographs</h2></div>
-    <div class="masonry" style="margin-top:var(--space-md)">{gallery}</div>
+    <div class="masonry" data-group style="margin-top:var(--space-md)">{gallery}</div>
   </div>
 </section>"""
     return subpage(c, img, "Media",

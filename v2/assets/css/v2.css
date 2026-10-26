@@ -1921,6 +1921,34 @@ a {
   aspect-ratio: auto;
 }
 
+/* In print: the newspaper pages, whole, side by side. Natural ratio, no
+   crop, because a cropped page of newsprint is a page with its headline cut. */
+.print-row {
+  display: grid;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+  align-items: start;
+}
+
+@media (min-width: 760px) {
+  .print-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.print-page {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.print-page .tile-shot img {
+  aspect-ratio: auto;
+}
+
+.print-page .caption a {
+  color: inherit;
+}
+
 /* Lightbox grows arrows and a counter. */
 .lightbox nav {
   position: absolute;

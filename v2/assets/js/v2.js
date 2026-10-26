@@ -301,7 +301,9 @@
     const pic = box.querySelector("img");
     const cap = null; // captions came off the photographs, 27 Aug list
     const count = box.querySelector(".count");
-    const items = Array.from(fulls);
+    // Each set of pictures pages through on its own: the newspaper pages
+    // and the photographs are two lightboxes, not one long run.
+    let items = Array.from(fulls);
     let at = 0;
 
     const show = (i) => {
@@ -348,11 +350,15 @@
       }
     });
 
-    items.forEach((a, i) => {
+    Array.from(fulls).forEach((a) => {
       a.addEventListener("click", (ev) => {
         ev.preventDefault();
         opener = a;
-        show(i);
+        const group = a.closest("[data-group]");
+        items = group
+          ? Array.from(group.querySelectorAll("[data-full]"))
+          : Array.from(fulls);
+        show(items.indexOf(a));
         box.hidden = false;
         document.documentElement.style.overflow = "hidden";
         box.focus();

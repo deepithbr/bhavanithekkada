@@ -2181,6 +2181,60 @@
       "rights": "owned",
       "added": "2026-10-22",
       "source": "Sent by the athlete on WhatsApp, 22 Oct 2026 (WhatsApp Image 2026-10-22 at 11.50.36 AM (1).jpeg)"
+    },
+    {
+      "slot": "print-kashmir-images-2025",
+      "file": "print-kashmir-images-2025",
+      "widths": [
+        480,
+        960,
+        1600
+      ],
+      "natural": [
+        3802,
+        2975
+      ],
+      "ratio": 1.278,
+      "alt": "The Kashmir Images sports page of 17 September 2025, headlined Bhavani wins two back-to-back medals for India in Cross-Country Skiing, with her holding the Indian flag and a podium photograph from Corralco.",
+      "credit": "Kashmir Images",
+      "creditLine": "Kashmir Images, 17 Sep 2025",
+      "year": null,
+      "location": null,
+      "category": "print",
+      "focal": [
+        0.5,
+        0.3
+      ],
+      "rights": "press-clipping",
+      "source": "Newspaper page sent by Deepith, 26 Oct 2026 (1.jpeg on the Desktop)",
+      "note": "A newspaper's own page, shown as coverage with the paper named. Not her photograph, so it never enters the gallery."
+    },
+    {
+      "slot": "print-star-of-mysore",
+      "file": "print-star-of-mysore",
+      "widths": [
+        480,
+        960,
+        1036
+      ],
+      "natural": [
+        1036,
+        1600
+      ],
+      "ratio": 0.6475,
+      "alt": "The Star of Mysore page headlined Chasing Gold through Snow, an interview with Bhavani with photographs of her on skis, with a medal, and with her family.",
+      "credit": "Star of Mysore",
+      "creditLine": "Star of Mysore",
+      "year": null,
+      "location": null,
+      "category": "print",
+      "focal": [
+        0.5,
+        0.3
+      ],
+      "rights": "press-clipping",
+      "source": "Newspaper page sent by Deepith, 26 Oct 2026 (2.jpeg on the Desktop)",
+      "note": "A newspaper's own page, shown as coverage with the paper named. Not her photograph, so it never enters the gallery."
     }
   ],
   "excluded": [
