@@ -1111,13 +1111,13 @@
         "detail": "21 km",
         "place": "Snow Farm, New Zealand",
         "medal": "silver",
-        "mark": null,
+        "mark": "1:34:38",
         "tags": [
           "international"
         ],
         "featured": true,
         "sourceRef": "pr-nie-merino",
-        "provenance": "The New Indian Express, 25 Aug 2026, reports a silver at the Merino Muster. Her journey copy said a podium in her age category; Deepith ruled on 25 Oct 2026 that the site follows the paper. The Merino Muster is a Worldloppet ski marathon, not a FIS race."
+        "provenance": "The New Indian Express, 25 Aug 2026, reports a silver at the Merino Muster. Her journey copy said a podium in her age category; Deepith ruled on 25 Oct 2026 that the site follows the paper. The Merino Muster is a Worldloppet ski marathon, not a FIS race. Time 1:34:38 from Janamana Kannada, 23 Aug 2026, which places her second in the women's 30s category."
       },
       {
         "id": "r04",
@@ -1611,6 +1611,18 @@
       "context": "Filed from Madikeri. Reports a silver at the Merino Muster; the site follows it, at Deepith's instruction of 25 Oct 2026, over her own journey copy, which had a podium in her age category.",
       "brief": "On her silver at the Merino Muster, the ski marathon at Snow Farm in New Zealand.",
       "image": "flag-merino-2026",
+      "verified": true
+    },
+    {
+      "id": "pr-janamana",
+      "publication": "Janamana Kannada",
+      "title": "ಕ್ರಾಸ್ ಕಂಟ್ರಿ ಸ್ಕೀಯಿಂಗ್ ನಲ್ಲಿ ನ್ಯೂಜಿಲ್ಯಾಂಡ್ ನೆಲದಲ್ಲಿ ಭಾರತದ ಪತಾಕೆ ಹಾರಿಸಿದ ಕೊಡಗಿನ ತೆಕ್ಕಡ ಭವಾನಿ",
+      "url": "https://janamanakannada.com/thekkada-bhavani-new-zealands-cross-country-ski/",
+      "date": "2026-08-23",
+      "lang": "kn",
+      "context": "Kannada. Opened 26 Oct 2026. The body has her second in the women's 30s category over 21 km in 1:34:38 on 22 Aug 2026; its English meta description says she won the category. Added at Deepith's request.",
+      "brief": "A Kannada report on her Merino Muster race in New Zealand, 21 km in 1:34:38.",
+      "image": "nz-snowfarm",
       "verified": true
     },
     {

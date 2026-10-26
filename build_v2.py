@@ -1855,9 +1855,13 @@ def media_page(c, img):
         brief = (f'<span class="press-brief">{e(line)}</span>'
                  if line else "")
         more = '<span class="press-more caption">Read the story</span>'
+        # A headline kept in its own language, Kannada for Janamana, is
+        # marked so screen readers and fonts treat it as that language.
+        lang = f' lang="{e(pr["lang"])}"' if pr.get("lang") else ""
+
         inner = (f'{thumb}<span class="press-body">'
                  f'<span class="caption">{e(meta)}</span>'
-                 f'<b>{e(head)}</b>{brief}{more if url else ""}</span>')
+                 f'<b{lang}>{e(head)}</b>{brief}{more if url else ""}</span>')
         # Alternate sides, so the list arrives the way V1's did.
         side = "l" if len(press) % 2 == 0 else "r"
         press.append(
@@ -2458,7 +2462,7 @@ def contact_page(c, img):
     one route in for everything."""
     return subpage(c, img, "Contact",
                    "Speaking, sponsorship, media and brand collaborations.",
-                   enquiry_block(c), shot="lake-mountains",
+                   enquiry_block(c), shot="india-jacket-trail",
                    current="contact.html", og="contact")
 
 
