@@ -5165,6 +5165,14 @@ body {
   .rail-main .wrap {
     width: 100%;
   }
+
+  /* Inset from the panel's edge. The National section is painted ice, and
+     with no inset its years sat flush against the panel's left edge and
+     the medal counts against its right. Both sections take the same inset
+     so the two tables still line up with each other. */
+  .rail-main > .prose-fold {
+    padding-inline: var(--space-md);
+  }
 }
 
 /* ---------------------- section labels take the lockup face
