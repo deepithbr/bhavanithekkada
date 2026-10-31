@@ -1921,8 +1921,10 @@ a {
   aspect-ratio: auto;
 }
 
-/* In print: the newspaper pages, whole, side by side. Natural ratio, no
-   crop, because a cropped page of newsprint is a page with its headline cut. */
+/* In print: the newspaper pages side by side, each cut to the same 4:3
+   window from the top, where the masthead and headline sit. 4:3 because one
+   page is landscape and a taller window would cut its headline at the sides.
+   A click opens the page whole in the lightbox. */
 .print-row {
   display: grid;
   gap: var(--space-md);
@@ -1941,8 +1943,26 @@ a {
   gap: var(--space-xs);
 }
 
+.print-page .tile-shot {
+  position: relative;
+  display: block;
+}
+
 .print-page .tile-shot img {
-  aspect-ratio: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.print-cue {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: var(--space-lg) var(--space-sm) var(--space-sm);
+  background: linear-gradient(to top,
+      oklch(from var(--color-paper-deep) l c h / 0.88), transparent);
+  color: var(--color-ink-on-deep);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .print-page .caption a {

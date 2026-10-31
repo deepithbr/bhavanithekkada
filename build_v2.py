@@ -1896,6 +1896,8 @@ def media_page(c, img):
     # The papers as they were printed. A page of newsprint is unreadable as
     # a strip thumbnail and out of place among her photographs, so it gets
     # its own row, and a click opens the page whole so it can be read.
+    # The thumbnail is the top of the page, where the masthead and headline
+    # sit, at one shape for every paper so the row stays level.
     # `held` keeps a page out until she agrees to it.
     pages = [p for p in c.get("inPrint", [])
              if not p.get("held") and img.get(p.get("image"))]
@@ -1906,7 +1908,9 @@ def media_page(c, img):
             f'<a class="tile" href="../assets/img/{img.get(p["image"])["file"]}-'
             f'{img.get(p["image"])["widths"][-1]}.webp" data-full>'
             f'<span class="tile-shot">'
-            f'{img.tag(p["image"], "(min-width:900px) 40vw, 92vw")}</span></a>'
+            f'{img.tag(p["image"], "(min-width:900px) 40vw, 92vw")}'
+            f'<span class="print-cue" aria-hidden="true">Read the full page'
+            f'</span></span></a>'
             f'<figcaption class="caption">{e(p["publication"])}'
             + (f' &middot; {e(p["date"][:4])}' if p.get("date") else "")
             + (f' &middot; <a href="{e(p["url"])}" rel="noopener" '
