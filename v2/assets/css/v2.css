@@ -8159,6 +8159,16 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Stacked, the story is long enough on a phone to climb from the foot of
+   the panel into a number pinned at the top, so the number joins the flow
+   and sits above the name instead. */
+@media (max-width: 999.98px) {
+  .fp-n {
+    position: static;
+    margin-bottom: var(--space-xs);
+  }
+}
+
 /* The column is the panel's width, not the story's. The story keeps a
    fixed width so it does not rewrap as the panel grows, and when the
    column sized itself to that, a closed panel laid its name out for an
@@ -8182,6 +8192,14 @@ body {
   /* One line-height in both states, so the name growing does not also
      jump its line spacing. */
   line-height: 1.25;
+}
+
+/* The 18ch cap is for the slivers on a wide screen. A stacked panel has
+   the room, and the cap left SKI alone on its own line. */
+@media (max-width: 999.98px) {
+  .fp-copy h3 {
+    max-width: none;
+  }
 }
 
 .fp-say p {
