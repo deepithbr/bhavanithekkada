@@ -904,15 +904,43 @@
       }
     };
 
+    // The panel is placed against its own year, so a year near the top
+    // of the screen opened it up under the menu bar, and one near the
+    // foot ran it off the bottom. Each time it opens it is measured where
+    // it will settle and slid just far enough to sit whole between the
+    // bar and the bottom edge. The rail layout has no floating panel.
+    const navBar = document.getElementById("nav");
+    const fit = (nd) => {
+      const pop = nd.querySelector(".jr-pop");
+      if (!pop || getComputedStyle(pop).position !== "absolute") return;
+      pop.style.setProperty("--pop-nudge", "0px");
+      const r = pop.getBoundingClientRect();
+      // Where it will rest once the opening slide ends: the slide's
+      // current offset off, and the centring offset of a mid panel on.
+      const now = new DOMMatrix(getComputedStyle(pop).transform).m42;
+      const rest = nd.dataset.vpos === "mid" ? -r.height / 2 : 0;
+      const top = r.top - now + rest;
+      const ceiling = (navBar ? Math.max(0, navBar.getBoundingClientRect().bottom) : 0) + 16;
+      const floor = innerHeight - 16;
+      let nudge = 0;
+      if (top < ceiling) nudge = ceiling - top;
+      else if (top + r.height > floor) nudge = Math.max(ceiling - top, floor - (top + r.height));
+      pop.style.setProperty("--pop-nudge", `${Math.round(nudge)}px`);
+    };
+
     for (const nd of nodes) {
       const hit = nd.querySelector(".jr-hit");
       hit.addEventListener("click", () => {
         const open = nd.hasAttribute("data-open");
         shut(nd);
         if (open) nd.removeAttribute("data-open");
-        else nd.setAttribute("data-open", "");
+        else { fit(nd); nd.setAttribute("data-open", ""); }
         hit.setAttribute("aria-expanded", open ? "false" : "true");
       });
+      nd.addEventListener("pointerenter", (ev) => {
+        if (ev.pointerType === "mouse") fit(nd);
+      });
+      hit.addEventListener("focus", () => fit(nd));
     }
 
     // Anywhere else closes it, which is the only way off a panel on a

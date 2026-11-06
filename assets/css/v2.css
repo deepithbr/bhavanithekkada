@@ -7490,7 +7490,7 @@ body {
     opacity: 0;
     visibility: hidden;
     --pop-y: 0px;
-    transform: translateY(calc(var(--pop-y) + 8px));
+    transform: translateY(calc(var(--pop-y) + var(--pop-nudge, 0px) + 8px));
     transition: opacity var(--dur-fast) var(--ease-out),
       visibility var(--dur-fast) var(--ease-out),
       transform var(--dur-fast) var(--ease-out);
@@ -7513,7 +7513,7 @@ body {
   .jr-node[data-open] .jr-pop {
     opacity: 1;
     visibility: visible;
-    transform: translateY(var(--pop-y));
+    transform: translateY(calc(var(--pop-y) + var(--pop-nudge, 0px)));
   }
 
   .jr-node:hover,
@@ -7559,7 +7559,7 @@ body {
   .jr-node:hover .jr-pop {
     opacity: 1;
     visibility: visible;
-    transform: translateY(var(--pop-y));
+    transform: translateY(calc(var(--pop-y) + var(--pop-nudge, 0px)));
   }
 }
 
